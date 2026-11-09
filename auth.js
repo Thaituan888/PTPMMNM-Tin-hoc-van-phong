@@ -1047,7 +1047,6 @@
   function handleLogout() {
     setCurrentUser(null);
     apiCall('logout');
-    showToast('Đã đăng xuất tài khoản an toàn.', 'info');
   }
 
   // 9. Cập nhật Huy hiệu Avatar + Tên + Nút Đăng xuất trên Header
@@ -1085,7 +1084,7 @@
               </div>
               <span class="header-user-name">${displayName}</span>
             </div>
-            <span class="btn-header-logout" title="Đăng xuất tài khoản">
+            <span class="btn-header-logout">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
                 <polyline points="16 17 21 12 16 7"/>
