@@ -1400,6 +1400,25 @@
       z-index: 2;
     }
 
+    .btn-profile-back {
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-profile-back:hover {
+      background: rgba(0, 0, 0, 0.45);
+    }
+
     .profile-cover-center-title {
       text-align: center;
       position: relative;
@@ -1489,18 +1508,15 @@
 
     .profile-avatar-sprout-badge {
       position: absolute;
-      top: -2px;
-      right: -2px;
-      width: 32px;
-      height: 32px;
+      bottom: 2px;
+      right: 2px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      background: #ffffff;
-      border: 1.5px solid #e2e8f0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-      font-size: 1rem;
+      background: #22c55e;
+      border: 3px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      box-sizing: border-box;
     }
 
     .profile-meta-block {
@@ -3191,9 +3207,9 @@
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                   <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/>
                 </svg>
-                NHOM2 • CỘNG ĐỒNG HỌC TẬP
+                NHOM2 • CỘNG ĐỒNG HỌC TẬP TIN HỌC VĂN PHÒNG
               </div>
-              <h1 class="cover-main-heading">TIN HỌC CƠ BẢN</h1>
+              <h1 class="cover-main-heading">TIN HỌC VĂN PHÒNG</h1>
               <p class="cover-sub-quote">CÙNG BẠN HỌC GIỎI HƠN MỖI NGÀY! 🎓</p>
             </div>
           </div>
@@ -3208,8 +3224,8 @@
                     <circle cx="12" cy="7" r="4" />
                   </svg>
                 </div>
-                <!-- Huy hiệu mầm cây / cử nhân góc trên avatar -->
-                <div class="profile-avatar-sprout-badge" id="profileAvatarIconBadge">🌱</div>
+                <!-- Huy hiệu chấm xanh online góc trên avatar -->
+                <div class="profile-avatar-sprout-badge" id="profileAvatarIconBadge"></div>
               </div>
 
               <div class="profile-meta-block">
@@ -3253,7 +3269,7 @@
                   <line x1="12" y1="5" x2="12" y2="19" />
                   <line x1="5" y1="12" x2="19" y2="12" />
                 </svg>
-                + TẠO KHÓA HỌC MỚI
+                TẠO KHÓA HỌC MỚI
               </button>
             </div>
           </div>
@@ -4276,8 +4292,8 @@
           if (pNameText) pNameText.textContent = 'Giáo viên';
           if (pDescText) pDescText.textContent = 'Quản lý khóa học, đề thi và theo dõi hoạt động học tập của học viên.';
           if (pAvatarBadge) {
-            pAvatarBadge.style.display = 'flex';
-            pAvatarBadge.innerHTML = `🎓`;
+            pAvatarBadge.style.display = 'block';
+            pAvatarBadge.innerHTML = '';
           }
           if (pLevelText) {
             pLevelText.className = 'profile-cap-pill teacher';
@@ -4307,8 +4323,8 @@
           if (pNameText) pNameText.textContent = user.name;
           if (pDescText) pDescText.textContent = 'Theo dõi kết quả học tập, luyện đề và rèn luyện kỹ năng Tin học văn phòng.';
           if (pAvatarBadge) {
-            pAvatarBadge.style.display = 'flex';
-            pAvatarBadge.innerHTML = `🌱`;
+            pAvatarBadge.style.display = 'block';
+            pAvatarBadge.innerHTML = '';
           }
           if (pLevelText) {
             pLevelText.className = 'profile-cap-pill';
@@ -4431,7 +4447,7 @@
 
         const customCount = getCustomExams().length;
         const pExamCount = document.getElementById('pExamCountText');
-        if (pExamCount) pExamCount.textContent = `${customCount} đề thi`;
+        if (pExamCount) pExamCount.textContent = String(customCount);
         const myCoursesCount = document.getElementById('myCoursesCount');
         if (myCoursesCount) myCoursesCount.textContent = String(customCount);
 
