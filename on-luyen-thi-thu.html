@@ -4296,8 +4296,7 @@
             pAvatarBadge.innerHTML = '';
           }
           if (pLevelText) {
-            pLevelText.className = 'profile-cap-pill teacher';
-            pLevelText.textContent = 'GIẢNG VIÊN';
+            pLevelText.style.display = 'none';
           }
           if (pFollowCount) pFollowCount.textContent = '15';
           if (pFollowSub) pFollowSub.textContent = 'Học viên theo dõi';
@@ -4327,6 +4326,7 @@
             pAvatarBadge.innerHTML = '';
           }
           if (pLevelText) {
+            pLevelText.style.display = 'inline-block';
             pLevelText.className = 'profile-cap-pill';
             pLevelText.textContent = 'HỌC VIÊN';
           }
@@ -4360,8 +4360,7 @@
             pRoleBadge.style.visibility = 'hidden';
           }
           if (pLevelText) {
-            pLevelText.className = 'profile-lvl-badge';
-            pLevelText.textContent = 'CẤP 0';
+            pLevelText.style.display = 'none';
           }
           if (pVipPill) pVipPill.style.display = 'none';
           if (pSubText) pSubText.textContent = 'Đăng nhập để lưu kết quả và theo dõi tiến độ ôn luyện.';
