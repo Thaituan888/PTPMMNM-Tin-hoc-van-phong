@@ -1361,28 +1361,29 @@
        TAB 3: TRANG CÁ NHÂN (PROFILE VIEW - EDUQUIZ STYLE)
        ========================================================================== */
     .profile-hero {
-      background: linear-gradient(135deg, #7c3aed 0%, #6366f1 50%, #4f46e5 100%);
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 60%, #0284c7 100%);
       border-radius: 28px;
-      padding: clamp(24px, 3.5vw, 40px);
+      padding: clamp(24px, 3.5vw, 36px);
       color: #ffffff;
       margin-bottom: 26px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 16px 36px rgba(124, 58, 237, 0.22);
+      box-shadow: 0 16px 36px rgba(2, 132, 199, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .profile-hero-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .btn-profile-back {
       background: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       color: #ffffff;
-      padding: 8px 16px;
+      padding: 7px 16px;
       border-radius: 999px;
       font-size: 0.82rem;
       font-weight: 700;
@@ -1398,11 +1399,11 @@
     }
 
     .profile-slogan {
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       font-weight: 800;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      color: #fbcfe8;
+      color: #e0f2fe;
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -1420,19 +1421,52 @@
       display: flex;
       align-items: center;
       gap: 20px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .profile-big-avatar-box {
+      position: relative;
+      flex-shrink: 0;
     }
 
     .profile-big-avatar {
-      width: 84px;
-      height: 84px;
+      width: 82px;
+      height: 82px;
       border-radius: 50%;
-      background: #fef08a;
-      border: 4px solid #a3e635;
+      background: #ffffff;
+      border: 3.5px solid rgba(255, 255, 255, 0.95);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #854d0e;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      color: #0284c7;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .profile-big-avatar svg {
+      width: 44px;
+      height: 44px;
+    }
+
+    .profile-avatar-badge {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #f59e0b;
+      color: #ffffff;
+      border: 2.5px solid #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .profile-user-info {
+      flex: 1;
+      min-width: 0;
     }
 
     .profile-user-info h2 {
@@ -1442,54 +1476,121 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 6px;
+      margin: 0 0 4px;
+      line-height: 1.25;
+    }
+
+    .profile-desc-line {
+      font-size: 0.86rem;
+      color: #e0f2fe;
+      margin: 0 0 14px;
+      line-height: 1.45;
     }
 
     .profile-lvl-badge {
       font-size: 0.72rem;
-      padding: 2px 10px;
+      padding: 3px 12px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.22);
       border: 1px solid rgba(255, 255, 255, 0.4);
       color: #ffffff;
       font-weight: 800;
       text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .profile-lvl-badge.student-badge-role {
+      background: #22c55e;
+      border-color: #86efac;
     }
 
     .profile-counters-row {
-      display: flex;
-      gap: 16px;
-      font-size: 0.86rem;
-      color: #ede9fe;
-      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 8px 16px;
+      gap: 18px;
+      font-size: 0.84rem;
+      color: #ffffff;
+      font-weight: 700;
       flex-wrap: wrap;
     }
 
     .p-count-item {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+    }
+
+    .p-count-item svg {
+      color: #7dd3fc;
+    }
+
+    .p-count-item strong {
+      font-size: 0.92rem;
+      color: #ffffff;
+    }
+
+    .p-count-item small {
+      display: block;
+      font-size: 0.68rem;
+      color: #bae6fd;
+      font-weight: 600;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .profile-hero-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .profile-illus-laptop {
+      width: 140px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-illus-laptop svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
     }
 
     .btn-create-course {
-      background: #f59e0b;
-      color: #ffffff;
+      background: #ffffff;
+      color: #0284c7;
       border: none;
-      padding: 12px 22px;
-      border-radius: 14px;
-      font-size: 0.9rem;
+      padding: 11px 26px;
+      border-radius: 999px;
+      font-size: 0.92rem;
       font-weight: 800;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      transition: all 0.2s;
-      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
+      transition: all 0.22s ease;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+      white-space: nowrap;
     }
 
     .btn-create-course:hover {
-      background: #d97706;
+      background: #f0f9ff;
+      color: #0369a1;
       transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
     }
 
     /* Profile Sub-tabs */
@@ -3085,64 +3186,112 @@
 
           <div class="profile-user-row">
             <div class="profile-user-left">
-              <div class="profile-big-avatar">
-                <svg class="icon-svg" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2.2">
-                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
+              <div class="profile-big-avatar-box">
+                <div class="profile-big-avatar">
+                  <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+                <div class="profile-avatar-badge" id="profileAvatarIconBadge">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                  </svg>
+                </div>
               </div>
               <div class="profile-user-info">
                 <h2>
-                  <span id="pNameText">Nguyễn Thái Tuấn</span>
-                  <span class="profile-lvl-badge" id="pLevelText">CẤP 0</span>
+                  <span id="pNameText">Giáo viên</span>
+                  <span class="profile-lvl-badge" id="pLevelText">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                    QUẢN TRỊ VIÊN
+                  </span>
                 </h2>
+                <p class="profile-desc-line" id="pDescText">Quản lý khóa học, đề thi và theo dõi hoạt động học tập của học viên.</p>
                 <div class="profile-counters-row">
                   <span class="p-count-item">
-                    <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                      stroke-width="2.2">
+                    <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                       <circle cx="9" cy="7" r="4" />
                       <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
                       <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                     </svg>
-                    15 người theo dõi
+                    <div>
+                      <strong id="pFollowCountText">15 Học viên</strong>
+                      <small id="pFollowSubText">Đang theo dõi</small>
+                    </div>
                   </span>
                   <span class="p-count-item">
-                    <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                      stroke-width="2.2">
-                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+                    <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                      <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
+                      <line x1="8" y1="6" x2="16" y2="6"/>
+                      <line x1="8" y1="10" x2="16" y2="10"/>
+                      <line x1="8" y1="14" x2="12" y2="14"/>
                     </svg>
-                    <span id="pExamCountText">0 đề thi</span>
+                    <div>
+                      <strong id="pExamCountText">0 Đề thi</strong>
+                      <small id="pExamCountSub">Đã tạo</small>
+                    </div>
                   </span>
                   <span class="p-count-item">
-                    <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                      stroke-width="2.2">
+                    <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
                       <circle cx="12" cy="12" r="3" />
                     </svg>
-                    24 Lượt xem
+                    <div>
+                      <strong id="pViewCountText">24 Lượt xem</strong>
+                      <small id="pViewSubText">Tổng lượt truy cập</small>
+                    </div>
                   </span>
                   <span class="p-count-item">
-                    <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                      stroke-width="2.2">
+                    <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                       <polygon points="5 3 19 12 5 21 5 3" />
                     </svg>
-                    18 Lượt thi
+                    <div>
+                      <strong id="pAttemptsCountText">18 Lượt thi</strong>
+                      <small id="pAttemptsSubText">Tổng số bài thi</small>
+                    </div>
                   </span>
                 </div>
               </div>
             </div>
 
-            <!-- Role Protected: Nút tạo khóa học mới -->
-            <button type="button" class="btn-create-course" id="btnPCreateCourse">
-              <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2.5">
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-              + TẠO KHÓA HỌC MỚI
-            </button>
+            <!-- Profile Hero Right: Minh họa Laptop + Nút Tạo khóa học mới (chỉ giáo viên) -->
+            <div class="profile-hero-right">
+              <div class="profile-illus-laptop">
+                <svg viewBox="0 0 200 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Chồng sách -->
+                  <rect x="18" y="70" width="62" height="14" rx="3" fill="#38bdf8"/>
+                  <rect x="22" y="74" width="54" height="6" fill="#ffffff" opacity="0.8"/>
+                  <rect x="15" y="85" width="68" height="16" rx="3" fill="#f59e0b"/>
+                  <rect x="20" y="89" width="58" height="8" fill="#ffffff" opacity="0.8"/>
+                  <!-- Chậu cây mini -->
+                  <path d="M168 76 C168 68 174 62 178 58 C182 62 188 68 188 76 Z" fill="#22c55e"/>
+                  <path d="M160 80 C156 74 158 66 166 66 C168 72 166 78 160 80 Z" fill="#16a34a"/>
+                  <path d="M196 80 C200 74 198 66 190 66 C188 72 190 78 196 80 Z" fill="#15803d"/>
+                  <rect x="166" y="78" width="16" height="18" rx="4" fill="#ffffff"/>
+                  <!-- Laptop -->
+                  <rect x="68" y="22" width="102" height="68" rx="7" fill="#0f172a" stroke="#cbd5e1" stroke-width="2.5"/>
+                  <rect x="74" y="28" width="90" height="56" rx="4" fill="#0284c7"/>
+                  <!-- Icon Mũ Cử Nhân trên màn hình Laptop -->
+                  <path d="M119 44 L98 52 L119 60 L140 52 Z" fill="#ffffff"/>
+                  <path d="M104 54.5 V61.5 C107 64 131 64 134 61.5 V54.5" stroke="#ffffff" stroke-width="2" fill="none"/>
+                  <path d="M138 52 V64" stroke="#ffffff" stroke-width="2"/>
+                  <circle cx="138" cy="65" r="1.5" fill="#ffffff"/>
+                  <!-- Đế Laptop -->
+                  <path d="M52 92 L70 90 H168 L186 92 C188 92 188 94 186 94 H52 C50 94 50 92 52 92 Z" fill="#cbd5e1"/>
+                  <rect x="104" y="90" width="30" height="2.5" rx="1" fill="#94a3b8"/>
+                </svg>
+              </div>
+              <button type="button" class="btn-create-course" id="btnPCreateCourse">
+                <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                + Tạo khóa học mới
+              </button>
+            </div>
           </div>
         </div>
 
@@ -4146,18 +4295,44 @@
 
         const pNameText = document.getElementById('pNameText');
         const pLevelText = document.getElementById('pLevelText');
+        const pDescText = document.getElementById('pDescText');
+        const pAvatarBadge = document.getElementById('profileAvatarIconBadge');
+        const pFollowCount = document.getElementById('pFollowCountText');
+        const pFollowSub = document.getElementById('pFollowSubText');
+        const pExamCountSub = document.getElementById('pExamCountSub');
+        const pViewCount = document.getElementById('pViewCountText');
+        const pViewSub = document.getElementById('pViewSubText');
+        const pAttemptsCount = document.getElementById('pAttemptsCountText');
+        const pAttemptsSub = document.getElementById('pAttemptsSubText');
         const btnPCreateCourse = document.getElementById('btnPCreateCourse');
 
         if (isTeacher) {
           if (pStatusDot) pStatusDot.style.display = 'block';
           if (pName) pName.textContent = 'Giáo viên';
           if (pNameText) pNameText.textContent = 'Giáo viên';
+          if (pDescText) pDescText.textContent = 'Quản lý khóa học, đề thi và theo dõi hoạt động học tập của học viên.';
+          if (pAvatarBadge) {
+            pAvatarBadge.style.display = 'flex';
+            pAvatarBadge.style.background = '#f59e0b';
+            pAvatarBadge.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`;
+          }
+          if (pLevelText) {
+            pLevelText.className = 'profile-lvl-badge';
+            pLevelText.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg> QUẢN TRỊ VIÊN`;
+          }
+          if (pFollowCount) pFollowCount.textContent = '15 Học viên';
+          if (pFollowSub) pFollowSub.textContent = 'Đang theo dõi';
+          if (pExamCountSub) pExamCountSub.textContent = 'Đã tạo';
+          if (pViewCount) pViewCount.textContent = '24 Lượt xem';
+          if (pViewSub) pViewSub.textContent = 'Tổng lượt truy cập';
+          if (pAttemptsCount) pAttemptsCount.textContent = '18 Lượt thi';
+          if (pAttemptsSub) pAttemptsSub.textContent = 'Tổng số bài thi';
+
           if (pRoleBadge) {
             pRoleBadge.textContent = 'QUẢN TRỊ VIÊN';
             pRoleBadge.style.visibility = 'visible';
             pRoleBadge.style.background = 'rgba(255, 255, 255, 0.25)';
           }
-          if (pLevelText) pLevelText.textContent = 'QUẢN TRỊ VIÊN';
           if (pVipPill) pVipPill.style.display = 'none';
           if (pSubText) pSubText.textContent = 'Quản lý nội dung, đề thi và hoạt động học tập trên hệ thống.';
           if (btnHeroText) btnHeroText.textContent = 'HỒ SƠ GIÁO VIÊN';
@@ -4167,26 +4342,49 @@
           if (pStatusDot) pStatusDot.style.display = 'block';
           if (pName) pName.textContent = user.name;
           if (pNameText) pNameText.textContent = user.name;
+          if (pDescText) pDescText.textContent = 'Theo dõi kết quả học tập, luyện đề và rèn luyện kỹ năng Tin học văn phòng.';
+          if (pAvatarBadge) {
+            pAvatarBadge.style.display = 'flex';
+            pAvatarBadge.style.background = '#22c55e';
+            pAvatarBadge.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
+          }
+          if (pLevelText) {
+            pLevelText.className = 'profile-lvl-badge student-badge-role';
+            pLevelText.innerHTML = `HỌC VIÊN CHÍNH THỨC`;
+          }
+          if (pFollowCount) pFollowCount.textContent = '3 Khóa học';
+          if (pFollowSub) pFollowSub.textContent = 'Đang tham gia';
+          if (pExamCountSub) pExamCountSub.textContent = 'Đã hoàn thành';
+          if (pViewCount) pViewCount.textContent = '8.8 / 10';
+          if (pViewSub) pViewSub.textContent = 'Điểm trung bình';
+          if (pAttemptsCount) pAttemptsCount.textContent = '40 Câu';
+          if (pAttemptsSub) pAttemptsSub.textContent = 'Đã tích lũy';
+
           if (pRoleBadge) {
             pRoleBadge.textContent = 'HỌC VIÊN';
             pRoleBadge.style.visibility = 'visible';
             pRoleBadge.style.background = '#22c55e';
           }
-          if (pLevelText) pLevelText.textContent = 'CẤP 1 • VIP';
           if (pVipPill) pVipPill.style.display = 'none';
           if (pSubText) pSubText.textContent = 'Quản lý kết quả học tập và theo dõi tiến độ rèn luyện của bạn.';
           if (btnHeroText) btnHeroText.textContent = 'HỒ SƠ CÁ NHÂN';
           if (btnHero) btnHero.onclick = () => switchMainTab('profile');
+          // Học sinh không có tạo đề / tạo khóa học
           if (btnPCreateCourse) btnPCreateCourse.style.display = 'none';
         } else {
           if (pStatusDot) pStatusDot.style.display = 'none';
           if (pName) pName.textContent = 'Chưa đăng nhập';
           if (pNameText) pNameText.textContent = 'Chưa đăng nhập';
+          if (pDescText) pDescText.textContent = 'Đăng nhập để lưu tiến trình học và tự đánh giá năng lực.';
+          if (pAvatarBadge) pAvatarBadge.style.display = 'none';
           if (pRoleBadge) {
             pRoleBadge.textContent = 'KHÁCH VÃNG LAI';
             pRoleBadge.style.visibility = 'hidden';
           }
-          if (pLevelText) pLevelText.textContent = 'CẤP 0';
+          if (pLevelText) {
+            pLevelText.className = 'profile-lvl-badge';
+            pLevelText.textContent = 'CẤP 0';
+          }
           if (pVipPill) pVipPill.style.display = 'none';
           if (pSubText) pSubText.textContent = 'Đăng nhập để lưu kết quả và theo dõi tiến độ ôn luyện.';
           if (btnHeroText) btnHeroText.textContent = 'ĐĂNG NHẬP / ĐĂNG KÝ';
@@ -4200,6 +4398,7 @@
               }
             };
           }
+          // Khách không có tạo khóa học / tạo đề
           if (btnPCreateCourse) btnPCreateCourse.style.display = 'none';
 
           // Nếu đang mở Trang cá nhân mà chuyển về Khách vãng lai thì tự động quay lại danh sách đề thi
