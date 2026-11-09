@@ -163,33 +163,32 @@
     }
 
     /* ==========================================================================
-       TOP MAIN TABS (TRẮC NGHIỆM - THỰC HÀNH - TRANG CÁ NHÂN)
+       INTEGRATED TABS IN HERO BANNER (TRẮC NGHIỆM ONLINE - BÀI TẬP THỰC HÀNH)
        ========================================================================== */
-    .exam-nav-tabs {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 22px;
+    .eh-integrated-tabs {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       background: #ffffff;
-      padding: 8px 12px;
-      border-radius: 20px;
-      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08);
-      border: 1px solid #e0f2fe;
-      overflow-x: auto;
+      padding: 5px 6px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(3, 105, 161, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.9);
     }
 
     .exam-nav-tab {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 12px 22px;
-      border-radius: 14px;
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: #64748b;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: 12px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: #475569;
       background: transparent;
       border: none;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
       white-space: nowrap;
     }
 
@@ -201,20 +200,21 @@
     .exam-nav-tab.active {
       color: #ffffff;
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.28);
-    }
-
-    .exam-nav-tab.tab-profile-trigger.active {
-      background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
-      box-shadow: 0 6px 18px rgba(124, 58, 237, 0.3);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.28);
     }
 
     .tab-badge-pill {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
+      font-weight: 700;
       padding: 2px 8px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.25);
+      background: rgba(15, 23, 42, 0.08);
       color: currentColor;
+    }
+
+    .exam-nav-tab.active .tab-badge-pill {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
     }
 
     /* View containers */
@@ -270,8 +270,8 @@
     }
 
     .eh-left {
-      flex: 1 1 540px;
-      max-width: 720px;
+      flex: 1 1 580px;
+      max-width: 780px;
       position: relative;
       z-index: 2;
     }
@@ -342,7 +342,8 @@
 
     .eh-actions {
       display: flex;
-      gap: 14px;
+      align-items: center;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
@@ -350,16 +351,17 @@
       background: #f59e0b;
       color: #ffffff;
       border: none;
-      padding: 13px 24px;
-      border-radius: 14px;
+      padding: 11px 18px;
+      border-radius: 16px;
       font-weight: 800;
-      font-size: 0.92rem;
+      font-size: 0.86rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       transition: all 0.25s;
       box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
+      white-space: nowrap;
     }
 
     .btn-create-exam:hover {
@@ -372,16 +374,17 @@
       background: rgba(255, 255, 255, 0.15);
       color: #ffffff;
       border: 1.5px solid rgba(255, 255, 255, 0.35);
-      padding: 13px 22px;
-      border-radius: 14px;
+      padding: 11px 18px;
+      border-radius: 16px;
       font-weight: 700;
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
       text-decoration: none;
       transition: all 0.25s;
+      white-space: nowrap;
     }
 
     .btn-explore-exam:hover {
@@ -2466,135 +2469,129 @@
       </div>
     </div>
 
-    <!-- TOP TAB SELECTOR -->
-    <div class="exam-nav-tabs">
-      <button type="button" class="exam-nav-tab active" id="tabBtnOnline">
-        <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2.2">
-          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-          <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-          <path d="m9 14 2 2 4-4" />
-        </svg>
-        <span>TRẮC NGHIỆM ONLINE</span>
-        <span class="tab-badge-pill" id="badgeTotalExams">6 đề</span>
-      </button>
+    <!-- 1. HERO BANNER CHUNG (Tích hợp thanh chuyển đổi Trắc Nghiệm Online & Bài Tập Thực Hành kế bên Khám phá đề thi) -->
+    <section class="exam-hero" id="examHero">
+      <div class="eh-left">
+        <div class="eh-pill">
+          <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5">
+            <path
+              d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z" />
+          </svg>
+          CỔNG THƯ VIỆN ĐỀ THI &amp; KHÓA HỌC CỘNG ĐỒNG
+        </div>
+        <h1 class="eh-title">CỔNG THƯ VIỆN ĐỀ THI &amp; ÔN LUYỆN TRẮC NGHIỆM</h1>
+        <p class="eh-desc">
+          Nơi giao lưu, chia sẻ và ôn luyện hàng ngàn bộ câu hỏi trắc nghiệm Tin học văn phòng, chuẩn kỹ năng CNTT do
+          Admin và Giảng viên hệ thống biên soạn độc quyền.
+        </p>
 
-      <button type="button" class="exam-nav-tab" id="tabBtnLab">
-        <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2.2">
-          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-          <line x1="8" y1="21" x2="16" y2="21" />
-          <line x1="12" y1="17" x2="12" y2="21" />
-        </svg>
-        <span>BÀI TẬP THỰC HÀNH</span>
-        <span class="tab-badge-pill">Word / Excel / PPT</span>
-      </button>
+        <!-- Stats Counter -->
+        <div class="eh-stats-row">
+          <div class="eh-stat-item">
+            <div class="eh-stat-num">100%</div>
+            <div class="eh-stat-lbl">CHUẨN BẢN QUYỀN</div>
+          </div>
+          <div class="eh-stat-item">
+            <div class="eh-stat-num">1,500+</div>
+            <div class="eh-stat-lbl">BỘ ĐỀ TRẮC NGHIỆM</div>
+          </div>
+          <div class="eh-stat-item">
+            <div class="eh-stat-num">150,000+</div>
+            <div class="eh-stat-lbl">LƯỢT ÔN LUYỆN</div>
+          </div>
+          <div class="eh-stat-item">
+            <div class="eh-stat-num">Miễn phí</div>
+            <div class="eh-stat-lbl">CHO MỌI HỌC VIÊN</div>
+          </div>
+        </div>
 
-      <button type="button" class="exam-nav-tab tab-profile-trigger" id="tabBtnProfile">
-        <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2.2">
-          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
-        </svg>
-        <span>TRANG CÁ NHÂN</span>
-      </button>
-    </div>
+        <!-- Khung bên dưới: Khám phá đề thi + Thanh chuyển đổi Trắc Nghiệm / Thực Hành kế bên (+ Nút Tạo đề cho Giáo viên) -->
+        <div class="eh-actions">
+          <a href="#danh-sach-de" class="btn-explore-exam" id="btnExploreExam">
+            <svg class="icon-svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.2">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Khám phá đề thi
+          </a>
+
+          <!-- Thanh tab tích hợp kế bên Khám phá đề thi (Đã bỏ Trang Cá Nhân vì đã có khung bên phải) -->
+          <div class="eh-integrated-tabs" role="tablist" aria-label="Chế độ ôn luyện">
+            <button type="button" class="exam-nav-tab active" id="tabBtnOnline">
+              <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.2">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                <path d="m9 14 2 2 4-4" />
+              </svg>
+              <span>TRẮC NGHIỆM ONLINE</span>
+              <span class="tab-badge-pill" id="badgeTotalExams">6 đề</span>
+            </button>
+
+            <button type="button" class="exam-nav-tab" id="tabBtnLab">
+              <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+              <span>BÀI TẬP THỰC HÀNH</span>
+              <span class="tab-badge-pill">Word / Excel / PPT</span>
+            </button>
+          </div>
+
+          <!-- Nút dành riêng cho Giáo viên -->
+          <button type="button" class="btn-create-exam" id="btnOpenCreateExam">
+            <svg class="icon-svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            + Tạo phòng thi mới cho lớp
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Profile Card Widget (Dynamic) -->
+      <div class="eh-profile-card" id="ehProfileCard">
+        <div class="ep-avatar-box">
+          <svg class="icon-svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#0284c7"
+            stroke-width="2.2">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          <span class="ep-status-dot"></span>
+        </div>
+        <div class="ep-title" id="profileName">Hồ Sơ Cá Nhân</div>
+        <div class="ep-role-badge" id="profileRoleBadge">KHÁCH VÃNG LAI</div>
+        <div class="ep-vip-pill" id="profileVipPill" style="display: none;">
+          <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
+          Lượt hôm nay: 4/4 LÊN VIP
+        </div>
+        <div class="ep-sub" id="profileSubText">Đăng nhập để quản lý đề thi do bạn tạo &amp; lưu trữ tiến trình ôn
+          luyện</div>
+        <button type="button" class="btn-profile-action" id="btnHeroProfile">
+          <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.2">
+            <path d="m15 5 4 4" />
+            <path d="M13 7 9 11" />
+            <circle cx="7.5" cy="16.5" r="4.5" />
+            <path d="m10.7 13.3 8.3-8.3a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L13.7 16.3" />
+          </svg>
+          <span id="btnHeroProfileText">ĐĂNG NHẬP / ĐĂNG KÝ</span>
+        </button>
+      </div>
+    </section>
 
     <!-- ====================================================================
          VIEW 1: TRẮC NGHIỆM ONLINE
          ==================================================================== -->
     <div class="view-section active" id="viewOnlineExam">
-      <!-- 1. HERO BANNER -->
-      <section class="exam-hero" id="examHero">
-        <div class="eh-left">
-          <div class="eh-pill">
-            <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2.5">
-              <path
-                d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z" />
-            </svg>
-            CỔNG THƯ VIỆN ĐỀ THI &amp; KHÓA HỌC CỘNG ĐỒNG
-          </div>
-          <h1 class="eh-title">CỔNG THƯ VIỆN ĐỀ THI &amp; ÔN LUYỆN TRẮC NGHIỆM</h1>
-          <p class="eh-desc">
-            Nơi giao lưu, chia sẻ và ôn luyện hàng ngàn bộ câu hỏi trắc nghiệm Tin học văn phòng, chuẩn kỹ năng CNTT do
-            Admin và Giảng viên hệ thống biên soạn độc quyền.
-          </p>
-
-          <!-- Stats Counter -->
-          <div class="eh-stats-row">
-            <div class="eh-stat-item">
-              <div class="eh-stat-num">100%</div>
-              <div class="eh-stat-lbl">CHUẨN BẢN QUYỀN</div>
-            </div>
-            <div class="eh-stat-item">
-              <div class="eh-stat-num">1,500+</div>
-              <div class="eh-stat-lbl">BỘ ĐỀ TRẮC NGHIỆM</div>
-            </div>
-            <div class="eh-stat-item">
-              <div class="eh-stat-num">150,000+</div>
-              <div class="eh-stat-lbl">LƯỢT ÔN LUYỆN</div>
-            </div>
-            <div class="eh-stat-item">
-              <div class="eh-stat-num">Miễn phí</div>
-              <div class="eh-stat-lbl">CHO MỌI HỌC VIÊN</div>
-            </div>
-          </div>
-
-          <!-- Action buttons (Teacher Only for + Tạo đề thi mới) -->
-          <div class="eh-actions">
-            <button type="button" class="btn-create-exam" id="btnOpenCreateExam">
-              <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2.5">
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-              + Tạo phòng thi mới cho lớp
-            </button>
-            <a href="#danh-sach-de" class="btn-explore-exam">
-              <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2.2">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-              Khám phá đề thi
-            </a>
-          </div>
-        </div>
-
-        <!-- Right Profile Card Widget (Dynamic) -->
-        <div class="eh-profile-card" id="ehProfileCard">
-          <div class="ep-avatar-box">
-            <svg class="icon-svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#0284c7"
-              stroke-width="2.2">
-              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-            <span class="ep-status-dot"></span>
-          </div>
-          <div class="ep-title" id="profileName">Hồ Sơ Cá Nhân</div>
-          <div class="ep-role-badge" id="profileRoleBadge">KHÁCH VÃNG LAI</div>
-          <div class="ep-vip-pill" id="profileVipPill" style="display: none;">
-            <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2.2">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-            </svg>
-            Lượt hôm nay: 4/4 LÊN VIP
-          </div>
-          <div class="ep-sub" id="profileSubText">Đăng nhập để quản lý đề thi do bạn tạo &amp; lưu trữ tiến trình ôn
-            luyện</div>
-          <button type="button" class="btn-profile-action" id="btnHeroProfile">
-            <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2.2">
-              <path d="m15 5 4 4" />
-              <path d="M13 7 9 11" />
-              <circle cx="7.5" cy="16.5" r="4.5" />
-              <path d="m10.7 13.3 8.3-8.3a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L13.7 16.3" />
-            </svg>
-            <span id="btnHeroProfileText">ĐĂNG NHẬP / HỒ SƠ</span>
-          </button>
-        </div>
-      </section>
 
       <!-- 2. SEARCH & FILTER CONTROLS BAR -->
       <section class="exam-filter-card" id="danh-sach-de">
@@ -3657,22 +3654,8 @@
        3. SITE FOOTER
        ======================================================================== -->
   <footer class="site-footer simple-footer">
-    <div class="footer-bottom">
-      <div class="container footer-bottom-flex">
-        <p class="copyright-text">
-          &copy; 2026 <strong>Tin Học Văn Phòng</strong>. Nền tảng Đào tạo Tin học Trực tuyến &amp; Khảo thí Số độc
-          quyền bởi Admin.
-        </p>
-        <div class="footer-links-inline">
-          <a href="index.html#khoa-hoc">Khóa học</a>
-          <span class="dot-sep">&bull;</span>
-          <a href="lo-trinh-hoc-tap.html">Lộ trình</a>
-          <span class="dot-sep">&bull;</span>
-          <a href="on-luyen-thi-thu.html">Ôn luyện thi thử</a>
-          <span class="dot-sep">&bull;</span>
-          <a href="kiem-tra-ban-phim.html">Kiểm tra phím</a>
-        </div>
-      </div>
+    <div class="footer-copyright">
+      © 2026 TRUNG TÂM TIN HỌC VĂN PHÒNG • BẢN QUYỀN THUỘC VỀ NHÓM 2
     </div>
   </footer>
 
@@ -4021,12 +4004,24 @@
           }
           if (pLevelText) pLevelText.textContent = 'CẤP 0';
           if (pVipPill) pVipPill.style.display = 'none';
-          if (pSubText) pSubText.textContent = 'Bấm nút đổi vai trò trên thanh menu góc phải để chuyển sang Học Viên hoặc Giáo Viên';
-          if (btnHeroText) btnHeroText.textContent = 'ĐỔI VAI TRÒ / HỒ SƠ';
+          if (pSubText) pSubText.textContent = 'Đăng nhập để quản lý đề thi do bạn tạo & lưu trữ tiến trình ôn luyện';
+          if (btnHeroText) btnHeroText.textContent = 'ĐĂNG NHẬP / ĐĂNG KÝ';
           if (btnHero) {
-            btnHero.onclick = () => window.cycleSimulatedRole();
+            btnHero.onclick = () => {
+              if (window.THVP_AUTH && typeof window.THVP_AUTH.showModal === 'function') {
+                window._waitingForModalLogin = true;
+                window.THVP_AUTH.showModal('login');
+              } else {
+                alert('Vui lòng đăng nhập tài khoản Học viên để mở Trang cá nhân!');
+              }
+            };
           }
           if (btnPCreateCourse) btnPCreateCourse.style.display = 'none';
+
+          // Nếu đang mở Trang cá nhân mà chuyển về Khách vãng lai thì tự động quay lại danh sách đề thi
+          if (document.getElementById('viewProfile')?.classList.contains('active')) {
+            switchMainTab('online');
+          }
         }
 
         const teacherActionGroup = document.getElementById('labTeacherActionGroup');
@@ -5062,9 +5057,27 @@
 
       // 13. ĐIỀU HƯỚNG CÁC TAB CHÍNH & SUB-TABS TRANG CÁ NHÂN
       function switchMainTab(tabKey) {
+        const user = getEffectiveUser();
+        if (tabKey === 'profile' && !user) {
+          // Khách vãng lai không được vào Trang cá nhân -> Mở cửa sổ Đăng nhập / Đăng ký
+          if (window.THVP_AUTH && typeof window.THVP_AUTH.showModal === 'function') {
+            window.THVP_AUTH.showModal('login');
+          }
+          return;
+        }
+
         document.getElementById('tabBtnOnline')?.classList.toggle('active', tabKey === 'online');
         document.getElementById('tabBtnLab')?.classList.toggle('active', tabKey === 'lab');
-        document.getElementById('tabBtnProfile')?.classList.toggle('active', tabKey === 'profile');
+
+        const heroEl = document.getElementById('examHero');
+        if (heroEl) {
+          heroEl.style.display = tabKey === 'profile' ? 'none' : 'flex';
+        }
+
+        const exploreBtn = document.getElementById('btnExploreExam');
+        if (exploreBtn) {
+          exploreBtn.setAttribute('href', tabKey === 'lab' ? '#viewPracticalLab' : '#danh-sach-de');
+        }
 
         document.getElementById('viewOnlineExam')?.classList.toggle('active', tabKey === 'online');
         document.getElementById('viewPracticalLab')?.classList.toggle('active', tabKey === 'lab');
@@ -5076,8 +5089,33 @@
 
       document.getElementById('tabBtnOnline')?.addEventListener('click', () => switchMainTab('online'));
       document.getElementById('tabBtnLab')?.addEventListener('click', () => switchMainTab('lab'));
-      document.getElementById('tabBtnProfile')?.addEventListener('click', () => switchMainTab('profile'));
       document.getElementById('btnBackToOnline')?.addEventListener('click', () => switchMainTab('online'));
+
+      // Khi người dùng đăng nhập / đăng ký thành công qua cửa sổ THVP_AUTH -> Tự động chuyển sang giao diện Học viên (hoặc Giáo viên)
+      window.addEventListener('thvp:auth_change', function (e) {
+        if (!window._waitingForModalLogin) return;
+        const authUser = e.detail && e.detail.user;
+        if (authUser) {
+          window._waitingForModalLogin = false;
+          const targetRole = authUser.role === 'admin' ? 'teacher' : 'student';
+          window.setSimulatedRole(targetRole);
+        }
+      });
+
+      // Menu dropdown "CÔNG CỤ & TIỆN ÍCH" trên Header
+      const toolsDropdown = document.getElementById('nav-tools-dropdown');
+      const btnTools = document.getElementById('btn-tools-dropdown');
+      const toolsContent = toolsDropdown ? toolsDropdown.querySelector('.nav-dropdown-content') : null;
+      if (toolsDropdown && btnTools) {
+        btnTools.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toolsDropdown.classList.toggle('open');
+        });
+        if (toolsContent) {
+          toolsContent.addEventListener('click', (e) => e.stopPropagation());
+        }
+        document.addEventListener('click', () => toolsDropdown.classList.remove('open'));
+      }
 
       document.querySelectorAll('.profile-sub-tab[data-ptab]').forEach(btn => {
         btn.addEventListener('click', function () {
