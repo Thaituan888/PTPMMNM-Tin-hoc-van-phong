@@ -3210,7 +3210,7 @@
                 NHOM2 • CỘNG ĐỒNG HỌC TẬP TIN HỌC VĂN PHÒNG
               </div>
               <h1 class="cover-main-heading">TIN HỌC VĂN PHÒNG</h1>
-              <p class="cover-sub-quote">CÙNG BẠN HỌC GIỎI HƠN MỖI NGÀY! 🎓</p>
+              <p class="cover-sub-quote">CÙNG BẠN HỌC GIỎI HƠN MỖI NGÀY!</p>
             </div>
           </div>
 
@@ -3231,14 +3231,14 @@
               <div class="profile-meta-block">
                 <div class="profile-meta-title-row">
                   <h2 class="profile-user-display-name" id="pNameText">Gia Phục</h2>
-                  <span class="profile-cap-pill" id="pLevelText">CẤP 0</span>
+                  <span class="profile-cap-pill" id="pLevelText">HỌC VIÊN</span>
                 </div>
                 <div class="profile-counters-strip">
                   <span class="pcs-item">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                     </svg>
-                    <span id="pFollowCountText">0</span> <span id="pFollowSubText">người theo dõi</span>
+                    <span id="pFollowCountText">15</span> <span id="pFollowSubText">người theo dõi</span>
                   </span>
                   <span class="pcs-item">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -3250,13 +3250,13 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
                     </svg>
-                    <span id="pViewCountText">0</span> <span id="pViewSubText">Lượt xem</span>
+                    <span id="pViewCountText">24</span> <span id="pViewSubText">Lượt xem</span>
                   </span>
                   <span class="pcs-item">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                       <polygon points="5 3 19 12 5 21 5 3"/>
                     </svg>
-                    <span id="pAttemptsCountText">0</span> <span id="pAttemptsSubText">Lượt thi</span>
+                    <span id="pAttemptsCountText">18</span> <span id="pAttemptsSubText">Lượt thi</span>
                   </span>
                 </div>
               </div>
@@ -4299,12 +4299,12 @@
             pLevelText.className = 'profile-cap-pill teacher';
             pLevelText.textContent = 'GIẢNG VIÊN';
           }
-          if (pFollowCount) pFollowCount.textContent = '0';
-          if (pFollowSub) pFollowSub.textContent = 'người theo dõi';
-          if (pExamCountSub) pExamCountSub.textContent = 'đề thi';
-          if (pViewCount) pViewCount.textContent = '0';
+          if (pFollowCount) pFollowCount.textContent = '15';
+          if (pFollowSub) pFollowSub.textContent = 'Học viên theo dõi';
+          if (pExamCountSub) pExamCountSub.textContent = 'đề thi đã tạo';
+          if (pViewCount) pViewCount.textContent = '24';
           if (pViewSub) pViewSub.textContent = 'Lượt xem';
-          if (pAttemptsCount) pAttemptsCount.textContent = '0';
+          if (pAttemptsCount) pAttemptsCount.textContent = '18';
           if (pAttemptsSub) pAttemptsSub.textContent = 'Lượt thi';
 
           if (pRoleBadge) {
@@ -4328,15 +4328,15 @@
           }
           if (pLevelText) {
             pLevelText.className = 'profile-cap-pill';
-            pLevelText.textContent = 'CẤP 0';
+            pLevelText.textContent = 'HỌC VIÊN';
           }
-          if (pFollowCount) pFollowCount.textContent = '0';
-          if (pFollowSub) pFollowSub.textContent = 'người theo dõi';
-          if (pExamCountSub) pExamCountSub.textContent = 'đề thi';
-          if (pViewCount) pViewCount.textContent = '0';
-          if (pViewSub) pViewSub.textContent = 'Lượt xem';
-          if (pAttemptsCount) pAttemptsCount.textContent = '0';
-          if (pAttemptsSub) pAttemptsSub.textContent = 'Lượt thi';
+          if (pFollowCount) pFollowCount.textContent = '3';
+          if (pFollowSub) pFollowSub.textContent = 'Khóa học';
+          if (pExamCountSub) pExamCountSub.textContent = 'đề thi hoàn thành';
+          if (pViewCount) pViewCount.textContent = '8.8 / 10';
+          if (pViewSub) pViewSub.textContent = 'Điểm TB';
+          if (pAttemptsCount) pAttemptsCount.textContent = '40';
+          if (pAttemptsSub) pAttemptsSub.textContent = 'Câu tích lũy';
 
           if (pRoleBadge) {
             pRoleBadge.textContent = 'HỌC VIÊN';
@@ -4447,7 +4447,7 @@
 
         const customCount = getCustomExams().length;
         const pExamCount = document.getElementById('pExamCountText');
-        if (pExamCount) pExamCount.textContent = String(customCount);
+        if (pExamCount) pExamCount.textContent = isStudent ? '0' : String(customCount);
         const myCoursesCount = document.getElementById('myCoursesCount');
         if (myCoursesCount) myCoursesCount.textContent = String(customCount);
 
