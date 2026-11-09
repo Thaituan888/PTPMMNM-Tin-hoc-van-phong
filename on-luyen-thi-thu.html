@@ -1362,28 +1362,38 @@
        ========================================================================== */
     .profile-hero {
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 60%, #0284c7 100%);
+      background-size: cover;
+      background-position: center right;
+      background-repeat: no-repeat;
       border-radius: 28px;
-      padding: clamp(24px, 3.5vw, 36px);
+      padding: 32px 40px;
+      min-height: 250px;
+      box-sizing: border-box;
       color: #ffffff;
       margin-bottom: 26px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 16px 36px rgba(2, 132, 199, 0.25);
+      box-shadow: 0 16px 36px rgba(2, 132, 199, 0.22);
       border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .profile-hero-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
+      position: relative;
+      z-index: 2;
     }
 
     .btn-profile-back {
       background: rgba(255, 255, 255, 0.2);
       border: 1px solid rgba(255, 255, 255, 0.35);
       color: #ffffff;
-      padding: 7px 16px;
+      padding: 7px 18px;
       border-radius: 999px;
       font-size: 0.82rem;
       font-weight: 700;
@@ -1413,14 +1423,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
+      gap: 28px;
+      position: relative;
+      z-index: 2;
     }
 
     .profile-user-left {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 22px;
       flex: 1;
       min-width: 0;
     }
@@ -1431,27 +1442,27 @@
     }
 
     .profile-big-avatar {
-      width: 82px;
-      height: 82px;
+      width: 88px;
+      height: 88px;
       border-radius: 50%;
       background: #ffffff;
-      border: 3.5px solid rgba(255, 255, 255, 0.95);
+      border: 4px solid rgba(255, 255, 255, 0.95);
       display: flex;
       align-items: center;
       justify-content: center;
       color: #0284c7;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.16);
     }
 
     .profile-big-avatar svg {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
     }
 
     .profile-avatar-badge {
       position: absolute;
-      bottom: -2px;
-      right: -2px;
+      bottom: -1px;
+      right: -1px;
       width: 28px;
       height: 28px;
       border-radius: 50%;
@@ -1470,26 +1481,26 @@
     }
 
     .profile-user-info h2 {
-      font-size: 1.6rem;
+      font-size: 1.65rem;
       font-weight: 800;
       color: #ffffff;
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin: 0 0 4px;
+      gap: 12px;
+      margin: 0 0 5px;
       line-height: 1.25;
     }
 
     .profile-desc-line {
-      font-size: 0.86rem;
+      font-size: 0.88rem;
       color: #e0f2fe;
-      margin: 0 0 14px;
+      margin: 0 0 16px;
       line-height: 1.45;
     }
 
     .profile-lvl-badge {
       font-size: 0.72rem;
-      padding: 3px 12px;
+      padding: 4px 13px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.22);
       border: 1px solid rgba(255, 255, 255, 0.4);
@@ -1510,29 +1521,31 @@
     .profile-counters-row {
       display: inline-flex;
       align-items: center;
-      background: rgba(0, 0, 0, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 16px;
-      padding: 8px 16px;
-      gap: 18px;
-      font-size: 0.84rem;
+      background: rgba(15, 23, 42, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 10px 22px;
+      gap: 24px;
+      font-size: 0.86rem;
       color: #ffffff;
       font-weight: 700;
       flex-wrap: wrap;
+      backdrop-filter: blur(8px);
     }
 
     .p-count-item {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .p-count-item svg {
       color: #7dd3fc;
+      flex-shrink: 0;
     }
 
     .p-count-item strong {
-      font-size: 0.92rem;
+      font-size: 0.94rem;
       color: #ffffff;
     }
 
@@ -1542,39 +1555,25 @@
       color: #bae6fd;
       font-weight: 600;
       text-transform: uppercase;
-      line-height: 1.1;
+      line-height: 1.15;
     }
 
     .profile-hero-right {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
-      gap: 10px;
+      gap: 14px;
       flex-shrink: 0;
-    }
-
-    .profile-illus-laptop {
-      width: 140px;
-      height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .profile-illus-laptop svg {
-      width: 100%;
-      height: 100%;
-      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
     }
 
     .btn-create-course {
       background: #ffffff;
       color: #0284c7;
       border: none;
-      padding: 11px 26px;
+      padding: 13px 28px;
       border-radius: 999px;
-      font-size: 0.92rem;
+      font-size: 0.94rem;
       font-weight: 800;
       cursor: pointer;
       display: inline-flex;
@@ -1582,7 +1581,7 @@
       justify-content: center;
       gap: 8px;
       transition: all 0.22s ease;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
       white-space: nowrap;
     }
 
@@ -1590,7 +1589,7 @@
       background: #f0f9ff;
       color: #0369a1;
       transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
     }
 
     /* Profile Sub-tabs */
@@ -3257,33 +3256,8 @@
               </div>
             </div>
 
-            <!-- Profile Hero Right: Minh họa Laptop + Nút Tạo khóa học mới (chỉ giáo viên) -->
+            <!-- Profile Hero Right: Nút Tạo khóa học mới (chỉ giáo viên) -->
             <div class="profile-hero-right">
-              <div class="profile-illus-laptop">
-                <svg viewBox="0 0 200 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <!-- Chồng sách -->
-                  <rect x="18" y="70" width="62" height="14" rx="3" fill="#38bdf8"/>
-                  <rect x="22" y="74" width="54" height="6" fill="#ffffff" opacity="0.8"/>
-                  <rect x="15" y="85" width="68" height="16" rx="3" fill="#f59e0b"/>
-                  <rect x="20" y="89" width="58" height="8" fill="#ffffff" opacity="0.8"/>
-                  <!-- Chậu cây mini -->
-                  <path d="M168 76 C168 68 174 62 178 58 C182 62 188 68 188 76 Z" fill="#22c55e"/>
-                  <path d="M160 80 C156 74 158 66 166 66 C168 72 166 78 160 80 Z" fill="#16a34a"/>
-                  <path d="M196 80 C200 74 198 66 190 66 C188 72 190 78 196 80 Z" fill="#15803d"/>
-                  <rect x="166" y="78" width="16" height="18" rx="4" fill="#ffffff"/>
-                  <!-- Laptop -->
-                  <rect x="68" y="22" width="102" height="68" rx="7" fill="#0f172a" stroke="#cbd5e1" stroke-width="2.5"/>
-                  <rect x="74" y="28" width="90" height="56" rx="4" fill="#0284c7"/>
-                  <!-- Icon Mũ Cử Nhân trên màn hình Laptop -->
-                  <path d="M119 44 L98 52 L119 60 L140 52 Z" fill="#ffffff"/>
-                  <path d="M104 54.5 V61.5 C107 64 131 64 134 61.5 V54.5" stroke="#ffffff" stroke-width="2" fill="none"/>
-                  <path d="M138 52 V64" stroke="#ffffff" stroke-width="2"/>
-                  <circle cx="138" cy="65" r="1.5" fill="#ffffff"/>
-                  <!-- Đế Laptop -->
-                  <path d="M52 92 L70 90 H168 L186 92 C188 92 188 94 186 94 H52 C50 94 50 92 52 92 Z" fill="#cbd5e1"/>
-                  <rect x="104" y="90" width="30" height="2.5" rx="1" fill="#94a3b8"/>
-                </svg>
-              </div>
               <button type="button" class="btn-create-course" id="btnPCreateCourse">
                 <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <line x1="12" y1="5" x2="12" y2="19" />
@@ -4320,12 +4294,12 @@
             pLevelText.className = 'profile-lvl-badge';
             pLevelText.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg> QUẢN TRỊ VIÊN`;
           }
-          if (pFollowCount) pFollowCount.textContent = '15 Học viên';
+          if (pFollowCount) pFollowCount.textContent = '0 Học viên';
           if (pFollowSub) pFollowSub.textContent = 'Đang theo dõi';
           if (pExamCountSub) pExamCountSub.textContent = 'Đã tạo';
-          if (pViewCount) pViewCount.textContent = '24 Lượt xem';
+          if (pViewCount) pViewCount.textContent = '0 Lượt xem';
           if (pViewSub) pViewSub.textContent = 'Tổng lượt truy cập';
-          if (pAttemptsCount) pAttemptsCount.textContent = '18 Lượt thi';
+          if (pAttemptsCount) pAttemptsCount.textContent = '0 Lượt thi';
           if (pAttemptsSub) pAttemptsSub.textContent = 'Tổng số bài thi';
 
           if (pRoleBadge) {
@@ -4352,12 +4326,12 @@
             pLevelText.className = 'profile-lvl-badge student-badge-role';
             pLevelText.innerHTML = `HỌC VIÊN CHÍNH THỨC`;
           }
-          if (pFollowCount) pFollowCount.textContent = '3 Khóa học';
+          if (pFollowCount) pFollowCount.textContent = '0 Khóa học';
           if (pFollowSub) pFollowSub.textContent = 'Đang tham gia';
           if (pExamCountSub) pExamCountSub.textContent = 'Đã hoàn thành';
-          if (pViewCount) pViewCount.textContent = '8.8 / 10';
+          if (pViewCount) pViewCount.textContent = '0 / 10';
           if (pViewSub) pViewSub.textContent = 'Điểm trung bình';
-          if (pAttemptsCount) pAttemptsCount.textContent = '40 Câu';
+          if (pAttemptsCount) pAttemptsCount.textContent = '0 Câu';
           if (pAttemptsSub) pAttemptsSub.textContent = 'Đã tích lũy';
 
           if (pRoleBadge) {
