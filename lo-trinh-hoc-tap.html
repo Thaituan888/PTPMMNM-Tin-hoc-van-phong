@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lộ Trình Học Tập - Tin Học Văn Phòng</title>
+  <meta name="description"
+    content="Lộ trình học tập tin học văn phòng từ cơ bản đến thành thạo: Kỹ năng máy tính, Microsoft Office, và An toàn bảo mật." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      background: #f0f7ff;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .roadmap-page-container {
+      max-width: 1080px;
+      width: 100%;
+      margin: 36px auto 90px;
+      padding: 0 clamp(16px, 3vw, 32px);
+      flex: 1;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Back navigation button */
+    .btn-back-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1.5px solid #e0f2fe;
+      color: #0284c7;
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 8px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.06);
+      transition: all 0.2s ease;
+      margin-bottom: 24px;
+    }
+
+    .btn-back-nav:hover {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      transform: translateX(-3px);
+    }
+
+    /* Header title center block */
+    .roadmap-header-hero {
+      text-align: center;
+      margin-bottom: 44px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .roadmap-icon-badge {
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
+      background: #0284c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: 0 10px 24px rgba(2, 132, 199, 0.25);
+      margin-bottom: 20px;
+    }
+
+    .rm-main-title {
+      font-size: clamp(2rem, 3.2vw, 2.7rem);
+      font-weight: 800;
+      color: #075985;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    .rm-main-desc {
+      font-size: 1.05rem;
+      color: #475569;
+      font-weight: 500;
+      max-width: 620px;
+      line-height: 1.6;
+    }
+
+    /* Step Card Base */
+    .roadmap-step-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: clamp(24px, 3.5vw, 38px);
+      border: 1.5px solid #e0f2fe;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.05);
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .roadmap-step-card:hover {
+      box-shadow: 0 12px 32px rgba(2, 132, 199, 0.08);
+    }
+
+    /* Decorative side stripe */
+    .roadmap-step-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: #0284c7;
+      border-radius: 6px 0 0 6px;
+    }
+
+    .step-card-step2::before {
+      background: #075985;
+    }
+
+    .step-card-step3::before {
+      background: #0284c7;
+    }
+
+    /* Giant watermark number */
+    .step-watermark {
+      position: absolute;
+      right: 28px;
+      top: 14px;
+      font-size: 6.5rem;
+      font-weight: 800;
+      color: rgba(2, 132, 199, 0.05);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .step-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #e0f2fe;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      border: 1.5px solid #0284c7;
+    }
+
+    .step-card-step2 .step-badge {
+      background: #e0f2fe;
+      color: #075985;
+      border-color: #075985;
+    }
+
+    .step-card-step3 .step-badge {
+      background: #e0f2fe;
+      color: #0284c7;
+      border-color: #0284c7;
+    }
+
+    .step-title {
+      font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+      font-weight: 800;
+      color: #075985;
+      line-height: 1.3;
+    }
+
+    .step-intro-desc {
+      font-size: 0.96rem;
+      color: #475569;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      max-width: 840px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Grid of item pills/boxes (Step 1) */
+    .skills-pill-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (max-width: 768px) {
+      .skills-pill-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .skill-pill-item {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 13px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #334155;
+      line-height: 1.5;
+      transition: all 0.2s ease;
+    }
+
+    .skill-pill-item:hover {
+      background: #ffffff;
+      border-color: #0284c7;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08);
+    }
+
+    .skill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #0284c7;
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    /* Step 2: 3 Office Cards Grid */
+    .office-apps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (max-width: 768px) {
+      .office-apps-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .office-card {
+      background: #f8fafc;
+      border: 1.5px solid #e0f2fe;
+      border-radius: 18px;
+      padding: 24px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+
+    .office-card:hover {
+      background: #ffffff;
+      border-color: #0284c7;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.1);
+    }
+
+    .office-card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .card-word .office-card-icon {
+      background: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .card-ppt .office-card-icon {
+      background: #ffedd5;
+      color: #ea580c;
+    }
+
+    .card-excel .office-card-icon {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+
+    .office-card-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #075985;
+      margin-bottom: 4px;
+    }
+
+    .office-card-sub {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    /* Step 3: Security list */
+    .security-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .security-item {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: #334155;
+      transition: all 0.2s ease;
+    }
+
+    .security-item:hover {
+      background: #ffffff;
+      border-color: #0284c7;
+      transform: translateX(4px);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08);
+    }
+
+    .security-shield-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #e0f2fe;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Section: Nên chọn hệ điều hành nào? */
+    .os-advice-section {
+      background: #ffffff;
+      border: 2px solid #e0f2fe;
+      border-radius: 24px;
+      padding: clamp(24px, 3.5vw, 36px);
+      margin-bottom: 28px;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.05);
+    }
+
+    .os-advice-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .os-advice-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #075985;
+    }
+
+    .os-advice-desc {
+      font-size: 0.95rem;
+      color: #475569;
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    .os-reasons-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .os-reasons-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .os-reason-card {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 18px 20px;
+      transition: all 0.2s ease;
+    }
+
+    .os-reason-card:hover {
+      background: #ffffff;
+      border-color: #0284c7;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.07);
+    }
+
+    .os-reason-name {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #075985;
+      margin-bottom: 6px;
+    }
+
+    .os-reason-body {
+      font-size: 0.88rem;
+      color: #64748b;
+      line-height: 1.55;
+    }
+
+    /* Callout Box: Tại sao nên học theo lộ trình? */
+    .why-roadmap-box {
+      background: #ffffff;
+      border: 2px solid #e0f2fe;
+      border-radius: 24px;
+      padding: clamp(24px, 3.5vw, 36px);
+      margin-bottom: 28px;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.05);
+    }
+
+    .why-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .why-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #075985;
+    }
+
+    .why-intro {
+      font-size: 0.95rem;
+      color: #475569;
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+
+    .why-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 22px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .why-bullets li {
+      font-size: 0.92rem;
+      color: #334155;
+      line-height: 1.55;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-weight: 600;
+    }
+
+    .why-bullets li::before {
+      content: "•";
+      color: #0284c7;
+      font-size: 1.4rem;
+      line-height: 1;
+      margin-top: -2px;
+    }
+
+    .why-quote-card {
+      background: #e0f2fe;
+      border: 1.5px solid #0284c7;
+      border-radius: 16px;
+      padding: 16px 22px;
+      text-align: center;
+      color: #075985;
+      font-size: 0.94rem;
+      font-weight: 800;
+      line-height: 1.55;
+    }
+
+    /* Final CTA Card */
+    .roadmap-cta-card {
+      background: #0284c7;
+      border-radius: 24px;
+      padding: clamp(28px, 4vw, 42px);
+      text-align: center;
+      color: #ffffff;
+      box-shadow: 0 12px 32px rgba(2, 132, 199, 0.2);
+    }
+
+    .cta-heading {
+      font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .btn-cta-start {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      color: #075985;
+      font-size: 1rem;
+      font-weight: 800;
+      padding: 14px 32px;
+      border-radius: 14px;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      transition: all 0.2s ease;
+    }
+
+    .btn-cta-start:hover {
+      background: #f0f7ff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Global Header -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon-box" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
+            <circle cx="13" cy="15.5" r="1.8" fill="#4f46e5" />
+            <circle cx="23" cy="15.5" r="1.8" fill="#4f46e5" />
+            <path d="M15.5 19.5c1.2 1.2 3.8 1.2 5 0" stroke="#ec4899" stroke-width="2" stroke-linecap="round" />
+            <path d="M12 7V4.5M24 7V4.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M11 29.5h14" stroke="#93c5fd" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">TIN HỌC VĂN PHÒNG</span>
+          <span class="brand-subtitle">Đào tạo Tin học Trực tuyến</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <!-- 1. KHÓA HỌC LMS -->
+        <a href="index.html#khoa-hoc">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+          <span>KHÓA HỌC LMS</span>
+        </a>
+
+        <!-- 2. LỘ TRÌNH HỌC TẬP -->
+        <a href="lo-trinh-hoc-tap.html" style="color: var(--water-primary); font-weight: 800;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="6" cy="19" r="3" />
+            <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" />
+            <circle cx="18" cy="5" r="3" />
+          </svg>
+          <span>LỘ TRÌNH HỌC TẬP</span>
+        </a>
+
+        <!-- 3. ÔN LUYỆN & THI THỬ -->
+        <a href="on-luyen-thi-thu.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+          <span>ÔN LUYỆN &amp; THI THỬ</span>
+        </a>
+
+        <!-- 4. DIỄN ĐÀN -->
+        <a href="index.html#cong-dong">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>DIỄN ĐÀN</span>
+        </a>
+
+        <!-- 5. CÔNG CỤ & TIỆN ÍCH (Dropdown) -->
+        <div class="nav-dropdown-wrap" id="nav-tools-dropdown">
+          <button type="button" class="nav-link-dropdown nav-dropdown-trigger" id="btn-tools-dropdown">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+            <span>CÔNG CỤ &amp; TIỆN ÍCH</span>
+            <svg class="nav-dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="3">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+                    <div class="nav-dropdown-content">
+            <!-- 1. Luyện gõ phím 10 ngón -->
+            <a href="luyen-go-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8" stroke-width="2.2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>1. Luyện gõ phím 10 ngón</strong>
+                <small>Luyện gõ tiếng Việt Telex &amp; kiểm tra WPM</small>
+              </div>
+            </a>
+
+            <!-- 2. Tra cứu Phím tắt -->
+            <a href="tra-cuu-phim-tat.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="#d97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>2. Tra cứu Phím tắt</strong>
+                <small>Phím tắt thông dụng Word, Excel, PPT</small>
+              </div>
+            </a>
+
+            <!-- 3. Kiểm tra Bàn phím Online -->
+            <a href="kiem-tra-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <circle cx="7" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="12" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="17" cy="9" r="1" fill="#0284c7" />
+                  <line x1="6" y1="14" x2="18" y2="14" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>3. Kiểm tra Bàn phím Online</strong>
+                <small>Phát hiện kẹt/liệt phím, đo NKRO &amp; Switch cơ</small>
+              </div>
+            </a>
+
+            <!-- 4. Giới thiệu Bàn phím Máy tính -->
+            <a href="tim-hieu-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="#e0f2fe"
+                    fill-opacity="0.6" />
+                  <path d="M6 6h10M6 10h10M6 14h6" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>4. Giới thiệu Bàn phím Máy tính</strong>
+                <small>Cấu tạo 100% Full-size, các hàng phím &amp; gờ nổi F/J</small>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 6. CỬA HÀNG -->
+        <a href="index.html#cua-hang">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span>CỬA HÀNG</span>
+        </a>
+      </nav>
+
+      <a href="index.html#dang-nhap" class="btn-login">ĐĂNG NHẬP</a>
+    </div>
+  </header>
+
+  <!-- Side frames -->
+  <div class="site-side-frame left" aria-hidden="true"></div>
+  <div class="site-side-frame right" aria-hidden="true"></div>
+
+  <!-- Main Container -->
+  <main class="roadmap-page-container">
+    <!-- Back to home -->
+    <a href="index.html" class="btn-back-nav">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+      <span>Về Trang Chủ</span>
+    </a>
+
+    <!-- Hero Title -->
+    <div class="roadmap-header-hero">
+      <div class="roadmap-icon-badge" aria-hidden="true">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
+          <line x1="9" y1="3" x2="9" y2="18" />
+          <line x1="15" y1="6" x2="15" y2="21" />
+        </svg>
+      </div>
+      <h1 class="rm-main-title">LỘ TRÌNH HỌC TẬP</h1>
+      <p class="rm-main-desc">
+        Hướng dẫn từng bước để bạn làm chủ máy tính và kỹ năng tin học văn phòng từ con số 0.
+      </p>
+    </div>
+
+    <!-- ==================== STEP 1 ==================== -->
+    <div class="roadmap-step-card step-card-step1">
+      <span class="step-watermark">1</span>
+      <div class="step-header">
+        <div class="step-badge">1</div>
+        <h2 class="step-title">Kỹ năng sử dụng máy tính cơ bản</h2>
+      </div>
+      <p class="step-intro-desc">
+        Đây là kiến thức nền tảng quan trọng nhất để bạn làm chủ chiếc máy tính của mình trước khi học các phần mềm khác.
+      </p>
+
+      <div class="skills-pill-grid">
+        <div class="skill-pill-item">
+          <div class="skill-dot"></div>
+          <span>Sử dụng File Explorer quản lý File/Thư mục khoa học.</span>
+        </div>
+        <div class="skill-pill-item">
+          <div class="skill-dot"></div>
+          <span>Làm chủ Settings, Control Panel để tuỳ chỉnh máy tính.</span>
+        </div>
+        <div class="skill-pill-item">
+          <div class="skill-dot"></div>
+          <span>Cài đặt, gỡ bỏ phần mềm. Cài Driver máy in.</span>
+        </div>
+        <div class="skill-pill-item">
+          <div class="skill-dot"></div>
+          <span>Tự xử lý các lỗi cơ bản thường gặp.</span>
+        </div>
+        <div class="skill-pill-item">
+          <div class="skill-dot"></div>
+          <span>Sử dụng thành thạo trình duyệt Web và Google Search.</span>
+        </div>
+        <div class="skill-pill-item">
+          <div class="skill-dot"></div>
+          <span>Tạo tài khoản Google, Microsoft và sử dụng dịch vụ Cloud.</span>
+        </div>
+        <div class="skill-pill-item">
+          <div class="skill-dot"></div>
+          <span>Luyện kỹ năng gõ phím 10 ngón chuyên nghiệp.</span>
+        </div>
+        <div class="skill-pill-item">
+          <div class="skill-dot"></div>
+          <span>Biết chọn mua máy tính theo nhu cầu (Nâng cao).</span>
+        </div>
+        <div class="skill-pill-item">
+          <div class="skill-dot"></div>
+          <span>Cài lại hệ điều hành Windows (Nâng cao).</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== STEP 2 ==================== -->
+    <div class="roadmap-step-card step-card-step2">
+      <span class="step-watermark">2</span>
+      <div class="step-header">
+        <div class="step-badge">2</div>
+        <h2 class="step-title">Thành thạo tin học văn phòng</h2>
+      </div>
+      <p class="step-intro-desc">
+        Sau khi đã có nền tảng, bạn sẽ học bộ công cụ Microsoft Office để phục vụ công việc và học tập.
+      </p>
+
+      <div class="office-apps-grid">
+        <!-- Word -->
+        <div class="office-card card-word">
+          <div class="office-card-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+              <line x1="10" y1="9" x2="8" y2="9" />
+            </svg>
+          </div>
+          <span class="office-card-name">Microsoft Word</span>
+          <span class="office-card-sub">Soạn thảo văn bản chuẩn chỉnh</span>
+        </div>
+
+        <!-- PowerPoint -->
+        <div class="office-card card-ppt">
+          <div class="office-card-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+          </div>
+          <span class="office-card-name">PowerPoint</span>
+          <span class="office-card-sub">Thiết kế bài thuyết trình chuyên nghiệp</span>
+        </div>
+
+        <!-- Excel -->
+        <div class="office-card card-excel">
+          <div class="office-card-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <line x1="3" y1="9" x2="21" y2="9" />
+              <line x1="3" y1="15" x2="21" y2="15" />
+              <line x1="9" y1="3" x2="9" y2="21" />
+              <line x1="15" y1="3" x2="15" y2="21" />
+            </svg>
+          </div>
+          <span class="office-card-name">Microsoft Excel</span>
+          <span class="office-card-sub">Xử lý bảng tính &amp; hàm phân tích dữ liệu</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== STEP 3 ==================== -->
+    <div class="roadmap-step-card step-card-step3">
+      <span class="step-watermark">3</span>
+      <div class="step-header">
+        <div class="step-badge">3</div>
+        <h2 class="step-title">An toàn thông tin &amp; Bảo mật</h2>
+      </div>
+      <p class="step-intro-desc">
+        Trang bị kiến thức để tự bảo vệ mình trên không gian mạng, tránh lừa đảo và mất mát dữ liệu.
+      </p>
+
+      <div class="security-list">
+        <div class="security-item">
+          <div class="security-shield-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          <span>Sử dụng Internet an toàn và hiệu quả.</span>
+        </div>
+
+        <div class="security-item">
+          <div class="security-shield-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          <span>Nắm vững các nguyên tắc bảo mật tài khoản.</span>
+        </div>
+
+        <div class="security-item">
+          <div class="security-shield-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          <span>Bảo mật Facebook, Zalo, Email, Tài khoản ngân hàng.</span>
+        </div>
+
+        <div class="security-item">
+          <div class="security-shield-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          <span>Nhận biết và phòng tránh các thủ đoạn lừa đảo trực tuyến.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== HỆ ĐIỀU HÀNH ==================== -->
+    <div class="os-advice-section">
+      <div class="os-advice-header">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2" />
+          <line x1="2" y1="20" x2="22" y2="20" />
+        </svg>
+        <h2 class="os-advice-title">Nên chọn hệ điều hành nào?</h2>
+      </div>
+      <p class="os-advice-desc">
+        Đối với người mới bắt đầu học tin học, <strong>Windows (10 hoặc 11)</strong> là sự lựa chọn tốt nhất. Dưới đây là lý do:
+      </p>
+
+      <div class="os-reasons-grid">
+        <div class="os-reason-card">
+          <h3 class="os-reason-name">Phổ biến nhất</h3>
+          <p class="os-reason-body">Hầu hết các công ty, trường học đều sử dụng Windows. Học Windows giúp bạn dễ dàng hòa nhập.</p>
+        </div>
+
+        <div class="os-reason-card">
+          <h3 class="os-reason-name">Tương thích cao</h3>
+          <p class="os-reason-body">Microsoft Office hoạt động tốt nhất và đầy đủ tính năng nhất trên Windows.</p>
+        </div>
+
+        <div class="os-reason-card">
+          <h3 class="os-reason-name">Dễ sửa chữa</h3>
+          <p class="os-reason-body">Khi gặp lỗi, bạn dễ dàng tìm kiếm hướng dẫn hoặc nhờ người hỗ trợ hơn so với macOS/Linux.</p>
+        </div>
+
+        <div class="os-reason-card">
+          <h3 class="os-reason-name">Chi phí hợp lý</h3>
+          <p class="os-reason-body">Máy tính chạy Windows đa dạng mẫu mã và giá thành hợp lý hơn nhiều so với MacBook.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TẠI SAO NÊN HỌC THEO LỘ TRÌNH ==================== -->
+    <div class="why-roadmap-box">
+      <div class="why-header">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
+        <h2 class="why-title">Tại sao nên học theo lộ trình này?</h2>
+      </div>
+      <p class="why-intro">
+        Việc học máy tính cũng giống như xây một ngôi nhà, bạn cần có một <strong>nền móng vững chắc</strong> (Kỹ năng cơ bản) trước khi xây dựng các tầng cao hơn (Office, Bảo mật).
+      </p>
+
+      <ul class="why-bullets">
+        <li>Nếu không biết quản lý File, bạn sẽ rất vất vả khi lưu trữ tài liệu Word/Excel.</li>
+        <li>Nếu không thạo gõ phím, tốc độ soạn thảo văn bản sẽ rất chậm.</li>
+        <li>Nếu không hiểu về hệ thống, bạn sẽ lúng túng khi máy tính gặp lỗi nhỏ.</li>
+      </ul>
+
+      <div class="why-quote-card">
+        “Tuân thủ lộ trình giúp bạn tiết kiệm thời gian, học đến đâu chắc đến đó và ứng dụng hiệu quả vào thực tế.”
+      </div>
+    </div>
+
+    <!-- ==================== CTA ==================== -->
+    <div class="roadmap-cta-card">
+      <h2 class="cta-heading">Bạn đã sẵn sàng bắt đầu chưa?</h2>
+      <a href="index.html" class="btn-cta-start">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+        <span>Quay Về Trang Chủ &amp; Bắt Đầu Học</span>
+      </a>
+    </div>
+  </main>
+
+    <!-- Global Footer -->
+      <!-- Global Footer -->
+  <footer class="site-footer simple-footer">
+    <div class="footer-copyright">
+      © 2026 TRUNG TÂM TIN HỌC VĂN PHÒNG • BẢN QUYỀN THUỘC VỀ NHÓM 2
+    </div>
+  </footer>
+
+  <script>
+    // Dropdown toggle for tools
+    (function () {
+      const toolsDropdown = document.getElementById('nav-tools-dropdown');
+      const btnTools = document.getElementById('btn-tools-dropdown');
+      const toolsContent = toolsDropdown ? toolsDropdown.querySelector('.nav-dropdown-content') : null;
+
+      if (toolsDropdown && btnTools) {
+        btnTools.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toolsDropdown.classList.toggle('open');
+        });
+
+        if (toolsContent) {
+          toolsContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        }
+
+        document.addEventListener('click', () => {
+          toolsDropdown.classList.remove('open');
+        });
+      }
+    })();
+  </script>
+  <script src="auth.js"></script>
+</body>
+
+</html>
+

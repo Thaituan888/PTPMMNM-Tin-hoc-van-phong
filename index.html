@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TIN HỌC VĂN PHÒNG - Nền tảng học tập và phát triển kỹ năng số</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <!-- ========================================================================
+       1. STICKY HEADER NAVBAR
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#" class="brand-logo">
+        <div class="logo-icon-box" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
+            <circle cx="13" cy="15.5" r="1.8" fill="#4f46e5" />
+            <circle cx="23" cy="15.5" r="1.8" fill="#4f46e5" />
+            <path d="M15.5 19.5c1.2 1.2 3.8 1.2 5 0" stroke="#ec4899" stroke-width="2" stroke-linecap="round" />
+            <path d="M12 7V4.5M24 7V4.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M11 29.5h14" stroke="#93c5fd" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">TIN HỌC VĂN PHÒNG</span>
+          <span class="brand-subtitle">Đào tạo Tin học Trực tuyến</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <!-- 1. KHÓA HỌC LMS -->
+        <a href="#khoa-hoc">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+          <span>KHÓA HỌC LMS</span>
+        </a>
+
+        <!-- 2. LỘ TRÌNH HỌC TẬP -->
+        <a href="lo-trinh-hoc-tap.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="6" cy="19" r="3" />
+            <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" />
+            <circle cx="18" cy="5" r="3" />
+          </svg>
+          <span>LỘ TRÌNH HỌC TẬP</span>
+        </a>
+
+        <!-- 3. ÔN LUYỆN & THI THỬ -->
+        <a href="on-luyen-thi-thu.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+            <path d="m9 14 2 2 4-4" />
+          </svg>
+          <span>ÔN LUYỆN &amp; THI THỬ</span>
+        </a>
+
+        <!-- 4. DIỄN ĐÀN -->
+        <a href="#cong-dong">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>DIỄN ĐÀN</span>
+        </a>
+
+        <!-- 5. CÔNG CỤ & TIỆN ÍCH (Bấm để mở / Bấm ra ngoài để đóng) -->
+        <div class="nav-dropdown-wrap" id="nav-tools-dropdown">
+          <button type="button" class="nav-link-dropdown nav-dropdown-trigger" id="btn-tools-dropdown">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+            <span>CÔNG CỤ &amp; TIỆN ÍCH</span>
+            <svg class="nav-dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="nav-dropdown-content">
+            <!-- 1. Luyện gõ phím 10 ngón -->
+            <a href="luyen-go-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8" stroke-width="2.2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>1. Luyện gõ phím 10 ngón</strong>
+                <small>Luyện gõ tiếng Việt Telex &amp; kiểm tra WPM</small>
+              </div>
+            </a>
+
+            <!-- 2. Tra cứu Phím tắt -->
+            <a href="tra-cuu-phim-tat.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="#d97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>2. Tra cứu Phím tắt</strong>
+                <small>Phím tắt thông dụng Word, Excel, PPT</small>
+              </div>
+            </a>
+
+            <!-- 3. Kiểm tra Bàn phím Online -->
+            <a href="kiem-tra-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <circle cx="7" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="12" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="17" cy="9" r="1" fill="#0284c7" />
+                  <line x1="6" y1="14" x2="18" y2="14" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>3. Kiểm tra Bàn phím Online</strong>
+                <small>Phát hiện kẹt/liệt phím, đo NKRO &amp; Switch cơ</small>
+              </div>
+            </a>
+
+            <!-- 4. Giới thiệu Bàn phím Máy tính -->
+            <a href="tim-hieu-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="#e0f2fe"
+                    fill-opacity="0.6" />
+                  <path d="M6 6h10M6 10h10M6 14h6" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>4. Giới thiệu Bàn phím Máy tính</strong>
+                <small>Cấu tạo 100% Full-size, các hàng phím &amp; gờ nổi F/J</small>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 6. CỬA HÀNG -->
+        <a href="#cua-hang">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span>CỬA HÀNG</span>
+        </a>
+      </nav>
+
+      <a href="#dang-nhap" class="btn-login">ĐĂNG NHẬP</a>
+    </div>
+  </header>
+
+  <!-- Full-Page Side Frames (Chạy dọc suốt toàn bộ giao diện, không viền ngăn cách) -->
+  <div class="site-side-frame left" aria-hidden="true"></div>
+  <div class="site-side-frame right" aria-hidden="true"></div>
+
+  <main>
+
+    <!-- ======================================================================
+         2. HERO SECTION (FULL SCREEN VIEWPORT)
+         ====================================================================== -->
+    <section class="hero-section">
+      <div class="section-container hero-container">
+        <div class="hero-badge">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round" class="hero-spark-icon">
+            <path
+              d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" />
+          </svg>
+          <span>Nền tảng học tập và phát triển kỹ năng số</span>
+        </div>
+
+        <div class="hero-eyebrow">KHÁM PHÁ TRI THỨC • LÀM CHỦ CÔNG NGHỆ</div>
+
+        <h1 class="hero-title">
+          Học Tin Học
+          <span class="gradient-text">Vững Kỹ Năng</span>
+        </h1>
+
+        <p class="hero-desc">
+          Khám phá các khóa học Tin học văn phòng với bài giảng trực quan, bài tập thực hành đa dạng<br
+            class="hero-br" />
+          và hệ thống kiểm tra trực tuyến, giúp bạn tự tin ứng dụng kiến thức vào học tập và công việc.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#khoa-hoc" class="btn-primary-hero">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none" />
+            </svg>
+            <span>BẮT ĐẦU HỌC</span>
+          </a>
+
+          <a href="#kham-pha" class="btn-secondary-hero">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+            <span>KHÁM PHÁ KHÓA HỌC</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         3. SECTION 2: TIN HỌC VĂN PHÒNG LÀ GÌ?
+         ====================================================================== -->
+    <section class="what-is-section" id="kham-pha">
+      <div class="section-container">
+        <div class="what-is-grid">
+          <div class="what-is-left">
+            <div class="pill-badge">NỀN TẢNG KỸ NĂNG SỐ</div>
+            <h2 class="section-heading-lg">
+              Trang bị kiến thức vững chắc<br />
+              <span class="purple-text nowrapline">Làm chủ công việc thời đại số</span>
+            </h2>
+            <p class="what-is-text">
+              Trong môi trường học tập và làm việc hiện đại, <strong>kỹ năng Tin học văn phòng</strong> đóng vai trò
+              quan trọng trong việc ứng dụng công nghệ vào thực tiễn. Sử dụng thành thạo máy tính và các công cụ văn
+              phòng giúp xử lý công việc nhanh chóng, chính xác, đồng thời nâng cao khả năng tổ chức thông tin và giải
+              quyết vấn đề hiệu quả.
+            </p>
+            <p class="what-is-text">
+              Tại <strong>Trung tâm Tin học Văn phòng</strong>, người học được tiếp cận kiến thức từ cơ bản đến nâng
+              cao, giúp người học phát triển <strong>4 nhóm kỹ năng thiết
+                yếu:</strong>
+            </p>
+
+            <div class="mini-skills-grid">
+              <!-- 1. Làm chủ máy tính -->
+              <div class="mini-skill-card">
+                <div class="mini-skill-icon icon-win">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" />
+                    <path d="M6 7h4v4H6z" fill="currentColor" fill-opacity="0.2" />
+                    <path d="M14 7h4v4h-4z" fill="currentColor" fill-opacity="0.2" />
+                    <line x1="8" y1="21" x2="16" y2="21" />
+                    <line x1="12" y1="17" x2="12" y2="21" />
+                  </svg>
+                </div>
+                <div class="mini-skill-content">
+                  <h4>1. Kỹ năng máy tính</h4>
+                  <p>Sử dụng Windows, quản lý tệp tin, khai thác Internet và chia sẻ tài liệu an toàn.</p>
+                </div>
+              </div>
+
+              <!-- 2. Soạn thảo văn bản -->
+              <div class="mini-skill-card">
+                <div class="mini-skill-icon icon-word">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" fill="currentColor" fill-opacity="0.2" />
+                    <line x1="8" y1="13" x2="16" y2="13" />
+                    <line x1="8" y1="17" x2="13" y2="17" />
+                    <path d="M8 9h2" />
+                  </svg>
+                </div>
+                <div class="mini-skill-content">
+                  <h4>2. Soạn thảo văn bản</h4>
+                  <p>Sử dụng Microsoft Word để soạn thảo, định dạng và trình bày văn bản chuyên nghiệp.</p>
+                </div>
+              </div>
+
+              <!-- 3. Xử lý dữ liệu -->
+              <div class="mini-skill-card">
+                <div class="mini-skill-icon icon-excel">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <line x1="3" y1="9" x2="21" y2="9" />
+                    <line x1="9" y1="3" x2="9" y2="21" />
+                    <path d="M12 17l2.5-3.5 3 2.5 3.5-5" />
+                    <circle cx="12" cy="17" r="1" fill="currentColor" />
+                    <circle cx="14.5" cy="13.5" r="1" fill="currentColor" />
+                  </svg>
+                </div>
+                <div class="mini-skill-content">
+                  <h4>3. Xử lý dữ liệu</h4>
+                  <p>Sử dụng Microsoft Excel để quản lý, tính toán và trực quan hóa dữ liệu.</p>
+                </div>
+              </div>
+
+              <!-- 4. Thuyết trình -->
+              <div class="mini-skill-card">
+                <div class="mini-skill-icon icon-ppt">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h20" />
+                    <rect x="3" y="3" width="18" height="13" rx="1.5" />
+                    <circle cx="9" cy="9.5" r="3" fill="currentColor" fill-opacity="0.2" />
+                    <path d="M9 6.5v3h3" />
+                    <rect x="14" y="8" width="4" height="4.5" rx="0.5" fill="currentColor" fill-opacity="0.2" />
+                    <line x1="12" y1="16" x2="12" y2="21" />
+                    <line x1="8" y1="21" x2="16" y2="21" />
+                  </svg>
+                </div>
+                <div class="mini-skill-content">
+                  <h4>4. Thiết kế trình chiếu</h4>
+                  <p>Sử dụng Microsoft PowerPoint để thiết kế bài trình chiếu sinh động và thuyết trình hiệu quả.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="illustration-frame">
+            <div class="illustration-img-wrap">
+              <img src="sec2_kynangso.jpg" alt="Minh họa nền tảng kỹ năng số Tin học văn phòng" />
+            </div>
+            <div class="illustration-stats">
+              <div class="illus-pillar-item">
+                <div class="illus-pillar-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                  </svg>
+                </div>
+                <div class="illus-pillar-lbl">KIẾN THỨC NỀN TẢNG</div>
+              </div>
+
+              <div class="illus-pillar-item">
+                <div class="illus-pillar-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="12" rx="2" />
+                    <path d="M2 20h20" />
+                  </svg>
+                </div>
+                <div class="illus-pillar-lbl">THỰC HÀNH ỨNG DỤNG</div>
+              </div>
+
+              <div class="illus-pillar-item">
+                <div class="illus-pillar-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 20V10" />
+                    <path d="M12 20V4" />
+                    <path d="M6 20v-6" />
+                    <path d="m14 7 4-4 4 4" />
+                  </svg>
+                </div>
+                <div class="illus-pillar-lbl">PHÁT TRIỂN KỸ NĂNG</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         4. SECTION 3: HỌC TẬP CHỦ ĐỘNG – CHINH PHỤC KIẾN THỨC (3 CARDS)
+         ====================================================================== -->
+    <section class="comprehensive-section">
+      <div class="section-container">
+        <div class="section-header-center">
+          <h2>Học Tập Chủ Động – <span class="purple-text">Chinh Phục Kiến Thức</span></h2>
+          <p>Đồng hành cùng bạn trên hành trình học tập, rèn luyện kỹ năng và tự tin chinh phục các kỳ thi.</p>
+        </div>
+
+        <div class="features-4col-grid">
+          <!-- 1. Lớp học số -->
+          <div class="feature-card-item">
+            <div class="ft-icon-sq">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <path d="M8 21h8" />
+                <path d="M12 17v4" />
+                <circle cx="12" cy="8.5" r="2.5" />
+                <path d="M7.5 14c0-2 2-3 4.5-3s4.5 1 4.5 3" />
+              </svg>
+            </div>
+            <h3>1. Lớp học số</h3>
+            <p>Tham gia học tập cùng giáo viên, tiếp cận bài giảng, tài liệu và thực hiện các nhiệm vụ học tập trực tuyến.</p>
+          </div>
+
+          <!-- 2. Ôn luyện kiến thức -->
+          <div class="feature-card-item">
+            <div class="ft-icon-sq">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <path d="m9 15 2 2 4-4" />
+              </svg>
+            </div>
+            <h3>2. Ôn luyện kiến thức</h3>
+            <p>Củng cố kiến thức qua hệ thống câu hỏi trắc nghiệm đa dạng, luyện tập linh hoạt theo từng nội dung.</p>
+          </div>
+
+          <!-- 3. Thử sức cùng đề thi -->
+          <div class="feature-card-item">
+            <div class="ft-icon-sq">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                <circle cx="12" cy="14" r="4" />
+                <polyline points="12 12 12 14 13.5 15.5" />
+              </svg>
+            </div>
+            <h3>3. Thử sức cùng đề thi</h3>
+            <p>Trải nghiệm bài thi trực tuyến với 3 dạng câu hỏi, rèn luyện kỹ năng làm bài và đánh giá kết quả học tập.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         5. SECTION 4: KHO CÂU HỎI PHONG PHÚ
+         ====================================================================== -->
+    <section class="question-bank-section">
+      <div class="section-container">
+        <div class="qb-grid">
+          <div class="qb-mockup-wrapper">
+            <div class="qb-float-badge-top">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="12" r="9" />
+                <circle cx="12" cy="12" r="5" />
+                <circle cx="12" cy="12" r="1.5" />
+              </svg>
+            </div>
+
+            <div class="qb-float-badge-bottom">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="8" r="5" />
+                <polyline points="8.21 13.89 7 21 12 18 17 21 15.79 13.88" />
+              </svg>
+            </div>
+
+            <div class="qb-mockup-card">
+              <div class="qb-mock-top-box">
+                <div class="qb-mock-top-left">
+                  <div class="qb-num-sq">1</div>
+                  <div class="qb-skel-lines">
+                    <div class="skel-bar purple-tint w-75"></div>
+                    <div class="skel-bar purple-tint w-40"></div>
+                  </div>
+                </div>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5b21f5" stroke-width="2.2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+
+              <div class="qb-mock-mid-box">
+                <div class="qb-mock-mid-head">
+                  <div class="skel-bar w-60"></div>
+                  <div class="qb-pill-skel"></div>
+                </div>
+                <div class="qb-mock-2x2">
+                  <div class="qb-opt-box"></div>
+                  <div class="qb-opt-box selected"></div>
+                  <div class="qb-opt-box"></div>
+                  <div class="qb-opt-box"></div>
+                </div>
+              </div>
+
+              <div class="qb-mock-explain">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <polyline points="9 12 11 14 15 10" />
+                </svg>
+                <span>Giải thích: Đáp án A đúng vì...</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="qb-right-content">
+            <div class="eyebrow-tag">HỆ THỐNG LUYỆN THI TRẮC NGHIỆM THÔNG MINH</div>
+            <h2 class="section-heading-lg">
+              Kho câu hỏi phong phú<br />
+              giúp bạn <span class="purple-text">Luyện tập hiệu quả</span>
+            </h2>
+            <p class="what-is-text">
+              Không chỉ là chọn đáp án đúng, hệ thống của chúng tôi giúp bạn hiểu bản chất vấn đề thông qua lời giải chi
+              tiết và các công cụ theo dõi thông minh.
+            </p>
+
+            <div class="qb-sub-grid">
+              <div class="qb-sub-item">
+                <div class="qb-sub-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="3" width="20" height="14" rx="2" />
+                    <line x1="8" y1="21" x2="16" y2="21" />
+                    <line x1="12" y1="17" x2="12" y2="21" />
+                  </svg>
+                </div>
+                <div>
+                  <h4>Đa dạng dạng câu hỏi</h4>
+                  <p>Trắc nghiệm 1 đáp án, nhiều đáp án, đúng/sai, nối cột, kéo thả...</p>
+                </div>
+              </div>
+
+              <div class="qb-sub-item">
+                <div class="qb-sub-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                  </svg>
+                </div>
+                <div>
+                  <h4>Lời giải chi tiết</h4>
+                  <p>Hiểu rõ bản chất vì sao đúng, vì sao sai sau mỗi câu trả lời.</p>
+                </div>
+              </div>
+
+              <div class="qb-sub-item">
+                <div class="qb-sub-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <polyline points="9 12 11 14 15 10" />
+                  </svg>
+                </div>
+                <div>
+                  <h4>Lưu câu hỏi làm sai</h4>
+                  <p>Tự động tổng hợp các câu bạn hay sai để ôn tập lại tránh mất điểm.</p>
+                </div>
+              </div>
+
+              <div class="qb-sub-item">
+                <div class="qb-sub-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+                <div>
+                  <h4>Đánh dấu câu hỏi khó</h4>
+                  <p>Lưu lại các câu hỏi hay hoặc khó vào danh sách yêu thích để xem lại.</p>
+                </div>
+              </div>
+
+              <div class="qb-sub-item">
+                <div class="qb-sub-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                  </svg>
+                </div>
+                <div>
+                  <h4>Theo dõi tiến độ</h4>
+                  <p>Biểu đồ trực quan giúp bạn biết mình đã hoàn thành bao nhiêu % mục tiêu.</p>
+                </div>
+              </div>
+
+              <div class="qb-sub-item">
+                <div class="qb-sub-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="8" r="5" />
+                    <polyline points="8.21 13.89 7 21 12 18 17 21 15.79 13.88" />
+                  </svg>
+                </div>
+                <div>
+                  <h4>Sát với đề thi thật</h4>
+                  <p>Nội dung được biên soạn bám sát cấu trúc đề thi IC3, MOS và THPT.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         6. SECTION 5: 8 LOẠI HÌNH TRẮC NGHIỆM THÔNG MINH
+         ====================================================================== -->
+    <section class="quiz-showcase-section" id="luyen-thi">
+      <div class="section-container">
+        <div class="section-header-center">
+          <div class="eyebrow-tag">TRẢI NGHIỆM GIAO DIỆN</div>
+          <h2>8 Loại hình trắc nghiệm <span class="purple-text">thông minh</span></h2>
+          <p>Hệ thống mô phỏng 100% các dạng câu hỏi trong đề thi chuẩn quốc tế IC3, MOS và Tin học văn phòng.</p>
+        </div>
+
+        <div class="quiz-app-window">
+          <!-- Top Dark Bar -->
+          <div class="quiz-window-topbar">
+            <div class="qw-brand">
+              <div class="qw-logo-sm">
+                <svg width="20" height="20" viewBox="0 0 36 36" fill="none">
+                  <rect x="6" y="8" width="24" height="18" rx="4" fill="#ffffff" />
+                  <circle cx="13.5" cy="16" r="1.6" fill="#4f46e5" />
+                  <circle cx="22.5" cy="16" r="1.6" fill="#4f46e5" />
+                </svg>
+              </div>
+              <span>Luyện tập thông minh</span>
+            </div>
+            <div class="qw-right">
+              <span class="qw-counter-badge" id="quiz-counter-badge">CÂU 1/8</span>
+              <div class="qw-user-circle">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sub Bar -->
+          <div class="quiz-window-subbar">
+            <div class="qw-pin-status">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 3H8v2l2 2v5l-3 3v2h5v5l1 1 1-1v-5h5v-2l-3-3V7l2-2V3z" />
+              </svg>
+              <span>ĐÃ GHIM CÂU KHÓ</span>
+            </div>
+            <button type="button" class="btn-ai-explain">
+              <span>✨ AI GIẢI THÍCH</span>
+            </button>
+          </div>
+
+          <!-- 8 Slides Stage -->
+          <div class="quiz-slide-stage">
+
+            <!-- SLIDE 1 -->
+            <div class="quiz-slide active" data-slide="0">
+              <div class="qs-left-info">
+                <div class="qs-type-pill pill-purple">
+                  <span>✓ TRẮC NGHIỆM 1 ĐÁP ÁN</span>
+                </div>
+                <h3>Trắc nghiệm 1 đáp án</h3>
+                <p>Dạng câu hỏi phổ biến nhất, chọn 1 đáp án đúng duy nhất trong 4 lựa chọn.</p>
+                <div class="qs-nav-arrows">
+                  <button type="button" class="qs-arrow-btn prev-slide" aria-label="Trước">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                  </button>
+                  <button type="button" class="qs-arrow-btn next-slide" aria-label="Tiếp">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="qs-card-outer">
+                <div class="qs-interactive-card">
+                  <div class="qs-q-title">Câu 1: Phím tắt nào dùng để lưu văn bản trong MS Word?</div>
+                  <div class="qs-opt-list">
+                    <div class="qs-opt-row"><span class="qs-radio"></span><span>Ctrl + C</span></div>
+                    <div class="qs-opt-row"><span class="qs-radio"></span><span>Ctrl + V</span></div>
+                    <div class="qs-opt-row selected-purple"><span class="qs-radio"></span><span>Ctrl + S</span></div>
+                    <div class="qs-opt-row"><span class="qs-radio"></span><span>Ctrl + P</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 2 -->
+            <div class="quiz-slide" data-slide="1">
+              <div class="qs-left-info">
+                <div class="qs-type-pill pill-magenta">
+                  <span>☑ TRẮC NGHIỆM NHIỀU ĐÁP ÁN</span>
+                </div>
+                <h3>Trắc nghiệm nhiều đáp án</h3>
+                <p>Yêu cầu kiến thức tổng hợp để chọn tất cả các phương án đúng.</p>
+                <div class="qs-nav-arrows">
+                  <button type="button" class="qs-arrow-btn prev-slide" aria-label="Trước">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                  </button>
+                  <button type="button" class="qs-arrow-btn next-slide" aria-label="Tiếp">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="qs-card-outer">
+                <div class="qs-interactive-card">
+                  <div class="qs-q-title">Câu 2: Những thiết bị nào sau đây là thiết bị nhập (Input)?</div>
+                  <div class="qs-opt-list">
+                    <div class="qs-opt-row selected-magenta"><span class="qs-checkbox">✓</span><span>Bàn phím</span>
+                    </div>
+                    <div class="qs-opt-row selected-magenta"><span class="qs-checkbox">✓</span><span>Chuột</span></div>
+                    <div class="qs-opt-row"><span class="qs-checkbox"></span><span>Màn hình</span></div>
+                    <div class="qs-opt-row"><span class="qs-checkbox"></span><span>Máy in</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 3 -->
+            <div class="quiz-slide" data-slide="2">
+              <div class="qs-left-info">
+                <div class="qs-type-pill pill-green">
+                  <span>🛡 NHẬN ĐỊNH ĐÚNG / SAI</span>
+                </div>
+                <h3>Nhận định Đúng / Sai</h3>
+                <p>Đánh giá từng phát biểu là Đúng hay Sai. Rất phổ biến trong đề thi IC3 GS5/GS6.</p>
+                <div class="qs-nav-arrows">
+                  <button type="button" class="qs-arrow-btn prev-slide" aria-label="Trước">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                  </button>
+                  <button type="button" class="qs-arrow-btn next-slide" aria-label="Tiếp">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="qs-card-outer">
+                <div class="qs-interactive-card">
+                  <div class="qs-q-title">Câu 3: Xét các nhận định sau về hệ điều hành Windows:</div>
+                  <div class="qs-opt-list">
+                    <div class="qs-tf-row">
+                      <span>Windows là phần mềm hệ thống</span>
+                      <div class="qs-tf-btns">
+                        <span class="tf-badge active-true">ĐÚNG</span>
+                        <span class="tf-badge">SAI</span>
+                      </div>
+                    </div>
+                    <div class="qs-tf-row">
+                      <span>Windows không hỗ trợ đa nhiệm</span>
+                      <div class="qs-tf-btns">
+                        <span class="tf-badge">ĐÚNG</span>
+                        <span class="tf-badge active-false">SAI</span>
+                      </div>
+                    </div>
+                    <div class="qs-tf-row">
+                      <span>Windows quản lý phần cứng</span>
+                      <div class="qs-tf-btns">
+                        <span class="tf-badge active-true">ĐÚNG</span>
+                        <span class="tf-badge">SAI</span>
+                      </div>
+                    </div>
+                    <div class="qs-tf-row">
+                      <span>Windows chỉ dùng giao diện dòng lệnh</span>
+                      <div class="qs-tf-btns">
+                        <span class="tf-badge">ĐÚNG</span>
+                        <span class="tf-badge active-false">SAI</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 4 -->
+            <div class="quiz-slide" data-slide="3">
+              <div class="qs-left-info">
+                <div class="qs-type-pill pill-orange">
+                  <span>⚡ SẮP XẾP QUY TRÌNH</span>
+                </div>
+                <h3>Sắp xếp quy trình</h3>
+                <p>Kéo thả các bước để tạo thành một quy trình thực hiện thao tác đúng chuẩn.</p>
+                <div class="qs-nav-arrows">
+                  <button type="button" class="qs-arrow-btn prev-slide" aria-label="Trước">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                  </button>
+                  <button type="button" class="qs-arrow-btn next-slide" aria-label="Tiếp">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="qs-card-outer">
+                <div class="qs-interactive-card">
+                  <div class="qs-q-title">Câu 4: Sắp xếp các bước để tắt máy tính đúng cách:</div>
+                  <div class="qs-opt-list">
+                    <div class="qs-sort-row">
+                      <div class="qs-sort-left"><span class="sort-num">1</span><span>Đóng các ứng dụng đang mở</span>
+                      </div>
+                      <span style="color:#94a3b8;">⋮⋮</span>
+                    </div>
+                    <div class="qs-sort-row">
+                      <div class="qs-sort-left"><span class="sort-num">2</span><span>Nhấn vào nút Start</span></div>
+                      <span style="color:#94a3b8;">⋮⋮</span>
+                    </div>
+                    <div class="qs-sort-row">
+                      <div class="qs-sort-left"><span class="sort-num">3</span><span>Chọn biểu tượng Power</span></div>
+                      <span style="color:#94a3b8;">⋮⋮</span>
+                    </div>
+                    <div class="qs-sort-row">
+                      <div class="qs-sort-left"><span class="sort-num">4</span><span>Nhấn chọn Shut down</span></div>
+                      <span style="color:#94a3b8;">⋮⋮</span>
+                    </div>
+                  </div>
+                  <div class="qs-sort-foot">Kéo thả để thay đổi thứ tự</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 5 -->
+            <div class="quiz-slide" data-slide="4">
+              <div class="qs-left-info">
+                <div class="qs-type-pill pill-teal">
+                  <span>◎ NỐI CẶP (MATCHING)</span>
+                </div>
+                <h3>Nối cặp (Matching)</h3>
+                <p>Kết nối khái niệm ở cột A với định nghĩa hoặc chức năng tương ứng ở cột B.</p>
+                <div class="qs-nav-arrows">
+                  <button type="button" class="qs-arrow-btn prev-slide" aria-label="Trước">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                  </button>
+                  <button type="button" class="qs-arrow-btn next-slide" aria-label="Tiếp">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="qs-card-outer">
+                <div class="qs-interactive-card">
+                  <div class="qs-q-title">Câu 5: Nối phím tắt với chức năng tương ứng:</div>
+                  <div class="qs-match-grid">
+                    <div class="qs-match-row">
+                      <div class="match-box">Ctrl + X</div>
+                      <div class="match-line"></div>
+                      <div class="match-box">Hoàn tác</div>
+                    </div>
+                    <div class="qs-match-row matched">
+                      <div class="match-box">Ctrl + V</div>
+                      <div class="match-line"></div>
+                      <div class="match-box">Cắt dữ liệu</div>
+                    </div>
+                    <div class="qs-match-row">
+                      <div class="match-box">Ctrl + Z</div>
+                      <div class="match-line"></div>
+                      <div class="match-box">Dán dữ liệu</div>
+                    </div>
+                    <div class="qs-match-row">
+                      <div class="match-box">Ctrl + C</div>
+                      <div class="match-line"></div>
+                      <div class="match-box">Sao chép</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 6 -->
+            <div class="quiz-slide" data-slide="5">
+              <div class="qs-left-info">
+                <div class="qs-type-pill pill-purple">
+                  <span>📖 TRẮC NGHIỆM THẢ XUỐNG (DROPDOWN)</span>
+                </div>
+                <h3>Trắc nghiệm thả xuống (Dropdown)</h3>
+                <p>Điền khuyết vào đoạn văn bằng cách chọn từ khóa chính xác từ menu thả xuống.</p>
+                <div class="qs-nav-arrows">
+                  <button type="button" class="qs-arrow-btn prev-slide" aria-label="Trước">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                  </button>
+                  <button type="button" class="qs-arrow-btn next-slide" aria-label="Tiếp">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="qs-card-outer">
+                <div class="qs-interactive-card">
+                  <div class="qs-q-title">Câu 6: Chọn từ thích hợp điền vào chỗ trống:</div>
+                  <div class="qs-dropdown-sentence">
+                    MS Excel dùng để xử lý dữ liệu
+                    <span class="dd-trigger">Chọn đáp án... ⌄</span>
+                    dưới dạng bảng tính.
+                    <div class="dd-floating-menu">
+                      <div class="dd-menu-lbl">LỰA CHỌN:</div>
+                      <div class="dd-menu-item"><span>Trình chiếu</span></div>
+                      <div class="dd-menu-item active"><span>Bảng tính</span><span>✓</span></div>
+                      <div class="dd-menu-item"><span>Đồ họa</span></div>
+                    </div>
+                  </div>
+                  <div class="qs-card-bottom-meta">
+                    <div class="meta-dots">
+                      <span class="first"></span>
+                      <span></span>
+                    </div>
+                    <span class="meta-accuracy">ĐỘ CHÍNH XÁC CAO</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 7 -->
+            <div class="quiz-slide" data-slide="6">
+              <div class="qs-left-info">
+                <div class="qs-type-pill pill-magenta">
+                  <span>🏆 THI ĐẤU 1VS1</span>
+                </div>
+                <h3>Thi đấu 1vs1</h3>
+                <p>So tài tốc độ và độ chính xác trực tiếp với học viên khác hoặc đấu với AI.</p>
+                <div class="qs-nav-arrows">
+                  <button type="button" class="qs-arrow-btn prev-slide" aria-label="Trước">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                  </button>
+                  <button type="button" class="qs-arrow-btn next-slide" aria-label="Tiếp">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="qs-card-outer">
+                <div class="qs-battle-card">
+                  <div class="battle-players">
+                    <div class="battle-player">
+                      <div class="bp-avatar u-purple">U</div>
+                      <div class="bp-name">BẠN</div>
+                      <div class="bp-pts-u">1,250 pts</div>
+                    </div>
+                    <div class="battle-vs">VS</div>
+                    <div class="battle-player">
+                      <div class="bp-avatar a-orange">A</div>
+                      <div class="bp-name">ĐỐI THỦ</div>
+                      <div class="bp-pts-a">1,180 pts</div>
+                    </div>
+                  </div>
+                  <div class="battle-progress-box">
+                    <div class="bp-top">
+                      <span>Tiến độ</span>
+                      <span>8/10 câu</span>
+                    </div>
+                    <div class="bp-bar-track">
+                      <div class="bp-bar-fill"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 8 -->
+            <div class="quiz-slide" data-slide="7">
+              <div class="qs-left-info">
+                <div class="qs-type-pill pill-purple">
+                  <span>💻 PHÒNG THI THỬ</span>
+                </div>
+                <h3>Phòng thi thử</h3>
+                <p>Giao diện thi thử nghiêm túc với đồng hồ đếm ngược và danh sách câu hỏi tổng quan.</p>
+                <div class="qs-nav-arrows">
+                  <button type="button" class="qs-arrow-btn prev-slide" aria-label="Trước">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                  </button>
+                  <button type="button" class="qs-arrow-btn next-slide" aria-label="Tiếp">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="qs-card-outer">
+                <div class="qs-interactive-card">
+                  <div class="exam-top">
+                    <span class="exam-status">ĐANG THI</span>
+                    <span class="exam-timer">44:52</span>
+                  </div>
+                  <div class="exam-num-grid">
+                    <div class="exam-cell done">1</div>
+                    <div class="exam-cell done">2</div>
+                    <div class="exam-cell done">3</div>
+                    <div class="exam-cell done">4</div>
+                    <div class="exam-cell done">5</div>
+                    <div class="exam-cell done">6</div>
+                    <div class="exam-cell done">7</div>
+                    <div class="exam-cell done">8</div>
+                    <div class="exam-cell current">9</div>
+                    <div class="exam-cell">10</div>
+                    <div class="exam-cell">11</div>
+                    <div class="exam-cell">12</div>
+                    <div class="exam-cell">13</div>
+                    <div class="exam-cell">14</div>
+                    <div class="exam-cell">15</div>
+                  </div>
+                  <div class="exam-foot">
+                    <span>Đã làm: 8/45</span>
+                    <button type="button" class="btn-submit-exam">NỘP BÀI</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 8 Pagination Dots -->
+          <div class="quiz-window-dots" id="quiz-dots-bar">
+            <span class="q-dot active" data-dot="0"></span>
+            <span class="q-dot" data-dot="1"></span>
+            <span class="q-dot" data-dot="2"></span>
+            <span class="q-dot" data-dot="3"></span>
+            <span class="q-dot" data-dot="4"></span>
+            <span class="q-dot" data-dot="5"></span>
+            <span class="q-dot" data-dot="6"></span>
+            <span class="q-dot" data-dot="7"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         7. SECTION 6: LỘ TRÌNH TỪ ZERO ĐẾN HERO
+         ====================================================================== -->
+    <section class="roadmap-dark-section" id="lo-trinh">
+      <div class="section-container">
+        <div class="roadmap-grid">
+          <div class="roadmap-left">
+            <div class="dark-pill-badge">LỘ TRÌNH RÕ RÀNG</div>
+            <h2 class="roadmap-title">
+              Từ <span class="zero-blue">Zero</span> đến <span class="hero-pink">Hero</span>
+            </h2>
+            <p class="roadmap-desc">
+              Chúng tôi thiết kế lộ trình học tập bài bản, giúp người mới bắt đầu có thể từng bước chinh phục các kỹ
+              năng tin học một cách tự nhiên nhất.
+            </p>
+
+            <div class="timeline-list">
+              <div class="timeline-step">
+                <div class="step-circle">1</div>
+                <div class="step-card">
+                  <span class="step-tag">NẮM VỮNG NỀN TẢNG</span>
+                  <h4>Level 1: Làm quen máy tính</h4>
+                  <p>Kiến thức phần cứng, Windows, gõ phím.</p>
+                </div>
+              </div>
+
+              <div class="timeline-step">
+                <div class="step-circle">2</div>
+                <div class="step-card">
+                  <span class="step-tag">LÀM CHỦ CÔNG CỤ</span>
+                  <h4>Level 2: Tin học văn phòng</h4>
+                  <p>Thành thạo Word, Excel, PowerPoint.</p>
+                </div>
+              </div>
+
+              <div class="timeline-step">
+                <div class="step-circle">3</div>
+                <div class="step-card">
+                  <span class="step-tag">CÔNG DÂN SỐ 4.0</span>
+                  <h4>Level 3: Kỹ năng số &amp; Internet</h4>
+                  <p>Sử dụng mạng an toàn, khai thác thông tin.</p>
+                </div>
+              </div>
+
+              <div class="timeline-step">
+                <div class="step-circle">4</div>
+                <div class="step-card">
+                  <span class="step-tag">SỞ HỮU CHỨNG CHỈ QUỐC TẾ</span>
+                  <h4>Level 4: Luyện thi chứng chỉ</h4>
+                  <p>Ôn luyện chuyên sâu IC3, MOS, CNTT Cơ bản.</p>
+                </div>
+              </div>
+            </div>
+
+            <a href="#khoa-hoc" class="btn-white-pill">XEM LỘ TRÌNH CHI TIẾT</a>
+          </div>
+
+          <div class="roadmap-glass-grid">
+            <div class="rm-glass-card">
+              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+              <div class="rm-skel-lg"></div>
+              <div class="rm-skel-sm"></div>
+            </div>
+
+            <div class="rm-glass-card">
+              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#ec008c" stroke-width="2">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+              </svg>
+              <div class="rm-skel-lg"></div>
+              <div class="rm-skel-sm"></div>
+            </div>
+
+            <div class="rm-glass-card">
+              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" stroke-width="2">
+                <circle cx="12" cy="12" r="9" />
+                <circle cx="12" cy="12" r="5" />
+                <circle cx="12" cy="12" r="1.5" />
+              </svg>
+              <div class="rm-skel-lg"></div>
+              <div class="rm-skel-sm"></div>
+            </div>
+
+            <div class="rm-glass-card">
+              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#d946ef" stroke-width="2">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                <path d="M4 22h16" />
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+              </svg>
+              <div class="rm-skel-lg"></div>
+              <div class="rm-skel-sm"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         8. SECTION 7: KHO NỘI DUNG KHỔNG LỒ
+         ====================================================================== -->
+    <section class="massive-content-section" id="khoa-hoc">
+      <div class="section-container">
+        <div class="section-header-center">
+          <h2>Kho nội dung <span class="magenta-text">Khổng Lồ</span></h2>
+          <p>Cập nhật liên tục, bám sát thực tế.</p>
+        </div>
+
+        <div class="massive-grid">
+          <div class="massive-card">
+            <div>
+              <div class="massive-card-head">
+                <div class="mc-icon-circle red-soft">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <polygon points="5 3 19 12 5 21 5 3" />
+                  </svg>
+                </div>
+                <div>
+                  <h3>Khóa học Video</h3>
+                  <p>70+ bài giảng chi tiết</p>
+                </div>
+              </div>
+
+              <div class="video-course-list">
+                <div class="vc-item"><span class="vc-emoji">💻</span><span>Kiến thức máy tính cơ bản</span></div>
+                <div class="vc-item"><span class="vc-emoji">🌐</span><span>An toàn thông tin &amp; Internet</span></div>
+                <div class="vc-item"><span class="vc-emoji">📝</span><span>Microsoft Word toàn tập</span></div>
+                <div class="vc-item"><span class="vc-emoji">📊</span><span>Microsoft Excel từ A-Z</span></div>
+                <div class="vc-item"><span class="vc-emoji">📑</span><span>Microsoft PowerPoint chuyên nghiệp</span>
+                </div>
+              </div>
+            </div>
+
+            <a href="#khoa-hoc" class="btn-outline-full">XEM TẤT CẢ KHÓA HỌC</a>
+          </div>
+
+          <div class="massive-card right-decor">
+            <div>
+              <div class="massive-card-head">
+                <div class="mc-icon-circle purple-soft">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle cx="12" cy="12" r="1.5" />
+                  </svg>
+                </div>
+                <div>
+                  <h3>Luyện thi Trắc nghiệm</h3>
+                  <p>10.000+ câu hỏi có giải thích</p>
+                </div>
+              </div>
+
+              <div class="exam-topics-grid">
+                <div class="topic-pill-card"><span>🎓</span><span>Ôn thi Tin học THPT</span></div>
+                <div class="topic-pill-card"><span>🌍</span><span>Chứng chỉ Quốc tế IC3</span></div>
+                <div class="topic-pill-card"><span>🏅</span><span>Chứng chỉ Quốc tế MOS</span></div>
+                <div class="topic-pill-card"><span>📜</span><span>Chứng chỉ CNTT Cơ bản</span></div>
+                <div class="topic-pill-card"><span>🖥</span><span>Kiến thức máy tính</span></div>
+                <div class="topic-pill-card"><span>🔒</span><span>An toàn Internet</span></div>
+              </div>
+
+              <div class="special-offer-box">
+                <div class="so-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 12 20 22 4 22 4 12" />
+                    <rect x="2" y="7" width="20" height="5" />
+                    <line x1="12" y1="22" x2="12" y2="7" />
+                    <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+                    <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+                  </svg>
+                </div>
+                <div class="so-text">
+                  <h4>Ưu đãi đặc biệt</h4>
+                  <p>Tặng kèm hệ thống luyện thi trắc nghiệm tương ứng khi mua bất kỳ khóa học video nào!</p>
+                </div>
+              </div>
+            </div>
+
+            <a href="#luyen-thi" class="btn-purple-full">LUYỆN TẬP NGAY</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         10. SECTION 11: HỌC VIÊN NÓI GÌ & THAM GIA CỘNG ĐỒNG
+         ====================================================================== -->
+    <section class="testimonial-section">
+      <div class="section-container">
+        <div class="section-header-center">
+          <h2>Học viên nói gì về <span class="purple-text">Tin Học Văn Phòng</span></h2>
+          <p>Hàng ngàn học viên đã thành công. Bạn sẽ là người tiếp theo?</p>
+        </div>
+
+        <div class="testi-card-wrapper">
+          <div class="testi-quote-float">”</div>
+
+          <div class="testi-card">
+            <button type="button" class="testi-nav-btn prev" id="testi-prev" aria-label="Trước">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+            <button type="button" class="testi-nav-btn next" id="testi-next" aria-label="Tiếp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote-text" id="testi-quote">
+              "Hệ thống luyện thi IC3 cực kỳ sát với đề thi thật. Nhờ luyện tập ở đây mà mình đã đạt điểm tuyệt đối phần
+              Computing Fundamentals."
+            </p>
+            <div class="testi-avatar" id="testi-avatar">A</div>
+            <div class="testi-author" id="testi-author">Nguyễn Văn An</div>
+            <div class="testi-role">HỌC VIÊN</div>
+          </div>
+
+          <div class="testi-dots" id="testi-dots">
+            <span class="q-dot active" data-tdot="0"></span>
+            <span class="q-dot" data-tdot="1"></span>
+            <span class="q-dot" data-tdot="2"></span>
+            <span class="q-dot" data-tdot="3"></span>
+            <span class="q-dot" data-tdot="4"></span>
+          </div>
+        </div>
+
+        <div class="community-banner">
+          <div class="community-banner-inner">
+            <!-- Left 3D Model: Laptop + Graduation Cap + Stacked Books + Plant -->
+            <div class="cb-illus-left">
+              <img src="sec11_community_laptop.png" alt="Laptop và mũ tốt nghiệp cộng đồng học tập" />
+            </div>
+
+            <!-- Center Content: Crisp Vector Title + 4 Horizontal Buttons -->
+            <div class="cb-center-content">
+              <h2 class="cb-heading">
+                <span class="cb-heading-line1">
+                  <span>Kết nối và chia sẻ cùng</span>
+                  <span class="cb-spark-rays" aria-hidden="true">
+                    <svg width="34" height="30" viewBox="0 0 38 36" fill="none">
+                      <path d="M6 14 L 20 3" stroke="#f59e0b" stroke-width="4.5" stroke-linecap="round" />
+                      <path d="M10 22 L 29 16" stroke="#fbbf24" stroke-width="4.5" stroke-linecap="round" />
+                      <path d="M10 30 L 26 32" stroke="#f59e0b" stroke-width="4.5" stroke-linecap="round" />
+                    </svg>
+                  </span>
+                </span>
+                <span class="cb-heading-line2">cộng đồng học tập</span>
+                <svg class="cb-cyan-swoosh" viewBox="0 0 240 16" fill="none" aria-hidden="true">
+                  <path d="M4 12 Q 120 2, 236 11" stroke="#00b4d8" stroke-width="4" stroke-linecap="round" />
+                </svg>
+              </h2>
+
+              <p class="cb-desc">
+                Cùng tham gia cộng đồng để giao lưu, chia sẻ kinh nghiệm, cập nhật kiến thức bổ ích<br />
+                và nhận được sự hỗ trợ từ giảng viên cũng như các thành viên trong quá trình học tập.
+              </p>
+
+              <!-- 4 Horizontal Glossy 3D Buttons -->
+              <div class="social-btns-row">
+                <a href="#youtube" class="btn-social yt">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M21.8 8.001a2.75 2.75 0 0 0-1.94-1.94C18.14 5.6 12 5.6 12 5.6s-6.14 0-7.86.46a2.75 2.75 0 0 0-1.94 1.94C1.74 9.72 1.74 12 1.74 12s0 2.28.46 3.999a2.75 2.75 0 0 0 1.94 1.94c1.72.46 7.86.46 7.86.46s6.14 0 7.86-.46a2.75 2.75 0 0 0 1.94-1.94c.46-1.72.46-4 .46-4s0-2.28-.46-3.999zM9.95 15.02V8.98L15.2 12l-5.25 3.02z" />
+                  </svg>
+                  <span>YOUTUBE</span>
+                </a>
+
+                <a href="#fanpage" class="btn-social fp">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M15.12 5.32H17V2.14A26.11 26.11 0 0 0 14.26 2c-2.72 0-4.58 1.66-4.58 4.7v2.62H6.61v3.56h3.07V22h3.68v-9.12h3.06l.46-3.56h-3.52V6.65c0-1.05.29-1.73 1.76-1.73z" />
+                  </svg>
+                  <span>FANPAGE</span>
+                </a>
+
+                <a href="#group" class="btn-social gr">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="8" r="3.5" />
+                    <path d="M6.5 18c0-2.8 2.5-4.5 5.5-4.5s5.5 1.7 5.5 4.5v1H6.5v-1z" />
+                    <circle cx="5.5" cy="9.5" r="2.5" opacity="0.85" />
+                    <path d="M1.5 18c0-2 1.6-3.4 3.8-3.7-.5.9-.8 2-.8 3.2v.5H1.5z" opacity="0.85" />
+                    <circle cx="18.5" cy="9.5" r="2.5" opacity="0.85" />
+                    <path d="M22.5 18c0-2-1.6-3.4-3.8-3.7.5.9.8 2 .8 3.2v.5h3z" opacity="0.85" />
+                  </svg>
+                  <span>GROUP</span>
+                </a>
+
+                <a href="#zalo" class="btn-social zl">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path
+                      d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                    <circle cx="9.5" cy="11.5" r="1" fill="currentColor" />
+                    <circle cx="12.5" cy="11.5" r="1" fill="currentColor" />
+                    <circle cx="15.5" cy="11.5" r="1" fill="currentColor" />
+                  </svg>
+                  <span>ZALO</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Right 3D Model: Floating Frosted Glass Chat & Community Bubbles -->
+            <div class="cb-illus-right">
+              <img src="sec11_community_chat.png" alt="Biểu tượng trò chuyện và chia sẻ cộng đồng" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         13. SECTION 12: LỚP HỌC TRỰC TUYẾN & KÈM 1-1 CÁ NHÂN HÓA
+         ====================================================================== -->
+    <section class="coaching-section">
+      <div class="section-container">
+        <div class="coaching-grid">
+          <div class="coaching-left">
+            <div class="yellow-pill-badge">
+              <span>✨ DÀNH CHO HỌC VIÊN CẦN LỘ TRÌNH RIÊNG</span>
+            </div>
+            <h2 class="section-heading-lg">
+              Lớp học Trực tuyến<br />
+              <span class="purple-text">&amp; Kèm 1-1 Cá nhân hóa</span>
+            </h2>
+            <p class="what-is-text">
+              Nếu bạn bận rộn hoặc muốn học nhanh - chắc kiến thức theo đúng nhu cầu công việc, các khóa học kèm riêng
+              là lựa chọn tối ưu nhất.
+            </p>
+
+            <div class="coaching-benefits-grid">
+              <div class="cb-card">
+                <div class="cb-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle cx="12" cy="12" r="1.5" />
+                  </svg>
+                </div>
+                <div>
+                  <h4>Lộ trình Cá nhân hóa</h4>
+                  <p>Thiết kế riêng theo năng lực và mục tiêu của từng học viên.</p>
+                </div>
+              </div>
+
+              <div class="cb-card">
+                <div class="cb-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="23 7 16 12 23 17 23 7" />
+                    <rect x="1" y="5" width="15" height="14" rx="2" />
+                  </svg>
+                </div>
+                <div>
+                  <h4>Tương tác Trực tiếp</h4>
+                  <p>Học qua Zoom/Google Meet, giảng viên sửa lỗi trực tiếp trên màn hình.</p>
+                </div>
+              </div>
+
+              <div class="cb-card">
+                <div class="cb-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                  </svg>
+                </div>
+                <div>
+                  <h4>Thời gian Linh hoạt</h4>
+                  <p>Chủ động sắp xếp lịch học phù hợp với người đi làm hoặc sinh viên.</p>
+                </div>
+              </div>
+
+              <div class="cb-card">
+                <div class="cb-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <polyline points="9 12 11 14 15 10" />
+                  </svg>
+                </div>
+                <div>
+                  <h4>Tài khoản VIP</h4>
+                  <p>Tặng kèm quyền truy cập toàn bộ khóa học video và ngân hàng đề thi.</p>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="coaching-expand-bar">
+              <span>XEM CHI TIẾT LỘ TRÌNH &amp; HỌC PHÍ</span>
+              <span>⌄</span>
+            </button>
+
+            <a href="#tu-van" class="btn-consult-1on1">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+              </svg>
+              <span>NHẬN TƯ VẤN LỘ TRÌNH 1-1</span>
+            </a>
+          </div>
+
+          <div class="coaching-card-outer">
+            <div class="coaching-dark-card">
+              <div class="cd-head">
+                <div class="cd-icon-box">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                    <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="cd-sub">COACHING PROGRAM</div>
+                  <h3>Lớp học kèm riêng</h3>
+                </div>
+              </div>
+
+              <div class="cd-info-box">
+                <div class="cd-info-lbl">ĐỐI TƯỢNG PHÙ HỢP</div>
+                <p>Người mất gốc, người đi làm cần ứng dụng ngay, học sinh/sinh viên cần lấy chứng chỉ gấp.</p>
+              </div>
+
+              <div class="cd-info-box">
+                <div class="cd-info-lbl">CÁC MÔN ĐÀO TẠO</div>
+                <p>Tin học văn phòng (Word, Excel, PowerPoint), Luyện thi IC3, MOS, Lập trình Scratch/Python cơ bản.</p>
+              </div>
+
+              <div class="cd-guarantee-box">
+                <div class="cd-g-lbl">CAM KẾT ĐẦU RA</div>
+                <p>Học lại miễn phí 100% nếu không đạt mục tiêu hoặc thi trượt chứng chỉ!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         14. SECTION 14: GIẢI ĐÁP THẮC MẮC (FAQ - 2-COL MODERN LAYOUT)
+         ====================================================================== -->
+    <section class="faq-section" id="faq">
+      <div class="section-container">
+        <div class="section-header-center">
+          <h2>Giải Đáp Thắc Mắc – <span class="purple-text">Đồng Hành Cùng Bạn</span></h2>
+          <p>Khám phá những thông tin hữu ích về khóa học, phương pháp ôn luyện và thi thử trực tuyến, giúp bạn tự tin hơn trên hành trình chinh phục kiến thức.</p>
+        </div>
+
+        <div class="faq-grid-2col">
+          <!-- Cột 1 -->
+          <div class="faq-col">
+            <!-- Câu 1 -->
+            <div class="faq-item">
+              <button type="button" class="faq-question">
+                <span class="faq-q-title">1. Khóa học trực tuyến được tổ chức như thế nào?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+              <div class="faq-answer">
+                <p>Các khóa học được tổ chức theo hình thức học tập trực tuyến với sự hướng dẫn của giáo viên, giúp học viên dễ dàng tiếp cận kiến thức và rèn luyện kỹ năng một cách có hệ thống. Mỗi khóa học được xây dựng theo từng chủ đề và bài học cụ thể, kết hợp giữa hoạt động giảng dạy, tài liệu học tập, bài tập thực hành và các hình thức kiểm tra đánh giá.</p>
+                <p>Trong quá trình học, giáo viên sẽ hướng dẫn kiến thức, giải thích những nội dung quan trọng và giao các nhiệm vụ học tập phù hợp. Học viên có thể theo dõi bài giảng, nghiên cứu tài liệu, thực hiện bài tập và chủ động trao đổi khi gặp khó khăn. Phương pháp này không chỉ giúp người học nắm vững kiến thức mà còn phát triển khả năng tự học, tư duy độc lập và vận dụng kiến thức vào thực tế.</p>
+              </div>
+            </div>
+
+            <!-- Câu 2 -->
+            <div class="faq-item">
+              <button type="button" class="faq-question">
+                <span class="faq-q-title">2. Tôi có thể truy cập tài liệu và làm bài tập bằng cách nào?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+              <div class="faq-answer">
+                <p>Tài liệu học tập và bài tập được giáo viên cung cấp trong từng khóa học, giúp học viên thuận tiện theo dõi và thực hiện các nhiệm vụ theo đúng nội dung bài học. Tùy theo yêu cầu của giáo viên, tài liệu có thể bao gồm bài giảng điện tử, video hướng dẫn, tài liệu tham khảo, bài tập thực hành và các nội dung hỗ trợ ôn tập.</p>
+                <p>Để bắt đầu, học viên truy cập khóa học đang tham gia, lựa chọn bài học tương ứng và xem các tài liệu được cung cấp. Sau khi nghiên cứu nội dung, học viên thực hiện bài tập theo hướng dẫn và nộp sản phẩm học tập thông qua hình thức mà giáo viên quy định. Việc kết hợp giữa học lý thuyết và thực hành giúp học viên củng cố kiến thức, nâng cao kỹ năng và từng bước hình thành thói quen học tập chủ động.</p>
+              </div>
+            </div>
+
+            <!-- Câu 3 -->
+            <div class="faq-item">
+              <button type="button" class="faq-question">
+                <span class="faq-q-title">3. Hệ thống luyện tập trắc nghiệm giúp ích gì cho việc học?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+              <div class="faq-answer">
+                <p>Hệ thống luyện tập trắc nghiệm được xây dựng nhằm hỗ trợ học viên ôn tập, củng cố kiến thức và rèn luyện kỹ năng trả lời câu hỏi sau mỗi nội dung học tập. Thông qua các câu hỏi được thiết kế theo từng chủ đề hoặc mức độ kiến thức, học viên có cơ hội kiểm tra khả năng ghi nhớ, hiểu bài và vận dụng những nội dung đã học vào các tình huống cụ thể.</p>
+                <p>Việc luyện tập thường xuyên giúp học viên nhận biết những kiến thức đã nắm vững và những nội dung cần tiếp tục ôn tập. Đồng thời, quá trình trả lời câu hỏi còn góp phần rèn luyện tư duy phân tích, khả năng lựa chọn đáp án và kỹ năng quản lý thời gian. Đây là phương pháp học tập hữu ích, giúp người học tự tin hơn trước khi tham gia các bài kiểm tra và kỳ thi chính thức.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cột 2 -->
+          <div class="faq-col">
+            <!-- Câu 4 -->
+            <div class="faq-item">
+              <button type="button" class="faq-question">
+                <span class="faq-q-title">4. Bài thi thử trực tuyến gồm những dạng câu hỏi nào?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+              <div class="faq-answer">
+                <p>Hệ thống thi thử được định hướng xây dựng với ba dạng câu hỏi gồm trắc nghiệm nhiều lựa chọn, trắc nghiệm đúng hoặc sai và trắc nghiệm trả lời ngắn. Mỗi dạng câu hỏi có đặc điểm riêng, giúp đánh giá kiến thức và khả năng vận dụng của học viên theo nhiều hình thức khác nhau.</p>
+                <p>Đối với <strong>trắc nghiệm nhiều lựa chọn</strong>, học viên đọc câu hỏi và lựa chọn đáp án đúng trong các phương án được cung cấp. Với <strong>trắc nghiệm đúng hoặc sai</strong>, học viên cần xem xét từng nhận định và xác định tính chính xác của nội dung. Riêng <strong>trắc nghiệm trả lời ngắn</strong> yêu cầu học viên tự xác định và nhập câu trả lời theo yêu cầu của đề bài, thay vì lựa chọn từ những phương án có sẵn.</p>
+                <p>Thông qua việc thực hành cả ba dạng câu hỏi, học viên có thể làm quen với cấu trúc đề thi, rèn luyện khả năng đọc hiểu, phân tích và xử lý thông tin. Đồng thời, hoạt động thi thử giúp người học đánh giá mức độ chuẩn bị, nhận biết những hạn chế và xây dựng kế hoạch ôn tập phù hợp trước các kỳ kiểm tra chính thức.</p>
+              </div>
+            </div>
+
+            <!-- Câu 5 -->
+            <div class="faq-item">
+              <button type="button" class="faq-question">
+                <span class="faq-q-title">5. Tôi có thể tham gia học tập và ôn luyện bằng điện thoại không?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+              <div class="faq-answer">
+                <p>Học viên có thể truy cập website học tập bằng máy tính, điện thoại thông minh hoặc máy tính bảng thông qua trình duyệt Internet, với điều kiện thiết bị đáp ứng yêu cầu hiển thị và sử dụng các chức năng của hệ thống. Điều này giúp người học thuận tiện tiếp cận tài liệu, theo dõi nội dung bài học và thực hiện những hoạt động ôn luyện phù hợp mà không bị giới hạn trong một không gian học tập cố định.</p>
+                <p>Tuy nhiên, đối với những bài học yêu cầu sử dụng phần mềm chuyên dụng, thao tác với nhiều cửa sổ hoặc thực hiện các nhiệm vụ thực hành phức tạp, học viên nên ưu tiên sử dụng máy tính để có trải nghiệm thuận tiện và hiệu quả hơn. Bên cạnh đó, việc chuẩn bị kết nối Internet ổn định, lựa chọn không gian học tập phù hợp và hạn chế các yếu tố gây mất tập trung cũng góp phần nâng cao chất lượng học tập trực tuyến.</p>
+              </div>
+            </div>
+
+            <!-- Câu 6 -->
+            <div class="faq-item">
+              <button type="button" class="faq-question">
+                <span class="faq-q-title">6. Làm sao để đánh giá kết quả và cải thiện hiệu quả học tập?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+              <div class="faq-answer">
+                <p>Kết quả học tập không chỉ được thể hiện thông qua điểm số mà còn phản ánh ở khả năng hiểu bài, vận dụng kiến thức và hoàn thành các nhiệm vụ học tập. Trong quá trình tham gia khóa học, học viên có thể tự đánh giá năng lực thông qua việc thực hiện bài tập, tham gia luyện tập trắc nghiệm và làm các bài thi thử. Tùy theo chức năng của hệ thống, kết quả có thể được cung cấp dưới dạng điểm số, số câu trả lời đúng hoặc những thông tin hỗ trợ đánh giá khác.</p>
+                <p>Để cải thiện hiệu quả học tập, học viên nên xây dựng kế hoạch ôn tập phù hợp, thường xuyên xem lại kiến thức đã học và dành thời gian luyện tập những nội dung còn hạn chế. Khi gặp câu hỏi khó hoặc chưa hiểu rõ vấn đề, người học có thể tham khảo tài liệu, trao đổi với giáo viên và chủ động tìm hiểu thêm. Việc kết hợp giữa học tập có định hướng, luyện tập thường xuyên và tự đánh giá sẽ giúp học viên từng bước nâng cao kiến thức, phát triển kỹ năng và đạt được mục tiêu học tập của bản thân.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         16. SECTION 15: BOTTOM CTA & GLOBAL CERTIFICATIONS
+         ====================================================================== -->
+    <section class="bottom-cta-section">
+      <div class="section-container">
+        <h2>Sẵn sàng bứt phá kỹ năng số?</h2>
+        <p>
+          Đừng để kỹ năng tin học cản trở sự nghiệp của bạn.<br />
+          Tham gia cùng <strong>5.000+</strong> học viên khác.
+        </p>
+        <a href="#luyen-thi" class="btn-free-start">VÀO HỌC MIỄN PHÍ</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       17. DARK NAVY FOOTER
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="section-container">
+      <div class="footer-top-grid">
+        <div>
+          <div class="footer-brand-row">
+            <div class="logo-icon-box" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 36 36" fill="none">
+                <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
+                <circle cx="13" cy="15.5" r="1.8" fill="#0284c7" />
+                <circle cx="23" cy="15.5" r="1.8" fill="#0284c7" />
+              </svg>
+            </div>
+            <span class="footer-brand-title">TIN HỌC VĂN PHÒNG</span>
+          </div>
+          <p class="footer-desc">
+            Nền tảng học tập trực tuyến kết hợp bài giảng, tài liệu, bài tập, luyện tập trắc nghiệm và thi thử, giúp người học phát triển kiến thức và kỹ năng số.
+          </p>
+        </div>
+
+        <div class="footer-col col-purple">
+          <h4>HỌC TẬP</h4>
+          <ul class="footer-links">
+            <li><a href="#go-phim">Luyện gõ phím 10 ngón</a></li>
+            <li><a href="#luyen-thi">Luyện thi trắc nghiệm</a></li>
+            <li><a href="#khoa-hoc">Khóa học Video</a></li>
+            <li><a href="#tieng-anh">Học Tiếng Anh</a></li>
+            <li><a href="#blog">Blog Tin Học</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col col-indigo">
+          <h4>TÍNH NĂNG</h4>
+          <ul class="footer-links">
+            <li><a href="#tien-ich">Trung tâm Tiện ích</a></li>
+            <li><a href="#test-phim">Test Bàn Phím</a></li>
+            <li><a href="#test-chuot">Test Chuột Online</a></li>
+            <li><a href="#phim-tat">Tra cứu Phím tắt</a></li>
+            <li><a href="#cua-hang">Cửa hàng tài nguyên</a></li>
+            <li><a href="#lien-he">Liên hệ hỗ trợ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col col-green">
+          <h4>CHÍNH SÁCH</h4>
+          <ul class="footer-links">
+            <li><a href="#dieu-khoan">Điều khoản dịch vụ</a></li>
+            <li><a href="#bao-mat">Chính sách bảo mật</a></li>
+            <li><a href="#ve-gia">Chính sách về giá</a></li>
+            <li><a href="#thanh-toan">Chính sách thanh toán</a></li>
+            <li><a href="#cung-cap">Điều kiện cung cấp dịch vụ</a></li>
+            <li><a href="#hoan-tien">Chấm dứt dịch vụ và hoàn tiền</a></li>
+            <li><a href="#khieu-nai">Giải quyết khiếu nại</a></li>
+            <li><a href="#van-chuyen">Chính sách vận chuyển</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-copyright">
+        © 2026 TRUNG TÂM TIN HỌC VĂN PHÒNG • BẢN QUYỀN THUỘC VỀ NHÓM 2
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       INTERACTIVE UI SCRIPTS (8-SLIDE CAROUSEL, 5-SLIDE TESTIMONIALS, FAQ)
+       ======================================================================== -->
+  <script>
+    (function () {
+      // 1. 8-Slide Smart Quiz Showcase Carousel
+      const slides = Array.from(document.querySelectorAll('.quiz-slide'));
+      const dots = Array.from(document.querySelectorAll('#quiz-dots-bar .q-dot'));
+      const counterBadge = document.getElementById('quiz-counter-badge');
+      let currentSlide = 0;
+      let autoSlideTimer = null;
+
+      function showQuizSlide(idx) {
+        currentSlide = (idx + slides.length) % slides.length;
+        slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+        dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+        if (counterBadge) {
+          counterBadge.textContent = 'CÂU ' + (currentSlide + 1) + '/' + slides.length;
+        }
+      }
+
+      function resetAutoSlide() {
+        if (autoSlideTimer) clearInterval(autoSlideTimer);
+        autoSlideTimer = setInterval(() => {
+          showQuizSlide(currentSlide + 1);
+        }, 4200);
+      }
+
+      document.querySelectorAll('.prev-slide').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          showQuizSlide(currentSlide - 1);
+          resetAutoSlide();
+        });
+      });
+
+      document.querySelectorAll('.next-slide').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          showQuizSlide(currentSlide + 1);
+          resetAutoSlide();
+        });
+      });
+
+      dots.forEach((dot, idx) => {
+        dot.addEventListener('click', () => {
+          showQuizSlide(idx);
+          resetAutoSlide();
+        });
+      });
+
+      resetAutoSlide();
+
+      // 2. 5-Slide Testimonials Carousel (Exact 5 students from video)
+      const testimonials = [
+        {
+          quote: '"Hệ thống luyện thi IC3 cực kỳ sát với đề thi thật. Nhờ luyện tập ở đây mà mình đã đạt điểm tuyệt đối phần Computing Fundamentals."',
+          avatar: 'A',
+          author: 'Nguyễn Văn An'
+        },
+        {
+          quote: '"Các khóa học video rất dễ hiểu, mình từ một người không biết gì về máy tính nay đã có thể sử dụng thành thạo Word, Excel cho công việc."',
+          avatar: 'M',
+          author: 'Trần Thị Mai'
+        },
+        {
+          quote: '"Giao diện thân thiện, ngân hàng câu hỏi được cập nhật liên tục. Đây là công cụ hỗ trợ giảng dạy và ôn tập tuyệt vời cho học sinh."',
+          avatar: 'Đ',
+          author: 'Phạm Minh Đức'
+        },
+        {
+          quote: '"Học ở đây không bị chán vì có hệ thống huy hiệu và bảng xếp hạng. Mình luôn cố gắng duy trì chuỗi ngày học (streak) mỗi ngày."',
+          avatar: 'N',
+          author: 'Lê Hoàng Nam'
+        },
+        {
+          quote: '"Hệ thống câu hỏi trắc nghiệm rất đa dạng, giúp mình nắm chắc các kiến thức đã học."',
+          avatar: 'T',
+          author: 'Hoàng Thu Thảo'
+        }
+      ];
+
+      let currentTesti = 0;
+      const quoteEl = document.getElementById('testi-quote');
+      const avatarEl = document.getElementById('testi-avatar');
+      const authorEl = document.getElementById('testi-author');
+      const tDots = Array.from(document.querySelectorAll('#testi-dots .q-dot'));
+
+      function showTestimonial(idx) {
+        currentTesti = (idx + testimonials.length) % testimonials.length;
+        const item = testimonials[currentTesti];
+        if (quoteEl) quoteEl.textContent = item.quote;
+        if (avatarEl) avatarEl.textContent = item.avatar;
+        if (authorEl) authorEl.textContent = item.author;
+        tDots.forEach((d, i) => d.classList.toggle('active', i === currentTesti));
+      }
+
+      const prevTestiBtn = document.getElementById('testi-prev');
+      const nextTestiBtn = document.getElementById('testi-next');
+      if (prevTestiBtn) prevTestiBtn.addEventListener('click', () => showTestimonial(currentTesti - 1));
+      if (nextTestiBtn) nextTestiBtn.addEventListener('click', () => showTestimonial(currentTesti + 1));
+      tDots.forEach((dot, idx) => {
+        dot.addEventListener('click', () => showTestimonial(idx));
+      });
+
+      setInterval(() => {
+        showTestimonial(currentTesti + 1);
+      }, 5000);
+
+      // 3. FAQ Dropdown (Single open + Click outside to close)
+      const faqItems = document.querySelectorAll('.faq-item');
+      document.querySelectorAll('.faq-question').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const currentItem = btn.closest('.faq-item');
+          const isOpen = currentItem.classList.contains('open');
+
+          faqItems.forEach((item) => item.classList.remove('open'));
+
+          if (!isOpen) {
+            currentItem.classList.add('open');
+          }
+        });
+      });
+
+      document.querySelectorAll('.faq-answer').forEach((ans) => {
+        ans.addEventListener('click', (e) => {
+          e.stopPropagation();
+        });
+      });
+
+      document.addEventListener('click', () => {
+        faqItems.forEach((item) => item.classList.remove('open'));
+      });
+
+      // 4. Tools Navbar Dropdown (Click to open, click outside to close)
+      const toolsDropdown = document.getElementById('nav-tools-dropdown');
+      const toolsBtn = document.getElementById('btn-tools-dropdown');
+
+      if (toolsBtn && toolsDropdown) {
+        toolsBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toolsDropdown.classList.toggle('open');
+        });
+
+        const toolsContent = toolsDropdown.querySelector('.nav-dropdown-content');
+        if (toolsContent) {
+          toolsContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        }
+
+        document.addEventListener('click', () => {
+          toolsDropdown.classList.remove('open');
+        });
+      }
+    })();
+  </script>
+  <script src="auth.js"></script>
+</body>
+
+</html>

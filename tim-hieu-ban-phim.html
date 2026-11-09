@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giới Thiệu Bàn Phím Máy Tính (Full 100%) - Tin Học Văn Phòng</title>
+  <meta name="description"
+    content="Mô hình bàn phím Full-size 100% trực quan: Làm chủ tên gọi và vị trí của các cụm phím, các hàng phím, gờ nổi F/J, chế độ đố vui bàn phím và từ điển 22 phím chức năng." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      background: #f0f7ff;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .kb-edu-container {
+      max-width: 1320px;
+      width: 100%;
+      margin: 24px auto 80px;
+      padding: 0 clamp(16px, 2.5vw, 32px);
+      flex: 1;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Hero Banner - Chuẩn Xanh Nước Biển của web */
+    .edu-hero {
+      background: #0284c7;
+      border-radius: 24px;
+      padding: clamp(20px, 3vw, 32px);
+      color: #ffffff;
+      box-shadow: 0 12px 32px rgba(2, 132, 199, 0.2);
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .edu-info {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .edu-title {
+      font-size: clamp(1.5rem, 2.3vw, 2.1rem);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 10px;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    .edu-desc {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: #e0f2fe;
+      margin: 0;
+    }
+
+    /* 5 Chế độ học tập (Tabs Bar theo đúng video) */
+    .edu-tabs-bar {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 8px;
+      border: 1.5px solid #e0f2fe;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.05);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .edu-tab-btn {
+      flex: 1;
+      min-width: 170px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border-radius: 12px;
+      border: 1.5px solid transparent;
+      background: transparent;
+      color: #475569;
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .edu-tab-btn:hover {
+      background: #f0f7ff;
+      color: #0284c7;
+    }
+
+    .edu-tab-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+    }
+
+    /* Sub-bar (1 hàng duy nhất: Nhãn cố định bên trái + Các nút giữa cuộn ngang ẩn thanh cuộn + 2 nút công tắc bên phải) */
+    .edu-sub-bar {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 10px 16px;
+      border: 1.5px solid #e0f2fe;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.04);
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    .sub-chips-wrap {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .chip-label {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: #0369a1;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      flex-shrink: 0;
+      white-space: nowrap;
+      padding-right: 4px;
+      position: relative;
+      z-index: 2;
+      background: #ffffff;
+    }
+
+    .sub-chips-scroll {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scroll-behavior: smooth;
+      padding: 2px 2px;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .sub-chips-scroll:active {
+      cursor: grabbing;
+    }
+
+    .sub-chips-scroll::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    .chip-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      background: #f8fafc;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .chip-btn svg {
+      flex-shrink: 0;
+    }
+
+    .chip-btn:hover {
+      border-color: #0284c7;
+      color: #0284c7;
+      background: #f0f9ff;
+    }
+
+    .chip-btn.active {
+      border-color: #0284c7;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 800;
+    }
+
+    .sub-toggles-wrap {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      padding-left: 12px;
+      border-left: 1.5px solid #e2e8f0;
+      background: #ffffff;
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn-sub-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 10px;
+      border: 1px solid #bae6fd;
+      background: #f0f9ff;
+      color: #0284c7;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .btn-sub-toggle:hover {
+      background: #0284c7;
+      color: #ffffff;
+    }
+
+    .btn-sub-toggle.active {
+      background: #0284c7;
+      color: #ffffff;
+    }
+
+    /* Interactive Keyboard Stage (Đồng bộ 100% với bàn phím mục 3 - Ảnh 5) */
+    .keyboard-stage {
+      width: calc(100vw - 40px);
+      max-width: 1520px;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      box-sizing: border-box;
+      background: #e8ecf4;
+      border: 3px solid #cfd6e6;
+      border-radius: 28px;
+      padding: 20px 28px 26px;
+      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.85), 0 14px 34px rgba(15, 23, 42, 0.08);
+      margin-bottom: 26px;
+      overflow-x: auto;
+    }
+
+    .keyboard-wrapper {
+      min-width: 1220px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Top Header Bar inside Keyboard Case */
+    .kb-stage-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+      border-bottom: 1.5px solid #d5dce9;
+    }
+
+    .kb-stage-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #475569;
+      text-transform: uppercase;
+    }
+
+    .kb-stage-title svg {
+      color: #6366f1;
+    }
+
+    /* Horizontal Pill LED Bar on Top Right */
+    .kb-led-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      background: #ffffff;
+      border: 1px solid #dce2ee;
+      border-radius: 999px;
+      padding: 6px 16px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .kb-led-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #94a3b8;
+      letter-spacing: 0.03em;
+    }
+
+    .led-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      transition: all 0.2s ease;
+    }
+
+    .led-dot.on {
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    .kb-block {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .kb-main-section {
+      flex: 1;
+    }
+
+    .kb-nav-section {
+      width: 174px;
+      flex-shrink: 0;
+    }
+
+    .kb-num-section {
+      width: 234px;
+      flex-shrink: 0;
+    }
+
+    .kb-row {
+      display: flex;
+      gap: 7px;
+      margin-bottom: 7px;
+    }
+
+    .kb-nav-section .kb-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+    }
+
+    .kb-num-section .kb-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+    }
+
+    .kb-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .row-gap-bottom {
+      margin-bottom: 16px !important;
+    }
+
+    /* Keycaps Base */
+    .key {
+      height: 52px;
+      border-radius: 13px;
+      background: #ffffff;
+      border: 1px solid #dce2ee;
+      border-bottom: 3.5px solid #cbd5e1;
+      color: #1e293b;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      box-sizing: border-box;
+      box-shadow: 0 2px 4px rgba(15, 23, 42, 0.03);
+      transition: all 0.15s ease;
+      padding: 0 4px 5px;
+      white-space: nowrap;
+    }
+
+    /* Thanh màu chỉ dẫn ngón tay dưới đáy mỗi phím */
+    .key::after {
+      content: '';
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 15px;
+      height: 3px;
+      border-radius: 99px;
+      background: #a855f7;
+      transition: all 0.15s ease;
+    }
+
+    .key.finger-pinky-l::after { background: #ef4444; }
+    .key.finger-ring-l::after { background: #f59e0b; }
+    .key.finger-mid-l::after { background: #eab308; }
+    .key.finger-index-l::after { background: #10b981; }
+    .key.finger-index-r::after { background: #06b6d4; }
+    .key.finger-mid-r::after { background: #3b82f6; }
+    .key.finger-ring-r::after { background: #6366f1; }
+    .key.finger-pinky-r::after { background: #a855f7; }
+    .key.finger-thumb::after { background: #94a3b8; }
+    .key.bar-slate::after { background: #64748b; }
+
+    /* Ký tự phụ & SVG icon góc trên trái của phím */
+    .key-sub, .key .sub {
+      position: absolute;
+      top: 5px;
+      left: 7px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: #94a3b8;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .key-sub svg, .key .sub svg {
+      width: 10px;
+      height: 10px;
+      stroke-width: 2.3;
+    }
+
+    .key-w1 { flex: 1; min-width: 48px; }
+    .key-w125 { width: 72px; font-size: 0.76rem; }
+    .key-w15 { width: 78px; }
+    .key-w175 { width: 94px; }
+    .key-w2 { width: 108px; }
+    .key-w225 { width: 122px; }
+    .key-w275 { width: 148px; }
+    .key-space { flex: 1; min-width: 230px; }
+    .key-span-4 { grid-column: span 4; }
+    .key-span-2 { grid-column: span 2; }
+    .key-col-2 { grid-column: 2; }
+
+    /* Key Highlighting States */
+    .key.dimmed {
+      opacity: 0.35;
+      filter: grayscale(40%);
+    }
+
+    .key.highlight-cluster {
+      background: #e0f2fe !important;
+      border-color: #0284c7 !important;
+      border-bottom-color: #0369a1 !important;
+      color: #0284c7 !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+    }
+
+    .key.highlight-row {
+      background: #fef3c7 !important;
+      border-color: #f59e0b !important;
+      border-bottom-color: #d97706 !important;
+      color: #b45309 !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(245, 158, 11, 0.25);
+    }
+
+    .key.highlight-bump {
+      background: #fef08a !important;
+      border-color: #eab308 !important;
+      border-bottom: 5px solid #ca8a04 !important;
+      color: #854d0e !important;
+      transform: translateY(-3px);
+      box-shadow: 0 0 16px rgba(234, 179, 8, 0.5) !important;
+    }
+
+    .key.pressed {
+      background: #0284c7 !important;
+      border-color: #0369a1 !important;
+      border-bottom: 1.5px solid #075985 !important;
+      color: #ffffff !important;
+      transform: translateY(2px);
+      box-shadow: 0 0 12px rgba(2, 132, 199, 0.4);
+    }
+    .key.pressed .key-sub, .key.pressed .sub { color: #e0f2fe !important; }
+
+    /* 10 Fingers Coloring */
+    body.show-10-fingers .key.finger-pinky-l { background: #fee2e2 !important; border-color: #fca5a5 !important; color: #991b1b !important; }
+    body.show-10-fingers .key.finger-ring-l { background: #ffedd5 !important; border-color: #fdba74 !important; color: #9a3412 !important; }
+    body.show-10-fingers .key.finger-mid-l { background: #fef9c3 !important; border-color: #fde047 !important; color: #854d0e !important; }
+    body.show-10-fingers .key.finger-index-l { background: #dcfce7 !important; border-color: #86efac !important; color: #065f46 !important; }
+    body.show-10-fingers .key.finger-thumb { background: #f3e8ff !important; border-color: #d8b4fe !important; color: #581c87 !important; }
+    body.show-10-fingers .key.finger-index-r { background: #cffafe !important; border-color: #67e8f9 !important; color: #155e75 !important; }
+    body.show-10-fingers .key.finger-mid-r { background: #dbeafe !important; border-color: #93c5fd !important; color: #1e40af !important; }
+    body.show-10-fingers .key.finger-ring-r { background: #e0e7ff !important; border-color: #a5b4fc !important; color: #3730a3 !important; }
+    body.show-10-fingers .key.finger-pinky-r { background: #fce7f3 !important; border-color: #f472b6 !important; color: #831843 !important; }
+
+    /* Explanatory Details Section (Full-Width Single Card) */
+    .edu-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .detail-card {
+      background: #ffffff;
+      border: 1.5px solid #e0f2fe;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.05);
+    }
+
+    .side-card {
+      background: #ffffff;
+      border: 1.5px solid #e0f2fe;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .detail-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .detail-badge-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .detail-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .detail-subtitle {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #0284c7;
+    }
+
+    .detail-desc {
+      font-size: 0.92rem;
+      line-height: 1.65;
+      color: #334155;
+      margin-bottom: 16px;
+      text-align: justify;
+    }
+
+    .detail-box-tip {
+      background: #f0f9ff;
+      border-left: 4px solid #0284c7;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      color: #0369a1;
+      margin-bottom: 16px;
+      line-height: 1.55;
+      text-align: justify;
+    }
+
+    .detail-points {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .detail-points li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #475569;
+    }
+
+    .detail-points li strong {
+      color: #0f172a;
+    }
+
+    /* List of Quick Items on Right Column */
+    .overview-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ov-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .ov-item:hover, .ov-item.active {
+      background: #f0f9ff;
+      border-color: #0284c7;
+      transform: translateX(4px);
+    }
+
+    .ov-item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ov-name {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .ov-sub {
+      font-size: 0.72rem;
+      color: #64748b;
+    }
+
+    /* ========================================================
+       CHẾ ĐỘ ĐỐ VUI PHÍM (QUIZ MODE)
+       ======================================================== */
+    .quiz-container {
+      background: #ffffff;
+      border: 1.5px solid #e0f2fe;
+      border-radius: 22px;
+      padding: 28px 32px;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.06);
+      margin-bottom: 24px;
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 22px;
+      padding-bottom: 16px;
+      border-bottom: 1.5px solid #f1f5f9;
+    }
+
+    .quiz-header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .quiz-progress-badge {
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      color: #0369a1;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .quiz-progress-track {
+      flex: 1;
+      max-width: 240px;
+      height: 8px;
+      background: #f1f5f9;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      width: 10%;
+      background: linear-gradient(90deg, #0284c7, #38bdf8);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .quiz-score-badge {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #d97706;
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .quiz-question-box {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin-bottom: 20px;
+    }
+
+    .quiz-question-text {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .quiz-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 700px) {
+      .quiz-options-grid {
+        grid-template-columns: 1fr;
+      }
+      .quiz-container {
+        padding: 20px;
+      }
+    }
+
+    .quiz-opt-btn {
+      background: #ffffff;
+      border: 1.8px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #334155;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
+    }
+
+    .opt-letter {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      font-size: 0.86rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.18s ease;
+    }
+
+    .opt-text {
+      flex: 1;
+      line-height: 1.45;
+    }
+
+    .quiz-opt-btn:hover:not(:disabled) {
+      border-color: #0284c7;
+      background: #f0f9ff;
+      color: #0369a1;
+      transform: translateY(-1px);
+    }
+
+    .quiz-opt-btn:hover:not(:disabled) .opt-letter {
+      background: #0284c7;
+      border-color: #0284c7;
+      color: #ffffff;
+    }
+
+    .quiz-opt-btn:disabled {
+      cursor: default;
+    }
+
+    .quiz-opt-btn.correct {
+      border-color: #10b981 !important;
+      background: #ecfdf5 !important;
+      color: #065f46 !important;
+    }
+
+    .quiz-opt-btn.correct .opt-letter {
+      background: #10b981 !important;
+      border-color: #10b981 !important;
+      color: #ffffff !important;
+    }
+
+    .quiz-opt-btn.wrong {
+      border-color: #ef4444 !important;
+      background: #fef2f2 !important;
+      color: #991b1b !important;
+    }
+
+    .quiz-opt-btn.wrong .opt-letter {
+      background: #ef4444 !important;
+      border-color: #ef4444 !important;
+      color: #ffffff !important;
+    }
+
+    .quiz-feedback-box {
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      text-align: justify;
+    }
+
+    .quiz-feedback-box.correct {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 4px solid #10b981;
+      color: #065f46;
+    }
+
+    .quiz-feedback-box.wrong {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-left: 4px solid #ef4444;
+      color: #991b1b;
+    }
+
+    .qfb-ans {
+      font-weight: 800;
+      font-size: 0.94rem;
+      margin-bottom: 6px;
+    }
+
+    .qfb-exp {
+      color: #334155;
+    }
+
+    .btn-quiz-next {
+      background: #0284c7;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
+    }
+
+    .btn-quiz-next:hover {
+      background: #0369a1;
+      transform: translateY(-1px);
+    }
+
+    /* ========================================================
+       CHẾ ĐỘ TỪ ĐIỂN PHÍM (22 PHÍM CHỨC NĂNG)
+       ======================================================== */
+    .dict-container {
+      background: #ffffff;
+      border: 1.5px solid #e0f2fe;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.05);
+      margin-bottom: 24px;
+    }
+
+    .dict-search-bar {
+      margin-bottom: 20px;
+    }
+
+    .dict-search-input {
+      width: 100%;
+      padding: 12px 18px;
+      border: 1.5px solid #bae6fd;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+
+    .dict-search-input:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .dict-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    .dict-card-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 16px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .dict-card-item:hover {
+      border-color: #0284c7;
+      background: #f0f9ff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);
+    }
+
+    .dci-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .dci-keycap {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-bottom: 2.5px solid #94a3b8;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #0284c7;
+    }
+
+    .dci-name {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .dci-desc {
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #475569;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header / Navigation Bar -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon-box" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
+            <circle cx="13" cy="15.5" r="1.8" fill="#4f46e5" />
+            <circle cx="23" cy="15.5" r="1.8" fill="#4f46e5" />
+            <path d="M15.5 19.5c1.2 1.2 3.8 1.2 5 0" stroke="#ec4899" stroke-width="2" stroke-linecap="round" />
+            <path d="M12 7V4.5M24 7V4.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M11 29.5h14" stroke="#93c5fd" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">TIN HỌC VĂN PHÒNG</span>
+          <span class="brand-subtitle">Đào tạo Tin học Trực tuyến</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <!-- 1. KHÓA HỌC LMS -->
+        <a href="index.html#khoa-hoc">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+          <span>KHÓA HỌC LMS</span>
+        </a>
+
+        <!-- 2. LỘ TRÌNH HỌC TẬP -->
+        <a href="lo-trinh-hoc-tap.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="6" cy="19" r="3" />
+            <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" />
+            <circle cx="18" cy="5" r="3" />
+          </svg>
+          <span>LỘ TRÌNH HỌC TẬP</span>
+        </a>
+
+        <!-- 3. ÔN LUYỆN & THI THỬ -->
+        <a href="on-luyen-thi-thu.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+          <span>ÔN LUYỆN &amp; THI THỬ</span>
+        </a>
+
+        <!-- 4. DIỄN ĐÀN -->
+        <a href="index.html#cong-dong">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>DIỄN ĐÀN</span>
+        </a>
+
+        <!-- 5. CÔNG CỤ & TIỆN ÍCH -->
+        <div class="nav-dropdown-wrap" id="nav-tools-dropdown">
+          <button type="button" class="nav-link-dropdown nav-dropdown-trigger" id="btn-tools-dropdown"
+            style="color: var(--water-primary);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+            <span>CÔNG CỤ &amp; TIỆN ÍCH</span>
+            <svg class="nav-dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="3">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="nav-dropdown-content">
+            <!-- 1. Luyện gõ phím 10 ngón -->
+            <a href="luyen-go-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8"
+                    stroke-width="2.2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>1. Luyện gõ phím 10 ngón</strong>
+                <small>Luyện gõ tiếng Việt Telex &amp; kiểm tra WPM</small>
+              </div>
+            </a>
+
+            <!-- 2. Tra cứu Phím tắt -->
+            <a href="tra-cuu-phim-tat.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>2. Tra cứu Phím tắt</strong>
+                <small>Phím tắt thông dụng Windows, Word, Excel, PPT, Outlook</small>
+              </div>
+            </a>
+
+            <!-- 3. Kiểm tra Bàn phím Online -->
+            <a href="kiem-tra-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <circle cx="7" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="12" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="17" cy="9" r="1" fill="#0284c7" />
+                  <line x1="6" y1="14" x2="18" y2="14" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>3. Kiểm tra Bàn phím Online</strong>
+                <small>Phát hiện kẹt/liệt phím, đo NKRO &amp; Switch cơ</small>
+              </div>
+            </a>
+
+            <!-- 4. Giới thiệu Bàn phím Máy tính -->
+            <a href="tim-hieu-ban-phim.html" class="nav-sub-item active">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="#e0f2fe"
+                    fill-opacity="0.6" />
+                  <path d="M6 6h10M6 10h10M6 14h6" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>4. Giới thiệu Bàn phím Máy tính</strong>
+                <small>Cấu tạo 100% Full-size, các hàng phím &amp; gờ nổi F/J</small>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 6. CỬA HÀNG -->
+        <a href="index.html#cua-hang">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span>CỬA HÀNG</span>
+        </a>
+      </nav>
+
+      <a href="index.html#dang-nhap" class="btn-login">ĐĂNG NHẬP</a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="kb-edu-container">
+    <!-- Hero Banner -->
+    <div class="edu-hero">
+      <div class="edu-info">
+        <h1 class="edu-title">KHÁM PHÁ CẤU TẠO VÀ CHỨC NĂNG BÀN PHÍM MÁY TÍNH</h1>
+        <p class="edu-desc">
+          Tìm hiểu cấu trúc bàn phím thông qua các cụm phím chức năng, vị trí sắp xếp và đặc điểm của từng nhóm phím. Khám phá cách bố trí các hàng phím, vị trí gõ chuẩn F và J, cùng công dụng của những phím thường dùng trong quá trình học tập và làm việc.
+        </p>
+      </div>
+    </div>
+
+    <!-- 5 Chế độ học tập (Tabs Bar đúng như trong video) -->
+    <div class="edu-tabs-bar">
+      <button type="button" class="edu-tab-btn active" data-tab="clusters">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+        Theo cụm phím
+      </button>
+
+      <button type="button" class="edu-tab-btn" data-tab="rows">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        Theo hàng phím
+      </button>
+
+      <button type="button" class="edu-tab-btn" data-tab="free">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 16h8"/></svg>
+        Bấm phím tự do
+      </button>
+
+      <button type="button" class="edu-tab-btn" data-tab="quiz">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Đố vui phím
+      </button>
+
+      <button type="button" class="edu-tab-btn" data-tab="dict">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Từ điển phím (22)
+      </button>
+    </div>
+
+    <!-- Sub-bar (Filter Chips + Toggles) -->
+    <div class="edu-sub-bar" id="subBar">
+      <div class="sub-chips-wrap" id="subChipsWrap">
+        <!-- Rendered dynamically by tab -->
+      </div>
+
+      <div class="sub-toggles-wrap">
+        <button type="button" class="btn-sub-toggle active" id="btn-toggle-sound">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          <span id="sound-label">Âm thanh: BẬT</span>
+        </button>
+
+        <button type="button" class="btn-sub-toggle" id="btn-toggle-10fingers">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+          <span>Màu 10 ngón</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Interactive Keyboard View (Đồng bộ 100% với bàn phím mục 3 - Ảnh 5) -->
+    <div class="keyboard-stage" id="keyboardStage">
+      <div class="keyboard-wrapper">
+        <!-- Top Header Bar inside Keyboard Case -->
+        <div class="kb-stage-header">
+          <div class="kb-stage-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8" />
+            </svg>
+            <span>SƠ ĐỒ BÀN PHÍM THỰC TẾ</span>
+          </div>
+
+          <div class="kb-led-bar" data-cluster="led">
+            <div class="kb-led-item">
+              <div class="led-dot" id="led-caps"></div>
+              <span>CAPS</span>
+            </div>
+            <div class="kb-led-item">
+              <div class="led-dot" id="led-num"></div>
+              <span>NUM</span>
+            </div>
+            <div class="kb-led-item">
+              <div class="led-dot" id="led-scr"></div>
+              <span>SCR</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="kb-block">
+          <!-- MAIN ALPHANUMERIC SECTION -->
+          <div class="kb-main-section">
+            <!-- Row 1: Function Keys -->
+            <div class="kb-row row-gap-bottom" data-row="fn">
+              <div class="key key-w1 finger-pinky-l" data-code="Escape" data-cluster="fn" data-row="fn">Esc</div>
+              <div style="width: 18px;"></div>
+              <div class="key key-w1 finger-ring-l" data-code="F1" data-cluster="fn" data-row="fn">
+                <span class="key-sub" style="color:#64748b;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                </span>F1
+              </div>
+              <div class="key key-w1 finger-ring-l" data-code="F2" data-cluster="fn" data-row="fn">
+                <span class="key-sub" style="color:#64748b;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                </span>F2
+              </div>
+              <div class="key key-w1 finger-mid-l" data-code="F3" data-cluster="fn" data-row="fn">
+                <span class="key-sub" style="color:#64748b;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                </span>F3
+              </div>
+              <div class="key key-w1 finger-index-l" data-code="F4" data-cluster="fn" data-row="fn">
+                <span class="key-sub" style="color:#f59e0b;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                </span>F4
+              </div>
+              <div style="width: 12px;"></div>
+              <div class="key key-w1 finger-index-l" data-code="F5" data-cluster="fn" data-row="fn">
+                <span class="key-sub" style="color:#3b82f6;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                </span>F5
+              </div>
+              <div class="key key-w1 finger-index-r" data-code="F6" data-cluster="fn" data-row="fn">F6</div>
+              <div class="key key-w1 finger-index-r" data-code="F7" data-cluster="fn" data-row="fn">
+                <span class="key-sub" style="color:#64748b;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+                </span>F7
+              </div>
+              <div class="key key-w1 finger-index-r" data-code="F8" data-cluster="fn" data-row="fn">
+                <span class="key-sub" style="color:#64748b;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+                </span>F8
+              </div>
+              <div style="width: 12px;"></div>
+              <div class="key key-w1 finger-pinky-r" data-code="F9" data-cluster="fn" data-row="fn">
+                <span class="key-sub" style="color:#64748b;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 19 22 12 13 5 13 19"/><polygon points="2 19 11 12 2 5 2 19"/></svg>
+                </span>F9
+              </div>
+              <div class="key key-w1 finger-pinky-r" data-code="F10" data-cluster="fn" data-row="fn">F10</div>
+              <div class="key key-w1 finger-pinky-r" data-code="F11" data-cluster="fn" data-row="fn">F11</div>
+              <div class="key key-w1 finger-pinky-r" data-code="F12" data-cluster="fn" data-row="fn">F12</div>
+            </div>
+
+            <!-- Row 2: Number Row -->
+            <div class="kb-row" data-row="number">
+              <div class="key key-w1 finger-pinky-l" data-code="Backquote" data-cluster="alpha" data-row="number"><span class="key-sub">~</span>`</div>
+              <div class="key key-w1 finger-pinky-l" data-code="Digit1" data-cluster="alpha" data-row="number"><span class="key-sub">!</span>1</div>
+              <div class="key key-w1 finger-ring-l" data-code="Digit2" data-cluster="alpha" data-row="number"><span class="key-sub">@</span>2</div>
+              <div class="key key-w1 finger-mid-l" data-code="Digit3" data-cluster="alpha" data-row="number"><span class="key-sub">#</span>3</div>
+              <div class="key key-w1 finger-index-l" data-code="Digit4" data-cluster="alpha" data-row="number"><span class="key-sub">$</span>4</div>
+              <div class="key key-w1 finger-index-l" data-code="Digit5" data-cluster="alpha" data-row="number"><span class="key-sub">%</span>5</div>
+              <div class="key key-w1 finger-index-r" data-code="Digit6" data-cluster="alpha" data-row="number"><span class="key-sub">^</span>6</div>
+              <div class="key key-w1 finger-index-r" data-code="Digit7" data-cluster="alpha" data-row="number"><span class="key-sub">&amp;</span>7</div>
+              <div class="key key-w1 finger-mid-r" data-code="Digit8" data-cluster="alpha" data-row="number"><span class="key-sub">*</span>8</div>
+              <div class="key key-w1 finger-ring-r" data-code="Digit9" data-cluster="alpha" data-row="number"><span class="key-sub">(</span>9</div>
+              <div class="key key-w1 finger-pinky-r" data-code="Digit0" data-cluster="alpha" data-row="number"><span class="key-sub">)</span>0</div>
+              <div class="key key-w1 finger-pinky-r" data-code="Minus" data-cluster="alpha" data-row="number"><span class="key-sub">_</span>-</div>
+              <div class="key key-w1 finger-pinky-r" data-code="Equal" data-cluster="alpha" data-row="number"><span class="key-sub">+</span>=</div>
+              <div class="key key-w2 finger-pinky-r" data-code="Backspace" data-cluster="alpha" data-row="number">Backspace</div>
+            </div>
+
+            <!-- Row 3: QWERTY (Top Row) -->
+            <div class="kb-row" data-row="top">
+              <div class="key key-w15 finger-pinky-l" data-code="Tab" data-cluster="alpha" data-row="top">Tab</div>
+              <div class="key key-w1 finger-pinky-l" data-code="KeyQ" data-cluster="alpha" data-row="top">Q</div>
+              <div class="key key-w1 finger-ring-l" data-code="KeyW" data-cluster="alpha" data-row="top">W</div>
+              <div class="key key-w1 finger-mid-l" data-code="KeyE" data-cluster="alpha" data-row="top">E</div>
+              <div class="key key-w1 finger-index-l" data-code="KeyR" data-cluster="alpha" data-row="top">R</div>
+              <div class="key key-w1 finger-index-l" data-code="KeyT" data-cluster="alpha" data-row="top">T</div>
+              <div class="key key-w1 finger-index-r" data-code="KeyY" data-cluster="alpha" data-row="top">Y</div>
+              <div class="key key-w1 finger-index-r" data-code="KeyU" data-cluster="alpha" data-row="top">U</div>
+              <div class="key key-w1 finger-mid-r" data-code="KeyI" data-cluster="alpha" data-row="top">I</div>
+              <div class="key key-w1 finger-ring-r" data-code="KeyO" data-cluster="alpha" data-row="top">O</div>
+              <div class="key key-w1 finger-pinky-r" data-code="KeyP" data-cluster="alpha" data-row="top">P</div>
+              <div class="key key-w1 finger-pinky-r" data-code="BracketLeft" data-cluster="alpha" data-row="top"><span class="key-sub">{</span>[</div>
+              <div class="key key-w1 finger-pinky-r" data-code="BracketRight" data-cluster="alpha" data-row="top"><span class="key-sub">}</span>]</div>
+              <div class="key key-w15 finger-pinky-r" data-code="Backslash" data-cluster="alpha" data-row="top"><span class="key-sub">|</span>\</div>
+            </div>
+
+            <!-- Row 4: Home Row (Hàng cơ sở với 2 gờ F & J) -->
+            <div class="kb-row" data-row="home">
+              <div class="key key-w175 finger-pinky-l" data-code="CapsLock" data-cluster="alpha" data-row="home">Caps Lock</div>
+              <div class="key key-w1 finger-pinky-l" data-code="KeyA" data-cluster="alpha" data-row="home">A</div>
+              <div class="key key-w1 finger-ring-l" data-code="KeyS" data-cluster="alpha" data-row="home">S</div>
+              <div class="key key-w1 finger-mid-l" data-code="KeyD" data-cluster="alpha" data-row="home">D</div>
+              <div class="key key-w1 finger-index-l" data-code="KeyF" data-cluster="alpha" data-row="home" id="key-f">F</div>
+              <div class="key key-w1 finger-index-l" data-code="KeyG" data-cluster="alpha" data-row="home">G</div>
+              <div class="key key-w1 finger-index-r" data-code="KeyH" data-cluster="alpha" data-row="home">H</div>
+              <div class="key key-w1 finger-index-r" data-code="KeyJ" data-cluster="alpha" data-row="home" id="key-j">J</div>
+              <div class="key key-w1 finger-mid-r" data-code="KeyK" data-cluster="alpha" data-row="home">K</div>
+              <div class="key key-w1 finger-ring-r" data-code="KeyL" data-cluster="alpha" data-row="home">L</div>
+              <div class="key key-w1 finger-pinky-r" data-code="Semicolon" data-cluster="alpha" data-row="home"><span class="key-sub">:</span>;</div>
+              <div class="key key-w1 finger-pinky-r" data-code="Quote" data-cluster="alpha" data-row="home"><span class="key-sub">"</span>'</div>
+              <div class="key key-w225 finger-pinky-r" data-code="Enter" data-cluster="alpha" data-row="home">Enter</div>
+            </div>
+
+            <!-- Row 5: Bottom Row (ZXCV) -->
+            <div class="kb-row" data-row="bottom">
+              <div class="key key-w225 finger-pinky-l" data-code="ShiftLeft" data-cluster="alpha" data-row="bottom">Shift</div>
+              <div class="key key-w1 finger-pinky-l" data-code="KeyZ" data-cluster="alpha" data-row="bottom">Z</div>
+              <div class="key key-w1 finger-ring-l" data-code="KeyX" data-cluster="alpha" data-row="bottom">X</div>
+              <div class="key key-w1 finger-mid-l" data-code="KeyC" data-cluster="alpha" data-row="bottom">C</div>
+              <div class="key key-w1 finger-index-l" data-code="KeyV" data-cluster="alpha" data-row="bottom">V</div>
+              <div class="key key-w1 finger-index-l" data-code="KeyB" data-cluster="alpha" data-row="bottom">B</div>
+              <div class="key key-w1 finger-index-r" data-code="KeyN" data-cluster="alpha" data-row="bottom">N</div>
+              <div class="key key-w1 finger-index-r" data-code="KeyM" data-cluster="alpha" data-row="bottom">M</div>
+              <div class="key key-w1 finger-mid-r" data-code="Comma" data-cluster="alpha" data-row="bottom"><span class="key-sub">&lt;</span>,</div>
+              <div class="key key-w1 finger-ring-r" data-code="Period" data-cluster="alpha" data-row="bottom"><span class="key-sub">&gt;</span>.</div>
+              <div class="key key-w1 finger-pinky-r" data-code="Slash" data-cluster="alpha" data-row="bottom"><span class="key-sub">?</span>/</div>
+              <div class="key key-w275 finger-pinky-r" data-code="ShiftRight" data-cluster="alpha" data-row="bottom">Shift</div>
+            </div>
+
+            <!-- Row 6: Spacebar / Modifier Row -->
+            <div class="kb-row" data-row="space">
+              <div class="key key-w125 finger-pinky-l" data-code="ControlLeft" data-cluster="alpha" data-row="space">Ctrl</div>
+              <div class="key key-w125 finger-thumb" data-code="MetaLeft" data-cluster="alpha" data-row="space">Win</div>
+              <div class="key key-w125 finger-thumb" data-code="AltLeft" data-cluster="alpha" data-row="space">Alt</div>
+              <div class="key key-space finger-thumb" data-code="Space" data-cluster="alpha" data-row="space">Space</div>
+              <div class="key key-w125 finger-thumb" data-code="AltRight" data-cluster="alpha" data-row="space">Alt</div>
+              <div class="key key-w125 finger-thumb" data-code="MetaRight" data-cluster="alpha" data-row="space">Win</div>
+              <div class="key key-w125 finger-pinky-r" data-code="ContextMenu" data-cluster="alpha" data-row="space">
+                <span class="key-sub" style="color:#0284c7;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </span>Fn
+              </div>
+              <div class="key key-w125 finger-pinky-r" data-code="ControlRight" data-cluster="alpha" data-row="space">Ctrl</div>
+            </div>
+          </div>
+
+          <!-- NAVIGATION SECTION (3 Columns Grid) -->
+          <div class="kb-nav-section">
+            <div class="kb-row row-gap-bottom" data-row="fn">
+              <div class="key finger-pinky-r" data-code="PrintScreen" data-cluster="nav" data-row="fn">PrtSc</div>
+              <div class="key finger-pinky-r" data-code="ScrollLock" data-cluster="nav" data-row="fn">ScrLk</div>
+              <div class="key finger-pinky-r" data-code="Pause" data-cluster="nav" data-row="fn">Pause</div>
+            </div>
+
+            <div class="kb-row" data-row="number">
+              <div class="key finger-pinky-r" data-code="Insert" data-cluster="nav" data-row="number">Ins</div>
+              <div class="key finger-pinky-r" data-code="Home" data-cluster="nav" data-row="number">Home</div>
+              <div class="key finger-pinky-r" data-code="PageUp" data-cluster="nav" data-row="number">PgUp</div>
+            </div>
+
+            <div class="kb-row" data-row="top">
+              <div class="key finger-pinky-r" data-code="Delete" data-cluster="nav" data-row="top">Del</div>
+              <div class="key finger-pinky-r" data-code="End" data-cluster="nav" data-row="top">End</div>
+              <div class="key finger-pinky-r" data-code="PageDown" data-cluster="nav" data-row="top">PgDn</div>
+            </div>
+
+            <div class="kb-row" style="height: 52px;"></div>
+
+            <!-- Arrow Keys -->
+            <div class="kb-row" data-row="bottom">
+              <div class="key key-col-2 bar-slate" data-code="ArrowUp" data-cluster="arrow" data-row="bottom">▲</div>
+            </div>
+            <div class="kb-row" data-row="space">
+              <div class="key bar-slate" data-code="ArrowLeft" data-cluster="arrow" data-row="space">◀</div>
+              <div class="key bar-slate" data-code="ArrowDown" data-cluster="arrow" data-row="space">▼</div>
+              <div class="key bar-slate" data-code="ArrowRight" data-cluster="arrow" data-row="space">▶</div>
+            </div>
+          </div>
+
+          <!-- NUMPAD SECTION (4 Columns Grid Chuẩn Ảnh 5) -->
+          <div class="kb-num-section">
+            <!-- Row 1: Full-width LED Key -->
+            <div class="kb-row row-gap-bottom" data-row="fn">
+              <div class="key key-span-4 bar-slate" data-code="F13" data-cluster="led" data-row="fn">LED</div>
+            </div>
+
+            <div class="kb-row" data-row="number">
+              <div class="key finger-pinky-r" data-code="NumLock" data-cluster="numpad" data-row="number">NumLk</div>
+              <div class="key finger-pinky-r" data-code="NumpadDivide" data-cluster="numpad" data-row="number">/</div>
+              <div class="key finger-pinky-r" data-code="NumpadMultiply" data-cluster="numpad" data-row="number">*</div>
+              <div class="key finger-pinky-r" data-code="NumpadSubtract" data-cluster="numpad" data-row="number">-</div>
+            </div>
+
+            <div class="kb-row" data-row="top">
+              <div class="key finger-pinky-r" data-code="Numpad7" data-cluster="numpad" data-row="top"><span class="key-sub">Home</span>7</div>
+              <div class="key finger-pinky-r" data-code="Numpad8" data-cluster="numpad" data-row="top"><span class="key-sub">▲</span>8</div>
+              <div class="key finger-pinky-r" data-code="Numpad9" data-cluster="numpad" data-row="top"><span class="key-sub">PgUp</span>9</div>
+              <div class="key finger-pinky-r" data-code="NumpadAdd" data-cluster="numpad" data-row="top">+</div>
+            </div>
+
+            <div class="kb-row" data-row="home">
+              <div class="key finger-pinky-r" data-code="Numpad4" data-cluster="numpad" data-row="home"><span class="key-sub">◀</span>4</div>
+              <div class="key finger-pinky-r" data-code="Numpad5" data-cluster="numpad" data-row="home">5</div>
+              <div class="key finger-pinky-r" data-code="Numpad6" data-cluster="numpad" data-row="home"><span class="key-sub">▶</span>6</div>
+              <div class="key bar-slate" data-code="NumpadAdd" data-cluster="numpad" data-row="home"></div>
+            </div>
+
+            <div class="kb-row" data-row="bottom">
+              <div class="key finger-pinky-r" data-code="Numpad1" data-cluster="numpad" data-row="bottom"><span class="key-sub">End</span>1</div>
+              <div class="key finger-pinky-r" data-code="Numpad2" data-cluster="numpad" data-row="bottom"><span class="key-sub">▼</span>2</div>
+              <div class="key finger-pinky-r" data-code="Numpad3" data-cluster="numpad" data-row="bottom"><span class="key-sub">PgDn</span>3</div>
+              <div class="key finger-pinky-r" data-code="NumpadEnter" data-cluster="numpad" data-row="bottom">Enter</div>
+            </div>
+
+            <div class="kb-row" data-row="space">
+              <div class="key key-span-2 finger-pinky-r" data-code="Numpad0" data-cluster="numpad" data-row="space"><span class="key-sub">Ins</span>0</div>
+              <div class="key finger-pinky-r" data-code="NumpadDecimal" data-cluster="numpad" data-row="space"><span class="key-sub">Del</span>.</div>
+              <div class="key bar-slate" data-code="NumpadEnter" data-cluster="numpad" data-row="space"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 1 & 2 & 3: Detailed Explanation Full-Width Card -->
+    <div class="edu-detail-grid" id="mainDetailGrid">
+      <div class="detail-card" id="detailCard">
+        <div class="detail-header">
+          <div class="detail-badge-icon" id="detailIcon"></div>
+          <div>
+            <h3 class="detail-title" id="detailTitle">Cụm Phím Chữ &amp; Số Chính</h3>
+            <span class="detail-subtitle" id="detailSubtitle">Alphanumeric / Main Typing Cluster (~61 phím)</span>
+          </div>
+        </div>
+        <p class="detail-desc" id="detailContent">
+          Đây là khu vực được sử dụng thường xuyên nhất trên bàn phím, bao gồm các phím chữ cái A–Z, chữ số 0–9, dấu câu, ký tự đặc biệt và các phím điều khiển như Enter, Shift, Ctrl, Alt, Tab, Backspace và Spacebar. Khu vực này đóng vai trò quan trọng trong việc nhập liệu, soạn thảo văn bản và thực hiện các thao tác cơ bản trên máy tính.
+        </p>
+        <div class="detail-box-tip" id="detailBoxTip">
+          <strong>Kiến thức trọng tâm:</strong> Khi luyện gõ 10 ngón, người học cần đặt các ngón tay đúng vị trí trên hàng phím cơ sở, lấy hai phím F và J có gờ nổi làm mốc định vị. Điều này giúp hình thành thói quen gõ chính xác mà không cần nhìn bàn phím.
+        </div>
+        <ul class="detail-points" id="detailPoints">
+          <li><strong>•</strong> <span><strong>Hàng phím cơ sở:</strong> Đặt các ngón tay trên A, S, D, F và J, K, L, ; để bắt đầu luyện gõ 10 ngón.</span></li>
+          <li><strong>•</strong> <span><strong>Phím Shift:</strong> Kết hợp với phím chữ để nhập chữ in hoa hoặc với các phím khác để nhập ký tự phía trên.</span></li>
+          <li><strong>•</strong> <span><strong>Phím Spacebar:</strong> Tạo khoảng trắng giữa các từ, thường được điều khiển bằng ngón tay cái khi gõ 10 ngón.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- VIEW 4: ĐỐ VUI PHÍM (QUIZ CONTAINER) -->
+    <div class="quiz-container d-none" id="quizContainer">
+      <div class="quiz-header">
+        <div class="quiz-header-left">
+          <span class="quiz-progress-badge" id="quizProgressText">CÂU HỎI 1 / 10</span>
+          <div class="quiz-progress-track">
+            <div class="quiz-progress-fill" id="quizProgressFill"></div>
+          </div>
+        </div>
+        <span class="quiz-score-badge" id="quizScoreText">Điểm số: 0 / 10</span>
+      </div>
+
+      <div class="quiz-body" id="quizBody">
+        <div class="quiz-question-box">
+          <h3 class="quiz-question-text" id="quizQuestion">
+            Câu 1. Khi luyện tập gõ bàn phím bằng 10 ngón, các ngón tay thường được đặt ở hàng phím nào trước khi bắt đầu gõ?
+          </h3>
+        </div>
+
+        <div class="quiz-options-grid" id="quizOptions">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <div class="quiz-feedback-box d-none" id="quizFeedback">
+          <!-- Feedback explanation text -->
+        </div>
+
+        <div style="text-align: right;">
+          <button type="button" class="btn-quiz-next d-none" id="btnQuizNext">
+            CÂU HỎI TIẾP THEO →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 5: TỪ ĐIỂN PHÍM (22 PHÍM CHỨC NĂNG) -->
+    <div class="dict-container d-none" id="dictContainer">
+      <div class="dict-search-bar">
+        <input type="text" class="dict-search-input" id="dictSearchInput" placeholder="🔍 Tìm nhanh phím chức năng (ví dụ: Esc, Tab, Home, Del, PrtSc, Space...)" />
+      </div>
+
+      <div class="dict-cards-grid" id="dictCardsGrid">
+        <!-- Rendered dynamically (22 Keys) -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer simple-footer">
+    <div class="footer-copyright">
+      © 2026 TRUNG TÂM TIN HỌC VĂN PHÒNG • BẢN QUYỀN THUỘC VỀ NHÓM 2
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      // 1. Audio Engine (Mechanical Blue Switch click sound)
+      let audioCtx = null;
+      let soundEnabled = true;
+
+      function playSwitchSound() {
+        if (!soundEnabled) return;
+        try {
+          if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(1100, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(140, audioCtx.currentTime + 0.035);
+          gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.045);
+        } catch (e) { }
+      }
+
+      const btnSound = document.getElementById('btn-toggle-sound');
+      const soundLabel = document.getElementById('sound-label');
+      if (btnSound) {
+        btnSound.addEventListener('click', () => {
+          soundEnabled = !soundEnabled;
+          btnSound.classList.toggle('active', soundEnabled);
+          soundLabel.textContent = soundEnabled ? 'Âm thanh: BẬT' : 'Âm thanh: TẮT';
+        });
+      }
+
+      const btn10Fingers = document.getElementById('btn-toggle-10fingers');
+      if (btn10Fingers) {
+        btn10Fingers.addEventListener('click', () => {
+          document.body.classList.toggle('show-10-fingers');
+          btn10Fingers.classList.toggle('active', document.body.classList.contains('show-10-fingers'));
+        });
+      }
+
+      // 2. Data for 5 Clusters + 1 LED
+      const clustersData = {
+        alpha: {
+          name: "Cụm Phím Chữ & Số Chính",
+          sub: "Alphanumeric / Main Typing Cluster (~61 phím)",
+          desc: "Đây là khu vực được sử dụng thường xuyên nhất trên bàn phím, bao gồm các phím chữ cái A–Z, chữ số 0–9, dấu câu, ký tự đặc biệt và các phím điều khiển như Enter, Shift, Ctrl, Alt, Tab, Backspace và Spacebar. Khu vực này đóng vai trò quan trọng trong việc nhập liệu, soạn thảo văn bản và thực hiện các thao tác cơ bản trên máy tính.",
+          tip: "<strong>Kiến thức trọng tâm:</strong> Khi luyện gõ 10 ngón, người học cần đặt các ngón tay đúng vị trí trên hàng phím cơ sở, lấy hai phím F và J có gờ nổi làm mốc định vị. Điều này giúp hình thành thói quen gõ chính xác mà không cần nhìn bàn phím.",
+          points: [
+            "<strong>Hàng phím cơ sở:</strong> Đặt các ngón tay trên A, S, D, F và J, K, L, ; để bắt đầu luyện gõ 10 ngón.",
+            "<strong>Phím Shift:</strong> Kết hợp với phím chữ để nhập chữ in hoa hoặc với các phím khác để nhập ký tự phía trên.",
+            "<strong>Phím Spacebar:</strong> Tạo khoảng trắng giữa các từ, thường được điều khiển bằng ngón tay cái khi gõ 10 ngón."
+          ]
+        },
+        fn: {
+          name: "Cụm Phím Chức Năng",
+          sub: "Function Keys (F1–F12) và phím Esc",
+          desc: "Cụm phím chức năng nằm ở hàng trên cùng của bàn phím, gồm 12 phím từ F1 đến F12, thường được bố trí thành các nhóm để dễ nhận biết. Mỗi phím đảm nhận những chức năng khác nhau tùy theo phần mềm hoặc hệ điều hành, giúp người dùng thực hiện nhanh các thao tác mà không cần tìm kiếm trong menu.",
+          tip: "<strong>Mẹo sử dụng nhanh:</strong> Ghi nhớ các phím chức năng thông dụng như F1 để mở trợ giúp, F2 để đổi tên tệp và F5 để làm mới trang web sẽ giúp tiết kiệm thời gian khi học tập và làm việc.",
+          points: [
+            "<strong>Phím F2:</strong> Đổi tên tệp hoặc thư mục được chọn trong Windows; chỉnh sửa nội dung ô đang chọn trong Excel.",
+            "<strong>Phím F5:</strong> Làm mới trang web trong trình duyệt hoặc bắt đầu trình chiếu từ đầu trong PowerPoint.",
+            "<strong>Phím F11:</strong> Bật hoặc tắt chế độ hiển thị toàn màn hình trong nhiều trình duyệt web."
+          ]
+        },
+        arrow: {
+          name: "Cụm Phím Điều Hướng (Phím Mũi Tên)",
+          sub: "Navigation / Arrow Cluster (4 phím)",
+          desc: "Cụm phím điều hướng gồm bốn phím mũi tên Lên, Xuống, Trái và Phải, được bố trí theo hình chữ T ngược. Các phím này giúp người dùng di chuyển con trỏ, lựa chọn nội dung và điều hướng trong các ứng dụng một cách thuận tiện mà không cần sử dụng chuột.",
+          tip: "<strong>Mẹo thao tác hiệu quả:</strong> Kết hợp phím Ctrl với mũi tên Trái hoặc Phải để di chuyển con trỏ nhanh qua từng từ trong văn bản, thay vì phải di chuyển lần lượt qua từng ký tự.",
+          points: [
+            "<strong>Mũi tên Trái/Phải:</strong> Di chuyển con trỏ sang trái hoặc phải từng ký tự trong văn bản.",
+            "<strong>Mũi tên Lên/Xuống:</strong> Di chuyển con trỏ giữa các dòng văn bản hoặc điều hướng giữa các mục.",
+            "<strong>Shift + Phím mũi tên:</strong> Mở rộng vùng chọn văn bản theo hướng di chuyển, giúp bôi đen nội dung mà không cần chuột."
+          ]
+        },
+        nav: {
+          name: "Cụm Phím Điều Khiển & Soạn Thảo",
+          sub: "Editing & Navigation Cluster (9 phím)",
+          desc: "Khu vực này thường nằm phía trên cụm phím mũi tên trên bàn phím đầy đủ, gồm các phím Insert, Delete, Home, End, Page Up, Page Down và các phím hệ thống Print Screen, Scroll Lock, Pause. Đây là nhóm phím hỗ trợ di chuyển nhanh trong tài liệu, chỉnh sửa nội dung và thực hiện một số thao tác hệ thống.",
+          tip: "<strong>Kỹ năng soạn thảo:</strong> Phím Home giúp đưa con trỏ về đầu dòng, End đưa con trỏ đến cuối dòng; Page Up và Page Down giúp di chuyển nhanh lên hoặc xuống theo từng vùng hiển thị của tài liệu.",
+          points: [
+            "<strong>Phím Delete:</strong> Xóa ký tự nằm ngay sau (bên phải) con trỏ hoặc xóa nội dung đang được chọn.",
+            "<strong>Phím Backspace:</strong> Nằm trong cụm phím chính, dùng để xóa ký tự ngay trước (bên trái) con trỏ.",
+            "<strong>Phím Print Screen (PrtSc):</strong> Hỗ trợ chụp ảnh màn hình; tùy thiết lập Windows, có thể sao chép ảnh vào Clipboard hoặc mở công cụ chụp màn hình."
+          ]
+        },
+        numpad: {
+          name: "Cụm Bàn Phím Số Phụ (Numpad)",
+          sub: "Numeric Keypad (thường 17 phím)",
+          desc: "Cụm bàn phím số phụ thường nằm ở phía bên phải của bàn phím kích thước đầy đủ, được thiết kế để nhập số và thực hiện các phép tính nhanh chóng. Với cách bố trí tương tự máy tính cầm tay, khu vực này đặc biệt hữu ích trong công việc kế toán, thống kê, xử lý bảng tính và nhập liệu số lượng lớn.",
+          tip: "<strong>Kỹ năng nhập số nhanh:</strong> Phím số 5 trên Numpad thường có gờ nổi nhỏ giúp ngón giữa tay phải xác định vị trí trung tâm, từ đó thao tác với các phím số xung quanh chính xác hơn mà không cần nhìn bàn phím.",
+          points: [
+            "<strong>Phím Num Lock:</strong> Bật hoặc tắt chế độ nhập số của cụm bàn phím số phụ.",
+            "<strong>Các phím phép tính:</strong> Bao gồm cộng (+), trừ (−), nhân (*), chia (/) và phím Enter để hỗ trợ nhập liệu, tính toán.",
+            "<strong>Chế độ điều hướng:</strong> Khi tắt Num Lock, nhiều phím số có thể chuyển sang chức năng di chuyển con trỏ hoặc điều hướng."
+          ]
+        },
+        led: {
+          name: "Cụm Đèn LED Chỉ Báo Trạng Thái",
+          sub: "Status Indicator LEDs (thường 3 đèn tín hiệu)",
+          desc: "Cụm đèn LED chỉ báo trạng thái giúp người dùng nhận biết nhanh các chế độ đang được kích hoạt trên bàn phím. Trên nhiều bàn phím tiêu chuẩn, ba đèn thông dụng tương ứng với Num Lock, Caps Lock và Scroll Lock, giúp hạn chế nhầm lẫn khi nhập chữ, nhập số hoặc sử dụng các chức năng đặc biệt.",
+          tip: "<strong>Cách nhận biết nhanh:</strong> Khi đèn CAPS sáng, chế độ Caps Lock đang bật; khi đèn NUM sáng, cụm bàn phím số phụ đang ở chế độ nhập số. Quan sát các đèn báo giúp người dùng kiểm tra trạng thái bàn phím trước khi thao tác.",
+          points: [
+            "<strong>Đèn NUM:</strong> Cho biết chế độ Num Lock đang được bật, cho phép nhập số bằng Numpad.",
+            "<strong>Đèn CAPS:</strong> Cho biết chế độ Caps Lock đang được bật để nhập các chữ cái in hoa.",
+            "<strong>Đèn SCR:</strong> Cho biết chế độ Scroll Lock đang được kích hoạt; tác dụng cụ thể phụ thuộc vào phần mềm."
+          ]
+        }
+      };
+
+      // 3. Data for 6 Rows
+      const rowsData = {
+        fn: {
+          name: "Hàng Phím Chức Năng (Row 1)",
+          sub: "Function Row – Hàng phím trên cùng",
+          desc: "Hàng phím chức năng nằm ở vị trí cao nhất trên bàn phím, bao gồm phím Esc và 12 phím từ F1 đến F12. Đây là nhóm phím hỗ trợ thực hiện nhanh các lệnh trong hệ điều hành và phần mềm, giúp người dùng thao tác thuận tiện, tiết kiệm thời gian khi sử dụng máy tính.",
+          tip: "<strong>Kỹ năng sử dụng:</strong> Khi cần nhấn các phím chức năng, hãy di chuyển ngón tay từ hàng phím cơ sở lên hàng trên cùng, sau đó đưa tay trở về vị trí ban đầu. Ghi nhớ chức năng của các phím thông dụng sẽ giúp thao tác nhanh hơn mà không cần dùng chuột.",
+          points: [
+            "<strong>Phím Esc:</strong> Hủy thao tác, đóng hộp thoại hoặc thoát khỏi một số chế độ đang hoạt động.",
+            "<strong>Phím F5:</strong> Làm mới trang web hoặc bắt đầu trình chiếu từ đầu trong PowerPoint.",
+            "<strong>Phím F11:</strong> Bật hoặc tắt chế độ toàn màn hình trong nhiều trình duyệt web."
+          ]
+        },
+        number: {
+          name: "Hàng Phím Số (Row 2)",
+          sub: "Number & Symbol Row – Hàng phím số và ký tự đặc biệt",
+          desc: "Hàng phím số nằm ngay dưới hàng phím chức năng, gồm các phím số từ 1 đến 0, phím dấu huyền (~), dấu trừ (-), dấu bằng (=) và phím Backspace. Ngoài chức năng nhập số, hàng phím này còn hỗ trợ nhập nhiều ký tự đặc biệt, phục vụ việc soạn thảo văn bản, tính toán và nhập dữ liệu.",
+          tip: "<strong>Kỹ năng gõ phím:</strong> Khi nhập số hoặc ký tự đặc biệt, các ngón tay vươn từ hàng phím cơ sở lên hàng phím số. Để nhập ký tự nằm phía trên phím, hãy giữ Shift kết hợp với phím tương ứng, chẳng hạn Shift + 1 để nhập dấu ! trên bàn phím tiếng Anh thông dụng.",
+          points: [
+            "<strong>Các phím số 1–0:</strong> Dùng để nhập chữ số khi soạn thảo văn bản hoặc thực hiện tính toán.",
+            "<strong>Phím Shift kết hợp phím số:</strong> Cho phép nhập các ký tự đặc biệt như !, @, #, $, %, ^, &, *.",
+            "<strong>Phím Backspace:</strong> Xóa ký tự ngay trước con trỏ, giúp chỉnh sửa nhanh các lỗi nhập liệu."
+          ]
+        },
+        top: {
+          name: "Hàng Phím Trên (Row 3)",
+          sub: "Upper / QWERTY Row – Hàng phím chữ phía trên",
+          desc: "Hàng phím trên nằm ngay dưới hàng phím số, bao gồm 10 phím chữ cái Q, W, E, R, T, Y, U, I, O, P cùng các phím Tab và dấu ngoặc vuông. Đây là một trong ba hàng phím chữ chính, giúp người dùng nhập văn bản và luyện tập kỹ năng gõ 10 ngón hiệu quả.",
+          tip: "<strong>Kiến thức thú vị:</strong> Tên gọi QWERTY được hình thành từ sáu chữ cái đầu tiên ở phía bên trái hàng phím trên: Q, W, E, R, T, Y. Đây cũng là tên của một trong những kiểu bố trí bàn phím phổ biến nhất hiện nay.",
+          points: [
+            "<strong>Các phím Q–P:</strong> Tạo thành hàng chữ phía trên, được sử dụng thường xuyên khi nhập văn bản.",
+            "<strong>Phím Tab:</strong> Chuyển đến vị trí nhập liệu tiếp theo hoặc hỗ trợ căn chỉnh, tạo khoảng thụt đầu dòng tùy ứng dụng.",
+            "<strong>Kỹ thuật gõ:</strong> Di chuyển ngón tay từ hàng phím cơ sở lên đúng phím cần nhập, sau đó trở về vị trí đặt tay ban đầu."
+          ]
+        },
+        home: {
+          name: "Hàng Phím Cơ Sở (Home Row) (Row 4)",
+          sub: "Home Row – Hàng phím nền tảng của kỹ thuật gõ 10 ngón",
+          desc: "Hàng phím cơ sở là hàng phím quan trọng nhất trong kỹ thuật gõ 10 ngón, gồm các phím chữ A, S, D, F, G, H, J, K, L và các phím dấu câu bên phải. Đây là vị trí đặt các ngón tay ban đầu, giúp người dùng xác định vị trí các phím khác và luyện gõ chính xác mà không cần nhìn xuống bàn phím.",
+          tip: "<strong>Bí quyết gõ 10 ngón:</strong> Hai phím F và J có gờ nổi nhỏ giúp ngón trỏ tay trái và tay phải nhận biết vị trí bằng xúc giác. Nhờ đó, người học có thể định vị các ngón tay chính xác, duy trì tư thế gõ và từng bước hình thành phản xạ gõ phím mà không cần nhìn bàn phím.",
+          points: [
+            "<strong>Tay trái:</strong> Đặt bốn ngón tay lần lượt trên các phím A, S, D, F.",
+            "<strong>Tay phải:</strong> Đặt bốn ngón tay lần lượt trên các phím J, K, L, ;.",
+            "<strong>Nguyên tắc quan trọng:</strong> Sau khi nhấn các phím ở hàng khác, các ngón tay nên trở về hàng phím cơ sở để giữ đúng vị trí."
+          ]
+        },
+        bottom: {
+          name: "Hàng Phím Dưới (Row 5)",
+          sub: "Bottom / ZXCV Row – Hàng phím chữ phía dưới",
+          desc: "Hàng phím dưới nằm ngay bên dưới hàng phím cơ sở, bao gồm các chữ cái Z, X, C, V, B, N, M cùng các phím dấu phẩy, dấu chấm, dấu gạch chéo và hai phím Shift ở hai bên. Hàng phím này hỗ trợ nhập chữ, dấu câu và thực hiện nhiều thao tác chỉnh sửa văn bản thông dụng.",
+          tip: "<strong>Mẹo ghi nhớ:</strong> Bốn phím Z, X, C, V kết hợp với Ctrl tạo thành các tổ hợp phím tắt quen thuộc: Ctrl + Z để hoàn tác, Ctrl + X để cắt, Ctrl + C để sao chép và Ctrl + V để dán. Đây là những thao tác rất hữu ích khi làm việc với văn bản và dữ liệu.",
+          points: [
+            "<strong>Các phím Z–M:</strong> Dùng để nhập chữ cái, kết hợp với hàng phím trên và hàng cơ sở để luyện gõ 10 ngón.",
+            "<strong>Các phím dấu câu:</strong> Hỗ trợ nhập dấu phẩy (,), dấu chấm (.) và dấu gạch chéo (/) khi soạn thảo.",
+            "<strong>Hai phím Shift:</strong> Giúp nhập chữ in hoa tạm thời hoặc ký tự đặc biệt khi kết hợp với các phím khác."
+          ]
+        },
+        space: {
+          name: "Hàng Phím Chứa Dấu Cách (Row 6)",
+          sub: "Bottom Modifier & Spacebar Row – Hàng phím dưới cùng",
+          desc: "Đây là hàng phím nằm ở vị trí thấp nhất của khu vực bàn phím chính, nổi bật với phím Spacebar có kích thước dài nhất. Bên cạnh đó là các phím điều khiển như Ctrl, Alt, Windows và một số phím khác tùy theo thiết kế bàn phím. Hàng phím này giúp tạo khoảng trắng, thực hiện phím tắt và điều khiển các chức năng của máy tính.",
+          tip: "<strong>Kỹ năng gõ 10 ngón:</strong> Hai ngón tay cái thường được đặt gần phím Spacebar và một trong hai ngón được sử dụng để nhấn phím tạo khoảng trắng. Khi gõ, cần giữ bàn tay ở tư thế tự nhiên, hạn chế di chuyển cả bàn tay để duy trì tốc độ và độ chính xác.",
+          points: [
+            "<strong>Phím Spacebar:</strong> Tạo khoảng trắng giữa các từ, giúp văn bản rõ ràng và dễ đọc.",
+            "<strong>Phím Ctrl và Alt:</strong> Kết hợp với các phím khác để thực hiện nhanh những lệnh như sao chép, dán hoặc chuyển đổi cửa sổ.",
+            "<strong>Phím Windows:</strong> Mở menu Start và kết hợp với các phím khác để truy cập nhanh các chức năng của hệ điều hành Windows."
+          ]
+        }
+      };
+
+      // 4. Data for 10 Quiz Questions
+      const quizQuestions = [
+        {
+          q: "Câu 1. Khi luyện tập gõ bàn phím bằng 10 ngón, các ngón tay thường được đặt ở hàng phím nào trước khi bắt đầu gõ?",
+          opts: [
+            "Hàng phím trên cùng chứa các chữ số",
+            "Hàng phím dưới cùng chứa các chữ Z, X, C, V",
+            "Hàng phím cơ sở chứa các chữ A, S, D, F và J, K, L, ;",
+            "Hàng phím chức năng chứa các phím F1 đến F12"
+          ],
+          correct: 2,
+          exp: "Hàng phím cơ sở là vị trí đặt tay ban đầu khi thực hiện kỹ thuật gõ 10 ngón. Các ngón tay được đặt trên các phím A, S, D, F ở tay trái và J, K, L, ; ở tay phải. Sau khi gõ các phím khác, các ngón tay thường trở về vị trí này để duy trì độ chính xác."
+        },
+        {
+          q: "Câu 2. Khi không nhìn bàn phím, người dùng có thể dựa vào đặc điểm nào để xác định đúng vị trí đặt hai ngón trỏ?",
+          opts: [
+            "Hai phím F và J có gờ nổi nhỏ trên bề mặt",
+            "Hai phím G và H có kích thước lớn hơn các phím khác",
+            "Hai phím A và L có màu sắc khác biệt",
+            "Hai phím D và K có đèn báo khi chạm vào"
+          ],
+          correct: 0,
+          exp: "Trên hầu hết bàn phím tiêu chuẩn, hai phím F và J có gờ nổi nhỏ giúp người dùng nhận biết vị trí bằng xúc giác. Ngón trỏ tay trái đặt trên phím F, còn ngón trỏ tay phải đặt trên phím J. Nhờ đó, người dùng có thể đặt tay đúng vị trí mà không cần nhìn xuống bàn phím."
+        },
+        {
+          q: "Câu 3. Khi đang nhập văn bản bằng chữ thường và muốn chuyển sang gõ nhiều chữ in hoa liên tiếp, em nên sử dụng phím nào?",
+          opts: [
+            "Phím Num Lock",
+            "Phím Scroll Lock",
+            "Phím Shift",
+            "Phím Caps Lock"
+          ],
+          correct: 3,
+          exp: "Phím Caps Lock giúp bật hoặc tắt chế độ nhập chữ in hoa. Khi được bật, các chữ cái sẽ được nhập ở dạng in hoa mà không cần giữ phím Shift. Muốn trở lại chế độ nhập chữ thường, người dùng chỉ cần nhấn Caps Lock một lần nữa."
+        },
+        {
+          q: "Câu 4. Trên bàn phím máy tính, nhóm phím có ký hiệu ↑, ↓, ←, → chủ yếu được sử dụng để thực hiện thao tác nào?",
+          opts: [
+            "Nhập các ký tự đặc biệt vào văn bản",
+            "Di chuyển con trỏ hoặc điều hướng theo các hướng",
+            "Điều chỉnh âm lượng của máy tính",
+            "Bật hoặc tắt chế độ nhập chữ in hoa"
+          ],
+          correct: 1,
+          exp: "Bốn phím mũi tên thuộc nhóm phím điều hướng, giúp di chuyển con trỏ lên, xuống, sang trái hoặc sang phải trong văn bản. Ngoài ra, chúng còn được sử dụng để di chuyển giữa các mục hoặc điều khiển đối tượng trong một số phần mềm."
+        },
+        {
+          q: "Câu 5. Khi con trỏ đang nằm ở giữa một dòng văn bản, em muốn đưa con trỏ đến vị trí đầu dòng mà không sử dụng chuột. Phím nào phù hợp nhất?",
+          opts: [
+            "Phím End",
+            "Phím Page Down",
+            "Phím Home",
+            "Phím Delete"
+          ],
+          correct: 2,
+          exp: "Phím Home thường được sử dụng để đưa con trỏ soạn thảo về đầu dòng hiện tại. Trong khi đó, phím End giúp di chuyển con trỏ đến cuối dòng. Sử dụng hai phím này giúp thao tác nhanh hơn khi chỉnh sửa văn bản."
+        },
+        {
+          q: "Câu 6. Trong lúc soạn thảo, em phát hiện vừa nhập thừa một ký tự ngay bên trái con trỏ. Phím nào giúp xóa ký tự đó nhanh nhất?",
+          opts: [
+            "Phím Backspace",
+            "Phím Delete",
+            "Phím Enter",
+            "Phím Tab"
+          ],
+          correct: 0,
+          exp: "Phím Backspace có chức năng xóa ký tự nằm ngay trước vị trí con trỏ soạn thảo. Đây là phím thường được sử dụng khi cần sửa lỗi nhập liệu. Khác với Backspace, phím Delete thường xóa ký tự nằm ngay sau con trỏ."
+        },
+        {
+          q: "Câu 7. Khi muốn xóa một ký tự nằm ngay bên phải con trỏ mà không cần di chuyển con trỏ, em nên nhấn phím nào?",
+          opts: [
+            "Phím Spacebar",
+            "Phím Backspace",
+            "Phím Escape",
+            "Phím Delete"
+          ],
+          correct: 3,
+          exp: "Phím Delete (Del) thường được sử dụng để xóa ký tự nằm ngay sau vị trí con trỏ soạn thảo. Nhờ chức năng này, người dùng có thể chỉnh sửa hoặc loại bỏ ký tự không cần thiết mà không phải di chuyển con trỏ sang vị trí khác."
+        },
+        {
+          q: "Câu 8. Trong kỹ thuật gõ bàn phím bằng 10 ngón, hai ngón tay cái thường đảm nhận việc nhấn phím nào?",
+          opts: [
+            "Phím Enter để xuống dòng",
+            "Phím Spacebar để tạo khoảng trắng",
+            "Phím Shift để nhập chữ in hoa",
+            "Phím Backspace để xóa ký tự"
+          ],
+          correct: 1,
+          exp: "Phím Spacebar (phím dấu cách) là phím dài nhất trên bàn phím và được sử dụng để tạo khoảng trắng giữa các từ. Khi luyện gõ 10 ngón, hai ngón tay cái thường đặt gần phím này; người gõ có thể sử dụng một trong hai ngón cái để nhấn phím dấu cách."
+        },
+        {
+          q: "Câu 9. Khi sử dụng cụm bàn phím số phụ ở bên phải, nếu các phím số không nhập được số như mong muốn, em nên kiểm tra phím nào trước tiên?",
+          opts: [
+            "Phím Caps Lock",
+            "Phím Scroll Lock",
+            "Phím Num Lock",
+            "Phím Print Screen"
+          ],
+          correct: 2,
+          exp: "Phím Num Lock dùng để bật hoặc tắt chế độ nhập số của cụm bàn phím số phụ (Numpad). Nếu các phím số không hoạt động như mong muốn, người dùng nên kiểm tra trạng thái Num Lock và bật chế độ nhập số khi cần thiết."
+        },
+        {
+          q: "Câu 10. Khi muốn chụp nhanh hình ảnh toàn bộ màn hình máy tính để sử dụng trong tài liệu học tập, phím nào thường được sử dụng?",
+          opts: [
+            "Phím Print Screen (PrtSc)",
+            "Phím Scroll Lock",
+            "Phím Pause/Break",
+            "Phím Insert"
+          ],
+          correct: 0,
+          exp: "Phím Print Screen (PrtSc) được sử dụng để thực hiện thao tác chụp màn hình. Tùy theo thiết lập Windows, nhấn phím này có thể sao chép hình ảnh toàn màn hình vào Clipboard hoặc mở công cụ chụp màn hình. Người dùng có thể sử dụng hình ảnh đã chụp để minh họa trong bài báo cáo hoặc tài liệu học tập."
+        }
+      ];
+
+      // 5. Data for 22 Special Functional Keys Dictionary
+      const dict22Keys = [
+        { key: "Esc", name: "Escape", desc: "Hủy bỏ tác vụ đang thực thi, đóng hộp thoại hoặc thoát chế độ toàn màn hình." },
+        { key: "Tab", name: "Tabulator", desc: "Thụt đầu dòng văn bản 1 khoảng chuẩn (1.27cm) hoặc chuyển ô tiếp theo trong bảng/biểu mẫu." },
+        { key: "Caps Lock", name: "Capital Lock", desc: "Bật/tắt chế độ gõ chữ IN HOA liên tục mà không cần giữ phím Shift." },
+        { key: "Shift", name: "Shift", desc: "Nhấn giữ để gõ chữ in hoa hoặc gõ ký tự đặc biệt ở nửa trên của phím số (!, @, #...)." },
+        { key: "Ctrl", name: "Control", desc: "Phím bổ trợ quyền năng nhất, tạo hàng trăm tổ hợp phím tắt (Ctrl+C, Ctrl+V, Ctrl+S...)." },
+        { key: "Alt", name: "Alternate", desc: "Phím bổ trợ thay thế, phối hợp với phím khác (Alt+Tab chuyển cửa sổ, Alt+F4 đóng app)." },
+        { key: "Spacebar", name: "Dấu cách", desc: "Phím dài nhất bàn phím, dùng để tạo khoảng trắng giữa các từ khi gõ văn bản." },
+        { key: "Enter", name: "Return / Enter", desc: "Xuống dòng mới trong văn bản, hoặc gửi tin nhắn / xác nhận thực thi lệnh." },
+        { key: "Backspace", name: "Xóa lùi", desc: "Xóa ký tự nằm ở NGAY PHÍA TRƯỚC (bên trái) của con trỏ soạn thảo." },
+        { key: "Delete", name: "Delete", desc: "Xóa ký tự nằm ở NGAY PHÍA SAU (bên phải) của con trỏ hoặc xóa file đã chọn." },
+        { key: "Insert", name: "Insert", desc: "Chuyển đổi giữa chế độ chèn văn bản (Insert) và chế độ gõ đè (Overwrite)." },
+        { key: "Home", name: "Home", desc: "Đưa con trỏ soạn thảo về ngay ĐẦU DÒNG văn bản hiện tại (Ctrl+Home về đầu văn bản)." },
+        { key: "End", name: "End", desc: "Đưa con trỏ soạn thảo về ngay CUỐI DÒNG văn bản hiện tại (Ctrl+End về cuối văn bản)." },
+        { key: "Page Up", name: "PgUp", desc: "Cuộn màn hình văn bản hoặc trang web lên phía trên một trang hiển thị." },
+        { key: "Page Down", name: "PgDn", desc: "Cuộn màn hình văn bản hoặc trang web xuống phía dưới một trang hiển thị." },
+        { key: "PrtSc", name: "Print Screen", desc: "Chụp ảnh toàn bộ màn hình máy tính và lưu vào bộ nhớ đệm (Clipboard)." },
+        { key: "ScrLk", name: "Scroll Lock", desc: "Khóa cuộn trang (thường dùng trong Excel để cuộn bảng tính mà không đổi ô đang chọn)." },
+        { key: "Pause", name: "Pause / Break", desc: "Tạm dừng chương trình đang chạy hoặc xem thông tin cấu hình máy tính (Win+Pause)." },
+        { key: "Num Lock", name: "Number Lock", desc: "Bật/tắt chế độ nhập số cho cụm bàn phím số phụ (Numpad) bên tay phải." },
+        { key: "Windows", name: "Win Key", desc: "Mở menu Start của Windows, kết hợp mở Explorer (Win+E) hoặc màn hình chính (Win+D)." },
+        { key: "Fn", name: "Function", desc: "Phím chức năng trên laptop, kết hợp phím F để chỉnh độ sáng màn hình, âm lượng, Wi-Fi." },
+        { key: "Menu", name: "Context Menu", desc: "Mở menu chuột phải ngay tại vị trí con trỏ chuột mà không cần dùng chuột." }
+      ];
+
+      // 6. UI Elements
+      const tabBtns = document.querySelectorAll('.edu-tab-btn');
+      const subChipsWrap = document.getElementById('subChipsWrap');
+      const mainDetailGrid = document.getElementById('mainDetailGrid');
+      const quizContainer = document.getElementById('quizContainer');
+      const dictContainer = document.getElementById('dictContainer');
+      const allKeys = document.querySelectorAll('.key');
+
+      const detailTitle = document.getElementById('detailTitle');
+      const detailSubtitle = document.getElementById('detailSubtitle');
+      const detailContent = document.getElementById('detailContent');
+      const detailBoxTip = document.getElementById('detailBoxTip');
+      const detailPoints = document.getElementById('detailPoints');
+      const detailIcon = document.getElementById('detailIcon');
+      const sideCardTitle = document.getElementById('sideCardTitle');
+      const overviewList = document.getElementById('overviewList');
+
+      let currentTab = 'clusters';
+
+      // 7. Clear all key highlights
+      function clearAllHighlights() {
+        allKeys.forEach(k => {
+          k.classList.remove('dimmed', 'highlight-cluster', 'highlight-row', 'highlight-bump', 'pressed');
+        });
+      }
+
+      // SVG Icons cho Cụm phím & Hàng phím
+      const clusterIcons = {
+        alpha: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/></svg>`,
+        fn: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+        arrow: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>`,
+        nav: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
+        numpad: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8.01" y2="10"/><line x1="12" y1="10" x2="12.01" y2="10"/><line x1="16" y1="10" x2="16.01" y2="10"/><line x1="8" y1="14" x2="8.01" y2="14"/><line x1="12" y1="14" x2="12.01" y2="14"/><line x1="16" y1="14" x2="16.01" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg>`,
+        led: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2z"/></svg>`
+      };
+
+      const rowIcons = {
+        fn: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+        number: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 9h2v6"/><path d="M14 9h2a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-2v3h3"/></svg>`,
+        top: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+        home: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+        bottom: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8"/><path d="M8 12l4 4 4-4"/></svg>`,
+        space: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17v1c0 .5-.5 1-1 1H3c-.5 0-1-.5-1-1v-1"/></svg>`
+      };
+
+      // Hỗ trợ cuộn ngang mượt mà bằng con lăn chuột hoặc kéo chuột (không hiện thanh cuộn)
+      function attachChipScrollBehavior() {
+        const scrollEl = subChipsWrap.querySelector('.sub-chips-scroll');
+        if (!scrollEl) return;
+
+        scrollEl.addEventListener('wheel', (e) => {
+          if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+            e.preventDefault();
+            scrollEl.scrollLeft += e.deltaY;
+          }
+        }, { passive: false });
+
+        let isDown = false;
+        let startX = 0;
+        let scrollLeftStart = 0;
+        let dragged = false;
+
+        scrollEl.addEventListener('mousedown', (e) => {
+          isDown = true;
+          dragged = false;
+          startX = e.pageX - scrollEl.offsetLeft;
+          scrollLeftStart = scrollEl.scrollLeft;
+        });
+
+        scrollEl.addEventListener('mouseleave', () => {
+          isDown = false;
+        });
+
+        scrollEl.addEventListener('mouseup', () => {
+          isDown = false;
+        });
+
+        scrollEl.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          const x = e.pageX - scrollEl.offsetLeft;
+          const walk = x - startX;
+          if (Math.abs(walk) > 5) {
+            dragged = true;
+            e.preventDefault();
+            scrollEl.scrollLeft = scrollLeftStart - walk;
+          }
+        });
+
+        scrollEl.addEventListener('click', (e) => {
+          if (dragged) {
+            e.stopPropagation();
+            e.preventDefault();
+            dragged = false;
+          }
+        }, true);
+      }
+
+      function scrollChipIntoView(btn) {
+        const scrollEl = subChipsWrap.querySelector('.sub-chips-scroll');
+        if (!scrollEl || !btn || !scrollEl.contains(btn)) return;
+        const targetLeft = btn.offsetLeft - scrollEl.offsetLeft - (scrollEl.clientWidth / 2) + (btn.clientWidth / 2);
+        scrollEl.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+      }
+
+      // 8. Tab 1: THEO CỤM PHÍM (CLUSTERS)
+      function renderClustersTab() {
+        mainDetailGrid.classList.remove('d-none');
+        quizContainer.classList.add('d-none');
+        dictContainer.classList.add('d-none');
+
+        subChipsWrap.innerHTML = `
+          <span class="chip-label">CỤM:</span>
+          <div class="sub-chips-scroll">
+            <button type="button" class="chip-btn active" data-cl="alpha">${clusterIcons.alpha} Cụm Phím Chữ &amp; Số Chính</button>
+            <button type="button" class="chip-btn" data-cl="fn">${clusterIcons.fn} Cụm Chức Năng</button>
+            <button type="button" class="chip-btn" data-cl="arrow">${clusterIcons.arrow} Cụm Điều Hướng</button>
+            <button type="button" class="chip-btn" data-cl="nav">${clusterIcons.nav} Điều Khiển &amp; Soạn Thảo</button>
+            <button type="button" class="chip-btn" data-cl="numpad">${clusterIcons.numpad} Số Phụ (Numpad)</button>
+            <button type="button" class="chip-btn" data-cl="led">${clusterIcons.led} Đèn LED Trạng Thái</button>
+          </div>
+        `;
+
+        attachChipScrollBehavior();
+        setupClusterEvents();
+        selectCluster('alpha');
+      }
+
+      function setupClusterEvents() {
+        document.querySelectorAll('[data-cl]').forEach(el => {
+          el.addEventListener('click', () => {
+            const cl = el.dataset.cl;
+            document.querySelectorAll('[data-cl]').forEach(i => i.classList.toggle('active', i.dataset.cl === cl));
+            const activeChip = subChipsWrap.querySelector(`.chip-btn[data-cl="${cl}"]`);
+            if (activeChip) scrollChipIntoView(activeChip);
+            selectCluster(cl);
+          });
+        });
+      }
+
+      function selectCluster(cl) {
+        clearAllHighlights();
+        const data = clustersData[cl];
+        if (!data) return;
+
+        playSwitchSound();
+        detailIcon.innerHTML = clusterIcons[cl] || clusterIcons.alpha;
+        detailTitle.textContent = data.name;
+        detailSubtitle.textContent = data.sub;
+        detailContent.textContent = data.desc;
+        detailBoxTip.innerHTML = data.tip;
+        detailPoints.innerHTML = data.points.map(p => `<li><strong>•</strong> <span>${p}</span></li>`).join('');
+
+        allKeys.forEach(k => {
+          if (k.dataset.cluster === cl) {
+            k.classList.add('highlight-cluster');
+          } else {
+            k.classList.add('dimmed');
+          }
+        });
+      }
+
+      // 9. Tab 2: THEO HÀNG PHÍM (ROWS)
+      function renderRowsTab() {
+        mainDetailGrid.classList.remove('d-none');
+        quizContainer.classList.add('d-none');
+        dictContainer.classList.add('d-none');
+
+        subChipsWrap.innerHTML = `
+          <span class="chip-label">HÀNG:</span>
+          <div class="sub-chips-scroll">
+            <button type="button" class="chip-btn" data-row="fn">${rowIcons.fn} Hàng Chức Năng</button>
+            <button type="button" class="chip-btn" data-row="number">${rowIcons.number} Hàng Phím Số</button>
+            <button type="button" class="chip-btn" data-row="top">${rowIcons.top} Hàng Phím Trên</button>
+            <button type="button" class="chip-btn active" data-row="home">${rowIcons.home} Hàng Phím Cơ Sở</button>
+            <button type="button" class="chip-btn" data-row="bottom">${rowIcons.bottom} Hàng Phím Dưới</button>
+            <button type="button" class="chip-btn" data-row="space">${rowIcons.space} Hàng Chứa Dấu Cách</button>
+          </div>
+        `;
+
+        attachChipScrollBehavior();
+        setupRowEvents();
+        selectRow('home');
+      }
+
+      function setupRowEvents() {
+        document.querySelectorAll('[data-row]').forEach(el => {
+          el.addEventListener('click', () => {
+            const rw = el.dataset.row;
+            document.querySelectorAll('[data-row]').forEach(i => i.classList.toggle('active', i.dataset.row === rw));
+            const activeChip = subChipsWrap.querySelector(`.chip-btn[data-row="${rw}"]`);
+            if (activeChip) scrollChipIntoView(activeChip);
+            selectRow(rw);
+          });
+        });
+      }
+
+      function selectRow(rw) {
+        clearAllHighlights();
+        const data = rowsData[rw];
+        if (!data) return;
+
+        playSwitchSound();
+        detailIcon.innerHTML = rowIcons[rw] || rowIcons.home;
+        detailTitle.textContent = data.name;
+        detailSubtitle.textContent = data.sub;
+        detailContent.textContent = data.desc;
+        detailBoxTip.innerHTML = data.tip;
+        detailPoints.innerHTML = data.points.map(p => `<li><strong>•</strong> <span>${p}</span></li>`).join('');
+
+        allKeys.forEach(k => {
+          if (k.dataset.row === rw) {
+            k.classList.add('highlight-row');
+          } else {
+            k.classList.add('dimmed');
+          }
+        });
+      }
+
+      // 10. Tab 3: BẤM PHÍM TỰ DO (FREE TYPING & DISCOVERY)
+      function renderFreeTab() {
+        mainDetailGrid.classList.remove('d-none');
+        quizContainer.classList.add('d-none');
+        dictContainer.classList.add('d-none');
+        clearAllHighlights();
+
+        subChipsWrap.innerHTML = `
+          <span style="font-size: 0.85rem; font-weight: 700; color: #0284c7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            Gõ phím thật trên bàn phím máy tính hoặc nhấp chuột vào phím ảo để tra cứu chi tiết
+          </span>
+        `;
+
+        detailIcon.innerHTML = clusterIcons.alpha;
+        detailTitle.textContent = "Bấm Phím Bất Kỳ Để Khám Phá";
+        detailSubtitle.textContent = "Sẵn sàng nhận tín hiệu gõ phím từ bàn phím thật của bạn...";
+        detailContent.textContent = "Mỗi phím trên máy tính đều có một vai trò chuyên biệt. Hãy thử gõ một phím bất kỳ (ví dụ F, J, Space, Tab, Caps Lock, Home, End...) để xem phân tích chi tiết.";
+        detailBoxTip.innerHTML = "<strong>Mẹo hay:</strong> Hãy chú ý vị trí hai phím F và J với gờ nổi định vị 10 ngón trên hàng cơ sở.";
+        detailPoints.innerHTML = `
+          <li><strong>Phím F &amp; J:</strong> Điểm neo định vị xúc giác của hai ngón trỏ.</li>
+          <li><strong>Phím Spacebar:</strong> Dành riêng cho 2 ngón tay cái.</li>
+          <li><strong>Phím Enter:</strong> Dành cho ngón út tay phải.</li>
+        `;
+      }
+
+      // 11. Tab 4: ĐỐ VUI PHÍM (10 CÂU HỎI TRẮC NGHIỆM - KHÔNG LƯU KẾT QUẢ, TỰ RESET KHI ĐỔI TAB HOẶC F5)
+      let currentQuizIdx = 0;
+      let quizScore = 0;
+
+      function ensureQuizBodyStructure() {
+        const quizBody = document.getElementById('quizBody');
+        if (!quizBody || document.getElementById('quizQuestion')) return;
+        quizBody.innerHTML = `
+          <div class="quiz-question-box">
+            <h3 class="quiz-question-text" id="quizQuestion"></h3>
+          </div>
+          <div class="quiz-options-grid" id="quizOptions"></div>
+          <div class="quiz-feedback-box d-none" id="quizFeedback"></div>
+          <div style="text-align: right;">
+            <button type="button" class="btn-quiz-next d-none" id="btnQuizNext">
+              CÂU HỎI TIẾP THEO →
+            </button>
+          </div>
+        `;
+        bindQuizNextButton();
+      }
+
+      function renderQuizTab() {
+        mainDetailGrid.classList.add('d-none');
+        dictContainer.classList.add('d-none');
+        quizContainer.classList.remove('d-none');
+        clearAllHighlights();
+
+        subChipsWrap.innerHTML = `
+          <span style="font-size: 0.85rem; font-weight: 700; color: #0284c7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            Đố Vui Phím: 10 câu hỏi trắc nghiệm kiểm tra nhanh kiến thức bàn phím
+          </span>
+        `;
+
+        currentQuizIdx = 0;
+        quizScore = 0;
+        ensureQuizBodyStructure();
+        showQuizQuestion();
+      }
+
+      function showQuizQuestion() {
+        ensureQuizBodyStructure();
+        const q = quizQuestions[currentQuizIdx];
+        const progressBadge = document.getElementById('quizProgressText');
+        const progressFill = document.getElementById('quizProgressFill');
+        const scoreBadge = document.getElementById('quizScoreText');
+        const qText = document.getElementById('quizQuestion');
+        const optionsGrid = document.getElementById('quizOptions');
+        const feedbackBox = document.getElementById('quizFeedback');
+        const btnNext = document.getElementById('btnQuizNext');
+
+        const stepNum = currentQuizIdx + 1;
+        progressBadge.textContent = `CÂU HỎI ${stepNum} / ${quizQuestions.length}`;
+        if (progressFill) {
+          progressFill.style.width = `${Math.round((stepNum / quizQuestions.length) * 100)}%`;
+        }
+        scoreBadge.textContent = `Điểm số: ${quizScore} / ${quizQuestions.length}`;
+        qText.textContent = q.q;
+
+        feedbackBox.className = 'quiz-feedback-box d-none';
+        btnNext.className = 'btn-quiz-next d-none';
+
+        optionsGrid.innerHTML = q.opts.map((opt, idx) => `
+          <button type="button" class="quiz-opt-btn" data-idx="${idx}">
+            <span class="opt-letter">${String.fromCharCode(65 + idx)}</span>
+            <span class="opt-text">${opt}</span>
+          </button>
+        `).join('');
+
+        const optBtns = optionsGrid.querySelectorAll('.quiz-opt-btn');
+        optBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const selectedIdx = parseInt(btn.dataset.idx, 10);
+            optBtns.forEach(b => b.disabled = true);
+
+            const correctLetter = String.fromCharCode(65 + q.correct);
+            const correctText = `${correctLetter}. ${q.opts[q.correct]}`;
+
+            playSwitchSound();
+            if (selectedIdx === q.correct) {
+              quizScore++;
+              scoreBadge.textContent = `Điểm số: ${quizScore} / ${quizQuestions.length}`;
+              btn.classList.add('correct');
+              feedbackBox.className = 'quiz-feedback-box correct';
+              feedbackBox.innerHTML = `
+                <div class="qfb-ans">Chính xác! — Đáp án đúng: ${correctText}</div>
+                <div class="qfb-exp"><strong>Giải thích:</strong> ${q.exp}</div>
+              `;
+            } else {
+              btn.classList.add('wrong');
+              optBtns[q.correct].classList.add('correct');
+              feedbackBox.className = 'quiz-feedback-box wrong';
+              feedbackBox.innerHTML = `
+                <div class="qfb-ans">Chưa chính xác! — Đáp án đúng: ${correctText}</div>
+                <div class="qfb-exp"><strong>Giải thích:</strong> ${q.exp}</div>
+              `;
+            }
+
+            feedbackBox.classList.remove('d-none');
+            if (currentQuizIdx < quizQuestions.length - 1) {
+              btnNext.textContent = 'CÂU HỎI TIẾP THEO →';
+            } else {
+              btnNext.textContent = 'XEM KẾT QUẢ TỔNG KẾT →';
+            }
+            btnNext.classList.remove('d-none');
+          });
+        });
+      }
+
+      function bindQuizNextButton() {
+        const btnNext = document.getElementById('btnQuizNext');
+        if (!btnNext) return;
+        btnNext.onclick = () => {
+          if (currentQuizIdx < quizQuestions.length - 1) {
+            currentQuizIdx++;
+            showQuizQuestion();
+          } else {
+            const quizBody = document.getElementById('quizBody');
+            const pct = Math.round((quizScore / quizQuestions.length) * 100);
+            const rank = quizScore >= 9
+              ? 'Xuất sắc! Bạn đã nắm rất vững cấu tạo và chức năng bàn phím máy tính.'
+              : quizScore >= 7
+                ? 'Rất tốt! Kiến thức bàn phím của bạn khá vững vàng.'
+                : 'Hãy ôn lại các cụm phím, hàng phím và làm lại thử thách để nhớ lâu hơn nhé.';
+
+            quizBody.innerHTML = `
+              <div style="text-align: center; padding: 28px 16px;">
+                <div style="width: 64px; height: 64px; border-radius: 18px; background: #f0f9ff; border: 1.5px solid #bae6fd; color: #0284c7; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15l-2 5l9-9l-9-9l2 5l-7 4z"/></svg>
+                </div>
+                <h2 style="font-size: 1.65rem; font-weight: 800; color: #0284c7; margin-bottom: 8px;">
+                  Kết quả: ${quizScore} / ${quizQuestions.length} Điểm (${pct}%)
+                </h2>
+                <p style="font-size: 1rem; font-weight: 600; color: #334155; margin-bottom: 24px;">
+                  ${rank}
+                </p>
+                <button type="button" class="btn-quiz-next" id="btnRestartQuiz">
+                  LÀM LẠI TỪ ĐẦU
+                </button>
+              </div>
+            `;
+
+            document.getElementById('btnRestartQuiz')?.addEventListener('click', () => {
+              renderQuizTab();
+            });
+          }
+        };
+      }
+      bindQuizNextButton();
+
+      // 12. Tab 5: TỪ ĐIỂN PHÍM (22 PHÍM CHỨC NĂNG)
+      function renderDictTab() {
+        mainDetailGrid.classList.add('d-none');
+        quizContainer.classList.add('d-none');
+        dictContainer.classList.remove('d-none');
+        clearAllHighlights();
+
+        subChipsWrap.innerHTML = `
+          <span style="font-size: 0.85rem; font-weight: 700; color: #0284c7;">
+            📖 Từ Điển 22 Phím Chức Năng Tiêu Chuẩn Trên Bàn Phím Máy Tính
+          </span>
+        `;
+
+        renderDictCards(dict22Keys);
+
+        const searchInput = document.getElementById('dictSearchInput');
+        if (searchInput) {
+          searchInput.value = '';
+          searchInput.oninput = () => {
+            const val = searchInput.value.toLowerCase().trim();
+            const filtered = dict22Keys.filter(item => 
+              item.key.toLowerCase().includes(val) || 
+              item.name.toLowerCase().includes(val) || 
+              item.desc.toLowerCase().includes(val)
+            );
+            renderDictCards(filtered);
+          };
+        }
+      }
+
+      function renderDictCards(list) {
+        const grid = document.getElementById('dictCardsGrid');
+        if (!grid) return;
+
+        if (list.length === 0) {
+          grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 30px; color: #64748b;">Không tìm thấy phím phù hợp với từ khóa!</div>`;
+          return;
+        }
+
+        grid.innerHTML = list.map(item => `
+          <div class="dict-card-item">
+            <div class="dci-top">
+              <span class="dci-keycap">${item.key}</span>
+              <span class="dci-name">${item.name}</span>
+            </div>
+            <p class="dci-desc">${item.desc}</p>
+          </div>
+        `).join('');
+      }
+
+      // 13. Tabs Switch Events
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentTab = btn.dataset.tab;
+
+          if (currentTab === 'clusters') renderClustersTab();
+          else if (currentTab === 'rows') renderRowsTab();
+          else if (currentTab === 'free') renderFreeTab();
+          else if (currentTab === 'quiz') renderQuizTab();
+          else if (currentTab === 'dict') renderDictTab();
+        });
+      });
+
+      // 14. Keydown Interactive Handler (For Real Keyboard & Free mode)
+      window.addEventListener('keydown', (e) => {
+        const keyEl = document.querySelector(`.key[data-code="${e.code}"]`);
+        if (keyEl) {
+          playSwitchSound();
+          keyEl.classList.add('pressed');
+
+          if (currentTab === 'free') {
+            explainKeyDetail(keyEl, e.code, e.key);
+          }
+        }
+
+        // Toggle LEDs
+        if (e.getModifierState) {
+          const numLed = document.getElementById('led-num');
+          const capsLed = document.getElementById('led-caps');
+          const scrLed = document.getElementById('led-scr');
+          if (numLed) numLed.classList.toggle('on', e.getModifierState('NumLock'));
+          if (capsLed) capsLed.classList.toggle('on', e.getModifierState('CapsLock'));
+          if (scrLed) scrLed.classList.toggle('on', e.getModifierState('ScrollLock'));
+        }
+      });
+
+      window.addEventListener('keyup', (e) => {
+        const keyEl = document.querySelector(`.key[data-code="${e.code}"]`);
+        if (keyEl) {
+          keyEl.classList.remove('pressed');
+        }
+      });
+
+      // 15. Keycap Click Handler
+      allKeys.forEach(k => {
+        k.addEventListener('click', () => {
+          playSwitchSound();
+          k.classList.add('pressed');
+          setTimeout(() => k.classList.remove('pressed'), 200);
+
+          if (currentTab === 'free') {
+            explainKeyDetail(k, k.dataset.code, k.textContent.trim());
+          }
+        });
+      });
+
+      function explainKeyDetail(el, code, keyChar) {
+        const keyText = el.textContent.trim().replace(/\s+/g, ' ');
+        const cl = el.dataset.cluster || 'alpha';
+        const rw = el.dataset.row || 'home';
+
+        if (keyText.length <= 2) {
+          detailIcon.textContent = keyText;
+        } else {
+          detailIcon.innerHTML = clusterIcons.alpha;
+        }
+        detailTitle.textContent = `Phím ${keyText}`;
+        detailSubtitle.textContent = `Mã phần cứng: ${code} • Cụm: ${cl.toUpperCase()} • Hàng: ${rw.toUpperCase()}`;
+        detailContent.textContent = `Phím "${keyText}" thuộc Cụm ${cl === 'alpha' ? 'Chữ & Số Chính' : cl === 'fn' ? 'Chức Năng' : cl === 'arrow' ? 'Điều Hướng' : 'Số Phụ'} trên ${rw === 'home' ? 'Hàng Phím Cơ Sở' : rw === 'top' ? 'Hàng Phím Trên' : rw === 'bottom' ? 'Hàng Phím Dưới' : rw === 'number' ? 'Hàng Phím Số' : 'Hàng Phím Chức Năng'}.`;
+        
+        detailBoxTip.innerHTML = `<strong>Cách dùng trong thực tế:</strong><br />Dùng ngón tay chuẩn theo kỹ thuật gõ 10 ngón Touch Typing để nhấn phím "${keyText}".`;
+        detailPoints.innerHTML = `
+          <li><strong>Tổ hợp phổ biến:</strong> Kết hợp với Ctrl hoặc Alt để kích hoạt phím tắt nhanh trong Word, Excel, PowerPoint.</li>
+          <li><strong>Mã gửi về hệ điều hành:</strong> KeyboardEvent.code: <code>${code}</code></li>
+        `;
+      }
+
+      // Initial Default View
+      renderClustersTab();
+
+      // 16. Dropdown toggle support
+      const toolsDropdown = document.getElementById('nav-tools-dropdown');
+      const btnTools = document.getElementById('btn-tools-dropdown');
+      if (toolsDropdown && btnTools) {
+        btnTools.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toolsDropdown.classList.toggle('open');
+        });
+        document.addEventListener('click', () => {
+          toolsDropdown.classList.remove('open');
+        });
+      }
+    })();
+  </script>
+  <script src="auth.js"></script>
+</body>
+
+</html>

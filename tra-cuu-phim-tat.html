@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tra Cứu Phím Tắt - Tin Học Văn Phòng</title>
+  <meta name="description"
+    content="Bảng tra cứu phím tắt chuẩn tin học văn phòng: Windows, Outlook, Word, Excel, PowerPoint." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      background: #f0f7ff;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .subpage-container {
+      max-width: 1240px;
+      width: 100%;
+      margin: 28px auto 80px;
+      padding: 0 clamp(16px, 3vw, 32px);
+      flex: 1;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Hero Banner */
+    .shortcut-hero {
+      background: #0284c7;
+      border-radius: 28px;
+      padding: clamp(28px, 4vw, 44px);
+      color: #ffffff;
+      box-shadow: 0 12px 32px rgba(2, 132, 199, 0.2);
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .sh-pill-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .sh-title {
+      font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+
+    .sh-desc {
+      font-size: 0.96rem;
+      line-height: 1.68;
+      color: #e0f2fe;
+      margin-bottom: 26px;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    /* Filter & Search Controls (Khung thanh công cụ chuẩn mẫu) */
+    .sh-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      padding: 10px 14px;
+      border-radius: 22px;
+      border: 1.5px solid #bae6fd;
+      box-shadow: 0 10px 28px rgba(3, 105, 161, 0.16);
+    }
+
+    /* Ô tìm kiếm nằm trước (bên trái) */
+    .sh-search-box {
+      position: relative;
+      min-width: 260px;
+      flex: 1;
+    }
+
+    .sh-search-input {
+      width: 100%;
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      padding: 11px 16px 11px 42px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #1e293b;
+      outline: none;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+
+    .sh-search-input::placeholder {
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .sh-search-input:focus {
+      background: #ffffff;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+    }
+
+    .sh-search-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #64748b;
+      pointer-events: none;
+    }
+
+    /* Khung viền lồng nút Tất cả và 5 nút bộ môn (bên phải) */
+    .sh-tabs {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+      background: #f1f5f9;
+      border: 1.5px solid #e2e8f0;
+      padding: 5px;
+      border-radius: 15px;
+    }
+
+    .sh-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 15px;
+      border-radius: 11px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: #64748b;
+      font-weight: 800;
+      font-size: 0.78rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .sh-tab-btn svg {
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+
+    .sh-tab-btn:hover {
+      color: #0284c7;
+      background: rgba(255, 255, 255, 0.65);
+    }
+
+    .sh-tab-btn.active {
+      background: #ffffff;
+      color: #0284c7;
+      border-color: #bae6fd;
+      box-shadow: 0 3px 10px rgba(2, 132, 199, 0.14);
+    }
+
+    .sh-tab-btn.active svg {
+      opacity: 1;
+      stroke: #0284c7;
+    }
+
+    @media (max-width: 960px) {
+      .sh-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .sh-tabs {
+        justify-content: center;
+      }
+    }
+
+    /* Count Bar */
+    .sh-count-bar {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      color: #475569;
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .sh-count-badge {
+      background: #e0f2fe;
+      color: #0284c7;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.8rem;
+    }
+
+    /* Grid of Shortcuts (Top-Down Card Layout) */
+    .shortcuts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 18px;
+    }
+
+    @media (max-width: 640px) {
+      .shortcuts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .shortcut-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 20px 22px;
+      border: 1.5px solid #e0f2fe;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.04);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .shortcut-card:hover {
+      border-color: #0284c7;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(2, 132, 199, 0.12);
+    }
+
+    /* Top Row: App Badge + Copy Button */
+    .sc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .sc-app-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 4px 11px;
+      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Distinct badge colors */
+    /* Phím chứa nhiều tiêu đề khi ở tab Tất cả: màu xám thanh lịch */
+    .tag-multi {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+    }
+    /* Word: Xanh dương đậm đà */
+    .tag-word {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #93c5fd;
+    }
+    /* Excel: Xanh lá đậm đà */
+    .tag-excel {
+      background: #d1fae5;
+      color: #047857;
+      border: 1px solid #6ee7b7;
+    }
+    /* PowerPoint: Cam gạch đậm đà */
+    .tag-ppt {
+      background: #ffedd5;
+      color: #c2410c;
+      border: 1px solid #fdba74;
+    }
+    /* Outlook: Tím chàm Indigo riêng biệt */
+    .tag-outlook {
+      background: #e0e7ff;
+      color: #3730a3;
+      border: 1px solid #a5b4fc;
+    }
+    /* Windows: Xanh lơ Sky Cyan đặc trưng */
+    .tag-windows {
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #7dd3fc;
+    }
+
+    /* Copy Button */
+    .btn-copy-key {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #64748b;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .btn-copy-key:hover {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      color: #0284c7;
+    }
+
+    .btn-copy-key:active {
+      transform: scale(0.92);
+    }
+
+    .copy-tooltip {
+      position: absolute;
+      top: -26px;
+      right: 0;
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .copy-tooltip.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Middle: Keys */
+    .sc-keys {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 2px 0;
+    }
+
+    kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      height: 32px;
+      padding: 0 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #0f172a;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      box-shadow: 0 3px 0 #cbd5e1, 0 3px 6px rgba(0, 0, 0, 0.04);
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    kbd.kbd-arrow {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0284c7;
+      padding: 0 9px;
+    }
+
+    .shortcut-card:hover kbd {
+      border-color: #94a3b8;
+      box-shadow: 0 3px 0 #94a3b8, 0 4px 8px rgba(2, 132, 199, 0.08);
+    }
+
+    .key-plus {
+      color: #94a3b8;
+      font-weight: 700;
+      font-size: 0.86rem;
+      margin: 0 2px;
+    }
+
+    .key-word {
+      font-weight: 800;
+      color: #0284c7;
+      font-size: 0.84rem;
+      padding: 0 4px;
+    }
+
+    /* Bottom: Full Width Description */
+    .sc-desc {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #334155;
+      line-height: 1.55;
+      border-top: 1px dashed #e2e8f0;
+      padding-top: 13px;
+      margin-top: 2px;
+    }
+
+    /* Empty state */
+    .sh-empty-state {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1.5px dashed #cbd5e1;
+      color: #64748b;
+      grid-column: 1 / -1;
+    }
+
+    .sh-empty-state svg {
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+
+    .sh-empty-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #075985;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ========================================================================
+       1. STICKY HEADER NAVBAR (ĐỒNG BỘ 100% VỚI INDEX.HTML)
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon-box" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
+            <circle cx="13" cy="15.5" r="1.8" fill="#4f46e5" />
+            <circle cx="23" cy="15.5" r="1.8" fill="#4f46e5" />
+            <path d="M15.5 19.5c1.2 1.2 3.8 1.2 5 0" stroke="#ec4899" stroke-width="2" stroke-linecap="round" />
+            <path d="M12 7V4.5M24 7V4.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M11 29.5h14" stroke="#93c5fd" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">TIN HỌC VĂN PHÒNG</span>
+          <span class="brand-subtitle">Đào tạo Tin học Trực tuyến</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <!-- 1. KHÓA HỌC LMS -->
+        <a href="index.html#khoa-hoc">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+          <span>KHÓA HỌC LMS</span>
+        </a>
+
+        <!-- 2. LỘ TRÌNH HỌC TẬP -->
+        <a href="lo-trinh-hoc-tap.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="6" cy="19" r="3" />
+            <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" />
+            <circle cx="18" cy="5" r="3" />
+          </svg>
+          <span>LỘ TRÌNH HỌC TẬP</span>
+        </a>
+
+        <!-- 3. ÔN LUYỆN & THI THỬ -->
+        <a href="on-luyen-thi-thu.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+          <span>ÔN LUYỆN &amp; THI THỬ</span>
+        </a>
+
+        <!-- 4. DIỄN ĐÀN -->
+        <a href="index.html#cong-dong">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>DIỄN ĐÀN</span>
+        </a>
+
+        <!-- 5. CÔNG CỤ & TIỆN ÍCH -->
+        <div class="nav-dropdown-wrap" id="nav-tools-dropdown">
+          <button type="button" class="nav-link-dropdown nav-dropdown-trigger" id="btn-tools-dropdown"
+            style="color: var(--water-primary);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+            <span>CÔNG CỤ &amp; TIỆN ÍCH</span>
+            <svg class="nav-dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="3">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="nav-dropdown-content">
+            <!-- 1. Luyện gõ phím 10 ngón -->
+            <a href="luyen-go-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8"
+                    stroke-width="2.2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>1. Luyện gõ phím 10 ngón</strong>
+                <small>Luyện gõ tiếng Việt Telex &amp; kiểm tra WPM</small>
+              </div>
+            </a>
+
+            <!-- 2. Tra cứu Phím tắt -->
+            <a href="tra-cuu-phim-tat.html" class="nav-sub-item active">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>2. Tra cứu Phím tắt</strong>
+                <small>Phím tắt thông dụng Windows, Word, Excel, PPT, Outlook</small>
+              </div>
+            </a>
+
+            <!-- 3. Kiểm tra Bàn phím Online -->
+            <a href="kiem-tra-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <circle cx="7" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="12" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="17" cy="9" r="1" fill="#0284c7" />
+                  <line x1="6" y1="14" x2="18" y2="14" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>3. Kiểm tra Bàn phím Online</strong>
+                <small>Phát hiện kẹt/liệt phím, đo NKRO &amp; Switch cơ</small>
+              </div>
+            </a>
+
+            <!-- 4. Giới thiệu Bàn phím Máy tính -->
+            <a href="tim-hieu-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="#e0f2fe"
+                    fill-opacity="0.6" />
+                  <path d="M6 6h10M6 10h10M6 14h6" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>4. Giới thiệu Bàn phím Máy tính</strong>
+                <small>Cấu tạo 100% Full-size, các hàng phím &amp; gờ nổi F/J</small>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 6. CỬA HÀNG -->
+        <a href="index.html#cua-hang">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span>CỬA HÀNG</span>
+        </a>
+      </nav>
+
+      <a href="index.html#dang-nhap" class="btn-login">ĐĂNG NHẬP</a>
+    </div>
+  </header>
+
+  <!-- Side frames -->
+  <div class="site-side-frame left" aria-hidden="true"></div>
+  <div class="site-side-frame right" aria-hidden="true"></div>
+
+  <!-- Main Container -->
+  <main class="subpage-container">
+    <div class="shortcut-hero">
+      <div class="sh-pill-top">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        </svg>
+        HỆ THỐNG TRA CỨU PHÍM TẮT TIN HỌC VĂN PHÒNG
+      </div>
+      <h1 class="sh-title">TRA CỨU PHÍM TẮT THÔNG DỤNG</h1>
+      <p class="sh-desc">
+        Khám phá và tra cứu nhanh các phím tắt thông dụng trên Windows và bộ ứng dụng Microsoft Office. Hệ thống tổng hợp, phân loại phím tắt theo 5 nhóm: <strong>Windows, Outlook, Word, Excel và PowerPoint</strong>, kèm theo công dụng chi tiết, giúp người học dễ dàng tìm kiếm, ghi nhớ và vận dụng để nâng cao hiệu quả học tập, làm việc.
+      </p>
+
+      <div class="sh-controls">
+        <!-- 1. Ô tìm kiếm nằm trước (bên trái) -->
+        <div class="sh-search-box">
+          <svg class="sh-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.2">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input type="text" id="shortcut-search" class="sh-search-input"
+            placeholder="Tìm phím tắt (vd: 'in đậm', 'căn lề', Ctrl+C, Win+D, F5...)" />
+        </div>
+
+        <!-- 2. Nút Tất cả và 5 nút bộ môn lồng trong khung viền nền -->
+        <div class="sh-tabs">
+          <button class="sh-tab-btn active" data-filter="all">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" />
+            </svg>
+            <span>Tất cả</span>
+          </button>
+          <button class="sh-tab-btn" data-filter="outlook">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+            <span>Outlook</span>
+          </button>
+          <button class="sh-tab-btn" data-filter="windows">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="12" y1="3" x2="12" y2="21" />
+            </svg>
+            <span>Windows</span>
+          </button>
+          <button class="sh-tab-btn" data-filter="word">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="16" y2="17" />
+            </svg>
+            <span>MS Word</span>
+          </button>
+          <button class="sh-tab-btn" data-filter="excel">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="3" y1="15" x2="21" y2="15" /><line x1="9" y1="3" x2="9" y2="21" />
+            </svg>
+            <span>MS Excel</span>
+          </button>
+          <button class="sh-tab-btn" data-filter="ppt">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+            <span>MS PowerPoint</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Count Bar -->
+    <div class="sh-count-bar">
+      <span>Kết quả tra cứu:</span>
+      <span class="sh-count-badge" id="shortcut-count">Đang tải phím tắt...</span>
+    </div>
+
+    <!-- Dynamic Container for Shortcuts Grid -->
+    <div class="shortcuts-grid" id="shortcuts-container">
+      <!-- Cards will be dynamically rendered here -->
+    </div>
+
+    <!-- Empty State -->
+    <div class="sh-empty-state" id="shortcut-empty">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        <line x1="8" y1="11" x2="14" y2="11" />
+      </svg>
+      <div class="sh-empty-title">Không tìm thấy phím tắt phù hợp</div>
+      <p>Vui lòng thử tìm kiếm với từ khóa khác như "ctrl", "win", "f5", "desktop", "in đậm"...</p>
+    </div>
+
+  </main>
+
+      <!-- Global Footer -->
+  <footer class="site-footer simple-footer">
+    <div class="footer-copyright">
+      © 2026 TRUNG TÂM TIN HỌC VĂN PHÒNG • BẢN QUYỀN THUỘC VỀ NHÓM 2
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      // 1. Dropdown Header Behavior
+      const toolsDropdown = document.getElementById('nav-tools-dropdown');
+      const toolsBtn = document.getElementById('btn-tools-dropdown');
+
+      if (toolsBtn && toolsDropdown) {
+        toolsBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toolsDropdown.classList.toggle('open');
+        });
+
+        const toolsContent = toolsDropdown.querySelector('.nav-dropdown-content');
+        if (toolsContent) {
+          toolsContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        }
+
+        document.addEventListener('click', () => {
+          toolsDropdown.classList.remove('open');
+        });
+      }
+
+      // 2. Full Unified Shortcuts Dataset (Sorted strictly by table order: Outlook -> Windows -> Word -> Excel -> PowerPoint)
+      // Duplicates across sections carry all respective app tags (e.g. WORD • EXCEL • POWERPOINT)
+            const SHORTCUTS = [
+        {
+          key: ["Ctrl", "Shift", "M"],
+          apps: ["outlook"],
+          desc: "Mở cửa sổ New Message để soạn và gửi một thư email mới.",
+          rawKey: "CTRL+Shift+M",
+          keywords: "outlook ctrl shift m"
+        },
+        {
+          key: ["Ctrl", "R"],
+          apps: ["outlook"],
+          desc: "Mở chức năng Reply để trả lời người gửi thư email đang được chọn hoặc đang mở.",
+          rawKey: "CTRL+R",
+          keywords: "outlook ctrl r"
+        },
+        {
+          key: ["Ctrl", "F"],
+          apps: ["outlook"],
+          desc: "Mở chức năng Forward để chuyển tiếp thư email đã chọn cho người nhận khác.",
+          rawKey: "CTRL + F",
+          keywords: "outlook ctrl f"
+        },
+        {
+          key: ["Ctrl", "Shift", "R"],
+          apps: ["outlook"],
+          desc: "Mở chức năng Reply All để trả lời người gửi và tất cả người nhận có trong thư email gốc.",
+          rawKey: "Ctrl + Shift + R",
+          keywords: "outlook ctrl shift r"
+        },
+        {
+          key: ["Ctrl + C", "rồi", "Ctrl + V"],
+          apps: ["outlook"],
+          desc: "Sao chép thư email đã chọn và dán bản sao vào thư mục Outlook. Thư gốc vẫn được giữ nguyên.",
+          rawKey: "CTRL + C, rồi CTRL + V để tạo bản sao thư",
+          keywords: "outlook ctrl + c rồi ctrl + v"
+        },
+        {
+          key: ["Ctrl", "K"],
+          apps: ["outlook", "word", "excel", "ppt"],
+          desc: "Chèn hoặc chỉnh sửa siêu liên kết (Hyperlink) cho văn bản, ô tính hoặc đối tượng đã chọn.",
+          rawKey: "Ctrl + K",
+          keywords: "hyperlink link chen lien ket web"
+        },
+        {
+          key: ["F7"],
+          apps: ["outlook", "ppt"],
+          desc: "Kiểm tra lỗi chính tả và ngữ pháp trong văn bản hoặc nội dung thư đang soạn thảo.",
+          rawKey: "F7",
+          keywords: "spelling check loi chinh ta ngu phap"
+        },
+        {
+          key: ["F9"],
+          apps: ["outlook"],
+          desc: "Thực hiện thao tác Send/Receive để gửi các thư đang chờ và kiểm tra, nhận thư email mới.",
+          rawKey: "F9",
+          keywords: "outlook f9"
+        },
+        {
+          key: ["Delete"],
+          apps: ["outlook"],
+          desc: "Xóa thư email đã chọn, thông thường chuyển thư vào thư mục Deleted Items.",
+          rawKey: "Đánh dấu thư, nhấn Delete",
+          keywords: "outlook delete"
+        },
+        {
+          key: ["Ctrl", "Shift", "E"],
+          apps: ["outlook"],
+          desc: "Mở hộp thoại Create New Folder để tạo thư mục mới, giúp tổ chức và quản lý thư email.",
+          rawKey: "Ctrl+Shift+E",
+          keywords: "outlook ctrl shift e"
+        },
+        {
+          key: ["Ctrl", "Shift", "V"],
+          apps: ["outlook"],
+          desc: "Mở hộp thoại Move Items để di chuyển thư email đã chọn sang thư mục khác trong Outlook.",
+          rawKey: "Ctrl+Shift+V",
+          keywords: "outlook ctrl shift v"
+        },
+        {
+          key: ["Ctrl", "6"],
+          apps: ["outlook"],
+          desc: "Chuyển sang chế độ xem danh sách thư mục (Folder List), hiển thị các thư mục trong Outlook.",
+          rawKey: "CTRL + 6",
+          keywords: "outlook ctrl 6"
+        },
+        {
+          key: ["Ctrl", "O"],
+          apps: ["outlook"],
+          desc: "Mở thư email đang được chọn trong một cửa sổ riêng để xem nội dung.",
+          rawKey: "CTRL + O",
+          keywords: "outlook ctrl o"
+        },
+        {
+          key: ["Ctrl", "Shift", "G"],
+          apps: ["outlook"],
+          desc: "Mở hộp thoại Custom để thiết lập cờ theo dõi (Follow Up), thời hạn và lời nhắc cho thư email đã chọn.",
+          rawKey: "CTRL+SHIFT+G",
+          keywords: "outlook ctrl shift g"
+        },
+        {
+          key: ["Ctrl", "Shift", "K"],
+          apps: ["outlook"],
+          desc: "Mở cửa sổ New Task để tạo một tác vụ mới, phục vụ việc quản lý công việc cần thực hiện.",
+          rawKey: "CTRL + Shift + K",
+          keywords: "outlook ctrl shift k"
+        },
+        {
+          key: ["Ctrl", "1"],
+          apps: ["outlook"],
+          desc: "Chuyển sang chế độ Mail để xem, gửi, nhận và quản lý thư email.",
+          rawKey: "CTRL + 1",
+          keywords: "outlook ctrl 1"
+        },
+        {
+          key: ["Ctrl", "2"],
+          apps: ["outlook"],
+          desc: "Chuyển sang Calendar để xem lịch, tạo và quản lý cuộc hẹn hoặc cuộc họp.",
+          rawKey: "CTRL + 2",
+          keywords: "outlook ctrl 2"
+        },
+        {
+          key: ["Ctrl", "3"],
+          apps: ["outlook"],
+          desc: "Chuyển sang Contacts để xem và quản lý thông tin liên hệ trong danh bạ Outlook.",
+          rawKey: "CTRL+3",
+          keywords: "outlook ctrl 3"
+        },
+        {
+          key: ["Ctrl", "4"],
+          apps: ["outlook"],
+          desc: "Chuyển sang Tasks để xem và quản lý danh sách công việc cần thực hiện.",
+          rawKey: "CTRL+4",
+          keywords: "outlook ctrl 4"
+        },
+        {
+          key: ["Ctrl", "5"],
+          apps: ["outlook"],
+          desc: "Chuyển sang Notes để xem, tạo và quản lý các ghi chú trong Outlook.",
+          rawKey: "CTRL+5",
+          keywords: "outlook ctrl 5"
+        },
+        {
+          key: ["Esc"],
+          apps: ["outlook"],
+          desc: "Đóng cửa sổ thư email đang mở hoặc thoát khỏi thao tác hiện tại. Khi đang xem kết quả tìm kiếm, có thể dùng để thoát hoặc xóa kết quả tìm kiếm tùy ngữ cảnh.",
+          rawKey: "ESC",
+          keywords: "outlook esc"
+        },
+        {
+          key: ["F3"],
+          apps: ["outlook"],
+          desc: "Đưa con trỏ đến hộp tìm kiếm để nhanh chóng tìm thư email hoặc nội dung trong Outlook.",
+          rawKey: "F3",
+          keywords: "outlook f3"
+        },
+        {
+          key: ["Ctrl", "Shift", "F"],
+          apps: ["outlook"],
+          desc: "Mở hộp thoại Advanced Find để tìm kiếm nâng cao theo nhiều điều kiện như người gửi, chủ đề, nội dung và thời gian.",
+          rawKey: "CTRL+SHIFT+F",
+          keywords: "outlook ctrl shift f"
+        },
+        {
+          key: ["Ctrl", "E"],
+          apps: ["outlook"],
+          desc: "Đưa con trỏ đến hộp tìm kiếm để tìm thư email theo từ khóa hoặc thông tin liên quan.",
+          rawKey: "CTRL+E",
+          keywords: "outlook ctrl e"
+        },
+        {
+          key: ["F4"],
+          apps: ["outlook"],
+          desc: "Mở chức năng Find and Replace để tìm kiếm văn bản trong nội dung thư email đang mở.",
+          rawKey: "F4",
+          keywords: "outlook f4"
+        },
+        {
+          key: ["Ctrl", "Alt", "Z"],
+          apps: ["outlook"],
+          desc: "Mở rộng phạm vi tìm kiếm để bao gồm các thư mục con hoặc truy cập tùy chọn phạm vi tìm kiếm trong Outlook cổ điển.",
+          rawKey: "CTRL+Alt+Z",
+          keywords: "outlook ctrl alt z"
+        },
+        {
+          key: ["Ctrl", "C"],
+          apps: ["windows", "word", "excel", "ppt"],
+          desc: "Sao chép văn bản, tập tin, ô tính, hình ảnh hoặc đối tượng đã chọn vào bộ nhớ tạm (Clipboard).",
+          rawKey: "Ctrl + C",
+          keywords: "copy sao chep clip board bo nho tam"
+        },
+        {
+          key: ["Ctrl", "X"],
+          apps: ["windows", "word", "excel", "ppt"],
+          desc: "Cắt văn bản, tập tin, ô tính hoặc đối tượng đã chọn để di chuyển đến vị trí khác.",
+          rawKey: "Ctrl + X",
+          keywords: "cut cat di chuyen"
+        },
+        {
+          key: ["Ctrl", "V"],
+          apps: ["windows", "word", "excel", "ppt"],
+          desc: "Dán nội dung, tập tin hoặc đối tượng đã sao chép/cắt từ bộ nhớ tạm vào vị trí hiện tại.",
+          rawKey: "Ctrl + V",
+          keywords: "paste dan paste noi dung"
+        },
+        {
+          key: ["Ctrl", "Z"],
+          apps: ["windows", "word", "excel", "ppt"],
+          desc: "Hoàn tác thao tác vừa thực hiện, khôi phục lại trạng thái trước đó.",
+          rawKey: "Ctrl + Z",
+          keywords: "undo hoan tac quay lai"
+        },
+        {
+          key: ["Ctrl", "A"],
+          apps: ["windows", "word", "excel", "ppt"],
+          desc: "Chọn toàn bộ nội dung văn bản, tập tin, ô tính hoặc các đối tượng trong vùng hiện tại.",
+          rawKey: "Ctrl + A",
+          keywords: "select all chon tat ca boi den"
+        },
+        {
+          key: ["Ctrl", "Mũi tên"],
+          apps: ["windows"],
+          desc: "Trong File Explorer, di chuyển tiêu điểm giữa các tập tin hoặc thư mục mà không làm mất các mục đã chọn trước đó. Có thể kết hợp với phím Space để chọn nhiều đối tượng không liền kề.",
+          rawKey: "Ctrl + một phím di chuyển (trái/phải/lên/xuống)",
+          keywords: "windows ctrl mũi tên"
+        },
+        {
+          key: ["Ctrl", "Shift", "Mũi tên"],
+          apps: ["windows"],
+          desc: "Mở rộng vùng lựa chọn bằng các phím mũi tên, giúp chọn nhiều tập tin, thư mục hoặc phần văn bản liên tiếp tùy ngữ cảnh.",
+          rawKey: "Ctrl + Shift + một phím di chuyển (trái/phải/lên/xuống)",
+          keywords: "windows ctrl shift mũi tên"
+        },
+        {
+          key: ["Ctrl", "Shift", "Kéo chuột"],
+          apps: ["windows"],
+          desc: "Tạo lối tắt (Shortcut) của tập tin hoặc thư mục tại vị trí thả chuột mà không di chuyển đối tượng gốc.",
+          rawKey: "Ctrl + Shift + dùng chuột kéo đi",
+          keywords: "windows ctrl shift kéo chuột"
+        },
+        {
+          key: ["Ctrl", "Mũi tên phải"],
+          apps: ["windows"],
+          desc: "Di chuyển con trỏ soạn thảo đến đầu từ tiếp theo trong văn bản.",
+          rawKey: "Ctrl + phím di chuyển sang phải",
+          keywords: "windows ctrl mũi tên phải"
+        },
+        {
+          key: ["Ctrl", "Mũi tên trái"],
+          apps: ["windows"],
+          desc: "Di chuyển con trỏ soạn thảo đến đầu từ trước đó trong văn bản.",
+          rawKey: "Ctrl + phím di chuyển sang trái",
+          keywords: "windows ctrl mũi tên trái"
+        },
+        {
+          key: ["Ctrl", "Mũi tên xuống"],
+          apps: ["windows"],
+          desc: "Di chuyển con trỏ soạn thảo đến đầu đoạn văn tiếp theo.",
+          rawKey: "Ctrl + phím di chuyển xuống",
+          keywords: "windows ctrl mũi tên xuống"
+        },
+        {
+          key: ["Ctrl", "Mũi tên lên"],
+          apps: ["windows"],
+          desc: "Di chuyển con trỏ soạn thảo đến đầu đoạn văn hiện tại hoặc đoạn văn trước đó.",
+          rawKey: "Ctrl + phím di chuyển lên",
+          keywords: "windows ctrl mũi tên lên"
+        },
+        {
+          key: ["Ctrl", "Esc"],
+          apps: ["windows"],
+          desc: "Mở menu Start của Windows, có chức năng tương tự phím Windows.",
+          rawKey: "Ctrl + Esc",
+          keywords: "windows ctrl esc"
+        },
+        {
+          key: ["Ctrl", "Tab"],
+          apps: ["windows"],
+          desc: "Chuyển sang thẻ (Tab) tiếp theo trong trình duyệt hoặc ứng dụng hỗ trợ nhiều thẻ.",
+          rawKey: "Ctrl + Tab",
+          keywords: "windows ctrl tab"
+        },
+        {
+          key: ["Ctrl", "Shift", "Tab"],
+          apps: ["windows"],
+          desc: "Chuyển về thẻ (Tab) trước đó trong trình duyệt hoặc ứng dụng hỗ trợ nhiều thẻ.",
+          rawKey: "Ctrl + Shift + Tab",
+          keywords: "windows ctrl shift tab"
+        },
+        {
+          key: ["Ctrl", "F4"],
+          apps: ["windows"],
+          desc: "Đóng tài liệu hoặc thẻ hiện tại trong ứng dụng hỗ trợ nhiều tài liệu hoặc thẻ, không nhất thiết đóng toàn bộ chương trình.",
+          rawKey: "Ctrl + F4",
+          keywords: "windows ctrl f4"
+        },
+        {
+          key: ["Ctrl", "Alt", "Tab"],
+          apps: ["windows"],
+          desc: "Hiển thị giao diện chuyển đổi giữa các cửa sổ đang mở, cho phép sử dụng phím mũi tên để lựa chọn cửa sổ muốn chuyển đến.",
+          rawKey: "Ctrl + Alt + Tab",
+          keywords: "windows ctrl alt tab"
+        },
+        {
+          key: ["Ctrl", "Shift", "Esc"],
+          apps: ["windows"],
+          desc: "Mở trực tiếp Task Manager để xem và quản lý các tiến trình, ứng dụng đang chạy và hiệu suất hệ thống.",
+          rawKey: "Ctrl + Shift + Esc",
+          keywords: "windows ctrl shift esc"
+        },
+        {
+          key: ["Alt", "Enter"],
+          apps: ["windows"],
+          desc: "Mở cửa sổ Properties để xem thông tin và thuộc tính của tập tin, thư mục hoặc đối tượng đang chọn.",
+          rawKey: "Alt + Enter",
+          keywords: "windows alt enter"
+        },
+        {
+          key: ["Alt", "F4"],
+          apps: ["windows"],
+          desc: "Đóng cửa sổ hoặc chương trình đang hoạt động. Nếu đang ở màn hình Desktop, mở hộp thoại tắt máy Windows.",
+          rawKey: "Alt + F4",
+          keywords: "windows alt f4"
+        },
+        {
+          key: ["Alt", "Tab"],
+          apps: ["windows"],
+          desc: "Chuyển đổi nhanh giữa các cửa sổ và ứng dụng đang mở.",
+          rawKey: "Alt + Tab",
+          keywords: "windows alt tab"
+        },
+        {
+          key: ["Alt", "Esc"],
+          apps: ["windows"],
+          desc: "Chuyển lần lượt giữa các cửa sổ đang mở theo thứ tự hoạt động mà không hiển thị giao diện lựa chọn như Alt + Tab.",
+          rawKey: "Alt + Esc",
+          keywords: "windows alt esc"
+        },
+        {
+          key: ["Alt", "Click chuột"],
+          apps: ["windows"],
+          desc: "Không phải phím tắt điều hướng chung của Windows. Trong một số ứng dụng, tổ hợp này có chức năng riêng, chẳng hạn chọn văn bản theo khối trong Microsoft Word.",
+          rawKey: "Alt + nhấn chuột",
+          keywords: "windows alt click chuột"
+        },
+        {
+          key: ["Alt", "F8"],
+          apps: ["windows"],
+          desc: "Hiển thị mật khẩu đang nhập trên màn hình đăng nhập Windows khi trường mật khẩu hỗ trợ chức năng này.",
+          rawKey: "Alt + F8",
+          keywords: "windows alt f8"
+        },
+        {
+          key: ["Alt", "Mũi tên trái"],
+          apps: ["windows"],
+          desc: "Quay lại trang hoặc vị trí trước đó trong File Explorer và các ứng dụng hỗ trợ điều hướng lịch sử.",
+          rawKey: "Alt + phím mũi tên trái",
+          keywords: "windows alt mũi tên trái"
+        },
+        {
+          key: ["Alt", "Mũi tên phải"],
+          apps: ["windows"],
+          desc: "Chuyển đến trang hoặc vị trí tiếp theo trong lịch sử điều hướng của File Explorer hay ứng dụng hỗ trợ.",
+          rawKey: "Alt + phím mũi tên phải",
+          keywords: "windows alt mũi tên phải"
+        },
+        {
+          key: ["Alt", "Space"],
+          apps: ["windows"],
+          desc: "Mở menu hệ thống của cửa sổ đang hoạt động, cho phép di chuyển, thay đổi kích thước, thu nhỏ hoặc đóng cửa sổ.",
+          rawKey: "Alt + phím cách",
+          keywords: "windows alt space"
+        },
+        {
+          key: ["Backspace"],
+          apps: ["windows"],
+          desc: "Xóa ký tự phía trước con trỏ trong văn bản. Trong một số cửa sổ điều hướng, có thể quay về vị trí trước đó.",
+          rawKey: "Backspace",
+          keywords: "windows backspace"
+        },
+        {
+          key: ["Shift"],
+          apps: ["windows"],
+          desc: "Khi giữ Shift lúc đưa đĩa CD/DVD vào ổ đĩa, có thể ngăn chức năng tự động chạy nội dung đĩa trên các phiên bản Windows hỗ trợ.",
+          rawKey: "Shift",
+          keywords: "windows shift"
+        },
+        {
+          key: ["Shift", "Delete"],
+          apps: ["windows"],
+          desc: "Xóa tập tin hoặc thư mục đã chọn mà không chuyển vào Recycle Bin (Thùng rác). Thường xuất hiện hộp thoại xác nhận trước khi xóa.",
+          rawKey: "Shift + Delete",
+          keywords: "windows shift delete"
+        },
+        {
+          key: ["Shift", "F10"],
+          apps: ["windows"],
+          desc: "Mở menu ngữ cảnh của đối tượng đang chọn, tương tự thao tác nhấn chuột phải.",
+          rawKey: "Shift + F10",
+          keywords: "windows shift f10"
+        },
+        {
+          key: ["Enter"],
+          apps: ["windows"],
+          desc: "Xác nhận thao tác, kích hoạt nút lệnh đang được chọn hoặc mở tập tin, thư mục đã chọn.",
+          rawKey: "Enter",
+          keywords: "windows enter"
+        },
+        {
+          key: ["F1"],
+          apps: ["windows"],
+          desc: "Mở phần trợ giúp (Help) của Windows hoặc ứng dụng đang sử dụng nếu được hỗ trợ.",
+          rawKey: "F1",
+          keywords: "windows f1"
+        },
+        {
+          key: ["F2"],
+          apps: ["windows"],
+          desc: "Đổi tên tập tin, thư mục hoặc đối tượng đang chọn trong File Explorer.",
+          rawKey: "F2",
+          keywords: "windows f2"
+        },
+        {
+          key: ["F3"],
+          apps: ["windows"],
+          desc: "Kích hoạt chức năng tìm kiếm tập tin hoặc thư mục trong File Explorer.",
+          rawKey: "F3",
+          keywords: "windows f3"
+        },
+        {
+          key: ["F4"],
+          apps: ["windows"],
+          desc: "Đưa tiêu điểm đến thanh địa chỉ của File Explorer hoặc hiển thị danh sách địa chỉ trong một số hộp thoại.",
+          rawKey: "F4",
+          keywords: "windows f4"
+        },
+        {
+          key: ["F5"],
+          apps: ["windows"],
+          desc: "Làm mới (Refresh) nội dung của cửa sổ, trang web hoặc danh sách tập tin đang hiển thị.",
+          rawKey: "F5",
+          keywords: "windows f5"
+        },
+        {
+          key: ["F6"],
+          apps: ["windows"],
+          desc: "Chuyển tiêu điểm lần lượt giữa các thành phần giao diện trong cửa sổ hoặc trên màn hình Desktop.",
+          rawKey: "F6",
+          keywords: "windows f6"
+        },
+        {
+          key: ["F10"],
+          apps: ["windows"],
+          desc: "Kích hoạt thanh menu của ứng dụng đang hoạt động nếu ứng dụng có hỗ trợ.",
+          rawKey: "F10",
+          keywords: "windows f10"
+        },
+        {
+          key: ["Tab"],
+          apps: ["windows"],
+          desc: "Di chuyển tiêu điểm đến thành phần giao diện tiếp theo như nút lệnh, ô nhập liệu hoặc tùy chọn.",
+          rawKey: "Tab",
+          keywords: "windows tab"
+        },
+        {
+          key: ["Win"],
+          apps: ["windows"],
+          desc: "Mở hoặc đóng menu Start của hệ điều hành Windows.",
+          rawKey: "Windows",
+          keywords: "windows win"
+        },
+        {
+          key: ["Win", "Break"],
+          apps: ["windows"],
+          desc: "Mở trang thông tin hệ thống (System/About) để xem thông số máy tính và thông tin Windows.",
+          rawKey: "Windows + Break",
+          keywords: "windows win break"
+        },
+        {
+          key: ["Win", "D"],
+          apps: ["windows"],
+          desc: "Hiển thị hoặc ẩn màn hình Desktop bằng cách thu nhỏ hoặc khôi phục các cửa sổ đang mở.",
+          rawKey: "Windows + D",
+          keywords: "windows win d"
+        },
+        {
+          key: ["Win", "M"],
+          apps: ["windows"],
+          desc: "Thu nhỏ tất cả cửa sổ có thể thu nhỏ để hiển thị màn hình Desktop.",
+          rawKey: "Windows + M",
+          keywords: "windows win m"
+        },
+        {
+          key: ["Win", "E"],
+          apps: ["windows"],
+          desc: "Mở File Explorer để truy cập và quản lý ổ đĩa, tập tin và thư mục.",
+          rawKey: "Windows + E",
+          keywords: "windows win e"
+        },
+        {
+          key: ["Win", "F"],
+          apps: ["windows"],
+          desc: "Trên Windows 10/11, mở Feedback Hub để gửi phản hồi về hệ điều hành nếu ứng dụng có sẵn.",
+          rawKey: "Windows + F",
+          keywords: "windows win f"
+        },
+        {
+          key: ["Ctrl", "Win", "F"],
+          apps: ["windows"],
+          desc: "Mở công cụ tìm kiếm máy tính trong mạng trên các phiên bản Windows hỗ trợ, thường liên quan đến môi trường mạng doanh nghiệp.",
+          rawKey: "Ctrl + Windows + F",
+          keywords: "windows ctrl win f"
+        },
+        {
+          key: ["Win", "F1"],
+          apps: ["windows"],
+          desc: "Trên một số phiên bản Windows cũ, mở trợ giúp hệ điều hành. Không còn là phím tắt trợ giúp thống nhất trên Windows 10/11.",
+          rawKey: "Windows + F1",
+          keywords: "windows win f1"
+        },
+        {
+          key: ["Win", "L"],
+          apps: ["windows"],
+          desc: "Khóa màn hình máy tính và yêu cầu xác thực để tiếp tục sử dụng.",
+          rawKey: "Windows + L",
+          keywords: "windows win l"
+        },
+        {
+          key: ["Win", "R"],
+          apps: ["windows"],
+          desc: "Mở hộp thoại Run để chạy chương trình, mở thư mục hoặc thực thi lệnh hệ thống.",
+          rawKey: "Windows + R",
+          keywords: "windows win r"
+        },
+        {
+          key: ["Win", "U"],
+          apps: ["windows"],
+          desc: "Mở phần Accessibility (Trợ năng) trong Settings để điều chỉnh các tính năng hỗ trợ người dùng.",
+          rawKey: "Windows + U",
+          keywords: "windows win u"
+        },
+        {
+          key: ["Win", "A"],
+          apps: ["windows"],
+          desc: "Mở Quick Settings trên Windows 11 hoặc Action Center trên Windows 10 để truy cập các cài đặt nhanh và thông báo tương ứng.",
+          rawKey: "Windows + A",
+          keywords: "windows win a"
+        },
+        {
+          key: ["Win", "C"],
+          apps: ["windows"],
+          desc: "Trước đây dùng để mở Cortana trên Windows 10. Chức năng này đã thay đổi hoặc bị loại bỏ trên các phiên bản Windows mới.",
+          rawKey: "Windows + C",
+          keywords: "windows win c"
+        },
+        {
+          key: ["Win", "Alt", "D"],
+          apps: ["windows"],
+          desc: "Hiển thị hoặc ẩn bảng ngày, giờ và lịch trên thanh tác vụ trong các phiên bản Windows hỗ trợ.",
+          rawKey: "Windows + Alt + D",
+          keywords: "windows win alt d"
+        },
+        {
+          key: ["Win", "I"],
+          apps: ["windows"],
+          desc: "Mở ứng dụng Settings để thay đổi các thiết lập của hệ điều hành.",
+          rawKey: "Windows + I",
+          keywords: "windows win i"
+        },
+        {
+          key: ["Win", "P"],
+          apps: ["windows"],
+          desc: "Mở menu Project để lựa chọn chế độ hiển thị khi kết nối máy chiếu hoặc màn hình ngoài, như Duplicate, Extend và Second screen only.",
+          rawKey: "Windows + P",
+          keywords: "windows win p"
+        },
+        {
+          key: ["Win", "B"],
+          apps: ["windows"],
+          desc: "Chuyển tiêu điểm bàn phím đến khu vực biểu tượng hệ thống trên thanh tác vụ (System Tray).",
+          rawKey: "Windows + B",
+          keywords: "windows win b"
+        },
+        {
+          key: ["Win", "G"],
+          apps: ["windows"],
+          desc: "Mở Xbox Game Bar để sử dụng các công cụ hỗ trợ chơi game như ghi màn hình, chụp ảnh và theo dõi hiệu suất.",
+          rawKey: "Windows + G",
+          keywords: "windows win g"
+        },
+        {
+          key: ["Win", "Y"],
+          apps: ["windows"],
+          desc: "Chuyển đổi đầu vào giữa màn hình Desktop và Windows Mixed Reality trên thiết bị, phiên bản Windows hỗ trợ.",
+          rawKey: "Windows + Y",
+          keywords: "windows win y"
+        },
+        {
+          key: ["Win", "O"],
+          apps: ["windows"],
+          desc: "Khóa hướng xoay màn hình trên các thiết bị Windows có hỗ trợ cảm biến xoay.",
+          rawKey: "Windows + O",
+          keywords: "windows win o"
+        },
+        {
+          key: ["Win", "X"],
+          apps: ["windows"],
+          desc: "Mở menu Quick Link chứa các công cụ quản trị như Device Manager, Disk Management, Terminal và Settings.",
+          rawKey: "Windows + X",
+          keywords: "windows win x"
+        },
+        {
+          key: ["Win", "T"],
+          apps: ["windows"],
+          desc: "Chuyển tiêu điểm lần lượt qua các biểu tượng ứng dụng trên thanh Taskbar bằng bàn phím.",
+          rawKey: "Windows + T",
+          keywords: "windows win t"
+        },
+        {
+          key: ["Win", "Z"],
+          apps: ["windows"],
+          desc: "Trên Windows 11, mở bảng Snap Layouts để lựa chọn bố cục sắp xếp cửa sổ. Trên một số phiên bản Windows cũ, tổ hợp này có chức năng khác.",
+          rawKey: "Windows + Z",
+          keywords: "windows win z"
+        },
+        {
+          key: ["Win", "J"],
+          apps: ["windows"],
+          desc: "Trên một số phiên bản Windows 10, chuyển tiêu điểm đến Windows Tip khi có gợi ý xuất hiện. Chức năng này không còn phổ biến trên Windows 11.",
+          rawKey: "Windows + J",
+          keywords: "windows win j"
+        },
+        {
+          key: ["Win", "0-9"],
+          apps: ["windows"],
+          desc: "Mở hoặc chuyển đến ứng dụng được ghim trên Taskbar theo vị trí tương ứng. Windows + 1 đến Windows + 9 chọn chín vị trí đầu, Windows + 0 chọn vị trí thứ mười.",
+          rawKey: "Windows + Số từ 0 - 9",
+          keywords: "windows win 0-9"
+        },
+        {
+          key: ["Win", "Alt", "0-9"],
+          apps: ["windows"],
+          desc: "Mở Jump List của ứng dụng trên Taskbar theo vị trí tương ứng, hiển thị các tác vụ và tập tin gần đây nếu được hỗ trợ.",
+          rawKey: "Windows + Alt + Số từ 0 – 9",
+          keywords: "windows win alt 0-9"
+        },
+        {
+          key: ["Win", "Shift", "M"],
+          apps: ["windows"],
+          desc: "Khôi phục các cửa sổ đã được thu nhỏ bằng tổ hợp Windows + M.",
+          rawKey: "Windows + Shift + M",
+          keywords: "windows win shift m"
+        },
+        {
+          key: ["Win", "Home"],
+          apps: ["windows"],
+          desc: "Thu nhỏ tất cả cửa sổ khác, chỉ giữ cửa sổ đang hoạt động. Nhấn lại để khôi phục các cửa sổ đó.",
+          rawKey: "Windows + Home",
+          keywords: "windows win home"
+        },
+        {
+          key: ["Win", "Shift", "Mũi tên lên"],
+          apps: ["windows"],
+          desc: "Kéo giãn cửa sổ đang hoạt động theo chiều dọc để chiếm chiều cao màn hình mà vẫn giữ nguyên chiều rộng.",
+          rawKey: "Windows + Shift + Phím mũi tên lên",
+          keywords: "windows win shift mũi tên lên"
+        },
+        {
+          key: ["Win", "Shift", "Mũi tên xuống"],
+          apps: ["windows"],
+          desc: "Khôi phục hoặc thu nhỏ cửa sổ đang được kéo giãn theo chiều dọc, tùy trạng thái cửa sổ và phiên bản Windows.",
+          rawKey: "Windows + Shift + Phím mũi tên xuống",
+          keywords: "windows win shift mũi tên xuống"
+        },
+        {
+          key: ["Win", "Shift", "Mũi tên trái"],
+          apps: ["windows"],
+          desc: "Di chuyển cửa sổ đang hoạt động sang màn hình bên trái trong hệ thống sử dụng nhiều màn hình.",
+          rawKey: "Windows + Shift + Phím mũi tên trái",
+          keywords: "windows win shift mũi tên trái"
+        },
+        {
+          key: ["Win", "Shift", "Mũi tên phải"],
+          apps: ["windows"],
+          desc: "Di chuyển cửa sổ đang hoạt động sang màn hình bên phải khi sử dụng nhiều màn hình.",
+          rawKey: "Windows + Shift + Phím mũi tên phải",
+          keywords: "windows win shift mũi tên phải"
+        },
+        {
+          key: ["Win", "Mũi tên trái"],
+          apps: ["windows"],
+          desc: "Căn cửa sổ đang hoạt động vào nửa bên trái màn hình bằng tính năng Snap.",
+          rawKey: "Windows + Phím mũi tên trái",
+          keywords: "windows win mũi tên trái"
+        },
+        {
+          key: ["Win", "Mũi tên phải"],
+          apps: ["windows"],
+          desc: "Căn cửa sổ đang hoạt động vào nửa bên phải màn hình bằng tính năng Snap.",
+          rawKey: "Windows + Phím mũi tên phải",
+          keywords: "windows win mũi tên phải"
+        },
+        {
+          key: ["Win", "S / Q"],
+          apps: ["windows"],
+          desc: "Mở Windows Search để tìm kiếm ứng dụng, tập tin, cài đặt và các nội dung được hỗ trợ.",
+          rawKey: "Windows + S (hoặc Q)",
+          keywords: "windows win s / q"
+        },
+        {
+          key: ["Win", "Tab"],
+          apps: ["windows"],
+          desc: "Mở Task View để xem các cửa sổ đang hoạt động và quản lý Desktop ảo.",
+          rawKey: "Windows + Tab",
+          keywords: "windows win tab"
+        },
+        {
+          key: ["Win", "Ctrl", "D"],
+          apps: ["windows"],
+          desc: "Tạo một Desktop ảo mới và tự động chuyển sang Desktop vừa tạo.",
+          rawKey: "Windows + Ctrl + D",
+          keywords: "windows win ctrl d"
+        },
+        {
+          key: ["Win", "Ctrl", "F4"],
+          apps: ["windows"],
+          desc: "Đóng Desktop ảo hiện tại và chuyển sang Desktop ảo còn lại. Các ứng dụng đang mở không bị đóng mà được chuyển sang Desktop khác.",
+          rawKey: "Windows + Ctrl + F4",
+          keywords: "windows win ctrl f4"
+        },
+        {
+          key: ["Win", "Ctrl", "Mũi tên phải"],
+          apps: ["windows"],
+          desc: "Chuyển sang Desktop ảo nằm bên phải Desktop hiện tại.",
+          rawKey: "Windows + Ctrl + Mũi tên phải",
+          keywords: "windows win ctrl mũi tên phải"
+        },
+        {
+          key: ["Win", "Ctrl", "Mũi tên trái"],
+          apps: ["windows"],
+          desc: "Chuyển sang Desktop ảo nằm bên trái Desktop hiện tại.",
+          rawKey: "Windows + Ctrl + Mũi tên trái",
+          keywords: "windows win ctrl mũi tên trái"
+        },
+        {
+          key: ["Ctrl", "B"],
+          apps: ["word", "excel", "ppt"],
+          desc: "Bật hoặc tắt định dạng chữ in đậm (Bold) cho văn bản hoặc ô tính được chọn.",
+          rawKey: "Ctrl + B",
+          keywords: "bold in dam chu dam"
+        },
+        {
+          key: ["Ctrl", "I"],
+          apps: ["word", "excel", "ppt"],
+          desc: "Bật hoặc tắt định dạng chữ in nghiêng (Italic) cho văn bản hoặc ô tính được chọn.",
+          rawKey: "Ctrl + I",
+          keywords: "italic in nghieng chu nghieng"
+        },
+        {
+          key: ["Ctrl", "U"],
+          apps: ["word", "excel", "ppt"],
+          desc: "Bật hoặc tắt định dạng gạch chân (Underline) cho văn bản hoặc ô tính được chọn.",
+          rawKey: "Ctrl + U",
+          keywords: "underline gach chan"
+        },
+        {
+          key: ["Ctrl", "F"],
+          apps: ["word", "excel", "ppt"],
+          desc: "Mở công cụ Navigation / hộp thoại Find để tìm kiếm từ, số liệu, nội dung trong tài liệu hoặc trang tính.",
+          rawKey: "Ctrl + F",
+          keywords: "find tim kiem tra cuu"
+        },
+        {
+          key: ["Ctrl", "H"],
+          apps: ["word", "excel", "ppt"],
+          desc: "Mở hộp thoại Find and Replace để tìm kiếm và thay thế từ ngữ hoặc nội dung.",
+          rawKey: "Ctrl + H",
+          keywords: "replace thay the tim kiem va thay the"
+        },
+        {
+          key: ["Ctrl", "P"],
+          apps: ["word", "excel", "ppt"],
+          desc: "Mở giao diện Print để xem trước và thiết lập các tùy chọn in ấn tài liệu, trang tính hoặc slide.",
+          rawKey: "Ctrl + P",
+          keywords: "print in an xuat may in"
+        },
+        {
+          key: ["Ctrl", "N"],
+          apps: ["word", "excel"],
+          desc: "Tạo một tài liệu Word mới hoặc sổ làm việc Excel mới (Workbook).",
+          rawKey: "Ctrl + N",
+          keywords: "new tao moi file moi document workbook"
+        },
+        {
+          key: ["Ctrl", "O"],
+          apps: ["word", "ppt"],
+          desc: "Mở tài liệu Word hoặc bài thuyết trình PowerPoint đã được lưu trên máy tính.",
+          rawKey: "Ctrl + O",
+          keywords: "open mo file tep da luu mo tai lieu"
+        },
+        {
+          key: ["Ctrl", "E"],
+          apps: ["word"],
+          desc: "Căn giữa đoạn văn bản đang chọn hoặc đoạn chứa con trỏ.",
+          rawKey: "Ctrl + E",
+          keywords: "word ctrl e"
+        },
+        {
+          key: ["Ctrl", "L"],
+          apps: ["word"],
+          desc: "Căn lề trái đoạn văn bản đang chọn hoặc đoạn chứa con trỏ.",
+          rawKey: "Ctrl + L",
+          keywords: "word ctrl l"
+        },
+        {
+          key: ["Ctrl", "R"],
+          apps: ["word"],
+          desc: "Căn lề phải đoạn văn bản đang chọn hoặc đoạn chứa con trỏ.",
+          rawKey: "Ctrl + R",
+          keywords: "word ctrl r"
+        },
+        {
+          key: ["Ctrl", "D"],
+          apps: ["word"],
+          desc: "Mở hộp thoại Font để thiết lập phông chữ, kiểu chữ, cỡ chữ và các hiệu ứng định dạng văn bản.",
+          rawKey: "Ctrl + D",
+          keywords: "word ctrl d"
+        },
+        {
+          key: ["Ctrl", "Shift", ">"],
+          apps: ["word"],
+          desc: "Tăng cỡ chữ của văn bản được chọn lên mức tiếp theo trong danh sách cỡ chữ có sẵn.",
+          rawKey: "Ctrl + Shift + >",
+          keywords: "word ctrl shift >"
+        },
+        {
+          key: ["Ctrl", "Shift", "<"],
+          apps: ["word"],
+          desc: "Giảm cỡ chữ của văn bản được chọn xuống mức trước đó trong danh sách cỡ chữ có sẵn.",
+          rawKey: "Ctrl + Shift + <",
+          keywords: "word ctrl shift <"
+        },
+        {
+          key: ["Ctrl", "1"],
+          apps: ["excel"],
+          desc: "Mở hộp thoại Format Cells để định dạng số, căn chỉnh, phông chữ, đường viền, màu nền và bảo vệ ô tính.",
+          rawKey: "Ctrl + 1",
+          keywords: "excel ctrl 1"
+        },
+        {
+          key: ["Ctrl", "9"],
+          apps: ["excel"],
+          desc: "Ẩn hàng (Row) đang được chọn trong trang tính.",
+          rawKey: "Ctrl + 9",
+          keywords: "excel ctrl 9"
+        },
+        {
+          key: ["Ctrl", "0"],
+          apps: ["excel"],
+          desc: "Ẩn cột (Column) đang được chọn trong trang tính.",
+          rawKey: "Ctrl + 0",
+          keywords: "excel ctrl 0"
+        },
+        {
+          key: ["Ctrl", "W"],
+          apps: ["excel"],
+          desc: "Đóng sổ làm việc Excel hiện tại. Nếu có thay đổi chưa lưu, Excel có thể yêu cầu xác nhận lưu.",
+          rawKey: "Ctrl + W",
+          keywords: "excel ctrl w"
+        },
+        {
+          key: ["Ctrl", "Home"],
+          apps: ["excel"],
+          desc: "Di chuyển đến ô đầu tiên của trang tính, thông thường là ô A1.",
+          rawKey: "Ctrl + Home",
+          keywords: "excel ctrl home"
+        },
+        {
+          key: ["Ctrl", "Shift", "Mũi tên phải"],
+          apps: ["excel"],
+          desc: "Mở rộng vùng chọn từ ô hiện tại đến ranh giới vùng dữ liệu theo hướng bên phải.",
+          rawKey: "Ctrl + Shift + Mũi tên phải",
+          keywords: "excel ctrl shift mũi tên phải"
+        },
+        {
+          key: ["Ctrl", "Shift", "Mũi tên trái"],
+          apps: ["excel"],
+          desc: "Mở rộng vùng chọn từ ô hiện tại đến ranh giới vùng dữ liệu theo hướng bên trái.",
+          rawKey: "Ctrl + Shift + Mũi tên trái",
+          keywords: "excel ctrl shift mũi tên trái"
+        },
+        {
+          key: ["Ctrl", "Shift", "Mũi tên dưới"],
+          apps: ["excel"],
+          desc: "Mở rộng vùng chọn từ ô hiện tại đến ranh giới vùng dữ liệu theo hướng xuống dưới.",
+          rawKey: "Ctrl + Shift + Mũi tên dưới",
+          keywords: "excel ctrl shift mũi tên dưới"
+        },
+        {
+          key: ["Ctrl", "Shift", "Mũi tên trên"],
+          apps: ["excel"],
+          desc: "Mở rộng vùng chọn từ ô hiện tại đến ranh giới vùng dữ liệu theo hướng lên trên.",
+          rawKey: "Ctrl + Shift + Mũi tên trên",
+          keywords: "excel ctrl shift mũi tên trên"
+        },
+        {
+          key: ["Ctrl", "M"],
+          apps: ["ppt"],
+          desc: "Thêm một slide mới vào bài thuyết trình theo bố cục phù hợp với vị trí hiện tại.",
+          rawKey: "Ctrl + M",
+          keywords: "ppt ctrl m"
+        },
+        {
+          key: ["Ctrl", "D"],
+          apps: ["ppt"],
+          desc: "Nhân đôi đối tượng hoặc slide đang được chọn, tạo một bản sao để tiếp tục chỉnh sửa.",
+          rawKey: "Ctrl + D",
+          keywords: "ppt ctrl d"
+        },
+        {
+          key: ["Ctrl", "Q"],
+          apps: ["ppt"],
+          desc: "Đóng hoặc thoát khỏi PowerPoint tùy phiên bản và ngữ cảnh sử dụng. Đây không phải tổ hợp lưu bài thuyết trình.",
+          rawKey: "Ctrl + Q",
+          keywords: "ppt ctrl q"
+        },
+        {
+          key: ["Ctrl", "F2"],
+          apps: ["ppt"],
+          desc: "Mở chế độ xem trước bản in (Print Preview) trong các phiên bản PowerPoint hỗ trợ.",
+          rawKey: "Ctrl + F2",
+          keywords: "ppt ctrl f2"
+        },
+        {
+          key: ["Ctrl", "Tab"],
+          apps: ["ppt"],
+          desc: "Chuyển đổi giữa các bài thuyết trình đang mở hoặc chuyển tiêu điểm theo ngữ cảnh ứng dụng.",
+          rawKey: "Ctrl + Tab",
+          keywords: "ppt ctrl tab"
+        },
+        {
+          key: ["Ctrl", "Shift", "Mũi tên trái"],
+          apps: ["ppt"],
+          desc: "Khi đang chỉnh sửa văn bản, chọn thêm từ phía bên trái con trỏ. Không phải phím tăng cỡ chữ mặc định trong PowerPoint.",
+          rawKey: "Ctrl + Shift + Mũi tên trái",
+          keywords: "ppt ctrl shift mũi tên trái"
+        },
+        {
+          key: ["Ctrl", "Shift", "Mũi tên phải"],
+          apps: ["ppt"],
+          desc: "Khi đang chỉnh sửa văn bản, chọn thêm từ phía bên phải con trỏ. Không phải phím giảm cỡ chữ mặc định trong PowerPoint.",
+          rawKey: "Ctrl + Shift + Mũi tên phải",
+          keywords: "ppt ctrl shift mũi tên phải"
+        }
+      ];
+
+      // Mapping for display labels
+      const APP_NAMES = {
+        windows: "WINDOWS",
+        outlook: "OUTLOOK",
+        word: "WORD",
+        excel: "EXCEL",
+        ppt: "POWERPOINT"
+      };
+
+      // Helper to remove accents for Vietnamese fuzzy searching
+      function removeDiacritics(str) {
+        return (str || '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase();
+      }
+
+      // 3. Elements
+      const container = document.getElementById('shortcuts-container');
+      const countBadge = document.getElementById('shortcut-count');
+      const searchInput = document.getElementById('shortcut-search');
+      const tabBtns = document.querySelectorAll('.sh-tab-btn');
+      const emptyState = document.getElementById('shortcut-empty');
+
+      let currentFilter = 'all';
+
+      // 4. Render Engine
+      function renderCards() {
+        const rawQuery = (searchInput.value || '').trim();
+        const lowerQuery = rawQuery.toLowerCase();
+        const cleanQuery = removeDiacritics(rawQuery);
+        // Compact query without spaces and pluses (e.g. "ctrlc", "wind", "f5")
+        const compactQuery = lowerQuery.replace(/[\s\+]/g, '');
+
+        let visibleCount = 0;
+        let html = '';
+
+        SHORTCUTS.forEach((item) => {
+          // Check filter tab
+          const matchesFilter = (currentFilter === 'all') || item.apps.includes(currentFilter);
+          if (!matchesFilter) return;
+
+          // Check search query (case-insensitive, diacritic-insensitive, with/without spaces/pluses)
+          if (rawQuery !== '') {
+            const keyString = item.key.join(' + ').toLowerCase();
+            const keyClean = removeDiacritics(keyString);
+            const keyCompact = keyString.replace(/[\s\+]/g, '');
+
+            const rawKeyLower = (item.rawKey || '').toLowerCase();
+            const rawKeyClean = removeDiacritics(item.rawKey || '');
+            const rawKeyCompact = rawKeyLower.replace(/[\s\+]/g, '');
+
+            const descLower = item.desc.toLowerCase();
+            const descClean = removeDiacritics(item.desc);
+
+            const kwLower = (item.keywords || '').toLowerCase();
+            const kwClean = removeDiacritics(item.keywords || '');
+
+            const appTagsLower = item.apps.map(a => APP_NAMES[a] || a).join(' ').toLowerCase();
+
+            const isMatch =
+              keyString.includes(lowerQuery) ||
+              keyClean.includes(cleanQuery) ||
+              keyCompact.includes(compactQuery) ||
+              rawKeyLower.includes(lowerQuery) ||
+              rawKeyClean.includes(cleanQuery) ||
+              rawKeyCompact.includes(compactQuery) ||
+              descLower.includes(lowerQuery) ||
+              descClean.includes(cleanQuery) ||
+              kwLower.includes(lowerQuery) ||
+              kwClean.includes(cleanQuery) ||
+              appTagsLower.includes(lowerQuery);
+
+            if (!isMatch) return;
+          }
+
+          visibleCount++;
+
+          // Build tag label & distinct color class according to current active tab:
+          let appLabel = '';
+          let tagClass = 'tag-multi';
+
+          if (currentFilter === 'all') {
+            // Khi ở tab Tất cả:
+            if (item.apps.length > 1) {
+              // Phím chứa nhiều ứng dụng: hiện toàn bộ danh sách tiêu đề + màu xám
+              appLabel = item.apps.map(a => APP_NAMES[a] || a.toUpperCase()).join(' • ');
+              tagClass = 'tag-multi';
+            } else {
+              // Phím chỉ thuộc 1 ứng dụng: hiện 1 tiêu đề + màu riêng của ứng dụng đó
+              appLabel = APP_NAMES[item.apps[0]] || item.apps[0].toUpperCase();
+              tagClass = `tag-${item.apps[0]}`;
+            }
+          } else {
+            // Khi bấm vào từng tab con riêng biệt (Word, Excel, PPT, Outlook, Windows):
+            // Luôn luôn chỉ hiển thị 1 tiêu đề duy nhất của tab đó + mang màu của ứng dụng đó!
+            appLabel = APP_NAMES[currentFilter] || currentFilter.toUpperCase();
+            tagClass = `tag-${currentFilter}`;
+          }
+
+          // Format arrow keys and word connectors
+          function formatKeyBadge(rawToken) {
+            const token = rawToken.trim();
+            if (token === 'Mũi tên phải') return '<kbd class="kbd-arrow" title="Mũi tên phải">→</kbd>';
+            if (token === 'Mũi tên trái') return '<kbd class="kbd-arrow" title="Mũi tên trái">←</kbd>';
+            if (token === 'Mũi tên lên' || token === 'Mũi tên trên') return '<kbd class="kbd-arrow" title="Mũi tên lên">↑</kbd>';
+            if (token === 'Mũi tên xuống' || token === 'Mũi tên dưới') return '<kbd class="kbd-arrow" title="Mũi tên xuống">↓</kbd>';
+            if (token.toLowerCase() === 'rồi') {
+              return '<span class="key-word">rồi</span>';
+            }
+            return `<kbd>${token}</kbd>`;
+          }
+
+          const hasWordConnector = item.key.some(k => k.toLowerCase() === 'rồi');
+          const keysHtml = item.key.map(formatKeyBadge).join(hasWordConnector ? ' ' : '<span class="key-plus">+</span>');
+
+          // Text for copy button
+          const copyText = item.key.map(k => {
+            if (k === 'Mũi tên phải') return '→';
+            if (k === 'Mũi tên trái') return '←';
+            if (k === 'Mũi tên lên' || k === 'Mũi tên trên') return '↑';
+            if (k === 'Mũi tên xuống' || k === 'Mũi tên dưới') return '↓';
+            return k;
+          }).join(' + ').replace(/'/g, "\\'");
+
+          html += `
+            <div class="shortcut-card">
+              <div class="sc-header">
+                <span class="sc-app-tag ${tagClass}">${appLabel}</span>
+                <button type="button" class="btn-copy-key" title="Sao chép phím tắt" onclick="copyKeyText(this, '${copyText}')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <span class="copy-tooltip">Đã chép</span>
+                </button>
+              </div>
+              <div class="sc-keys">
+                ${keysHtml}
+              </div>
+              <div class="sc-desc">
+                ${item.desc}
+              </div>
+            </div>
+          `;
+        });
+
+        container.innerHTML = html;
+
+        // Update count badge
+        if (countBadge) {
+          if (rawQuery === '') {
+            if (currentFilter === 'all') {
+              countBadge.textContent = `Đang hiển thị toàn bộ ${visibleCount} phím tắt`;
+            } else {
+              const currentTabName = APP_NAMES[currentFilter] || currentFilter.toUpperCase();
+              countBadge.textContent = `Đang hiển thị ${visibleCount} phím tắt thuộc ${currentTabName}`;
+            }
+          } else {
+            countBadge.textContent = `Tìm thấy ${visibleCount} phím tắt phù hợp`;
+          }
+        }
+
+        // Empty state
+        if (emptyState) {
+          emptyState.style.display = (visibleCount === 0) ? 'block' : 'none';
+        }
+      }
+
+      // Tab switching
+      tabBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          tabBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentFilter = btn.dataset.filter;
+          renderCards();
+        });
+      });
+
+      // Search input (supports any case, spaces, symbols)
+      searchInput.addEventListener('input', renderCards);
+
+      // Initial render
+      renderCards();
+    })();
+  </script>
+  <script src="auth.js"></script>
+</body>
+
+</html>

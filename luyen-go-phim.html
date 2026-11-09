@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luyện Gõ Phím 10 Ngón Tiếng Việt - Tin Học Văn Phòng</title>
+  <meta name="description"
+    content="Hệ thống luyện gõ phím 10 ngón tiếng Việt và Telex thông minh, kiểm tra tốc độ WPM, luyện phím yếu cùng AI." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ==========================================================================
+       SUBPAGE STYLES - DỒNG BỘ FLAT DESIGN THEO INDEX.HTML
+       ========================================================================== */
+    body {
+      background: #f0f7ff;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .subpage-container {
+      max-width: 1240px;
+      width: 100%;
+      margin: 28px auto 80px;
+      padding: 0 clamp(16px, 3vw, 32px);
+      flex: 1;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Ticker Pill Top */
+    .typing-ticker-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      border: 1.5px solid #0284c7;
+      border-radius: 999px;
+      padding: 8px 22px;
+      font-size: 0.84rem;
+      color: #334155;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);
+    }
+
+    .tt-badge-accent {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #0284c7;
+      font-weight: 800;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+    }
+
+    .tt-badge-accent::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #0284c7;
+    }
+
+    /* Big Hero Typing Banner */
+    .typing-hero-card {
+      background: #0284c7;
+      border-radius: 28px;
+      padding: clamp(24px, 3.5vw, 40px);
+      color: #ffffff;
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: clamp(24px, 3vw, 40px);
+      align-items: center;
+      position: relative;
+      box-shadow: 0 12px 32px rgba(2, 132, 199, 0.2);
+      margin-bottom: 24px;
+    }
+
+    .th-pill-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .th-title {
+      font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+
+    .th-desc {
+      font-size: 0.92rem;
+      line-height: 1.65;
+      color: #e0f2fe;
+      margin-bottom: 22px;
+      max-width: 620px;
+    }
+
+    .th-action-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .th-action-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .th-action-pill:hover {
+      transform: translateY(-2px);
+    }
+
+    .th-action-pill.pill-yellow {
+      background: #ffffff;
+      color: #075985;
+      border: 1.5px solid #ffffff;
+    }
+
+    .th-action-pill.pill-pink {
+      background: #e0f2fe;
+      color: #0284c7;
+      border: 1.5px solid #e0f2fe;
+    }
+
+    /* Hero Tabs */
+    .th-tabs-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .th-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 0.84rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .th-tab-btn:hover,
+    .th-tab-btn.active {
+      background: #ffffff;
+      color: #075985;
+      border-color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .th-tab-badge {
+      background: #075985;
+      color: #ffffff;
+      font-size: 0.68rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-weight: 800;
+    }
+
+    .th-tab-btn.active .th-tab-badge {
+      background: #0284c7;
+      color: #ffffff;
+    }
+
+    /* Stats Grid Right */
+    .th-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .th-stat-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      border: 1.5px solid #e0f2fe;
+      transition: transform 0.2s ease;
+    }
+
+    .th-stat-card:hover {
+      transform: translateY(-2px);
+      border-color: #0284c7;
+    }
+
+    .th-stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #e0f2fe;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .th-stat-label {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 2px;
+    }
+
+    .th-stat-val {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #075985;
+      line-height: 1.2;
+    }
+
+    /* Guest Alert Card */
+    .guest-alert-card {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1.5px solid #0284c7;
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08);
+    }
+
+    .gac-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .gac-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: #e0f2fe;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .gac-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .gac-title {
+      font-size: 0.94rem;
+      font-weight: 800;
+      color: #075985;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .gac-badge {
+      background: #e0f2fe;
+      color: #0284c7;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .gac-desc {
+      font-size: 0.84rem;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    .gac-btn-login {
+      background: #0284c7;
+      color: #ffffff;
+      padding: 12px 26px;
+      border-radius: 999px;
+      font-size: 0.86rem;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s ease, transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .gac-btn-login:hover {
+      background: #075985;
+      transform: translateY(-2px);
+    }
+
+    /* AI Typing Playground Card */
+    .ai-practice-card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: clamp(24px, 3.5vw, 36px);
+      border: 1.5px solid #0284c7;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.08);
+      margin-bottom: 40px;
+    }
+
+    .ap-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1.5px solid #e0f2fe;
+    }
+
+    .ap-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ap-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #e0f2fe;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ap-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #075985;
+    }
+
+    .ap-ai-badge {
+      background: #0284c7;
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+    }
+
+    .ap-config-btn {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      padding: 8px 18px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .ap-config-btn:hover {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      color: #0284c7;
+    }
+
+    /* Typing Box */
+    .typing-playground {
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 24px;
+      border: 1.5px solid #e2e8f0;
+    }
+
+    .tp-sentence {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      line-height: 1.9;
+      color: #64748b;
+      margin-bottom: 20px;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 14px;
+      border: 1.5px solid #cbd5e1;
+      min-height: 80px;
+      letter-spacing: 0.02em;
+    }
+
+    .tp-char.correct {
+      color: #059669;
+      background: #d1fae5;
+    }
+
+    .tp-char.incorrect {
+      color: #dc2626;
+      background: #fee2e2;
+    }
+
+    .tp-char.current {
+      background: #0284c7;
+      color: #ffffff;
+      border-radius: 2px;
+    }
+
+    .tp-input-row {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .tp-input {
+      flex: 1;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 2px solid #0284c7;
+      outline: none;
+      background: #ffffff;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .tp-input:focus {
+      box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15);
+    }
+
+    .tp-btn-restart {
+      background: #ffffff;
+      border: 1.5px solid #0284c7;
+      color: #0284c7;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .tp-btn-restart:hover {
+      background: #0284c7;
+      color: #ffffff;
+    }
+
+    /* Virtual Keyboard Visualizer */
+    .virtual-keyboard {
+      margin-top: 24px;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 20px;
+      border: 1.5px solid #e0f2fe;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .vk-row {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .vk-key {
+      min-width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #334155;
+      box-shadow: 0 2px 0 #cbd5e1;
+      user-select: none;
+      transition: all 0.1s ease;
+    }
+
+    .vk-key.key-wide {
+      min-width: 68px;
+    }
+
+    .vk-key.key-space {
+      min-width: 280px;
+    }
+
+    .vk-key.active {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #075985;
+      transform: translateY(2px);
+      box-shadow: 0 0 0 #075985;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .typing-hero-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .th-stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .guest-alert-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .virtual-keyboard {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ========================================================================
+       1. STICKY HEADER NAVBAR (ĐỒNG BỘ 100% VỚI INDEX.HTML)
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon-box" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
+            <circle cx="13" cy="15.5" r="1.8" fill="#4f46e5" />
+            <circle cx="23" cy="15.5" r="1.8" fill="#4f46e5" />
+            <path d="M15.5 19.5c1.2 1.2 3.8 1.2 5 0" stroke="#ec4899" stroke-width="2" stroke-linecap="round" />
+            <path d="M12 7V4.5M24 7V4.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M11 29.5h14" stroke="#93c5fd" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">TIN HỌC VĂN PHÒNG</span>
+          <span class="brand-subtitle">Đào tạo Tin học Trực tuyến</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <!-- 1. KHÓA HỌC LMS -->
+        <a href="index.html#khoa-hoc">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+          <span>KHÓA HỌC LMS</span>
+        </a>
+
+        <!-- 2. LỘ TRÌNH HỌC TẬP -->
+        <a href="lo-trinh-hoc-tap.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="6" cy="19" r="3" />
+            <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" />
+            <circle cx="18" cy="5" r="3" />
+          </svg>
+          <span>LỘ TRÌNH HỌC TẬP</span>
+        </a>
+
+        <!-- 3. ÔN LUYỆN & THI THỬ -->
+        <a href="on-luyen-thi-thu.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+          <span>ÔN LUYỆN &amp; THI THỬ</span>
+        </a>
+
+        <!-- 4. DIỄN ĐÀN -->
+        <a href="index.html#cong-dong">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>DIỄN ĐÀN</span>
+        </a>
+
+        <!-- 5. CÔNG CỤ & TIỆN ÍCH (Active & Dropdown) -->
+        <div class="nav-dropdown-wrap" id="nav-tools-dropdown">
+          <button type="button" class="nav-link-dropdown nav-dropdown-trigger" id="btn-tools-dropdown"
+            style="color: var(--water-primary);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+            <span>CÔNG CỤ &amp; TIỆN ÍCH</span>
+            <svg class="nav-dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="3">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="nav-dropdown-content">
+            <!-- 1. Luyện gõ phím 10 ngón -->
+            <a href="luyen-go-phim.html" class="nav-sub-item active">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8"
+                    stroke-width="2.2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>1. Luyện gõ phím 10 ngón</strong>
+                <small>Luyện gõ tiếng Việt Telex &amp; kiểm tra WPM</small>
+              </div>
+            </a>
+
+            <!-- 2. Tra cứu Phím tắt -->
+            <a href="tra-cuu-phim-tat.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>2. Tra cứu Phím tắt</strong>
+                <small>Phím tắt thông dụng Word, Excel, PPT</small>
+              </div>
+            </a>
+
+            <!-- 3. Kiểm tra Bàn phím Online -->
+            <a href="kiem-tra-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <circle cx="7" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="12" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="17" cy="9" r="1" fill="#0284c7" />
+                  <line x1="6" y1="14" x2="18" y2="14" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>3. Kiểm tra Bàn phím Online</strong>
+                <small>Phát hiện kẹt/liệt phím, đo NKRO &amp; Switch cơ</small>
+              </div>
+            </a>
+
+            <!-- 4. Giới thiệu Bàn phím Máy tính -->
+            <a href="tim-hieu-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="#e0f2fe"
+                    fill-opacity="0.6" />
+                  <path d="M6 6h10M6 10h10M6 14h6" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>4. Giới thiệu Bàn phím Máy tính</strong>
+                <small>Cấu tạo 100% Full-size, các hàng phím &amp; gờ nổi F/J</small>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 6. CỬA HÀNG -->
+        <a href="index.html#cua-hang">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span>CỬA HÀNG</span>
+        </a>
+      </nav>
+
+      <a href="index.html#dang-nhap" class="btn-login">ĐĂNG NHẬP</a>
+    </div>
+  </header>
+
+  <!-- Full-Page Side Frames (Chạy dọc suốt 2 bên như index.html) -->
+  <div class="site-side-frame left" aria-hidden="true"></div>
+  <div class="site-side-frame right" aria-hidden="true"></div>
+
+  <!-- ========================================================================
+       2. SUBPAGE MAIN CONTAINER
+       ======================================================================== -->
+  <main class="subpage-container">
+
+    <!-- Top Ticker Pill -->
+    <div class="typing-ticker-pill">
+      <span class="tt-badge-accent">BẢNG VÀNG</span>
+      <span><strong>An</strong> vừa giành chiến thắng trong trận <strong>Thách Đấu 1vs1!</strong></span>
+    </div>
+
+    <!-- Big Hero Typing Banner -->
+    <section class="typing-hero-card">
+      <div>
+        <div class="th-pill-top">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path
+              d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+          </svg>
+          HỆ THỐNG LUYỆN GÕ 10 NGÓN &amp; TELEX
+        </div>
+
+        <h1 class="th-title">LUYỆN GÕ PHÍM 10 NGÓN TIẾNG VIỆT</h1>
+        <p class="th-desc">
+          Làm chủ bàn phím QWERTY, nâng cao tốc độ gõ phím không cần nhìn màn hình và sử dụng thành thạo kiểu gõ Tiếng
+          Việt Telex cùng UniKey / EVKey.
+        </p>
+
+        <div class="th-action-pills">
+          <span class="th-action-pill pill-yellow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
+            HƯỚNG DẪN GÕ 10 NGÓN
+          </span>
+          <span class="th-action-pill pill-pink">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+            </svg>
+            CỬA HÀNG SKIN
+          </span>
+        </div>
+
+        <!-- 4 Tabs -->
+        <div class="th-tabs-row">
+          <button class="th-tab-btn active">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
+            KIỂM TRA
+          </button>
+          <button class="th-tab-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="12" cy="8" r="7" />
+              <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+            </svg>
+            TIẾN ĐỘ
+          </button>
+          <button class="th-tab-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="m14.5 4 5 5-11 11H3.5v-5z" />
+            </svg>
+            THI ĐẤU
+            <span class="th-tab-badge">VIP</span>
+          </button>
+          <button class="th-tab-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polygon points="6 3 20 12 6 21 6 3" />
+            </svg>
+            TRÒ CHƠI
+          </button>
+        </div>
+      </div>
+
+      <!-- Right 4 Stats Cards -->
+      <div class="th-stats-grid">
+        <div class="th-stat-card">
+          <div class="th-stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
+          </div>
+          <div>
+            <div class="th-stat-label">WPM TỐT NHẤT</div>
+            <div class="th-stat-val" id="stat-wpm">0 WPM</div>
+          </div>
+        </div>
+
+        <div class="th-stat-card">
+          <div class="th-stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="12" cy="12" r="10" />
+              <circle cx="12" cy="12" r="6" />
+              <circle cx="12" cy="12" r="2" />
+            </svg>
+          </div>
+          <div>
+            <div class="th-stat-label">CHÍNH XÁC TB</div>
+            <div class="th-stat-val" id="stat-acc">100%</div>
+          </div>
+        </div>
+
+        <div class="th-stat-card">
+          <div class="th-stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+          </div>
+          <div>
+            <div class="th-stat-label">THỜI GIAN HỌC</div>
+            <div class="th-stat-val">0 Phút</div>
+          </div>
+        </div>
+
+        <div class="th-stat-card">
+          <div class="th-stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            </svg>
+          </div>
+          <div>
+            <div class="th-stat-label">BÀI ĐÃ HỌC</div>
+            <div class="th-stat-val">0 Bài</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guest Alert Bar -->
+    <div class="guest-alert-card">
+      <div class="gac-left">
+        <div class="gac-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="16" x2="12" y2="12" />
+            <line x1="12" y1="8" x2="12.01" y2="8" />
+          </svg>
+        </div>
+        <div>
+          <div class="gac-title-row">
+            <span class="gac-title">BẠN ĐANG GÕ Ở CHẾ ĐỘ KHÁCH</span>
+            <span class="gac-badge">LƯU TẠM TRÌNH DUYỆT</span>
+          </div>
+          <p class="gac-desc">
+            Tiến trình mở khóa bài học &amp; các bài vượt thử thách hiện được lưu tạm trên thiết bị này. Đăng nhập ngay
+            để bảo lưu thành tích vĩnh viễn, tự động đồng bộ tài khoản và tranh tài Bảng Xếp Hạng!
+          </p>
+        </div>
+      </div>
+      <a href="index.html#dang-nhap" class="gac-btn-login">ĐĂNG NHẬP NGAY &rarr;</a>
+    </div>
+
+    <!-- AI Typing Playground -->
+    <section class="ai-practice-card">
+      <div class="ap-header">
+        <div class="ap-title-wrap">
+          <div class="ap-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path
+                d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.54z" />
+              <path
+                d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.54z" />
+            </svg>
+          </div>
+          <h2 class="ap-title">PHÒNG LUYỆN PHÍM YẾU AI</h2>
+          <span class="ap-ai-badge">GEMINI AI</span>
+        </div>
+        <button class="ap-config-btn" type="button">⚙️ CẤU HÌNH SINH BÀI TẬP AI</button>
+      </div>
+
+      <div class="typing-playground">
+        <div class="tp-sentence" id="display-text">
+          Học tin học văn phòng giúp bạn tự tin làm chủ công việc, nâng cao năng suất gõ phím mười ngón và đạt chứng chỉ
+          quốc tế.
+        </div>
+
+        <div class="tp-input-row">
+          <input type="text" id="typing-input" class="tp-input" placeholder="Gõ lại câu phía trên tại đây để kiểm tra tốc độ..."
+            autocomplete="off" autofocus />
+          <button type="button" id="btn-restart" class="tp-btn-restart">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+            </svg>
+            Làm lại
+          </button>
+        </div>
+      </div>
+
+      <!-- Virtual Keyboard Visualizer -->
+      <div class="virtual-keyboard" aria-hidden="true">
+        <!-- Row 1 -->
+        <div class="vk-row">
+          <div class="vk-key" data-key="`">~</div>
+          <div class="vk-key" data-key="1">1</div>
+          <div class="vk-key" data-key="2">2</div>
+          <div class="vk-key" data-key="3">3</div>
+          <div class="vk-key" data-key="4">4</div>
+          <div class="vk-key" data-key="5">5</div>
+          <div class="vk-key" data-key="6">6</div>
+          <div class="vk-key" data-key="7">7</div>
+          <div class="vk-key" data-key="8">8</div>
+          <div class="vk-key" data-key="9">9</div>
+          <div class="vk-key" data-key="0">0</div>
+          <div class="vk-key" data-key="-">-</div>
+          <div class="vk-key" data-key="=">=</div>
+          <div class="vk-key key-wide" data-key="Backspace">⌫</div>
+        </div>
+        <!-- Row 2 -->
+        <div class="vk-row">
+          <div class="vk-key key-wide" data-key="Tab">Tab</div>
+          <div class="vk-key" data-key="q">Q</div>
+          <div class="vk-key" data-key="w">W</div>
+          <div class="vk-key" data-key="e">E</div>
+          <div class="vk-key" data-key="r">R</div>
+          <div class="vk-key" data-key="t">T</div>
+          <div class="vk-key" data-key="y">Y</div>
+          <div class="vk-key" data-key="u">U</div>
+          <div class="vk-key" data-key="i">I</div>
+          <div class="vk-key" data-key="o">O</div>
+          <div class="vk-key" data-key="p">P</div>
+          <div class="vk-key" data-key="[">[</div>
+          <div class="vk-key" data-key="]">]</div>
+          <div class="vk-key" data-key="\">\</div>
+        </div>
+        <!-- Row 3 -->
+        <div class="vk-row">
+          <div class="vk-key key-wide" data-key="CapsLock">Caps</div>
+          <div class="vk-key" data-key="a">A</div>
+          <div class="vk-key" data-key="s">S</div>
+          <div class="vk-key" data-key="d">D</div>
+          <div class="vk-key" data-key="f">F</div>
+          <div class="vk-key" data-key="g">G</div>
+          <div class="vk-key" data-key="h">H</div>
+          <div class="vk-key" data-key="j">J</div>
+          <div class="vk-key" data-key="k">K</div>
+          <div class="vk-key" data-key="l">L</div>
+          <div class="vk-key" data-key=";">;</div>
+          <div class="vk-key" data-key="'">'</div>
+          <div class="vk-key key-wide" data-key="Enter">↵ Enter</div>
+        </div>
+        <!-- Row 4 -->
+        <div class="vk-row">
+          <div class="vk-key key-wide" data-key="Shift">Shift</div>
+          <div class="vk-key" data-key="z">Z</div>
+          <div class="vk-key" data-key="x">X</div>
+          <div class="vk-key" data-key="c">C</div>
+          <div class="vk-key" data-key="v">V</div>
+          <div class="vk-key" data-key="b">B</div>
+          <div class="vk-key" data-key="n">N</div>
+          <div class="vk-key" data-key="m">M</div>
+          <div class="vk-key" data-key=",">,</div>
+          <div class="vk-key" data-key=".">.</div>
+          <div class="vk-key" data-key="/">/</div>
+          <div class="vk-key key-wide" data-key="Shift">Shift</div>
+        </div>
+        <!-- Row 5 -->
+        <div class="vk-row">
+          <div class="vk-key key-wide" data-key="Control">Ctrl</div>
+          <div class="vk-key key-wide" data-key="Alt">Alt</div>
+          <div class="vk-key key-space" data-key=" ">Space</div>
+          <div class="vk-key key-wide" data-key="Alt">Alt</div>
+          <div class="vk-key key-wide" data-key="Control">Ctrl</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+      <!-- Global Footer -->
+  <footer class="site-footer simple-footer">
+    <div class="footer-copyright">
+      © 2026 TRUNG TÂM TIN HỌC VĂN PHÒNG • BẢN QUYỀN THUỘC VỀ NHÓM 2
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      // 1. Dropdown behavior (Click to open, click outside to close)
+      const toolsDropdown = document.getElementById('nav-tools-dropdown');
+      const toolsBtn = document.getElementById('btn-tools-dropdown');
+
+      if (toolsBtn && toolsDropdown) {
+        toolsBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toolsDropdown.classList.toggle('open');
+        });
+
+        const toolsContent = toolsDropdown.querySelector('.nav-dropdown-content');
+        if (toolsContent) {
+          toolsContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        }
+
+        document.addEventListener('click', () => {
+          toolsDropdown.classList.remove('open');
+        });
+      }
+
+      // 2. Typing calculation & Keyboard glow
+      const input = document.getElementById('typing-input');
+      const displayText = document.getElementById('display-text');
+      const statWpm = document.getElementById('stat-wpm');
+      const statAcc = document.getElementById('stat-acc');
+      const btnRestart = document.getElementById('btn-restart');
+      const keys = document.querySelectorAll('.vk-key');
+
+      const originalSentence = displayText.textContent.trim();
+      let startTime = null;
+
+      function renderDisplayText(typed) {
+        let html = '';
+        let correctCount = 0;
+
+        for (let i = 0; i < originalSentence.length; i++) {
+          const expected = originalSentence[i];
+          const actual = typed[i];
+
+          if (actual === undefined) {
+            if (i === typed.length) {
+              html += `<span class="tp-char current">${expected}</span>`;
+            } else {
+              html += `<span class="tp-char">${expected}</span>`;
+            }
+          } else if (actual === expected) {
+            correctCount++;
+            html += `<span class="tp-char correct">${expected}</span>`;
+          } else {
+            html += `<span class="tp-char incorrect">${expected}</span>`;
+          }
+        }
+
+        displayText.innerHTML = html;
+
+        // Calc Accuracy
+        if (typed.length > 0) {
+          const acc = Math.round((correctCount / typed.length) * 100);
+          statAcc.textContent = `${acc}%`;
+        } else {
+          statAcc.textContent = '100%';
+        }
+
+        // Calc WPM
+        if (typed.length > 2 && startTime) {
+          const minutes = (new Date() - startTime) / 60000;
+          if (minutes > 0.02) {
+            const words = correctCount / 5;
+            const wpm = Math.round(words / minutes);
+            statWpm.textContent = `${wpm} WPM`;
+          }
+        }
+      }
+
+      renderDisplayText('');
+
+      input.addEventListener('input', (e) => {
+        if (!startTime && input.value.length > 0) {
+          startTime = new Date();
+        }
+        renderDisplayText(input.value);
+      });
+
+      btnRestart.addEventListener('click', () => {
+        input.value = '';
+        startTime = null;
+        statWpm.textContent = '0 WPM';
+        statAcc.textContent = '100%';
+        renderDisplayText('');
+        input.focus();
+      });
+
+      // Keyboard glow visualizer
+      window.addEventListener('keydown', (e) => {
+        const key = e.key;
+        keys.forEach((el) => {
+          if (el.dataset.key && el.dataset.key.toLowerCase() === key.toLowerCase()) {
+            el.classList.add('active');
+          }
+        });
+      });
+
+      window.addEventListener('keyup', (e) => {
+        const key = e.key;
+        keys.forEach((el) => {
+          if (el.dataset.key && el.dataset.key.toLowerCase() === key.toLowerCase()) {
+            el.classList.remove('active');
+          }
+        });
+      });
+
+      // Tabs switch
+      document.querySelectorAll('.th-tab-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.th-tab-btn').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+    })();
+  </script>
+  <script src="auth.js"></script>
+</body>
+
+</html>
