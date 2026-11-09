@@ -132,7 +132,7 @@
           data: {
             id: 1,
             username: 'Giangvien',
-            fullname: 'Nguyễn Thái Tuấn',
+            fullname: 'Giáo viên',
             email: 'giangvien@gmail.com',
             role: 'admin'
           }
@@ -146,7 +146,7 @@
           data: {
             id: 2,
             username: 'hocvien01',
-            fullname: 'Nguyễn Văn An',
+            fullname: 'Nguyễn Thái Tuấn',
             email: 'hocvien01@gmail.com',
             role: 'student'
           }
@@ -269,7 +269,7 @@
         const hv = {
           id: 2,
           username: 'hocvien01',
-          fullname: 'Nguyễn Văn An',
+          fullname: 'Nguyễn Thái Tuấn',
           email: 'hocvien01@gmail.com',
           role: 'student'
         };
@@ -1050,10 +1050,10 @@
     showToast('Đã đăng xuất tài khoản an toàn.', 'info');
   }
 
-  // 9. Cập nhật Huy hiệu trên Header
+  // 9. Cập nhật Huy hiệu Avatar + Tên + Nút Đăng xuất trên Header
   function updateAuthInterface() {
     const user = getCurrentUser();
-    const loginBtns = document.querySelectorAll('.btn-login, #headerAuthBtn');
+    const loginBtns = document.querySelectorAll('.btn-login, .btn-user-logged, #headerAuthBtn');
 
     loginBtns.forEach(btn => {
       if (!btn) return;
@@ -1065,36 +1065,39 @@
           e.preventDefault();
           showModal('login');
         };
-      } else if (user.role === 'admin') {
-        // GIÁO VIÊN / ADMIN
-        btn.innerHTML = `
-          <div class="user-badge admin-badge">
-            <span class="user-role-tag">GV</span>
-            <span class="user-name">${user.fullname}</span>
-            <span class="btn-logout-icon" title="Đăng xuất">&times;</span>
-          </div>
-        `;
-        btn.className = 'btn-user-logged admin';
-        btn.onclick = (e) => {
-          if (e.target.classList.contains('btn-logout-icon')) {
-            e.preventDefault();
-            e.stopPropagation();
-            handleLogout();
-          }
-        };
       } else {
-        // HỌC VIÊN / LEARNER (Có email học viên, không MSSV)
+        // HỌC VIÊN HOẶC GIÁO VIÊN (Khung tròn Avatar + Chấm xanh + Tên bên dưới + Nút Đăng xuất vuông bo góc)
+        const isTeacher = user.role === 'admin' || user.role === 'teacher';
+        const displayName = isTeacher ? 'Giáo viên' : (user.fullname || 'Nguyễn Thái Tuấn');
+
         btn.innerHTML = `
-          <div class="user-badge student-badge">
-            <span class="user-role-tag">HỌC VIÊN</span>
-            <span class="user-name">${user.fullname}</span>
-            <span class="btn-logout-icon" title="Đăng xuất">&times;</span>
+          <div class="header-user-widget">
+            <div class="header-user-avatar-col">
+              <div class="header-avatar-ring">
+                <div class="header-avatar-inner">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M7.5 10.5c.6-.7 1.8-.7 2.4 0" stroke="#64748b" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M14.1 10.5c.6-.7 1.8-.7 2.4 0" stroke="#64748b" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M9.5 15.2c1.3 1.2 3.7 1.2 5 0" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <span class="header-avatar-dot"></span>
+              </div>
+              <span class="header-user-name">${displayName}</span>
+            </div>
+            <span class="btn-header-logout" title="Đăng xuất tài khoản">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+            </span>
           </div>
         `;
-        btn.className = 'btn-user-logged student';
+        btn.className = `btn-user-logged ${isTeacher ? 'admin' : 'student'}`;
         btn.onclick = (e) => {
-          if (e.target.classList.contains('btn-logout-icon')) {
-            e.preventDefault();
+          e.preventDefault();
+          if (e.target.closest('.btn-header-logout')) {
             e.stopPropagation();
             handleLogout();
           }

@@ -186,6 +186,102 @@
       color: #0f172a !important;
     }
 
+    /* Khung tròn Avatar + Tên + Nút Đăng xuất trên Header */
+    .btn-user-logged {
+      text-decoration: none;
+      cursor: default;
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .header-user-widget {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-user-avatar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .header-avatar-ring {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #ffffff;
+      padding: 3px;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.1);
+      border: 1px solid #e2e8f0;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+
+    .header-avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #dce7f9;
+      border: 2px solid #7c8aa5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+
+    .header-avatar-dot {
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #4ade80;
+      border: 2px solid #ffffff;
+      box-sizing: border-box;
+    }
+
+    .header-user-name {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #334155;
+      line-height: 1.15;
+      white-space: nowrap;
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-header-logout {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.06);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #7c8aa5;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .btn-header-logout:hover {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #ef4444;
+      transform: translateY(-1px);
+    }
+
     /* ==========================================================================
        INTEGRATED TABS IN HERO BANNER (TRẮC NGHIỆM ONLINE - BÀI TẬP THỰC HÀNH)
        ========================================================================== */
@@ -2509,13 +2605,12 @@
         </a>
       </nav>
 
-      <!-- Nút Đăng nhập gốc tạm ẩn để tránh lỗi khi test -->
-      <a href="index.html#dang-nhap" class="btn-login" id="headerAuthBtn" style="display: none !important;">ĐĂNG NHẬP</a>
+      <!-- Nút Đăng nhập / Khung Avatar & Đăng xuất trên Header -->
+      <a href="index.html#dang-nhap" class="btn-login" id="headerAuthBtn">ĐĂNG NHẬP</a>
 
-      <!-- Nút Chuyển đổi qua lại 3 loại người dùng (Khách Vãng Lai -> Học Viên -> Giáo Viên) -->
+      <!-- Nút Chuyển đổi tạm ẩn -->
       <button type="button" class="btn-role-cycle-header role-guest" id="btnHeaderRoleCycle"
-        onclick="cycleSimulatedRole()"
-        title="Bấm để chuyển qua lại giữa 3 loại người dùng: Khách Vãng Lai → Học Viên → Giáo Viên">
+        style="display: none !important;" onclick="cycleSimulatedRole()">
         <span class="rch-icon" id="headerRoleIcon">👤</span>
         <span class="rch-info">
           <small class="rch-sub">BẤM ĐỂ ĐỔI VAI TRÒ TEST</small>
@@ -3944,7 +4039,20 @@
 
       // 2. PHÂN QUYỀN VAI TRÒ NGƯỜI DÙNG (GUEST vs STUDENT vs TEACHER)
       const ROLE_ORDER = ['guest', 'student', 'teacher'];
-      let simulatedRole = sessionStorage.getItem('thvp_test_role') || 'guest';
+
+      function readStoredAuthUser() {
+        try {
+          const raw = sessionStorage.getItem('thvp_current_user') || localStorage.getItem('thvp_current_user');
+          return raw ? JSON.parse(raw) : null;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      const initialAuthUser = readStoredAuthUser();
+      let simulatedRole = initialAuthUser
+        ? (initialAuthUser.role === 'admin' || initialAuthUser.role === 'teacher' ? 'teacher' : 'student')
+        : 'guest';
       let roleToastTimer = null;
 
       function showRoleSwitchToast(roleKey) {
@@ -3956,9 +4064,9 @@
           document.body.appendChild(toast);
         }
         const labels = {
-          guest: '👤 Đang ở giao diện: Khách Vãng Lai (Chưa đăng nhập)',
-          student: '🎓 Đang ở giao diện: Học Viên (hocvien01)',
-          teacher: '👨‍🏫 Đang ở giao diện: Giáo Viên / Giảng Viên (Giangvien)'
+          guest: '👤 Đang ở giao diện: Khách (Chưa đăng nhập)',
+          student: '🎓 Đang ở giao diện: Học Viên',
+          teacher: '👨‍🏫 Đang ở giao diện: Giáo Viên'
         };
         toast.textContent = labels[roleKey] || labels.guest;
         toast.classList.add('show');
@@ -3969,11 +4077,13 @@
       }
 
       function getEffectiveUser() {
+        const storedUser = readStoredAuthUser();
         if (simulatedRole === 'teacher') {
           return { name: 'Giáo viên', username: 'Giangvien', role: 'teacher', email: 'giangvien@gmail.com' };
         }
         if (simulatedRole === 'student') {
-          return { name: 'Nguyễn Thái Tuấn', username: 'hocvien01', role: 'student', email: 'hocvien01@gmail.com' };
+          const stName = (storedUser && storedUser.role !== 'admin' && storedUser.fullname) ? storedUser.fullname : 'Nguyễn Thái Tuấn';
+          return { name: stName, username: (storedUser && storedUser.username) || 'hocvien01', role: 'student', email: (storedUser && storedUser.email) || 'hocvien01@gmail.com' };
         }
         return null;
       }
@@ -5169,14 +5279,15 @@
       document.getElementById('tabBtnLab')?.addEventListener('click', () => switchMainTab('lab'));
       document.getElementById('btnBackToOnline')?.addEventListener('click', () => switchMainTab('online'));
 
-      // Khi người dùng đăng nhập / đăng ký thành công qua cửa sổ THVP_AUTH -> Tự động chuyển sang giao diện Học viên (hoặc Giáo viên)
+      // Khi người dùng đăng nhập / đăng ký hoặc bấm nút Đăng xuất trên Header -> Tự động đồng bộ giao diện Học viên / Giáo viên / Khách
       window.addEventListener('thvp:auth_change', function (e) {
-        if (!window._waitingForModalLogin) return;
+        window._waitingForModalLogin = false;
         const authUser = e.detail && e.detail.user;
         if (authUser) {
-          window._waitingForModalLogin = false;
-          const targetRole = authUser.role === 'admin' ? 'teacher' : 'student';
+          const targetRole = (authUser.role === 'admin' || authUser.role === 'teacher') ? 'teacher' : 'student';
           window.setSimulatedRole(targetRole);
+        } else {
+          window.setSimulatedRole('guest');
         }
       });
 
