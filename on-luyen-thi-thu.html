@@ -2618,10 +2618,10 @@
             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
             <circle cx="12" cy="7" r="4" />
           </svg>
-          <span class="ep-status-dot"></span>
+          <span class="ep-status-dot" id="profileStatusDot" style="display: none;"></span>
         </div>
-        <div class="ep-title" id="profileName">Hồ Sơ Cá Nhân</div>
-        <div class="ep-role-badge" id="profileRoleBadge">KHÁCH VÃNG LAI</div>
+        <div class="ep-title" id="profileName">Chưa đăng nhập</div>
+        <div class="ep-role-badge" id="profileRoleBadge" style="visibility: hidden;">KHÁCH VÃNG LAI</div>
         <div class="ep-vip-pill" id="profileVipPill" style="display: none;">
           <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2.2">
@@ -2629,16 +2629,8 @@
           </svg>
           Lượt hôm nay: 4/4 LÊN VIP
         </div>
-        <div class="ep-sub" id="profileSubText">Đăng nhập để quản lý đề thi do bạn tạo &amp; lưu trữ tiến trình ôn
-          luyện</div>
+        <div class="ep-sub" id="profileSubText">Đăng nhập để lưu kết quả và theo dõi tiến độ ôn luyện.</div>
         <button type="button" class="btn-profile-action" id="btnHeroProfile">
-          <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2.2">
-            <path d="m15 5 4 4" />
-            <path d="M13 7 9 11" />
-            <circle cx="7.5" cy="16.5" r="4.5" />
-            <path d="m10.7 13.3 8.3-8.3a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L13.7 16.3" />
-          </svg>
           <span id="btnHeroProfileText">ĐĂNG NHẬP / ĐĂNG KÝ</span>
         </button>
       </div>
@@ -3954,7 +3946,7 @@
 
       function getEffectiveUser() {
         if (simulatedRole === 'teacher') {
-          return { name: 'Admin / Giảng Viên', username: 'Giangvien', role: 'teacher', email: 'giangvien@gmail.com' };
+          return { name: 'Giáo viên', username: 'Giangvien', role: 'teacher', email: 'giangvien@gmail.com' };
         }
         if (simulatedRole === 'student') {
           return { name: 'Nguyễn Thái Tuấn', username: 'hocvien01', role: 'student', email: 'hocvien01@gmail.com' };
@@ -4014,6 +4006,7 @@
         const btnCreateExam = document.getElementById('btnOpenCreateExam');
         if (btnCreateExam) btnCreateExam.style.display = isTeacher ? 'inline-flex' : 'none';
 
+        const pStatusDot = document.getElementById('profileStatusDot');
         const pName = document.getElementById('profileName');
         const pRoleBadge = document.getElementById('profileRoleBadge');
         const pVipPill = document.getElementById('profileVipPill');
@@ -4026,41 +4019,46 @@
         const btnPCreateCourse = document.getElementById('btnPCreateCourse');
 
         if (isTeacher) {
-          if (pName) pName.textContent = user.name;
-          if (pNameText) pNameText.textContent = user.name;
+          if (pStatusDot) pStatusDot.style.display = 'block';
+          if (pName) pName.textContent = 'Giáo viên';
+          if (pNameText) pNameText.textContent = 'Giáo viên';
           if (pRoleBadge) {
-            pRoleBadge.textContent = 'GIẢNG VIÊN / ADMIN';
-            pRoleBadge.style.background = '#0284c7';
+            pRoleBadge.textContent = 'QUẢN TRỊ VIÊN';
+            pRoleBadge.style.visibility = 'visible';
+            pRoleBadge.style.background = 'rgba(255, 255, 255, 0.25)';
           }
-          if (pLevelText) pLevelText.textContent = 'GIẢNG VIÊN BỘ MÔN';
-          if (pVipPill) pVipPill.style.display = 'inline-flex';
-          if (pSubText) pSubText.textContent = 'Quyền hạn cao nhất: Tạo phòng thi mới, giao bài thực hành và chấm điểm học sinh.';
-          if (btnHeroText) btnHeroText.textContent = 'TRANG QUẢN LÝ';
+          if (pLevelText) pLevelText.textContent = 'QUẢN TRỊ VIÊN';
+          if (pVipPill) pVipPill.style.display = 'none';
+          if (pSubText) pSubText.textContent = 'Quản lý nội dung, đề thi và hoạt động học tập trên hệ thống.';
+          if (btnHeroText) btnHeroText.textContent = 'HỒ SƠ GIÁO VIÊN';
           if (btnHero) btnHero.onclick = () => switchMainTab('profile');
           if (btnPCreateCourse) btnPCreateCourse.style.display = 'inline-flex';
         } else if (isStudent) {
+          if (pStatusDot) pStatusDot.style.display = 'block';
           if (pName) pName.textContent = user.name;
           if (pNameText) pNameText.textContent = user.name;
           if (pRoleBadge) {
-            pRoleBadge.textContent = 'HỌC VIÊN CHÍNH THỨC';
-            pRoleBadge.style.background = '#10b981';
+            pRoleBadge.textContent = 'HỌC VIÊN';
+            pRoleBadge.style.visibility = 'visible';
+            pRoleBadge.style.background = '#22c55e';
           }
           if (pLevelText) pLevelText.textContent = 'CẤP 1 • VIP';
-          if (pVipPill) pVipPill.style.display = 'inline-flex';
-          if (pSubText) pSubText.textContent = 'Tiến trình tích lũy số câu đã học và tủ câu hỏi làm sai được lưu tự động.';
-          if (btnHeroText) btnHeroText.textContent = 'TRANG CÁ NHÂN';
+          if (pVipPill) pVipPill.style.display = 'none';
+          if (pSubText) pSubText.textContent = 'Quản lý kết quả học tập và theo dõi tiến độ rèn luyện của bạn.';
+          if (btnHeroText) btnHeroText.textContent = 'HỒ SƠ CÁ NHÂN';
           if (btnHero) btnHero.onclick = () => switchMainTab('profile');
           if (btnPCreateCourse) btnPCreateCourse.style.display = 'none';
         } else {
-          if (pName) pName.textContent = 'Hồ Sơ Cá Nhân';
-          if (pNameText) pNameText.textContent = 'Khách Vãng Lai';
+          if (pStatusDot) pStatusDot.style.display = 'none';
+          if (pName) pName.textContent = 'Chưa đăng nhập';
+          if (pNameText) pNameText.textContent = 'Chưa đăng nhập';
           if (pRoleBadge) {
             pRoleBadge.textContent = 'KHÁCH VÃNG LAI';
-            pRoleBadge.style.background = 'rgba(255,255,255,0.22)';
+            pRoleBadge.style.visibility = 'hidden';
           }
           if (pLevelText) pLevelText.textContent = 'CẤP 0';
           if (pVipPill) pVipPill.style.display = 'none';
-          if (pSubText) pSubText.textContent = 'Đăng nhập để quản lý đề thi do bạn tạo & lưu trữ tiến trình ôn luyện';
+          if (pSubText) pSubText.textContent = 'Đăng nhập để lưu kết quả và theo dõi tiến độ ôn luyện.';
           if (btnHeroText) btnHeroText.textContent = 'ĐĂNG NHẬP / ĐĂNG KÝ';
           if (btnHero) {
             btnHero.onclick = () => {
