@@ -47,65 +47,119 @@
     }
 
     /* ==========================================================================
-       ROLE PREVIEW SWITCHER BAR (Thanh demo phân quyền linh hoạt)
+       HEADER ROLE CYCLE BUTTON (Thay thế tạm nút Đăng nhập để test 3 giao diện)
        ========================================================================== */
     .role-switcher-bar {
-      background: #ffffff;
-      border: 1px solid #bae6fd;
-      border-radius: 16px;
-      padding: 10px 18px;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08);
+      display: none !important;
     }
 
-    .rs-label {
-      font-size: 0.82rem;
-      font-weight: 800;
-      color: #0369a1;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .rs-buttons-group {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .btn-role-chip {
-      background: #f1f5f9;
-      color: #475569;
-      border: 1px solid #cbd5e1;
-      padding: 6px 14px;
-      border-radius: 10px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
+    .btn-role-cycle-header {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      transition: all 0.2s;
-    }
-
-    .btn-role-chip:hover {
-      background: #e0f2fe;
-      color: #0284c7;
-      border-color: #bae6fd;
-    }
-
-    .btn-role-chip.active {
-      background: #0284c7;
+      gap: 10px;
+      padding: 7px 14px 7px 12px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
       color: #ffffff;
-      border-color: #0284c7;
-      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.16);
+    }
+
+    .btn-role-cycle-header:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.06);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.24);
+    }
+
+    .btn-role-cycle-header:active {
+      transform: translateY(0);
+    }
+
+    .btn-role-cycle-header.role-guest {
+      background: linear-gradient(135deg, #475569 0%, #334155 100%);
+    }
+
+    .btn-role-cycle-header.role-student {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .btn-role-cycle-header.role-teacher {
+      background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+    }
+
+    .rch-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+
+    .rch-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1.15;
+      text-align: left;
+    }
+
+    .rch-sub {
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      opacity: 0.88;
+    }
+
+    .rch-name {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .rch-switch-pill {
+      background: rgba(255, 255, 255, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .role-toast-floating {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 99999;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: all 0.25s ease;
+    }
+
+    .role-toast-floating.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* ==========================================================================
@@ -2367,7 +2421,20 @@
         </a>
       </nav>
 
-      <a href="index.html#dang-nhap" class="btn-login" id="headerAuthBtn">ĐĂNG NHẬP</a>
+      <!-- Nút Đăng nhập gốc tạm ẩn để tránh lỗi khi test -->
+      <a href="index.html#dang-nhap" class="btn-login" id="headerAuthBtn" style="display: none !important;">ĐĂNG NHẬP</a>
+
+      <!-- Nút Chuyển đổi qua lại 3 loại người dùng (Khách Vãng Lai -> Học Viên -> Giáo Viên) -->
+      <button type="button" class="btn-role-cycle-header role-guest" id="btnHeaderRoleCycle"
+        onclick="cycleSimulatedRole()"
+        title="Bấm để chuyển qua lại giữa 3 loại người dùng: Khách Vãng Lai → Học Viên → Giáo Viên">
+        <span class="rch-icon" id="headerRoleIcon">👤</span>
+        <span class="rch-info">
+          <small class="rch-sub">BẤM ĐỂ ĐỔI VAI TRÒ TEST</small>
+          <strong class="rch-name" id="headerRoleName">1/3: Khách Vãng Lai</strong>
+        </span>
+        <span class="rch-switch-pill">Đổi ↻</span>
+      </button>
     </div>
   </header>
 
@@ -2819,8 +2886,7 @@
           Đăng nhập vào hệ thống để lưu trữ toàn bộ lịch sử thi, điểm số bài thực hành và tự động gom các câu hỏi làm
           sai vào tủ cá nhân nhé!
         </p>
-        <button type="button" class="btn-create-exam"
-          onclick="window.THVP_AUTH && window.THVP_AUTH.showModal ? window.THVP_AUTH.showModal('login') : window.location.href='index.html#dang-nhap'">
+        <button type="button" class="btn-create-exam" onclick="setSimulatedRole('student')">
           <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2.2">
             <path d="m15 5 4 4" />
@@ -2828,7 +2894,7 @@
             <circle cx="7.5" cy="16.5" r="4.5" />
             <path d="m10.7 13.3 8.3-8.3a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L13.7 16.3" />
           </svg>
-          ĐĂNG NHẬP NGAY
+          CHUYỂN SANG HỌC VIÊN NGAY
         </button>
       </div>
 
@@ -3822,7 +3888,30 @@
       }
 
       // 2. PHÂN QUYỀN VAI TRÒ NGƯỜI DÙNG (GUEST vs STUDENT vs TEACHER)
-      let simulatedRole = 'guest';
+      const ROLE_ORDER = ['guest', 'student', 'teacher'];
+      let simulatedRole = sessionStorage.getItem('thvp_test_role') || 'guest';
+      let roleToastTimer = null;
+
+      function showRoleSwitchToast(roleKey) {
+        let toast = document.getElementById('roleSwitchToast');
+        if (!toast) {
+          toast = document.createElement('div');
+          toast.id = 'roleSwitchToast';
+          toast.className = 'role-toast-floating';
+          document.body.appendChild(toast);
+        }
+        const labels = {
+          guest: '👤 Đang ở giao diện: Khách Vãng Lai (Chưa đăng nhập)',
+          student: '🎓 Đang ở giao diện: Học Viên (hocvien01)',
+          teacher: '👨‍🏫 Đang ở giao diện: Giáo Viên / Giảng Viên (Giangvien)'
+        };
+        toast.textContent = labels[roleKey] || labels.guest;
+        toast.classList.add('show');
+        clearTimeout(roleToastTimer);
+        roleToastTimer = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2400);
+      }
 
       function getEffectiveUser() {
         if (simulatedRole === 'teacher') {
@@ -3835,14 +3924,25 @@
       }
 
       window.setSimulatedRole = function (roleKey) {
-        simulatedRole = roleKey;
+        simulatedRole = ROLE_ORDER.includes(roleKey) ? roleKey : 'guest';
+        try {
+          sessionStorage.setItem('thvp_test_role', simulatedRole);
+        } catch (e) {}
+
         document.querySelectorAll('.btn-role-chip').forEach(btn => btn.classList.remove('active'));
-        if (roleKey === 'guest') document.getElementById('btnRoleGuest')?.classList.add('active');
-        if (roleKey === 'student') document.getElementById('btnRoleStudent')?.classList.add('active');
-        if (roleKey === 'teacher') document.getElementById('btnRoleTeacher')?.classList.add('active');
+        if (simulatedRole === 'guest') document.getElementById('btnRoleGuest')?.classList.add('active');
+        if (simulatedRole === 'student') document.getElementById('btnRoleStudent')?.classList.add('active');
+        if (simulatedRole === 'teacher') document.getElementById('btnRoleTeacher')?.classList.add('active');
 
         applyRoleBasedUI();
         renderExamCards();
+        showRoleSwitchToast(simulatedRole);
+      };
+
+      window.cycleSimulatedRole = function () {
+        const currentIdx = ROLE_ORDER.indexOf(simulatedRole);
+        const nextRole = ROLE_ORDER[(currentIdx + 1) % ROLE_ORDER.length];
+        window.setSimulatedRole(nextRole);
       };
 
       function applyRoleBasedUI() {
@@ -3850,6 +3950,27 @@
         const isTeacher = user && user.role === 'teacher';
         const isStudent = user && user.role === 'student';
         const isGuest = !user;
+
+        // Cập nhật nút chuyển đổi trên Header
+        const headerCycleBtn = document.getElementById('btnHeaderRoleCycle');
+        const headerRoleIcon = document.getElementById('headerRoleIcon');
+        const headerRoleName = document.getElementById('headerRoleName');
+        if (headerCycleBtn && headerRoleIcon && headerRoleName) {
+          headerCycleBtn.classList.remove('role-guest', 'role-student', 'role-teacher');
+          if (isTeacher) {
+            headerCycleBtn.classList.add('role-teacher');
+            headerRoleIcon.textContent = '👨‍🏫';
+            headerRoleName.textContent = '3/3: Giáo Viên (Giangvien)';
+          } else if (isStudent) {
+            headerCycleBtn.classList.add('role-student');
+            headerRoleIcon.textContent = '🎓';
+            headerRoleName.textContent = '2/3: Học Viên (hocvien01)';
+          } else {
+            headerCycleBtn.classList.add('role-guest');
+            headerRoleIcon.textContent = '👤';
+            headerRoleName.textContent = '1/3: Khách Vãng Lai';
+          }
+        }
 
         const btnCreateExam = document.getElementById('btnOpenCreateExam');
         if (btnCreateExam) btnCreateExam.style.display = isTeacher ? 'inline-flex' : 'none';
@@ -3900,16 +4021,10 @@
           }
           if (pLevelText) pLevelText.textContent = 'CẤP 0';
           if (pVipPill) pVipPill.style.display = 'none';
-          if (pSubText) pSubText.textContent = 'Đăng nhập để quản lý đề thi do bạn tạo & lưu trữ tiến trình ôn luyện';
-          if (btnHeroText) btnHeroText.textContent = 'ĐĂNG NHẬP / HỒ SƠ';
+          if (pSubText) pSubText.textContent = 'Bấm nút đổi vai trò trên thanh menu góc phải để chuyển sang Học Viên hoặc Giáo Viên';
+          if (btnHeroText) btnHeroText.textContent = 'ĐỔI VAI TRÒ / HỒ SƠ';
           if (btnHero) {
-            btnHero.onclick = () => {
-              if (window.THVP_AUTH && typeof window.THVP_AUTH.showModal === 'function') {
-                window.THVP_AUTH.showModal('login');
-              } else {
-                switchMainTab('profile');
-              }
-            };
+            btnHero.onclick = () => window.cycleSimulatedRole();
           }
           if (btnPCreateCourse) btnPCreateCourse.style.display = 'none';
         }
