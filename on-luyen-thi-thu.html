@@ -2605,12 +2605,12 @@
         </a>
       </nav>
 
-      <!-- Nút Đăng nhập / Khung Avatar & Đăng xuất trên Header -->
-      <a href="index.html#dang-nhap" class="btn-login" id="headerAuthBtn">ĐĂNG NHẬP</a>
+      <!-- Nút Đăng nhập gốc tạm ẩn để test 3 giao diện -->
+      <a href="index.html#dang-nhap" class="btn-login" id="headerAuthBtn" style="display: none !important;">ĐĂNG NHẬP</a>
 
-      <!-- Nút Chuyển đổi tạm ẩn -->
+      <!-- Nút Chuyển đổi qua lại 3 loại người dùng (Khách Vãng Lai -> Học Viên -> Giáo Viên) -->
       <button type="button" class="btn-role-cycle-header role-guest" id="btnHeaderRoleCycle"
-        style="display: none !important;" onclick="cycleSimulatedRole()">
+        onclick="cycleSimulatedRole()">
         <span class="rch-icon" id="headerRoleIcon">👤</span>
         <span class="rch-info">
           <small class="rch-sub">BẤM ĐỂ ĐỔI VAI TRÒ TEST</small>
@@ -4049,10 +4049,7 @@
         }
       }
 
-      const initialAuthUser = readStoredAuthUser();
-      let simulatedRole = initialAuthUser
-        ? (initialAuthUser.role === 'admin' || initialAuthUser.role === 'teacher' ? 'teacher' : 'student')
-        : 'guest';
+      let simulatedRole = sessionStorage.getItem('thvp_test_role') || 'guest';
       let roleToastTimer = null;
 
       function showRoleSwitchToast(roleKey) {
