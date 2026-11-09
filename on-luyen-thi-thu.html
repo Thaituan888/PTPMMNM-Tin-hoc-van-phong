@@ -172,7 +172,7 @@
       gap: 8px;
       background: #ffffff;
       padding: 6px 8px;
-      border-radius: 16px;
+      border-radius: 18px;
       box-shadow: 0 8px 24px rgba(3, 105, 161, 0.24);
       border: 1px solid rgba(255, 255, 255, 0.95);
       min-width: 0;
@@ -180,20 +180,38 @@
 
     .exam-nav-tab {
       flex: 1;
-      display: inline-flex;
+      display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 11px 14px;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      font-weight: 800;
+      gap: 4px;
+      padding: 11px 16px;
+      border-radius: 13px;
       color: #334155;
       background: transparent;
       border: none;
       cursor: pointer;
       transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      min-width: 0;
+    }
+
+    .ent-top-row {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
       white-space: nowrap;
+    }
+
+    .ent-sub-desc {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: #64748b;
+      white-space: nowrap;
+      line-height: 1.2;
     }
 
     .exam-nav-tab:hover {
@@ -205,6 +223,10 @@
       color: #ffffff;
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
       box-shadow: 0 6px 16px rgba(2, 132, 199, 0.3);
+    }
+
+    .exam-nav-tab.active .ent-sub-desc {
+      color: #e0f2fe;
     }
 
     .tab-badge-pill {
@@ -362,8 +384,8 @@
 
     .eh-actions {
       display: flex;
-      align-items: center;
-      gap: 10px;
+      align-items: stretch;
+      gap: 12px;
       width: 100%;
     }
 
@@ -396,12 +418,13 @@
       color: #ffffff;
       border: 1.5px solid rgba(255, 255, 255, 0.38);
       padding: 14px 22px;
-      border-radius: 16px;
+      border-radius: 18px;
       font-weight: 800;
       font-size: 0.92rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 9px;
       text-decoration: none;
       transition: all 0.25s;
@@ -414,39 +437,49 @@
       transform: translateY(-2px);
     }
 
-    /* Dynamic Profile Card in Hero (Thu gọn cân đối) */
+    /* Dynamic Profile Card in Hero (Cố định cùng 1 kích cỡ chuẩn ở cả 3 giao diện) */
     .eh-profile-card {
       background: rgba(255, 255, 255, 0.14);
       border: 1.5px solid rgba(255, 255, 255, 0.28);
-      border-radius: 18px;
-      padding: 16px 16px;
-      width: 235px;
-      max-width: 235px;
+      border-radius: 20px;
+      padding: 18px 18px;
+      width: 248px;
+      min-width: 248px;
+      max-width: 248px;
+      height: 242px;
+      min-height: 242px;
+      max-height: 242px;
+      box-sizing: border-box;
       flex-shrink: 0;
       text-align: center;
       backdrop-filter: blur(12px);
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
       position: relative;
       z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .ep-avatar-box {
-      width: 48px;
-      height: 48px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       background: #ffffff;
       color: #0284c7;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 8px;
+      margin: 0 auto;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
       position: relative;
+      flex-shrink: 0;
     }
 
     .ep-avatar-box svg {
-      width: 24px;
-      height: 24px;
+      width: 25px;
+      height: 25px;
     }
 
     .ep-status-dot {
@@ -461,44 +494,44 @@
     }
 
     .ep-title {
-      font-size: 0.96rem;
+      font-size: 1rem;
       font-weight: 800;
       color: #ffffff;
-      margin-bottom: 3px;
+      margin: 0;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
 
     .ep-role-badge {
       display: inline-block;
-      font-size: 0.64rem;
+      font-size: 0.65rem;
       font-weight: 800;
-      padding: 2px 9px;
+      padding: 3px 11px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.25);
       color: #ffffff;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      margin-bottom: 6px;
+      margin: 0;
     }
 
     .ep-sub {
       font-size: 0.74rem;
-      line-height: 1.38;
+      line-height: 1.4;
       color: #e0f2fe;
-      margin-bottom: 10px;
+      margin: 0;
+      height: 34px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .ep-vip-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: rgba(245, 158, 11, 0.2);
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      color: #fef08a;
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 3px 9px;
-      border-radius: 999px;
-      margin-bottom: 8px;
+      display: none !important;
     }
 
     .btn-profile-action {
@@ -506,7 +539,7 @@
       background: #ffffff;
       color: #0369a1;
       border: none;
-      padding: 8px 12px;
+      padding: 9px 14px;
       border-radius: 10px;
       font-weight: 800;
       font-size: 0.78rem;
@@ -2546,28 +2579,32 @@
             Khám phá đề thi
           </a>
 
-          <!-- Thanh tab tích hợp kéo dài kế bên Khám phá đề thi (thiết kế to, cân đối 2 bảng) -->
+          <!-- Thanh tab tích hợp kéo dài kế bên Khám phá đề thi (thiết kế 2 dòng to, rộng xuống, cân đối) -->
           <div class="eh-integrated-tabs" role="tablist" aria-label="Chế độ ôn luyện">
             <button type="button" class="exam-nav-tab active" id="tabBtnOnline">
-              <svg class="icon-svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2.2">
-                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-                <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-                <path d="m9 14 2 2 4-4" />
-              </svg>
-              <span>TRẮC NGHIỆM &amp; THI THỬ</span>
-              <span class="tab-badge-pill">Ôn luyện &bull; Thi thử &bull; Thi có mã</span>
+              <div class="ent-top-row">
+                <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2.2">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                  <path d="m9 14 2 2 4-4" />
+                </svg>
+                <span>TRẮC NGHIỆM &amp; THI THỬ</span>
+              </div>
+              <span class="ent-sub-desc">Ôn luyện &bull; Thi thử &bull; Thi có mã</span>
             </button>
 
             <button type="button" class="exam-nav-tab" id="tabBtnLab">
-              <svg class="icon-svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2.2">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                <line x1="8" y1="21" x2="16" y2="21" />
-                <line x1="12" y1="17" x2="12" y2="21" />
-              </svg>
-              <span>LUYỆN TẬP THỰC HÀNH</span>
-              <span class="tab-badge-pill">Word &bull; Excel &bull; PowerPoint &bull; Khác</span>
+              <div class="ent-top-row">
+                <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2.2">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                  <line x1="8" y1="21" x2="16" y2="21" />
+                  <line x1="12" y1="17" x2="12" y2="21" />
+                </svg>
+                <span>LUYỆN TẬP THỰC HÀNH</span>
+              </div>
+              <span class="ent-sub-desc">Word &bull; Excel &bull; PowerPoint &bull; Khác</span>
             </button>
           </div>
         </div>
