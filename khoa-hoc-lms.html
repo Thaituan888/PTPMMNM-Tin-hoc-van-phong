@@ -1,0 +1,2607 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khóa Học Ứng Dụng CNTT Cơ Bản - Chuẩn Bộ GD&ĐT | Tin Học Văn Phòng LMS</title>
+  <meta name="description"
+    content="Khóa học Ứng dụng CNTT cơ bản chuẩn Bộ Giáo dục & Đào tạo. Học làm chủ máy tính, Windows, Word, Excel, PowerPoint và ứng dụng AI. Thời lượng 42 giờ, lịch học linh hoạt, cấp chứng chỉ giá trị toàn quốc." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="lms-chatbot.css" />
+  <style>
+    body {
+      background: #f0f7ff;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .lms-page-container {
+      max-width: 1240px;
+      width: 100%;
+      margin: 20px auto 90px;
+      padding: 0 clamp(16px, 3vw, 32px);
+      flex: 1;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ======================================================================
+       TOP ACTION BAR: QUAY VỀ TRANG CHỦ & NÚT "TÌM KIẾM" CĂN VỀ BÊN PHẢI
+       ====================================================================== */
+    .top-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn-back-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1.5px solid #e0f2fe;
+      color: #0284c7;
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 8px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.08);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-back-nav:hover {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      transform: translateX(-3px);
+    }
+
+    .top-nav-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-top-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1.5px solid #bae6fd;
+      color: #0284c7;
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 8px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.08);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-top-action:hover {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.18);
+    }
+
+    /* BREADCRUMB */
+    .course-breadcrumb {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.86rem;
+      color: #64748b;
+      margin-bottom: 22px;
+    }
+
+    .course-breadcrumb a {
+      color: #0284c7;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .course-breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    .course-breadcrumb .sep {
+      color: #cbd5e1;
+      font-size: 0.8rem;
+    }
+
+    .course-breadcrumb .current {
+      color: #1e293b;
+      font-weight: 700;
+    }
+
+    /* ======================================================================
+       COURSE HERO BANNER (CSC STYLE)
+       ====================================================================== */
+    .course-hero-card {
+      background: #ffffff;
+      border-radius: 24px;
+      border: 1.5px solid #e0f2fe;
+      box-shadow: 0 10px 30px rgba(2, 132, 199, 0.08);
+      padding: clamp(24px, 4vw, 36px);
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+      align-items: center;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (max-width: 900px) {
+      .course-hero-card {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+
+    .course-hero-img-box {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      aspect-ratio: 4/3;
+      background: #e2e8f0;
+    }
+
+    .course-hero-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .course-hero-img-box:hover img {
+      transform: scale(1.04);
+    }
+
+    .course-hero-ribbon {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: #ffffff;
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
+    }
+
+    .course-hero-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .badge-pill-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #e0f2fe;
+      color: #0284c7;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .badge-pill-success {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #dcfce7;
+      color: #15803d;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .course-title-main {
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 800;
+      color: #075985;
+      line-height: 1.25;
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .course-intro-text {
+      font-size: 0.96rem;
+      color: #334155;
+      line-height: 1.65;
+      margin-bottom: 20px;
+      text-align: justify;
+    }
+
+    /* 3 NÚT LIÊN KẾT NHANH (PORTAL PILLS) */
+    .portals-mini-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .portals-mini-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .portal-pill {
+      background: #ffffff;
+      border: 1.5px solid #e0f2fe;
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      text-decoration: none;
+      color: #075985;
+      font-weight: 700;
+      font-size: 0.88rem;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.05);
+      transition: all 0.2s ease;
+    }
+
+    .portal-pill:hover {
+      border-color: #0284c7;
+      background: #f8fafc;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(2, 132, 199, 0.12);
+    }
+
+    .portal-pill-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .portal-pill-left span.icon {
+      font-size: 1.2rem;
+    }
+
+    /* ======================================================================
+       STICKY TOPIC NAVIGATION BAR (CSC STYLE: fix-topic)
+       ====================================================================== */
+    .sticky-topic-nav {
+      position: sticky;
+      top: 15px;
+      z-index: 100;
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1.5px solid #e0f2fe;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+      margin-bottom: 28px;
+      padding: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .sticky-topic-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .topic-nav-list {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      white-space: nowrap;
+    }
+
+    .topic-nav-item a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 15px;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #475569;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .topic-nav-item a:hover {
+      background: #f0f9ff;
+      color: #0284c7;
+    }
+
+    .topic-nav-item a.active {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+    }
+
+    /* ======================================================================
+       MAIN TWO-COLUMN LAYOUT: CONTENT (LEFT) + SIDEBAR (RIGHT)
+       ====================================================================== */
+    .course-layout-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 992px) {
+      .course-layout-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* LEFT CONTENT STYLES */
+    .course-content-col {
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+    }
+
+    .content-box-card {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1.5px solid #e0f2fe;
+      box-shadow: 0 4px 18px rgba(2, 132, 199, 0.05);
+      padding: clamp(20px, 3vw, 28px);
+      scroll-margin-top: 85px;
+    }
+
+    .content-box-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1.5px solid #f1f5f9;
+    }
+
+    .content-box-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: #e0f2fe;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .content-box-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #075985;
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+
+    /* CHECKLIST LIST FOR ĐỐI TƯỢNG & LỢI ÍCH */
+    .styled-check-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .styled-check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.94rem;
+      line-height: 1.55;
+      color: #334155;
+    }
+
+    .styled-check-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #dcfce7;
+      color: #15803d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* HỌC PHÍ & THỜI LƯỢNG BOX */
+    .tuition-info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 650px) {
+      .tuition-info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .tuition-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .tuition-card.highlight {
+      background: #f0fdf4;
+      border-color: #86efac;
+    }
+
+    .tuition-card-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .tuition-card-value {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #075985;
+    }
+
+    .tuition-card.highlight .tuition-card-value {
+      color: #15803d;
+    }
+
+    .tuition-note-box {
+      background: #fefce8;
+      border-left: 4px solid #facc15;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      color: #713f12;
+      line-height: 1.55;
+    }
+
+    /* ======================================================================
+       NỘI DUNG CHƯƠNG TRÌNH (SYLLABUS MODULES - ACCORDION STYLE)
+       ====================================================================== */
+    .syllabus-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .syllabus-item {
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #ffffff;
+      transition: all 0.2s ease;
+    }
+
+    .syllabus-item.open {
+      border-color: #0284c7;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08);
+    }
+
+    .syllabus-header {
+      padding: 14px 18px;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s;
+    }
+
+    .syllabus-item.open .syllabus-header {
+      background: #f0f9ff;
+    }
+
+    .syllabus-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .module-badge {
+      background: #0284c7;
+      color: #ffffff;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .module-badge.ai {
+      background: #8b5cf6;
+    }
+
+    .module-badge.exam {
+      background: #ea580c;
+    }
+
+    .module-name {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .syllabus-toggle-icon {
+      font-size: 1.1rem;
+      color: #64748b;
+      transition: transform 0.2s ease;
+    }
+
+    .syllabus-item.open .syllabus-toggle-icon {
+      transform: rotate(180deg);
+      color: #0284c7;
+    }
+
+    .syllabus-body {
+      padding: 16px 20px;
+      display: none;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .syllabus-item.open .syllabus-body {
+      display: block;
+    }
+
+    .syllabus-bullet-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .syllabus-bullet-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: #334155;
+      line-height: 1.5;
+    }
+
+    .syllabus-bullet-item::before {
+      content: "•";
+      color: #0284c7;
+      font-weight: bold;
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    /* ======================================================================
+       LỊCH KHAI GIẢNG (SCHEDULE TABLE)
+       ====================================================================== */
+    .schedule-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      margin-top: 12px;
+    }
+
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+      white-space: nowrap;
+    }
+
+    .schedule-table th {
+      background: #f1f5f9;
+      color: #075985;
+      font-weight: 800;
+      padding: 12px 16px;
+      border-bottom: 1.5px solid #cbd5e1;
+    }
+
+    .schedule-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+    }
+
+    .schedule-table tr:hover td {
+      background: #f8fafc;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 800;
+    }
+
+    .status-badge.open {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .status-badge.hurry {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .btn-table-enroll {
+      background: #0284c7;
+      color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.2s;
+    }
+
+    .btn-table-enroll:hover {
+      background: #0369a1;
+    }
+
+    /* ======================================================================
+       HƯỚNG DẪN THANH TOÁN (PAYMENT METHODS)
+       ====================================================================== */
+    .payment-methods-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .payment-methods-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .payment-method-card {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .payment-method-card.bank {
+      border-color: #bae6fd;
+      background: #f0f9ff;
+    }
+
+    .method-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #075985;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .method-content-text {
+      font-size: 0.88rem;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    .bank-account-box {
+      background: #ffffff;
+      border: 1px dashed #0284c7;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin: 12px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      color: #0f172a;
+    }
+
+    /* ======================================================================
+       CÂU HỎI THƯỜNG GẶP (FAQ ACCORDION)
+       ====================================================================== */
+    .faq-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .faq-item {
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #ffffff;
+      transition: all 0.2s ease;
+    }
+
+    .faq-item.open {
+      border-color: #0284c7;
+    }
+
+    .faq-question {
+      padding: 14px 18px;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: #1e293b;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .faq-item.open .faq-question {
+      background: #f0f9ff;
+      color: #0284c7;
+    }
+
+    .faq-icon {
+      font-size: 1.2rem;
+      color: #64748b;
+      transition: transform 0.2s;
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      color: #0284c7;
+    }
+
+    .faq-answer {
+      padding: 16px 20px;
+      display: none;
+      font-size: 0.9rem;
+      color: #475569;
+      line-height: 1.6;
+      border-top: 1px solid #e2e8f0;
+      background: #ffffff;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    /* ======================================================================
+       SIDEBAR STYLES (STICKY ON DESKTOP)
+       ====================================================================== */
+    .course-sidebar-col {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      position: sticky;
+      top: 80px;
+    }
+
+    .sidebar-widget-card {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1.5px solid #e0f2fe;
+      box-shadow: 0 4px 18px rgba(2, 132, 199, 0.06);
+      padding: 22px;
+      overflow: hidden;
+    }
+
+    .widget-enroll-header {
+      text-align: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #e2e8f0;
+      margin-bottom: 16px;
+    }
+
+    .widget-price-tag {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #dc2626;
+      line-height: 1.2;
+    }
+
+    .widget-price-old {
+      font-size: 0.86rem;
+      color: #94a3b8;
+      text-decoration: line-through;
+      margin-top: 2px;
+    }
+
+    .widget-discount-badge {
+      display: inline-block;
+      background: #fef2f2;
+      color: #ef4444;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-top: 6px;
+    }
+
+    /* ENROLL FORM */
+    .sidebar-enroll-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .form-group-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group-item label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .form-control-input {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      font-size: 0.88rem;
+      font-family: inherit;
+      box-sizing: border-box;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .form-control-input:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .btn-submit-enroll {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+      transition: all 0.2s;
+      margin-top: 6px;
+      font-family: inherit;
+    }
+
+    .btn-submit-enroll:hover {
+      background: #0369a1;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.4);
+    }
+
+    .sidebar-perks-list {
+      list-style: none;
+      padding: 0;
+      margin: 16px 0 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 14px;
+    }
+
+    .sidebar-perk-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: #475569;
+      font-weight: 600;
+    }
+
+    .sidebar-perk-item span.icon {
+      color: #10b981;
+      font-size: 0.95rem;
+    }
+
+    /* CONTACT WIDGET */
+    .contact-widget-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #075985;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .contact-info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: #334155;
+    }
+
+    .contact-info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.45;
+    }
+
+    .contact-info-row strong {
+      color: #0f172a;
+    }
+
+    .contact-hotline-badge {
+      display: inline-block;
+      background: #fef2f2;
+      color: #dc2626;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* RELATED COURSES WIDGET */
+    .related-course-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f1f5f9;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+    }
+
+    .related-course-item:hover {
+      transform: translateX(4px);
+    }
+
+    .related-course-item:last-child {
+      border-bottom: none;
+    }
+
+    .related-course-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: #e0f2fe;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .related-course-name {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.35;
+    }
+
+    .related-course-price {
+      font-size: 0.78rem;
+      color: #0284c7;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* ======================================================================
+       MODAL TÌM KIẾM
+       ====================================================================== */
+    .search-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(5px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .search-modal-backdrop.open {
+      display: flex;
+    }
+
+    .search-modal-card {
+      background: #ffffff;
+      width: 680px;
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 26px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 1.5px solid #e0f2fe;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .search-modal-header {
+      background: linear-gradient(135deg, #075985 0%, #0284c7 100%);
+      color: #ffffff;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-header-title-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .search-header-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .search-modal-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .search-modal-subtitle {
+      font-size: 0.82rem;
+      color: #e0f2fe;
+      margin-top: 3px;
+    }
+
+    .search-close-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #ffffff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .search-close-btn:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .search-modal-body {
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .search-input-group {
+      margin-bottom: 10px;
+    }
+
+    .search-label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+
+    .search-input-wrap {
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1.5px solid #cbd5e1;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: #1e293b;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .search-submit-btn {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .search-submit-btn:hover {
+      background: #0369a1;
+      transform: translateY(-1px);
+    }
+
+    .search-sample-hints {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      margin-bottom: 18px;
+    }
+
+    .hints-label {
+      font-size: 0.78rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .hint-tag {
+      background: #f1f5f9;
+      border: 1px dashed #94a3b8;
+      color: #0284c7;
+      font-size: 0.76rem;
+      font-family: inherit;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .hint-tag:hover {
+      background: #e0f2fe;
+      border-color: #0284c7;
+    }
+
+    .search-result-area {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .search-section-header {
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #075985;
+      padding-bottom: 6px;
+      border-bottom: 1.5px solid #e2e8f0;
+      margin-top: 6px;
+    }
+
+    .search-item-card {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .search-item-card:hover {
+      background: #ffffff;
+      border-color: #0284c7;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .search-item-info {
+      flex: 1;
+    }
+
+    .search-item-title {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: #075985;
+      margin-bottom: 4px;
+    }
+
+    .search-item-desc {
+      font-size: 0.85rem;
+      color: #475569;
+      line-height: 1.45;
+    }
+
+    .search-item-btn {
+      background: #0284c7;
+      color: #ffffff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+
+    .search-item-btn:hover {
+      background: #0369a1;
+    }
+
+    .search-empty-box {
+      background: #fef2f2;
+      border: 1.5px solid #fecaca;
+      border-radius: 16px;
+      padding: 18px;
+      color: #991b1b;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-top: 10px;
+    }
+
+    .search-empty-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .search-empty-text h4 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .search-empty-text p {
+      font-size: 0.86rem;
+      line-height: 1.5;
+      margin: 0;
+      color: #7f1d1d;
+    }
+  
+    /* CÁC CHUYÊN TRANG LIÊN QUAN (PORTAL CTA CARDS) */
+    .related-portals-section {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 850px) {
+      .related-portals-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .portal-cta-card {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1.5px solid #e0f2fe;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.06);
+      transition: all 0.3s ease;
+    }
+
+    .portal-cta-card:hover {
+      transform: translateY(-4px);
+      border-color: #0284c7;
+      box-shadow: 0 12px 28px rgba(2, 132, 199, 0.14);
+    }
+
+    .portal-cta-icon {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+    }
+
+    .portal-cta-info h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #075985;
+      margin: 0 0 6px 0;
+    }
+
+    .portal-cta-info p {
+      font-size: 0.88rem;
+      color: #64748b;
+      line-height: 1.55;
+      margin: 0 0 16px 0;
+      flex: 1;
+    }
+
+    .btn-portal-go {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #f0f9ff;
+      border: 1.5px solid #bae6fd;
+      color: #0284c7;
+      font-weight: 800;
+      font-size: 0.88rem;
+      padding: 10px 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      margin-top: auto;
+    }
+
+    .btn-portal-go:hover {
+      background: #0284c7;
+      border-color: #0284c7;
+      color: #ffffff;
+    }
+
+  
+    /* ======================================================================
+       BANNER SLIDER 5 HÌNH - DI CHUYỂN TỪ PHẢI QUA TRÁI SAU 4 GIÂY
+       ====================================================================== */
+    .lms-hero-slider-section {
+      width: 100%;
+      margin: 18px 0 26px 0;
+    }
+
+    .lms-banner-slider-container {
+      position: relative;
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 12px 32px -4px rgba(2, 44, 80, 0.16), 0 4px 12px -2px rgba(2, 44, 80, 0.08);
+      background: #0f172a;
+    }
+
+    .lms-slider-viewport {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 18px;
+    }
+
+    .lms-slider-track {
+      display: flex;
+      width: 100%;
+      will-change: transform;
+    }
+
+    .lms-slide {
+      flex: 0 0 100%;
+      width: 100%;
+      display: block;
+      text-decoration: none;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-drag: none;
+      background: #0f172a;
+    }
+
+    .lms-slide img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1200 / 380;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    /* Nút bấm Trước / Sau (Next & Prev) */
+    .slider-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+      z-index: 10;
+      opacity: 0;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
+
+    .lms-banner-slider-container:hover .slider-nav-btn {
+      opacity: 1;
+    }
+
+    .slider-nav-btn:hover {
+      background: rgba(2, 132, 199, 0.95);
+      border-color: #38bdf8;
+      color: #ffffff;
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5);
+    }
+
+    .slider-nav-btn.prev-btn {
+      left: 18px;
+    }
+
+    .slider-nav-btn.next-btn {
+      right: 18px;
+    }
+
+    /* Dots Indicators */
+    .slider-dots-container {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      z-index: 10;
+    }
+
+    .slider-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.4);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .slider-dot:hover {
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .slider-dot.active {
+      width: 28px;
+      background: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+    }
+
+    /* Progress bar 4s */
+    .slider-progress-wrap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.15);
+      z-index: 10;
+    }
+
+    .slider-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #0284c7, #38bdf8);
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .slider-nav-btn {
+        opacity: 0.85;
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+      .slider-nav-btn.prev-btn { left: 8px; }
+      .slider-nav-btn.next-btn { right: 8px; }
+      .slider-dots-container { bottom: 10px; padding: 4px 10px; gap: 6px; }
+      .slider-dot { width: 8px; height: 8px; }
+      .slider-dot.active { width: 20px; }
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- Global Header -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon-box" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
+            <circle cx="13" cy="15.5" r="1.8" fill="#4f46e5" />
+            <circle cx="23" cy="15.5" r="1.8" fill="#4f46e5" />
+            <path d="M15.5 19.5c1.2 1.2 3.8 1.2 5 0" stroke="#ec4899" stroke-width="2" stroke-linecap="round" />
+            <path d="M12 7V4.5M24 7V4.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M11 29.5h14" stroke="#93c5fd" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">TIN HỌC VĂN PHÒNG</span>
+          <span class="brand-subtitle">Đào tạo Tin học Trực tuyến</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <!-- 1. KHÓA HỌC LMS (Active) -->
+        <a href="khoa-hoc-lms.html" style="color: var(--water-primary); font-weight: 800;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+          <span>KHÓA HỌC LMS</span>
+        </a>
+
+        <!-- 2. LỘ TRÌNH HỌC TẬP -->
+        <a href="lo-trinh-hoc-tap.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="6" cy="19" r="3" />
+            <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" />
+            <circle cx="18" cy="5" r="3" />
+          </svg>
+          <span>LỘ TRÌNH HỌC TẬP</span>
+        </a>
+
+        <!-- 3. ÔN LUYỆN & THI THỬ -->
+        <a href="on-luyen-thi-thu.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+          <span>ÔN LUYỆN &amp; THI THỬ</span>
+        </a>
+
+        <!-- 4. DIỄN ĐÀN -->
+        <a href="index.html#cong-dong">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>DIỄN ĐÀN</span>
+        </a>
+
+        <!-- 5. CÔNG CỤ & TIỆN ÍCH -->
+        <div class="nav-dropdown-wrap" id="nav-tools-dropdown">
+          <button type="button" class="nav-link-dropdown nav-dropdown-trigger" id="btn-tools-dropdown">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path
+                d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+            <span>CÔNG CỤ &amp; TIỆN ÍCH</span>
+            <svg class="nav-dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="3">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="nav-dropdown-content">
+            <a href="luyen-go-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8" stroke-width="2.2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>1. Luyện gõ phím 10 ngón</strong>
+                <small>Luyện gõ tiếng Việt Telex &amp; đo WPM</small>
+              </div>
+            </a>
+            <a href="tra-cuu-phim-tat.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="#d97706" stroke-width="1.5">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>2. Tra cứu Phím tắt</strong>
+                <small>Phím tắt thông dụng Word, Excel, PPT</small>
+              </div>
+            </a>
+            <a href="kiem-tra-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <circle cx="7" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="12" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="17" cy="9" r="1" fill="#0284c7" />
+                  <line x1="6" y1="14" x2="18" y2="14" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>3. Kiểm tra Bàn phím Online</strong>
+                <small>Phát hiện kẹt/liệt phím, đo NKRO</small>
+              </div>
+            </a>
+            <a href="tim-hieu-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 6h10M6 10h10M6 14h6" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>4. Giới thiệu Bàn phím Máy tính</strong>
+                <small>Cấu tạo 100% Full-size, gờ nổi F/J</small>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 6. CỬA HÀNG -->
+        <a href="index.html#cua-hang">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span>CỬA HÀNG</span>
+        </a>
+      </nav>
+
+      <a href="index.html#dang-nhap" class="btn-login">ĐĂNG NHẬP</a>
+    </div>
+  </header>
+
+  <main class="lms-page-container" id="main-content">
+    <!-- ======================================================================
+         TOP BAR: QUAY VỀ TRANG CHỦ & NÚT "TÌM KIẾM" CĂN VỀ BÊN PHẢI
+         ====================================================================== -->
+    <div class="top-nav-bar">
+      <!-- Nút bên trái -->
+      <a href="index.html" class="btn-back-nav">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+        <span>Quay về trang chủ</span>
+      </a>
+
+      <!-- Nút căn về bên phải: Tìm kiếm -->
+      <div class="top-nav-right-actions">
+        <button type="button" class="btn-top-action" id="btnOpenSearch" onclick="openSearchModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <span>Tìm kiếm</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- BREADCRUMB -->
+    <nav class="course-breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Trang chủ</a>
+      <span class="sep">/</span>
+      <span class="current">Khóa học LMS</span>
+    </nav>
+
+    <!-- ======================================================================
+         COURSE HERO BANNER (CHUẨN LINK CSC.EDU.VN)
+         ====================================================================== -->
+    <!-- ======================================================================
+         BANNER SLIDER 5 HÌNH - DI CHUYỂN TỪ PHẢI QUA TRÁI SAU 4 GIÂY
+         (Bạn có thể thay thế 5 file ảnh banner_lms_1.svg -> banner_lms_5.svg bằng file của bạn sau)
+         ====================================================================== -->
+    <div class="lms-hero-slider-section">
+      <div class="lms-banner-slider-container" id="lmsBannerSlider" aria-label="Banner Tin Tức & Khuyến Học Khóa Học LMS">
+        <div class="lms-slider-viewport">
+          <div class="lms-slider-track" id="lmsSliderTrack">
+            <!-- Slide 1: Khóa học CNTT cơ bản & Chuẩn quốc gia -->
+            <a href="danh-sach-khoa-hoc.html" class="lms-slide" title="Khóa học Ứng Dụng CNTT Cơ Bản & Nâng Cao">
+              <img src="banner_lms_1.svg" alt="Banner Khóa Học Ứng Dụng CNTT Cơ Bản" />
+            </a>
+
+            <!-- Slide 2: Ưu đãi học phí 20% -->
+            <a href="huong-dan-dang-ky.html" class="lms-slide" title="Ưu Đãi Học Phí - Giảm Đến 20%">
+              <img src="banner_lms_2.svg" alt="Banner Ưu Đãi Giảm 20% Học Phí Khóa Học" />
+            </a>
+
+            <!-- Slide 3: Lịch khai giảng mới nhất -->
+            <a href="lich-khai-giang.html" class="lms-slide" title="Thông Báo Lịch Khai Giảng Các Lớp Mới Trong Tháng">
+              <img src="banner_lms_3.svg" alt="Banner Lịch Khai Giảng Các Lớp Mới Nhất" />
+            </a>
+
+            <!-- Slide 4: Khóa ôn luyện MOS -->
+            <a href="danh-sach-khoa-hoc.html?group=on-luyen" class="lms-slide" title="Chương Trình Ôn Luyện Chứng Chỉ MOS Quốc Tế">
+              <img src="banner_lms_4.svg" alt="Banner Ôn Luyện Chứng Chỉ Quốc Tế MOS" />
+            </a>
+
+            <!-- Slide 5: Khóa ứng dụng AI văn phòng -->
+            <a href="lich-khai-giang.html" class="lms-slide" title="Khóa Học Ứng Dụng AI Trong Công Việc Văn Phòng">
+              <img src="banner_lms_5.svg" alt="Banner Khóa Học Ứng Dụng AI Trong Công Việc" />
+            </a>
+          </div>
+        </div>
+
+        <!-- Mũi tên đã được gỡ bỏ theo yêu cầu: Hình tự động chuyển sau mỗi 4 giây -->
+
+        <!-- 5 Chấm điều hướng (Dots) -->
+        <div class="slider-dots-container" id="lmsSliderDots">
+          <button type="button" class="slider-dot active" data-slide="0" aria-label="Banner 1: Khóa học CNTT cơ bản"></button>
+          <button type="button" class="slider-dot" data-slide="1" aria-label="Banner 2: Ưu đãi giảm 20% học phí"></button>
+          <button type="button" class="slider-dot" data-slide="2" aria-label="Banner 3: Lịch khai giảng mới nhất"></button>
+          <button type="button" class="slider-dot" data-slide="3" aria-label="Banner 4: Ôn luyện chứng chỉ MOS"></button>
+          <button type="button" class="slider-dot" data-slide="4" aria-label="Banner 5: Ứng dụng AI văn phòng"></button>
+        </div>
+
+        <!-- Thanh đếm thời gian chuyển hình (4 giây) -->
+        <div class="slider-progress-wrap">
+          <div class="slider-progress-bar" id="lmsSliderProgress"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         STICKY TOPIC NAVIGATION BAR
+         Đối tượng tham gia, Lợi ích sau khi học, Danh sách khóa học, Lịch khai giảng, Hướng dẫn đăng ký & thanh toán
+         ====================================================================== -->
+    <nav class="sticky-topic-nav" id="fix-topic" aria-label="Điều hướng các mục môn học">
+      <ul class="topic-nav-list">
+        <li class="topic-nav-item"><a href="#doi-tuong" class="active">Đối tượng tham gia</a></li>
+        <li class="topic-nav-item"><a href="#loi-ich">Lợi ích sau khi học</a></li>
+        <li class="topic-nav-item"><a href="danh-sach-khoa-hoc.html">Danh sách khóa học</a></li>
+        <li class="topic-nav-item"><a href="lich-khai-giang.html">Lịch khai giảng</a></li>
+        <li class="topic-nav-item"><a href="huong-dan-dang-ky.html">Hướng dẫn đăng ký &amp; thanh toán</a></li>
+      </ul>
+    </nav>
+
+    <!-- ======================================================================
+         LAYOUT 2 CỘT: NỘI DUNG (LEFT) + SIDEBAR (RIGHT)
+         ====================================================================== -->
+    <div class="course-layout-grid">
+      <!-- CỘT TRÁI: ĐỐI TƯỢNG THAM GIA VÀ LỢI ÍCH SAU KHI HỌC -->
+      <div class="course-content-col">
+        
+        <!-- 1. ĐỐI TƯỢNG THAM GIA -->
+        <section class="content-box-card" id="doi-tuong">
+          <div class="content-box-header">
+            
+            <h2 class="content-box-title">Đối Tượng Tham Gia</h2>
+          </div>
+          <ul class="styled-check-list">
+            <li class="styled-check-item">
+              <span class="styled-check-icon">✓</span>
+              <span><strong>Học viên đang bắt đầu những trải nghiệm về Tin học:</strong> Chưa từng tiếp xúc hoặc còn bỡ ngỡ với máy tính, mong muốn có người hướng dẫn từng thao tác căn bản.</span>
+            </li>
+            <li class="styled-check-item">
+              <span class="styled-check-icon">✓</span>
+              <span><strong>Học viên muốn hệ thống lại toàn bộ kiến thức cơ bản trong Tin học:</strong> Đã biết sử dụng nhưng làm việc chưa chuẩn, muốn củng cố nền tảng để thao tác nhanh và bài bản hơn.</span>
+            </li>
+            <li class="styled-check-item">
+              <span class="styled-check-icon">✓</span>
+              <span><strong>Học viên mong muốn cập nhật những kiến thức Tin học mới:</strong> Đang được sử dụng rộng rãi tại các cơ quan, văn phòng và doanh nghiệp hiện đại, bao gồm kỹ năng AI số.</span>
+            </li>
+            <li class="styled-check-item">
+              <span class="styled-check-icon">✓</span>
+              <span><strong>Học viên cần học và thi lấy chứng chỉ Ứng dụng CNTT cơ bản:</strong> Theo chuẩn quy định của <strong>Bộ Giáo dục &amp; Đào tạo Việt Nam</strong> nhằm phục vụ chuẩn đầu ra tốt nghiệp Đại học/Cao đẳng, thi công chức, viên chức hoặc bổ sung hồ sơ xin việc.</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- 2. LỢI ÍCH SAU KHI HỌC -->
+        <section class="content-box-card" id="loi-ich">
+          <div class="content-box-header">
+            
+            <h2 class="content-box-title">Lợi Ích Sau Khi Học</h2>
+          </div>
+          <p style="font-size:0.95rem; color:#475569; margin-top:0; margin-bottom:14px; font-weight:600;">
+            Sau khi hoàn thành khóa học tại trung tâm, học viên sẽ có khả năng:
+          </p>
+          <ul class="styled-check-list">
+            <li class="styled-check-item">
+              <span class="styled-check-icon">✓</span>
+              <span>Nhanh chóng nắm vững tất cả kiến thức cơ bản về máy tính, cấu trúc phần cứng, phần mềm và mạng internet.</span>
+            </li>
+            <li class="styled-check-item">
+              <span class="styled-check-icon">✓</span>
+              <span>Xử lý thuần thục các thao tác làm việc và tiện ích thông dụng trên môi trường hệ điều hành Windows.</span>
+            </li>
+            <li class="styled-check-item">
+              <span class="styled-check-icon">✓</span>
+              <span>Soạn thảo và trình bày văn bản chuyên nghiệp với Microsoft Word đúng chuẩn thể thức hành chính hiện hành.</span>
+            </li>
+            <li class="styled-check-item">
+              <span class="styled-check-icon">✓</span>
+              <span>Tạo lập và trình bày dễ dàng các bảng tính chuyên nghiệp trong Microsoft Excel.</span>
+            </li>
+            <li class="styled-check-item">
+              <span class="styled-check-icon">✓</span>
+              <span>Hiểu rõ và biết cách ứng dụng trong thực tế các hàm và công thức tính toán từ cơ bản đến nâng cao trên Excel.</span>
+            </li>
+            <li class="styled-check-item">
+              <span class="styled-check-icon">✓</span>
+              <span>Xây dựng các bài thuyết trình, trình chiếu ấn tượng và chuyên nghiệp với Microsoft PowerPoint.</span>
+            </li>
+            <li class="styled-check-item">
+              <span class="styled-check-icon">✓</span>
+              <span>Hiểu rõ về mạng máy tính, email, bảo mật dữ liệu và phòng tránh mã độc trên không gian mạng.</span>
+            </li>
+            <li class="styled-check-item">
+              <span class="styled-check-icon">✓</span>
+              <span>Thao tác nhanh chóng trên Internet nhằm tiếp cận dễ dàng khoa học kỹ thuật và tài nguyên số.</span>
+            </li>
+            <li class="styled-check-item">
+              <span class="styled-check-icon">✓</span>
+              <span>Tối ưu hóa học tập và công việc cùng Trí tuệ nhân tạo (AI): Tạo slide tự động, tóm tắt tài liệu và tìm kiếm thông tin thông minh.</span>
+            </li>
+            <li class="styled-check-item">
+              <span class="styled-check-icon">✓</span>
+              <span>Tự tin vượt qua kỳ thi và đạt Chứng chỉ Ứng dụng CNTT Cơ bản phôi Bộ GD&amp;ĐT có giá trị vô thời hạn trên toàn quốc.</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- 3 KHỐI CHUYÊN TRANG LIÊN KẾT NHANH -->
+        <section class="related-portals-section">
+          <div class="portal-cta-card">
+            
+            <div class="portal-cta-info">
+              <h3>Danh Sách Khóa Học</h3>
+              <p>Khám phá 10 khóa học thuộc 3 nhóm: Tổng hợp, Chuyên đề và Ôn luyện với 2 hình thức Trực tuyến &amp; Trực tiếp.</p>
+            </div>
+            <a href="danh-sach-khoa-hoc.html" class="btn-portal-go">Xem danh sách khóa học &rarr;</a>
+          </div>
+
+          <div class="portal-cta-card">
+            
+            <div class="portal-cta-info">
+              <h3>Lịch Khai Giảng Các Lớp</h3>
+              <p>Tra cứu lịch mở lớp sắp tới, đa dạng ca học Tối, Ban ngày, Cuối tuần với hình thức Trực tuyến &amp; Trực tiếp.</p>
+            </div>
+            <a href="lich-khai-giang.html" class="btn-portal-go">Tra cứu lịch khai giảng &rarr;</a>
+          </div>
+
+          <div class="portal-cta-card">
+            
+            <div class="portal-cta-info">
+              <h3>Hướng Dẫn Đăng Ký &amp; Thanh Toán</h3>
+              <p>Quy trình đăng ký qua 6 bước, thông tin tài khoản ngân hàng, quét mã QR thanh toán và tự động điền mã lớp.</p>
+            </div>
+            <a href="huong-dan-dang-ky.html" class="btn-portal-go">Xem hướng dẫn đăng ký &rarr;</a>
+          </div>
+        </section>
+      </div>
+
+      <!-- CỘT PHẢI: SIDEBAR THÔNG MINH (STICKY ON DESKTOP) -->
+      <aside class="course-sidebar-col">
+        <!-- 2. THÔNG TIN LIÊN HỆ & VĂN PHÒNG GHI DANH (CSC) -->
+        <div class="sidebar-widget-card">
+          <div class="contact-widget-title">
+            
+            <span>Văn Phòng Ghi Danh</span>
+          </div>
+
+          <div class="contact-info-list">
+            <div class="contact-info-row">
+              
+              <div>
+                <strong>Cơ sở chính:</strong><br>
+                227 Nguyễn Văn Cừ, Phường 4, Quận 5, TP.HCM
+              </div>
+            </div>
+
+            <div class="contact-info-row">
+              
+              <div>
+                <strong>Hotline / Zalo:</strong><br>
+                <span class="contact-hotline-badge">0914 251 119</span><br>
+                Điện thoại: (028) 3835 1056
+              </div>
+            </div>
+
+            <div class="contact-info-row">
+              
+              <div>
+                <strong>Email tiếp nhận:</strong><br>
+                <a href="mailto:tuvan@csc.edu.vn" style="color:#0284c7; text-decoration:none;">tuvan@csc.edu.vn</a>
+              </div>
+            </div>
+
+            <div class="contact-info-row">
+              
+              <div>
+                <strong>Giờ mở cửa:</strong><br>
+                T2 - T6: 7h30 - 19h00<br>
+                T7 - CN: 7h30 - 17h00
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. KHÓA HỌC LIÊN QUAN / LỘ TRÌNH TIẾP THEO -->
+        <div class="sidebar-widget-card">
+          <div class="contact-widget-title">
+            
+            <span>Lộ Trình Học Tiếp Theo</span>
+          </div>
+
+          <div style="display:flex; flex-direction:column;">
+            <a href="danh-sach-khoa-hoc.html" class="related-course-item">
+              <div class="related-course-thumb">MOS</div>
+              <div>
+                <div class="related-course-name">Chứng Chỉ MOS Quốc Tế (Word, Excel, PPT)</div>
+                <div class="related-course-price">1.800.000 đ • 45 giờ</div>
+              </div>
+            </a>
+
+            <a href="danh-sach-khoa-hoc.html" class="related-course-item">
+              <div class="related-course-thumb">XLS</div>
+              <div>
+                <div class="related-course-name">Phân Tích Dữ Liệu Excel &amp; Power BI</div>
+                <div class="related-course-price">2.200.000 đ • 48 giờ</div>
+              </div>
+            </a>
+
+            <a href="danh-sach-khoa-hoc.html" class="related-course-item">
+              <div class="related-course-thumb">ADV</div>
+              <div>
+                <div class="related-course-name">Ứng Dụng CNTT Nâng Cao (Chuẩn TT03)</div>
+                <div class="related-course-price">1.600.000 đ • 42 giờ</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       CỬA SỔ NỔI (MODAL POPUP) TÌM KIẾM KHÓA HỌC & THÔNG TIN LMS
+       ====================================================================== -->
+  <div class="search-modal-backdrop" id="searchModalBackdrop" onclick="closeSearchModal(event)">
+    <div class="search-modal-card" onclick="event.stopPropagation()">
+      <div class="search-modal-header">
+        <div class="search-header-title-box">
+          <div class="search-header-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <div>
+            <h3 class="search-modal-title">Tìm Kiếm Khóa Học &amp; Thông Tin LMS</h3>
+            <p class="search-modal-subtitle">Tìm kiếm khóa học, lịch khai giảng, nội dung bài học hoặc tra cứu đăng ký</p>
+          </div>
+        </div>
+        <button type="button" class="search-close-btn" onclick="closeSearchModal()" aria-label="Đóng cửa sổ">&times;</button>
+      </div>
+
+      <div class="search-modal-body">
+        <form id="lmsSearchForm" onsubmit="handleLmsSearch(event)">
+          <div class="search-input-group">
+            <label for="searchKeyword" class="search-label">Nhập từ khóa tìm kiếm *</label>
+            <div class="search-input-wrap">
+              <input type="text" id="searchKeyword" class="search-input" 
+                placeholder="Ví dụ: Ứng dụng CNTT, Excel, Word, PowerPoint, Lịch học tối, MOS, vanan@gmail.com..." required autocomplete="off" />
+              <button type="submit" class="search-submit-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <span>Tìm kiếm</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Gợi ý từ khóa nhanh -->
+          <div class="search-sample-hints">
+            <span class="hints-label">Gợi ý tìm nhanh:</span>
+            <button type="button" class="hint-tag" onclick="fillSearchInput('Ứng dụng CNTT')">Ứng dụng CNTT cơ bản</button>
+            <button type="button" class="hint-tag" onclick="fillSearchInput('Excel')">Excel</button>
+            <button type="button" class="hint-tag" onclick="fillSearchInput('Word')">Word</button>
+            <button type="button" class="hint-tag" onclick="fillSearchInput('PowerPoint')">PowerPoint</button>
+            <button type="button" class="hint-tag" onclick="fillSearchInput('Lịch học')">Lịch khai giảng</button>
+            <button type="button" class="hint-tag" onclick="fillSearchInput('MOS')">Chứng chỉ MOS</button>
+            <button type="button" class="hint-tag" onclick="fillSearchInput('vanan@gmail.com')">vanan@gmail.com</button>
+          </div>
+        </form>
+
+        <!-- Vùng hiển thị kết quả tìm kiếm -->
+        <div id="searchResultArea" class="search-result-area"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Footer -->
+  <footer class="site-footer simple-footer">
+    <div class="footer-copyright">
+      © 2026 TRUNG TÂM TIN HỌC VĂN PHÒNG • BẢN QUYỀN THUỘC VỀ NHÓM 2 • CHƯƠNG TRÌNH ĐÀO TẠO CHUẨN QUỐC GIA
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Accordion toggle cho Syllabus
+    function toggleSyllabus(headerEl) {
+      const parent = headerEl.parentElement;
+      if (parent) {
+        parent.classList.toggle('open');
+      }
+    }
+
+    // Accordion toggle cho FAQ
+    function toggleFaq(questionEl) {
+      const parent = questionEl.parentElement;
+      if (parent) {
+        parent.classList.toggle('open');
+      }
+    }
+
+    // Cuộn mượt đến form đăng ký
+    function scrollToEnroll() {
+      const el = document.getElementById('form-dang-ky-sidebar');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        const nameInput = document.getElementById('regFullname');
+        if (nameInput) setTimeout(() => nameInput.focus(), 500);
+      }
+    }
+
+    // Chọn lớp từ bảng lịch khai giảng và đưa vào form đăng ký
+    function selectClassForEnroll(classCode) {
+      const select = document.getElementById('regClassSelect');
+      if (select) {
+        select.value = classCode;
+      }
+      scrollToEnroll();
+    }
+
+    // Xử lý gửi Form Đăng Ký
+    function handleQuickEnroll(e) {
+      e.preventDefault();
+      const name = document.getElementById('regFullname').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const selectedClass = document.getElementById('regClassSelect').value;
+
+      if (!name || !phone || !email) {
+        alert('Vui lòng điền đầy đủ họ tên, số điện thoại và email!');
+        return;
+      }
+
+      alert('ĐĂNG KÝ KHÓA HỌC THÀNH CÔNG!\n\n' +
+            'Kính gửi: ' + name + '\n' +
+            'Khóa học: Ứng Dụng CNTT Cơ Bản\n' +
+            'Mã lớp đã chọn: ' + selectedClass + '\n' +
+            'Email: ' + email + '\n' +
+            'Hotline/Zalo hỗ trợ: 0914 251 119\n\n' +
+            'Cán bộ tư vấn sẽ gọi điện và gửi hướng dẫn nhập học chi tiết qua Email/Zalo của bạn trong vòng 15-30 phút tới. Cảm ơn bạn!');
+
+      e.target.reset();
+    }
+
+    // Dữ liệu tìm kiếm tổng hợp: Khóa học (10 khóa thuộc 3 nhóm), Lịch học và Đăng ký học viên
+    const lmsSearchIndex = {
+      courses: [
+        // Nhóm 1: Khóa học tổng hợp
+        {
+          title: "Tin học cơ bản",
+          desc: "Nền tảng máy tính, Windows, Word, Excel, PowerPoint cơ bản và Internet an toàn.",
+          price: "1.500.000 đ",
+          link: "danh-sach-khoa-hoc.html?course=tin-hoc-co-ban",
+          keywords: "tin hoc co ban tong hop may tinh windows word excel powerpoint ai ung dung cntt co ban"
+        },
+        {
+          title: "Tin học nâng cao",
+          desc: "Word chuyên sâu, Excel nâng cao, Access và tự động hóa tác vụ văn phòng.",
+          price: "1.600.000 đ",
+          link: "danh-sach-khoa-hoc.html?course=tin-hoc-nang-cao",
+          keywords: "tin hoc nang cao tong hop word excel access vba tu dong hoa bao cao quan tri"
+        },
+        // Nhóm 2: Khóa học chuyên đề
+        {
+          title: "Word văn phòng",
+          desc: "Soạn thảo văn bản chuẩn thể thức Nghị định 30, Style Heading và Mail Merge.",
+          price: "450.000 đ",
+          link: "danh-sach-khoa-hoc.html?course=word-van-phong",
+          keywords: "word van phong chuyen de soan thao van ban hanh chinh nghi dinh 30 style heading mail merge"
+        },
+        {
+          title: "Excel văn phòng",
+          desc: "Hàm tính toán thực tế, phân tích dữ liệu đa chiều, PivotTable và Dashboard.",
+          price: "490.000 đ",
+          link: "danh-sach-khoa-hoc.html?course=excel-van-phong",
+          keywords: "excel van phong chuyen de ham tinh toan vlookup xlookup index match pivottable dashboard"
+        },
+        {
+          title: "PowerPoint thuyết trình",
+          desc: "Tư duy thiết kế slide hiện đại, Slide Master, Infographic và hiệu ứng Morph.",
+          price: "450.000 đ",
+          link: "danh-sach-khoa-hoc.html?course=powerpoint-thuyet-trinh",
+          keywords: "powerpoint thuyet trinh chuyen de slide master infographic morph animation trinh chieu"
+        },
+        {
+          title: "Công cụ văn phòng trực tuyến",
+          desc: "Google Docs, Sheets, Slides, Forms, Drive và kỹ năng làm việc nhóm từ xa.",
+          price: "420.000 đ",
+          link: "danh-sach-khoa-hoc.html?course=cong-cu-truc-tuyen",
+          keywords: "cong cu truc tuyen google workspace docs sheets slides forms drive remote hybrid"
+        },
+        {
+          title: "Ứng dụng AI trong công việc văn phòng",
+          desc: "Tối ưu hóa năng suất với ChatGPT, Google Gemini, MS Copilot và AI văn phòng.",
+          price: "480.000 đ",
+          link: "danh-sach-khoa-hoc.html?course=ung-dung-ai",
+          keywords: "ung dung ai tri tue nhan tao chatgpt gemini copilot prompt engineering viet email tao slide"
+        },
+        // Nhóm 3: Khóa học ôn luyện
+        {
+          title: "Ôn luyện MOS Word",
+          desc: "Luyện thi chứng chỉ tin học quốc tế MOS Word theo chuẩn Certiport.",
+          price: "600.000 đ",
+          link: "danh-sach-khoa-hoc.html?course=on-luyen-mos-word",
+          keywords: "on luyen mos word certiport chung chi quoc te microsoft multi project"
+        },
+        {
+          title: "Ôn luyện MOS Excel",
+          desc: "Luyện kỹ năng thực chiến và giải đề thi MOS Excel điểm cao.",
+          price: "650.000 đ",
+          link: "danh-sach-khoa-hoc.html?course=on-luyen-mos-excel",
+          keywords: "on luyen mos excel certiport chung chi quoc te bang tinh"
+        },
+        {
+          title: "Ôn luyện MOS PowerPoint",
+          desc: "Luyện đề thi mô phỏng MOS PowerPoint và làm chủ giao diện thi.",
+          price: "600.000 đ",
+          link: "danh-sach-khoa-hoc.html?course=on-luyen-mos-powerpoint",
+          keywords: "on luyen mos powerpoint certiport chung chi quoc te slide"
+        }
+      ],
+      classes: [
+        {
+          code: "UDCB-T246",
+          name: "Ứng Dụng CNTT Cơ Bản",
+          schedule: "Tối 2 - 4 - 6 (18h00 - 21h00)",
+          startDate: "18/11/2026",
+          instructor: "ThS. Nguyễn Thái Tuấn",
+          link: "#lich-khai-giang"
+        },
+        {
+          code: "UDCB-T357",
+          name: "Ứng Dụng CNTT Cơ Bản",
+          schedule: "Tối 3 - 5 - 7 (18h00 - 21h00)",
+          startDate: "20/11/2026",
+          instructor: "ThS. Trần Thị Mai",
+          link: "#lich-khai-giang"
+        },
+        {
+          code: "UDCB-CT3W",
+          name: "Ứng Dụng CNTT Cấp Tốc 3 Tuần",
+          schedule: "Sáng 2-3-4-5-6 (08h00 - 11h00)",
+          startDate: "24/11/2026",
+          instructor: "ThS. Lê Hoàng Nam",
+          link: "#lich-khai-giang"
+        },
+        {
+          code: "UDCB-ONL01",
+          name: "Ứng Dụng CNTT Cơ Bản Online Zoom",
+          schedule: "Tối 2 - 4 - 6 (19h30 - 21h30)",
+          startDate: "02/12/2026",
+          instructor: "ThS. Nguyễn Thái Tuấn",
+          link: "#lich-khai-giang"
+        }
+      ],
+      registrations: [
+        {
+          code: "LMS-2026-001",
+          email: "vanan@gmail.com",
+          name: "Nguyễn Văn An",
+          course: "Ứng Dụng CNTT Cơ Bản",
+          classCode: "UDCB-T246",
+          startDate: "18/11/2026",
+          status: "Đã duyệt - Sẵn sàng vào học"
+        },
+        {
+          code: "LMS-2026-002",
+          email: "tranmai@gmail.com",
+          name: "Trần Thị Mai",
+          course: "Microsoft Word Soạn Thảo Hành Chính",
+          classCode: "WD-ONL03",
+          startDate: "20/11/2026",
+          status: "Đã duyệt - Sẵn sàng vào học"
+        },
+        {
+          code: "LMS-2026-003",
+          email: "hoangnam@gmail.com",
+          name: "Lê Hoàng Nam",
+          course: "Ứng Dụng CNTT Cơ Bản Online",
+          classCode: "UDCB-ONL01",
+          startDate: "02/12/2026",
+          status: "Chờ xác nhận học phí"
+        }
+      ]
+    };
+
+    // Mở / Đóng Modal Tìm Kiếm
+    function openSearchModal() {
+      const modal = document.getElementById('searchModalBackdrop');
+      if (modal) {
+        modal.classList.add('open');
+        const input = document.getElementById('searchKeyword');
+        if (input) setTimeout(() => input.focus(), 200);
+      }
+    }
+
+    function closeSearchModal(e) {
+      if (e && e.target !== e.currentTarget) return;
+      const modal = document.getElementById('searchModalBackdrop');
+      if (modal) {
+        modal.classList.remove('open');
+      }
+    }
+
+    // Điền gợi ý tìm nhanh
+    function fillSearchInput(val) {
+      const input = document.getElementById('searchKeyword');
+      if (input) {
+        input.value = val;
+        handleLmsSearch(new Event('submit'));
+      }
+    }
+
+    // Xử lý tìm kiếm
+    function handleLmsSearch(event) {
+      if (event && event.preventDefault) event.preventDefault();
+
+      const input = document.getElementById('searchKeyword');
+      const resultArea = document.getElementById('searchResultArea');
+      if (!input || !resultArea) return;
+
+      const rawKeyword = input.value.trim();
+      const keyword = rawKeyword.toLowerCase();
+      if (!keyword) return;
+
+      let html = '';
+      let matchCount = 0;
+
+      // 1. Tìm trong khóa học
+      const matchedCourses = lmsSearchIndex.courses.filter(c => 
+        c.title.toLowerCase().includes(keyword) || 
+        c.desc.toLowerCase().includes(keyword) || 
+        c.keywords.toLowerCase().includes(keyword)
+      );
+
+      if (matchedCourses.length > 0) {
+        matchCount += matchedCourses.length;
+        html += `<div class="search-section-header">Khóa Học Phù Hợp (${matchedCourses.length})</div>`;
+        matchedCourses.forEach(c => {
+          html += `
+            <div class="search-item-card">
+              <div class="search-item-info">
+                <div class="search-item-title">${c.title}</div>
+                <div class="search-item-desc">${c.desc} • <strong>Học phí: ${c.price}</strong></div>
+              </div>
+              <a href="${c.link}" class="search-item-btn">Xem chi tiết</a>
+            </div>
+          `;
+        });
+      }
+
+      // 2. Tìm trong Lịch khai giảng
+      const matchedClasses = lmsSearchIndex.classes.filter(cl => 
+        cl.code.toLowerCase().includes(keyword) || 
+        cl.name.toLowerCase().includes(keyword) || 
+        cl.schedule.toLowerCase().includes(keyword) ||
+        cl.instructor.toLowerCase().includes(keyword) ||
+        keyword.includes('lịch') || keyword.includes('khai giảng')
+      );
+
+      if (matchedClasses.length > 0) {
+        matchCount += matchedClasses.length;
+        html += `<div class="search-section-header" style="margin-top:14px;">Lớp Khai Giảng (${matchedClasses.length})</div>`;
+        matchedClasses.forEach(cl => {
+          html += `
+            <div class="search-item-card">
+              <div class="search-item-info">
+                <div class="search-item-title">[${cl.code}] ${cl.name}</div>
+                <div class="search-item-desc">Khai giảng: <strong>${cl.startDate}</strong> • Lịch học: ${cl.schedule} • GV: ${cl.instructor}</div>
+              </div>
+              <a href="${cl.link}" onclick="closeSearchModal()" class="search-item-btn" style="background:#059669;">Xem lớp</a>
+            </div>
+          `;
+        });
+      }
+
+      // 3. Tìm thông tin đăng ký học viên (nếu nhập email hoặc mã)
+      const matchedReg = lmsSearchIndex.registrations.filter(r => 
+        r.code.toLowerCase() === keyword || 
+        r.email.toLowerCase() === keyword || 
+        r.name.toLowerCase().includes(keyword)
+      );
+
+      if (matchedReg.length > 0) {
+        matchCount += matchedReg.length;
+        html += `<div class="search-section-header" style="margin-top:14px;">Thông Tin Đăng Ký Học Viên</div>`;
+        matchedReg.forEach(r => {
+          html += `
+            <div class="search-item-card" style="border-left: 4px solid #0284c7;">
+              <div class="search-item-info">
+                <div class="search-item-title">${r.name} (${r.email}) - Mã: ${r.code}</div>
+                <div class="search-item-desc">Khóa học: <strong>${r.course}</strong> • Lớp: ${r.classCode} • Trạng thái: <span style="color:#059669; font-weight:700;">${r.status}</span></div>
+              </div>
+              <a href="huong-dan-dang-ky.html" class="search-item-btn" style="background:#0284c7;">Chi tiết</a>
+            </div>
+          `;
+        });
+      }
+
+      // Nếu không tìm thấy kết quả nào
+      if (matchCount === 0) {
+        html = `
+          <div class="search-empty-box">
+            <div class="search-empty-icon"></div>
+            <div class="search-empty-text">
+              <h4>Không tìm thấy kết quả cho từ khóa "${rawKeyword}"</h4>
+              <p>
+                Vui lòng thử tìm kiếm bằng các từ khóa phổ biến như: <strong>Ứng dụng CNTT, Word, Excel, PowerPoint, Lịch học, hoặc email của bạn</strong>.<br>
+                Bạn cũng có thể liên hệ trực tiếp với Chatbot tư vấn ở góc dưới bên phải để được trợ giúp ngay lập tức!
+              </p>
+            </div>
+          </div>
+        `;
+      }
+
+      resultArea.innerHTML = html;
+    }
+
+    // Scrollspy cho thanh sticky topic nav
+    window.addEventListener('scroll', () => {
+      const sections = ['doi-tuong', 'loi-ich'];
+      const scrollPos = window.scrollY + 120;
+      let currentSec = '';
+
+      for (let secId of sections) {
+        const el = document.getElementById(secId);
+        if (el && el.offsetTop <= scrollPos) {
+          currentSec = secId;
+        }
+      }
+
+      if (currentSec) {
+        document.querySelectorAll('.topic-nav-item a').forEach(a => {
+          if (a.getAttribute('href') === '#' + currentSec) {
+            a.classList.add('active');
+          } else {
+            a.classList.remove('active');
+          }
+        });
+      }
+    });
+
+    // Dropdown toggle for tools
+    (function () {
+      const toolsDropdown = document.getElementById('nav-tools-dropdown');
+      const btnTools = document.getElementById('btn-tools-dropdown');
+      const toolsContent = toolsDropdown ? toolsDropdown.querySelector('.nav-dropdown-content') : null;
+
+      if (toolsDropdown && btnTools) {
+        btnTools.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toolsDropdown.classList.toggle('open');
+        });
+
+        if (toolsContent) {
+          toolsContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        }
+
+        document.addEventListener('click', () => {
+          toolsDropdown.classList.remove('open');
+        });
+      }
+    })();
+  </script>
+  <script src="auth.js"></script>
+  <!-- Nhúng Chatbot liên hệ ở góc dưới bên phải -->
+  <script src="lms-chatbot.js"></script>
+
+  <!-- ======================================================================
+       BANNER SLIDER: TỰ ĐỘNG CHUYỂN HÌNH TỪ PHẢI QUA TRÁI SAU 4 GIÂY
+       (Không dùng nút mũi tên, chạy liên tục và tuần hoàn vô tận)
+       ====================================================================== -->
+  <script>
+    function initLmsBannerSlider() {
+      const container = document.getElementById('lmsBannerSlider');
+      const track = document.getElementById('lmsSliderTrack');
+      const dots = document.querySelectorAll('#lmsSliderDots .slider-dot');
+      const progressBar = document.getElementById('lmsSliderProgress');
+
+      if (!container || !track) return;
+
+      const originalSlides = Array.from(track.children);
+      const slideCount = originalSlides.length; // 5 hình
+      if (slideCount <= 1) return;
+
+      // Nhân bản hình đầu và hình cuối để tạo vòng lặp tuần hoàn mượt mà
+      const firstClone = originalSlides[0].cloneNode(true);
+      const lastClone = originalSlides[slideCount - 1].cloneNode(true);
+      firstClone.classList.add('clone-slide');
+      lastClone.classList.add('clone-slide');
+
+      track.appendChild(firstClone);
+      track.insertBefore(lastClone, track.firstChild);
+
+      let currentIndex = 1; // Vị trí hình 1 thực tế
+      let isTransitioning = false;
+      const slideDuration = 4000; // 4 giây tự chuyển 1 lần
+      let autoPlayTimer = null;
+
+      // Đặt vị trí ban đầu: hình số 1
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(-100%)';
+
+      function updateDots() {
+        if (!dots || dots.length === 0) return;
+        const activeIndex = (currentIndex - 1 + slideCount) % slideCount;
+        dots.forEach((dot, idx) => {
+          dot.classList.toggle('active', idx === activeIndex);
+        });
+      }
+
+      function resetProgressBar() {
+        if (!progressBar) return;
+        progressBar.style.transition = 'none';
+        progressBar.style.width = '0%';
+        void progressBar.offsetWidth; // Buộc trình duyệt vẽ lại (reflow)
+        progressBar.style.transition = `width ${slideDuration}ms linear`;
+        progressBar.style.width = '100%';
+      }
+
+      function moveToSlide(index, withTransition = true) {
+        if (isTransitioning && withTransition) return;
+        isTransitioning = withTransition;
+        currentIndex = index;
+
+        if (withTransition) {
+          track.style.transition = 'transform 0.7s cubic-bezier(0.25, 1, 0.5, 1)';
+        } else {
+          track.style.transition = 'none';
+        }
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        updateDots();
+        resetProgressBar();
+      }
+
+      function nextSlide() {
+        moveToSlide(currentIndex + 1);
+      }
+
+      function prevSlide() {
+        moveToSlide(currentIndex - 1);
+      }
+
+      // Xử lý khi hoàn tất hiệu ứng trượt -> nhảy vô hình về vị trí thực tế
+      track.addEventListener('transitionend', () => {
+        isTransitioning = false;
+        if (currentIndex >= slideCount + 1) {
+          track.style.transition = 'none';
+          currentIndex = 1;
+          track.style.transform = 'translateX(-100%)';
+        } else if (currentIndex <= 0) {
+          track.style.transition = 'none';
+          currentIndex = slideCount;
+          track.style.transform = `translateX(-${slideCount * 100}%)`;
+        }
+      });
+
+      // Tự động chuyển sau mỗi 4 giây liên tục
+      function startAutoPlay() {
+        if (autoPlayTimer) clearInterval(autoPlayTimer);
+        resetProgressBar();
+        autoPlayTimer = setInterval(() => {
+          nextSlide();
+        }, slideDuration);
+      }
+
+      // Hỗ trợ vuốt chạm trên thiết bị di động
+      let touchStartX = 0;
+      let touchEndX = 0;
+      container.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      container.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchEndX - touchStartX;
+        if (Math.abs(diff) > 40) {
+          if (diff < 0) {
+            nextSlide(); // vuốt qua trái -> chuyển hình tiếp
+          } else {
+            prevSlide(); // vuốt qua phải -> chuyển hình trước
+          }
+          startAutoPlay();
+        }
+      }, { passive: true });
+
+      // Khởi động chạy tự động ngay lập tức
+      updateDots();
+      startAutoPlay();
+    }
+
+    // Tự động kích hoạt khi trang tải xong
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initLmsBannerSlider);
+    } else {
+      initLmsBannerSlider();
+    }
+  </script>
+</body>
+
+</html>

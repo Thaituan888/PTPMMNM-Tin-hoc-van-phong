@@ -1,0 +1,3121 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lịch Khai Giảng - Tin Học Văn Phòng LMS</title>
+  <meta name="description"
+    content="Lịch khai giảng các lớp Tin học văn phòng LMS mới nhất: Ngày khai giảng, lịch học, giảng viên phụ trách, hình thức học và đăng ký trực tuyến." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="lms-chatbot.css" />
+  <style>
+    body {
+      background: #f0f7ff;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .schedule-page-container {
+      max-width: 1240px;
+      width: 100%;
+      margin: 24px auto 90px;
+      padding: 0 clamp(16px, 3vw, 32px);
+      flex: 1;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Breadcrumb */
+    .schedule-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      color: #64748b;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .schedule-breadcrumb a {
+      color: #0284c7;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .schedule-breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    /* Hero Banner */
+    .schedule-hero-banner {
+      background: linear-gradient(135deg, #075985 0%, #0284c7 65%, #38bdf8 100%);
+      border-radius: 26px;
+      padding: clamp(26px, 4vw, 38px);
+      color: #ffffff;
+      margin-bottom: 28px;
+      box-shadow: 0 14px 34px rgba(2, 132, 199, 0.22);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .hero-text-col {
+      max-width: 800px;
+    }
+
+    .hero-tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+
+    .schedule-hero-title {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 800;
+      line-height: 1.25;
+      margin: 0 0 8px 0;
+    }
+
+    .schedule-hero-sub {
+      font-size: 0.98rem;
+      color: #e0f2fe;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .hero-guide-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      color: #075985;
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 12px 22px;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .hero-guide-btn:hover {
+      background: #f0f9ff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    /* THANH LỌC NHANH TRỰC QUAN TRÊN BẢNG LỊCH */
+    .schedule-filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .group-filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-group-pill {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: #475569;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-group-pill:hover {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      color: #0284c7;
+    }
+
+    .btn-group-pill.active {
+      background: #0284c7;
+      border-color: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+    }
+
+    .schedule-search-input {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1.5px solid #cbd5e1;
+      font-size: 0.85rem;
+      font-family: inherit;
+      outline: none;
+      width: 240px;
+      max-width: 100%;
+      background: #ffffff;
+      transition: all 0.2s;
+    }
+
+    .schedule-search-input:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    
+    
+    /* BẢNG TIÊU ĐỀ LỊCH TOÀN BỘ (KHI VÀO TRỰC TIẾP) */
+    .schedule-table-banner {
+      background: #ffffff;
+      border: 1.5px solid #e0f2fe;
+      border-radius: 20px;
+      padding: 22px 28px;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.06);
+    }
+
+    .stb-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0284c7;
+      margin-bottom: 8px;
+    }
+
+    .stb-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #075985;
+      margin: 0 0 6px 0;
+    }
+
+    .stb-desc {
+      font-size: 0.92rem;
+      color: #64748b;
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    /* THANH THÔNG BÁO KHI XEM LỊCH CỦA ĐÚNG KHÓA HỌC CHI TIẾT */
+    .schedule-selected-notice-card {
+      background: #f0fdf4;
+      border: 2px solid #86efac;
+      border-radius: 20px;
+      padding: 20px 26px;
+      margin-bottom: 22px;
+      box-shadow: 0 6px 20px rgba(22, 163, 74, 0.1);
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .ssn-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .ssn-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 3px 10px;
+      border-radius: 6px;
+      background: #dcfce7;
+      color: #15803d;
+      width: fit-content;
+    }
+
+    .ssn-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #14532d;
+      margin: 0;
+    }
+
+    .ssn-sub {
+      font-size: 0.92rem;
+      color: #166534;
+      margin: 0;
+    }
+
+    .btn-all-schedule-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1.5px solid #16a34a;
+      color: #15803d;
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(22, 163, 74, 0.15);
+    }
+
+    .btn-all-schedule-link:hover {
+      background: #16a34a;
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .table-fmt-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.83rem;
+      font-weight: 700;
+    }
+
+    .table-fmt-badge.format-online {
+      background: #e0f2fe;
+      color: #0284c7;
+      border: 1px solid #bae6fd;
+    }
+
+    .table-fmt-badge.format-offline {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    /* BẢNG LỊCH KHAI GIẢNG */
+    .schedule-table-card {
+      background: #ffffff;
+      border-radius: 22px;
+      border: 1.5px solid #e0f2fe;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.08);
+      overflow-x: auto;
+      margin-bottom: 30px;
+    }
+
+    .schedule-data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      min-width: 900px;
+    }
+
+    .schedule-data-table th {
+      background: #f8fafc;
+      color: #075985;
+      font-size: 0.84rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 16px 20px;
+      border-bottom: 2px solid #e2e8f0;
+      white-space: nowrap;
+    }
+
+    .schedule-data-table td {
+      padding: 16px 20px;
+      font-size: 0.92rem;
+      color: #334155;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+    }
+
+    .schedule-data-table tr:hover td {
+      background: #f0f9ff;
+    }
+
+    .schedule-data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Khối thông tin lớp */
+    .class-info-block {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .class-code {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0284c7;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+      width: fit-content;
+      margin-bottom: 4px;
+    }
+
+    .class-name {
+      font-weight: 800;
+      color: #075985;
+      font-size: 0.98rem;
+    }
+
+    .class-track {
+      font-size: 0.78rem;
+      color: #64748b;
+    }
+
+    /* Giảng viên */
+    .instructor-cell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .instructor-avatar-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #e0f2fe;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .instructor-name {
+      font-weight: 700;
+      color: #1e293b;
+      font-size: 0.88rem;
+    }
+
+    /* Trạng thái */
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-pill.open {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .status-pill.almost-full {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    /* Nút Đăng ký */
+    .btn-enroll-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-enroll-trigger:hover {
+      background: #0369a1;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+    }
+
+    .empty-schedule-msg {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+      color: #64748b;
+      font-size: 0.95rem;
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1.5px solid #e0f2fe;
+    }
+
+    /* ======================================================================
+       CỬA SỔ NỔI ĐĂNG KÝ Ở GIỮA MÀN HÌNH (MODAL ĐĂNG KÝ)
+       TỰ ĐỘNG NHẬP MÃ LỚP VÀ CÓ NÚT XEM HƯỚNG DẪN ĐĂNG KÝ
+       ====================================================================== */
+    .schedule-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(5px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .schedule-modal-backdrop.open {
+      display: flex;
+    }
+
+    .schedule-modal-card {
+      background: #ffffff;
+      width: 680px;
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 1.5px solid #e0f2fe;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .schedule-modal-header {
+      background: linear-gradient(135deg, #075985 0%, #0284c7 100%);
+      color: #ffffff;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .modal-main-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .modal-main-sub {
+      font-size: 0.82rem;
+      color: #e0f2fe;
+      margin: 0;
+    }
+
+    .modal-close-x {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #ffffff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .modal-close-x:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .schedule-modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Hộp thông tin lớp tự động điền */
+    .autofill-class-box {
+      background: #f0f9ff;
+      border: 1.5px solid #bae6fd;
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .autofill-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.88rem;
+    }
+
+    .autofill-label {
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .autofill-value {
+      font-weight: 800;
+      color: #075985;
+    }
+
+    .autofill-badge-code {
+      background: #0284c7;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.84rem;
+    }
+
+    /* Form Fields */
+    .modal-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .modal-form-label {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .modal-form-input {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .modal-form-input:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    /* Modal Action Buttons Footer */
+    .modal-actions-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 10px;
+      border-top: 1px solid #f1f5f9;
+      flex-wrap: wrap;
+    }
+
+    .btn-link-guide {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f1f5f9;
+      color: #0284c7;
+      border: 1.5px solid #cbd5e1;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-link-guide:hover {
+      background: #e0f2fe;
+      border-color: #0284c7;
+    }
+
+    .btn-submit-reg {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      border: none;
+      padding: 11px 22px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-submit-reg:hover {
+      background: #059669;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+    }
+  
+    /* Khối thông tin thanh toán & Mã QR trong Modal */
+    .modal-payment-card {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mpc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 8px;
+    }
+
+    .mpc-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #075985;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .mpc-tag {
+      font-size: 0.75rem;
+      background: #e0f2fe;
+      color: #0284c7;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .mpc-body-grid {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .mpc-qr-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .mpc-qr-wrapper {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .mpc-qr-sub {
+      font-size: 0.72rem;
+      color: #64748b;
+      text-align: center;
+    }
+
+    .mpc-details-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mpc-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+    }
+
+    .mpc-row-label {
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .mpc-row-val {
+      font-weight: 700;
+      color: #0f172a;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mpc-highlight {
+      color: #0284c7;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+    }
+
+    .btn-copy-chip {
+      background: #e0f2fe;
+      color: #0284c7;
+      border: 1px solid #bae6fd;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-copy-chip:hover {
+      background: #0284c7;
+      color: #ffffff;
+    }
+
+    .mpc-syntax-box {
+      background: #ffffff;
+      border: 1px dashed #0284c7;
+      border-radius: 8px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .mpc-syntax-val {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .mpc-syntax-val code {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      color: #0284c7;
+      font-size: 0.88rem;
+    }
+
+    .autofill-fee-price {
+      color: #dc2626;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    /* Khung upload minh chứng chuyển khoản */
+    .upload-receipt-box {
+      border: 2px dashed #93c5fd;
+      background: #f0f9ff;
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .upload-receipt-box:hover {
+      border-color: #0284c7;
+      background: #e0f2fe;
+    }
+
+    .upload-receipt-box.has-file {
+      border-color: #16a34a;
+      background: #f0fdf4;
+    }
+
+    .urb-icon {
+      font-size: 1.4rem;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+    }
+
+    .urb-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .urb-text strong {
+      font-size: 0.85rem;
+      color: #0f172a;
+    }
+
+    .urb-text small {
+      font-size: 0.74rem;
+      color: #64748b;
+    }
+
+    .btn-browse-file {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #334155;
+      pointer-events: none;
+    }
+
+    .hidden-file-input {
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      .mpc-body-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- Global Header -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon-box" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
+            <circle cx="13" cy="15.5" r="1.8" fill="#4f46e5" />
+            <circle cx="23" cy="15.5" r="1.8" fill="#4f46e5" />
+            <path d="M15.5 19.5c1.2 1.2 3.8 1.2 5 0" stroke="#ec4899" stroke-width="2" stroke-linecap="round" />
+            <path d="M12 7V4.5M24 7V4.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M11 29.5h14" stroke="#93c5fd" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">TIN HỌC VĂN PHÒNG</span>
+          <span class="brand-subtitle">Đào tạo Tin học Trực tuyến</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <a href="khoa-hoc-lms.html" style="color: var(--water-primary); font-weight: 800;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+          <span>KHÓA HỌC LMS</span>
+        </a>
+
+        <a href="lo-trinh-hoc-tap.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="6" cy="19" r="3" />
+            <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" />
+            <circle cx="18" cy="5" r="3" />
+          </svg>
+          <span>LỘ TRÌNH HỌC TẬP</span>
+        </a>
+
+        <a href="on-luyen-thi-thu.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+          <span>ÔN LUYỆN &amp; THI THỬ</span>
+        </a>
+
+        <a href="index.html#cong-dong">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>DIỄN ĐÀN</span>
+        </a>
+
+        <div class="nav-dropdown-wrap" id="nav-tools-dropdown">
+          <button type="button" class="nav-link-dropdown nav-dropdown-trigger" id="btn-tools-dropdown">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+            <span>CÔNG CỤ &amp; TIỆN ÍCH</span>
+            <svg class="nav-dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="nav-dropdown-content">
+            <a href="luyen-go-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8" stroke-width="2.2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>1. Luyện gõ phím 10 ngón</strong>
+                <small>Luyện gõ tiếng Việt Telex</small>
+              </div>
+            </a>
+            <a href="tra-cuu-phim-tat.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="#d97706" stroke-width="1.5">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>2. Tra cứu Phím tắt</strong>
+                <small>Phím tắt thông dụng Word, Excel, PPT</small>
+              </div>
+            </a>
+            <a href="kiem-tra-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <circle cx="7" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="12" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="17" cy="9" r="1" fill="#0284c7" />
+                  <line x1="6" y1="14" x2="18" y2="14" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>3. Kiểm tra Bàn phím Online</strong>
+                <small>Kiểm tra phím kẹt &amp; NKRO</small>
+              </div>
+            </a>
+            <a href="tim-hieu-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 6h10M6 10h10M6 14h6" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>4. Giới thiệu Bàn phím Máy tính</strong>
+                <small>Cấu tạo và hàng phím cơ bản</small>
+              </div>
+            </a>
+          </div>
+        </div>
+        <a href="index.html#cua-hang">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span>CỬA HÀNG</span>
+        </a>
+      </nav>
+
+      <a href="index.html#dang-nhap" class="btn-login">ĐĂNG NHẬP</a>
+    </div>
+  </header>
+
+    <main class="schedule-page-container">
+    <!-- Breadcrumb -->
+    <nav class="schedule-breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Trang chủ</a>
+      <span>/</span>
+      <a href="khoa-hoc-lms.html">Khóa học LMS</a>
+      <span>/</span>
+      <span>Lịch khai giảng</span>
+    </nav>
+
+    <!-- Hero Banner -->
+    <div class="schedule-hero-banner">
+      <div class="hero-text-col">
+        <div class="hero-tag-pill">LỊCH TUYỂN SINH LIÊN TỤC 2026</div>
+        <h1 class="schedule-hero-title">Lịch Khai Giảng Các Khóa Học Tin Học Văn Phòng LMS</h1>
+        <p class="schedule-hero-sub">
+          Đa dạng ca học (Tối 2-4-6, Tối 3-5-7, Cấp tốc sáng, Cuối tuần) với cả hai hình thức đào tạo 
+          <strong>Trực tiếp tại trung tâm</strong> và <strong>Trực tuyến</strong>.
+        </p>
+      </div>
+      <a href="huong-dan-dang-ky.html" class="hero-guide-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span>Xem hướng dẫn đăng ký &amp; thanh toán</span>
+      </a>
+    </div>
+
+    <!-- ======================================================================
+         TRƯỜNG HỢP 1: VÀO TỪ NGOÀI -> HIỆN BANNER TOÀN BỘ LỊCH KHAI GIẢNG
+         ====================================================================== -->
+    <div class="schedule-table-banner" id="fullScheduleBanner">
+      <div class="stb-badge">TOÀN BỘ LỊCH KHAI GIẢNG (49 LỚP HỌC MỚI NHẤT)</div>
+      <h2 class="stb-title">Bảng Lịch Khai Giảng Các Lớp Tin Học Văn Phòng LMS</h2>
+      <p class="stb-desc">
+        Hệ thống hiển thị đầy đủ tất cả 22 lớp học đang mở tuyển sinh. Học viên theo dõi lịch học phù hợp và nhấn nút <strong>"Đăng ký"</strong> để tham gia ghi danh.
+      </p>
+    </div>
+
+    <!-- ======================================================================
+         TRƯỜNG HỢP 2: VÀO TỪ CHI TIẾT KHÓA HỌC -> HIỆN ĐÚNG LỊCH CỦA MÔN & HÌNH THỨC ĐÓ
+         ====================================================================== -->
+    <div class="schedule-selected-notice-card" id="selectedScheduleNotice">
+      <div class="ssn-left">
+        <span class="ssn-badge">LỊCH KHAI GIẢNG ĐÃ CHỌN TỪ CHI TIẾT MÔN HỌC</span>
+        <h2 class="ssn-title" id="ssnCourseName">Khóa học: Tin học căn bản</h2>
+        <p class="ssn-sub" id="ssnFormatSub">
+          Hình thức: <strong>Trực tiếp tại trung tâm</strong> • Đang hiển thị <strong>2</strong> lớp học phù hợp
+        </p>
+      </div>
+      <div class="ssn-right">
+        <a href="lich-khai-giang.html" class="btn-all-schedule-link">
+          ← Xem tất cả lịch khai giảng (49 lớp)
+        </a>
+      </div>
+    </div>
+
+    <!-- BẢNG LỊCH KHAI GIẢNG (CHỈ HIỂN THỊ LỊCH, KHÔNG CÓ BỘ LỌC) -->
+    <div class="schedule-table-card">
+      <table class="schedule-data-table" id="scheduleTable">
+        <thead>
+          <tr>
+            <th style="width: 24%;">Mã &amp; Tên Lớp Học</th>
+            <th style="width: 12%;">Khai Giảng</th>
+            <th style="width: 20%;">Thời Gian &amp; Lịch Học</th>
+            <th style="width: 16%;">Giảng Viên</th>
+            <th style="width: 16%;">Hình Thức</th>
+            <th style="width: 12%;">Tình Trạng</th>
+            <th style="width: 10%; text-align: center;">Đăng Ký</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-course="tin-hoc-co-ban" data-group="tong-hop" data-format="offline" data-time="toi" data-code="CB-LAB01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">CB-LAB01</span>
+                <span class="class-name">Tin học căn bản</span>
+                <span class="class-track">Khóa học tổng hợp</span>
+              </div>
+            </td>
+            <td><strong>18/11/2026</strong></td>
+            <td>
+              Tối Thứ 2 - 4 - 6<br />
+              <span style="color:#0284c7; font-weight:700;">18h00 - 21h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">NT</div>
+                <div>
+                  <div class="instructor-name">ThS. Nguyễn Thái Tuấn</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('CB-LAB01', 'Tin học căn bản', 'Tối Thứ 2 - 4 - 6 (18h00 - 21h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="tin-hoc-co-ban" data-group="tong-hop" data-format="offline" data-time="toi" data-code="CB-LAB02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">CB-LAB02</span>
+                <span class="class-name">Tin học căn bản</span>
+                <span class="class-track">Khóa học tổng hợp</span>
+              </div>
+            </td>
+            <td><strong>20/11/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">18h00 - 21h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">MD</div>
+                <div>
+                  <div class="instructor-name">ThS. Trần Minh Đức</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('CB-LAB02', 'Tin học căn bản', 'Tối Thứ 3 - 5 - 7 (18h00 - 21h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="tin-hoc-co-ban" data-group="tong-hop" data-format="offline" data-time="sang" data-code="CB-CT01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">CB-CT01</span>
+                <span class="class-name">Tin học căn bản</span>
+                <span class="class-track">Khóa học tổng hợp</span>
+              </div>
+            </td>
+            <td><strong>24/11/2026</strong></td>
+            <td>
+              Sáng Thứ 2 - 4 - 6 (Cấp tốc)<br />
+              <span style="color:#0284c7; font-weight:700;">08h00 - 11h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HN</div>
+                <div>
+                  <div class="instructor-name">ThS. Lê Hoàng Nam</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill almost-full">● Sắp hết chỗ</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('CB-CT01', 'Tin học căn bản', 'Sáng Thứ 2 - 4 - 6 (Cấp tốc) (08h00 - 11h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="tin-hoc-co-ban" data-group="tong-hop" data-format="offline" data-time="cuoituan" data-code="CB-WEND01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">CB-WEND01</span>
+                <span class="class-name">Tin học căn bản</span>
+                <span class="class-track">Khóa học tổng hợp</span>
+              </div>
+            </td>
+            <td><strong>28/11/2026</strong></td>
+            <td>
+              Chiều Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">13h30 - 16h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">MD</div>
+                <div>
+                  <div class="instructor-name">ThS. Trần Minh Đức</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('CB-WEND01', 'Tin học căn bản', 'Chiều Thứ 7 & Chủ Nhật (13h30 - 16h30)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="tin-hoc-co-ban" data-group="tong-hop" data-format="online" data-time="toi" data-code="CB-ONL01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">CB-ONL01</span>
+                <span class="class-name">Tin học căn bản</span>
+                <span class="class-track">Khóa học tổng hợp</span>
+              </div>
+            </td>
+            <td><strong>18/11/2026</strong></td>
+            <td>
+              Tối Thứ 2 - 4 - 6<br />
+              <span style="color:#0284c7; font-weight:700;">18h00 - 21h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">NT</div>
+                <div>
+                  <div class="instructor-name">ThS. Nguyễn Thái Tuấn</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('CB-ONL01', 'Tin học căn bản', 'Tối Thứ 2 - 4 - 6 (18h00 - 21h00)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="tin-hoc-co-ban" data-group="tong-hop" data-format="online" data-time="toi" data-code="CB-ONL02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">CB-ONL02</span>
+                <span class="class-name">Tin học căn bản</span>
+                <span class="class-track">Khóa học tổng hợp</span>
+              </div>
+            </td>
+            <td><strong>21/11/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">19h30 - 21h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">TM</div>
+                <div>
+                  <div class="instructor-name">ThS. Trần Thị Mai</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('CB-ONL02', 'Tin học căn bản', 'Tối Thứ 3 - 5 - 7 (19h30 - 21h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="tin-hoc-co-ban" data-group="tong-hop" data-format="online" data-time="cuoituan" data-code="CB-ONL03">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">CB-ONL03</span>
+                <span class="class-name">Tin học căn bản</span>
+                <span class="class-track">Khóa học tổng hợp</span>
+              </div>
+            </td>
+            <td><strong>29/11/2026</strong></td>
+            <td>
+              Sáng Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">08h30 - 11h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">NT</div>
+                <div>
+                  <div class="instructor-name">ThS. Nguyễn Thái Tuấn</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('CB-ONL03', 'Tin học căn bản', 'Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="tin-hoc-nang-cao" data-group="tong-hop" data-format="offline" data-time="toi" data-code="NC-LAB01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">NC-LAB01</span>
+                <span class="class-name">Tin học nâng cao</span>
+                <span class="class-track">Khóa học tổng hợp</span>
+              </div>
+            </td>
+            <td><strong>21/11/2026</strong></td>
+            <td>
+              Tối Thứ 2 - 4 - 6<br />
+              <span style="color:#0284c7; font-weight:700;">18h30 - 21h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">MD</div>
+                <div>
+                  <div class="instructor-name">ThS. Trần Minh Đức</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('NC-LAB01', 'Tin học nâng cao', 'Tối Thứ 2 - 4 - 6 (18h30 - 21h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="tin-hoc-nang-cao" data-group="tong-hop" data-format="offline" data-time="cuoituan" data-code="NC-LAB02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">NC-LAB02</span>
+                <span class="class-name">Tin học nâng cao</span>
+                <span class="class-track">Khóa học tổng hợp</span>
+              </div>
+            </td>
+            <td><strong>28/11/2026</strong></td>
+            <td>
+              Chiều Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">14h00 - 17h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">MD</div>
+                <div>
+                  <div class="instructor-name">ThS. Trần Minh Đức</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('NC-LAB02', 'Tin học nâng cao', 'Chiều Thứ 7 & Chủ Nhật (14h00 - 17h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="tin-hoc-nang-cao" data-group="tong-hop" data-format="offline" data-time="sang" data-code="NC-CT01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">NC-CT01</span>
+                <span class="class-name">Tin học nâng cao</span>
+                <span class="class-track">Khóa học tổng hợp</span>
+              </div>
+            </td>
+            <td><strong>02/12/2026</strong></td>
+            <td>
+              Sáng Thứ 3 - 5 - 7 (Cấp tốc)<br />
+              <span style="color:#0284c7; font-weight:700;">08h30 - 11h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HN</div>
+                <div>
+                  <div class="instructor-name">ThS. Lê Hoàng Nam</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('NC-CT01', 'Tin học nâng cao', 'Sáng Thứ 3 - 5 - 7 (Cấp tốc) (08h30 - 11h30)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="tin-hoc-nang-cao" data-group="tong-hop" data-format="online" data-time="toi" data-code="NC-ONL01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">NC-ONL01</span>
+                <span class="class-name">Tin học nâng cao</span>
+                <span class="class-track">Khóa học tổng hợp</span>
+              </div>
+            </td>
+            <td><strong>24/11/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">19h30 - 21h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">NT</div>
+                <div>
+                  <div class="instructor-name">ThS. Nguyễn Thái Tuấn</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('NC-ONL01', 'Tin học nâng cao', 'Tối Thứ 3 - 5 - 7 (19h30 - 21h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="tin-hoc-nang-cao" data-group="tong-hop" data-format="online" data-time="toi" data-code="NC-ONL02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">NC-ONL02</span>
+                <span class="class-name">Tin học nâng cao</span>
+                <span class="class-track">Khóa học tổng hợp</span>
+              </div>
+            </td>
+            <td><strong>30/11/2026</strong></td>
+            <td>
+              Tối Thứ 2 - 4 - 6<br />
+              <span style="color:#0284c7; font-weight:700;">19h00 - 21h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">NT</div>
+                <div>
+                  <div class="instructor-name">ThS. Nguyễn Thái Tuấn</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('NC-ONL02', 'Tin học nâng cao', 'Tối Thứ 2 - 4 - 6 (19h00 - 21h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="word-van-phong" data-group="chuyen-de" data-format="offline" data-time="toi" data-code="WD-LAB01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">WD-LAB01</span>
+                <span class="class-name">Word văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>19/11/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">18h00 - 20h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">TM</div>
+                <div>
+                  <div class="instructor-name">ThS. Trần Thị Mai</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('WD-LAB01', 'Word văn phòng', 'Tối Thứ 3 - 5 - 7 (18h00 - 20h30)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="word-van-phong" data-group="chuyen-de" data-format="offline" data-time="cuoituan" data-code="WD-LAB02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">WD-LAB02</span>
+                <span class="class-name">Word văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>22/11/2026</strong></td>
+            <td>
+              Sáng Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">08h30 - 11h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">TM</div>
+                <div>
+                  <div class="instructor-name">ThS. Trần Thị Mai</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('WD-LAB02', 'Word văn phòng', 'Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="word-van-phong" data-group="chuyen-de" data-format="offline" data-time="toi" data-code="WD-LAB03">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">WD-LAB03</span>
+                <span class="class-name">Word văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>26/11/2026</strong></td>
+            <td>
+              Tối Thứ 2 - 4 - 6<br />
+              <span style="color:#0284c7; font-weight:700;">18h30 - 21h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">QB</div>
+                <div>
+                  <div class="instructor-name">ThS. Phạm Quốc Bảo</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('WD-LAB03', 'Word văn phòng', 'Tối Thứ 2 - 4 - 6 (18h30 - 21h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="word-van-phong" data-group="chuyen-de" data-format="online" data-time="toi" data-code="WD-ONL01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">WD-ONL01</span>
+                <span class="class-name">Word văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>20/11/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">19h30 - 21h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">TM</div>
+                <div>
+                  <div class="instructor-name">ThS. Trần Thị Mai</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('WD-ONL01', 'Word văn phòng', 'Tối Thứ 3 - 5 - 7 (19h30 - 21h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="word-van-phong" data-group="chuyen-de" data-format="online" data-time="cuoituan" data-code="WD-ONL02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">WD-ONL02</span>
+                <span class="class-name">Word văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>27/11/2026</strong></td>
+            <td>
+              Chiều Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">14h00 - 16h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">QB</div>
+                <div>
+                  <div class="instructor-name">ThS. Phạm Quốc Bảo</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('WD-ONL02', 'Word văn phòng', 'Chiều Thứ 7 & Chủ Nhật (14h00 - 16h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="excel-van-phong" data-group="chuyen-de" data-format="offline" data-time="toi" data-code="EX-LAB01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">EX-LAB01</span>
+                <span class="class-name">Excel văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>19/11/2026</strong></td>
+            <td>
+              Tối Thứ 2 - 4 - 6<br />
+              <span style="color:#0284c7; font-weight:700;">18h00 - 21h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HN</div>
+                <div>
+                  <div class="instructor-name">ThS. Lê Hoàng Nam</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill almost-full">● Sắp hết chỗ</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('EX-LAB01', 'Excel văn phòng', 'Tối Thứ 2 - 4 - 6 (18h00 - 21h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="excel-van-phong" data-group="chuyen-de" data-format="offline" data-time="toi" data-code="EX-LAB02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">EX-LAB02</span>
+                <span class="class-name">Excel văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>23/11/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">18h00 - 21h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HN</div>
+                <div>
+                  <div class="instructor-name">ThS. Lê Hoàng Nam</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('EX-LAB02', 'Excel văn phòng', 'Tối Thứ 3 - 5 - 7 (18h00 - 21h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="excel-van-phong" data-group="chuyen-de" data-format="offline" data-time="sang" data-code="EX-LAB03">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">EX-LAB03</span>
+                <span class="class-name">Excel văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>27/11/2026</strong></td>
+            <td>
+              Sáng Thứ 2 - 4 - 6 (Cấp tốc)<br />
+              <span style="color:#0284c7; font-weight:700;">08h00 - 11h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">NT</div>
+                <div>
+                  <div class="instructor-name">ThS. Nguyễn Thái Tuấn</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('EX-LAB03', 'Excel văn phòng', 'Sáng Thứ 2 - 4 - 6 (Cấp tốc) (08h00 - 11h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="excel-van-phong" data-group="chuyen-de" data-format="offline" data-time="cuoituan" data-code="EX-WEND01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">EX-WEND01</span>
+                <span class="class-name">Excel văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>29/11/2026</strong></td>
+            <td>
+              Chiều Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">13h30 - 16h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">NT</div>
+                <div>
+                  <div class="instructor-name">ThS. Nguyễn Thái Tuấn</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('EX-WEND01', 'Excel văn phòng', 'Chiều Thứ 7 & Chủ Nhật (13h30 - 16h30)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="excel-van-phong" data-group="chuyen-de" data-format="online" data-time="toi" data-code="EX-ONL01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">EX-ONL01</span>
+                <span class="class-name">Excel văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>22/11/2026</strong></td>
+            <td>
+              Tối Thứ 2 - 4 - 6<br />
+              <span style="color:#0284c7; font-weight:700;">19h00 - 21h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HN</div>
+                <div>
+                  <div class="instructor-name">ThS. Lê Hoàng Nam</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('EX-ONL01', 'Excel văn phòng', 'Tối Thứ 2 - 4 - 6 (19h00 - 21h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="excel-van-phong" data-group="chuyen-de" data-format="online" data-time="toi" data-code="EX-ONL02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">EX-ONL02</span>
+                <span class="class-name">Excel văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>26/11/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">19h30 - 21h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HN</div>
+                <div>
+                  <div class="instructor-name">ThS. Lê Hoàng Nam</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('EX-ONL02', 'Excel văn phòng', 'Tối Thứ 3 - 5 - 7 (19h30 - 21h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="excel-van-phong" data-group="chuyen-de" data-format="online" data-time="cuoituan" data-code="EX-ONL03">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">EX-ONL03</span>
+                <span class="class-name">Excel văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>30/11/2026</strong></td>
+            <td>
+              Sáng Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">08h30 - 11h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">NT</div>
+                <div>
+                  <div class="instructor-name">ThS. Nguyễn Thái Tuấn</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('EX-ONL03', 'Excel văn phòng', 'Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="powerpoint-thuyet-trinh" data-group="chuyen-de" data-format="offline" data-time="toi" data-code="PP-LAB01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">PP-LAB01</span>
+                <span class="class-name">PowerPoint thuyết trình</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>24/11/2026</strong></td>
+            <td>
+              Tối Thứ 2 - 4 - 6<br />
+              <span style="color:#0284c7; font-weight:700;">18h30 - 21h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HD</div>
+                <div>
+                  <div class="instructor-name">ThS. Vũ Hải Đăng</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('PP-LAB01', 'PowerPoint thuyết trình', 'Tối Thứ 2 - 4 - 6 (18h30 - 21h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="powerpoint-thuyet-trinh" data-group="chuyen-de" data-format="offline" data-time="cuoituan" data-code="PP-LAB02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">PP-LAB02</span>
+                <span class="class-name">PowerPoint thuyết trình</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>28/11/2026</strong></td>
+            <td>
+              Sáng Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">08h30 - 11h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HD</div>
+                <div>
+                  <div class="instructor-name">ThS. Vũ Hải Đăng</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('PP-LAB02', 'PowerPoint thuyết trình', 'Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="powerpoint-thuyet-trinh" data-group="chuyen-de" data-format="online" data-time="cuoituan" data-code="PP-ONL01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">PP-ONL01</span>
+                <span class="class-name">PowerPoint thuyết trình</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>25/11/2026</strong></td>
+            <td>
+              Chiều Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">14h00 - 17h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HD</div>
+                <div>
+                  <div class="instructor-name">ThS. Vũ Hải Đăng</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('PP-ONL01', 'PowerPoint thuyết trình', 'Chiều Thứ 7 & Chủ Nhật (14h00 - 17h00)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="powerpoint-thuyet-trinh" data-group="chuyen-de" data-format="online" data-time="toi" data-code="PP-ONL02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">PP-ONL02</span>
+                <span class="class-name">PowerPoint thuyết trình</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>01/12/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">19h30 - 21h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HD</div>
+                <div>
+                  <div class="instructor-name">ThS. Vũ Hải Đăng</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('PP-ONL02', 'PowerPoint thuyết trình', 'Tối Thứ 3 - 5 - 7 (19h30 - 21h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="cong-cu-truc-tuyen" data-group="chuyen-de" data-format="offline" data-time="toi" data-code="OL-LAB01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">OL-LAB01</span>
+                <span class="class-name">Công cụ văn phòng trực tuyến</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>25/11/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">18h30 - 20h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">QB</div>
+                <div>
+                  <div class="instructor-name">ThS. Phạm Quốc Bảo</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('OL-LAB01', 'Công cụ văn phòng trực tuyến', 'Tối Thứ 3 - 5 - 7 (18h30 - 20h30)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="cong-cu-truc-tuyen" data-group="chuyen-de" data-format="offline" data-time="cuoituan" data-code="OL-LAB02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">OL-LAB02</span>
+                <span class="class-name">Công cụ văn phòng trực tuyến</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>29/11/2026</strong></td>
+            <td>
+              Sáng Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">08h30 - 11h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">QB</div>
+                <div>
+                  <div class="instructor-name">ThS. Phạm Quốc Bảo</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('OL-LAB02', 'Công cụ văn phòng trực tuyến', 'Sáng Thứ 7 & Chủ Nhật (08h30 - 11h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="cong-cu-truc-tuyen" data-group="chuyen-de" data-format="online" data-time="toi" data-code="OL-ONL01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">OL-ONL01</span>
+                <span class="class-name">Công cụ văn phòng trực tuyến</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>27/11/2026</strong></td>
+            <td>
+              Tối Thứ 2 - 4 - 6<br />
+              <span style="color:#0284c7; font-weight:700;">19h30 - 21h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">QB</div>
+                <div>
+                  <div class="instructor-name">ThS. Phạm Quốc Bảo</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('OL-ONL01', 'Công cụ văn phòng trực tuyến', 'Tối Thứ 2 - 4 - 6 (19h30 - 21h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="cong-cu-truc-tuyen" data-group="chuyen-de" data-format="online" data-time="toi" data-code="OL-ONL02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">OL-ONL02</span>
+                <span class="class-name">Công cụ văn phòng trực tuyến</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>03/12/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">18h30 - 20h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">QB</div>
+                <div>
+                  <div class="instructor-name">ThS. Phạm Quốc Bảo</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('OL-ONL02', 'Công cụ văn phòng trực tuyến', 'Tối Thứ 3 - 5 - 7 (18h30 - 20h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="ung-dung-ai" data-group="chuyen-de" data-format="offline" data-time="toi" data-code="AI-LAB01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">AI-LAB01</span>
+                <span class="class-name">Ứng dụng AI trong công việc văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>28/11/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">18h30 - 21h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">XV</div>
+                <div>
+                  <div class="instructor-name">TS. Hoàng Xuân Vinh</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('AI-LAB01', 'Ứng dụng AI trong công việc văn phòng', 'Tối Thứ 3 - 5 - 7 (18h30 - 21h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="ung-dung-ai" data-group="chuyen-de" data-format="offline" data-time="cuoituan" data-code="AI-LAB02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">AI-LAB02</span>
+                <span class="class-name">Ứng dụng AI trong công việc văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>05/12/2026</strong></td>
+            <td>
+              Chiều Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">14h00 - 17h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">XV</div>
+                <div>
+                  <div class="instructor-name">TS. Hoàng Xuân Vinh</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('AI-LAB02', 'Ứng dụng AI trong công việc văn phòng', 'Chiều Thứ 7 & Chủ Nhật (14h00 - 17h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="ung-dung-ai" data-group="chuyen-de" data-format="online" data-time="toi" data-code="AI-ONL01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">AI-ONL01</span>
+                <span class="class-name">Ứng dụng AI trong công việc văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>30/11/2026</strong></td>
+            <td>
+              Tối Thứ 2 - 4 - 6<br />
+              <span style="color:#0284c7; font-weight:700;">19h30 - 21h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">XV</div>
+                <div>
+                  <div class="instructor-name">TS. Hoàng Xuân Vinh</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('AI-ONL01', 'Ứng dụng AI trong công việc văn phòng', 'Tối Thứ 2 - 4 - 6 (19h30 - 21h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="ung-dung-ai" data-group="chuyen-de" data-format="online" data-time="toi" data-code="AI-ONL02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">AI-ONL02</span>
+                <span class="class-name">Ứng dụng AI trong công việc văn phòng</span>
+                <span class="class-track">Khóa học chuyên đề</span>
+              </div>
+            </td>
+            <td><strong>04/12/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">19h30 - 21h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">XV</div>
+                <div>
+                  <div class="instructor-name">TS. Hoàng Xuân Vinh</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('AI-ONL02', 'Ứng dụng AI trong công việc văn phòng', 'Tối Thứ 3 - 5 - 7 (19h30 - 21h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="on-luyen-mos-word" data-group="on-luyen" data-format="offline" data-time="toi" data-code="MW-LAB01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">MW-LAB01</span>
+                <span class="class-name">Ôn luyện MOS Word</span>
+                <span class="class-track">Khóa học ôn luyện MOS</span>
+              </div>
+            </td>
+            <td><strong>26/11/2026</strong></td>
+            <td>
+              Tối Thứ 2 - 4 - 6<br />
+              <span style="color:#0284c7; font-weight:700;">18h30 - 21h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">TM</div>
+                <div>
+                  <div class="instructor-name">ThS. Trần Thị Mai</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('MW-LAB01', 'Ôn luyện MOS Word', 'Tối Thứ 2 - 4 - 6 (18h30 - 21h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="on-luyen-mos-word" data-group="on-luyen" data-format="offline" data-time="sang" data-code="MW-LAB02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">MW-LAB02</span>
+                <span class="class-name">Ôn luyện MOS Word</span>
+                <span class="class-track">Khóa học ôn luyện MOS</span>
+              </div>
+            </td>
+            <td><strong>01/12/2026</strong></td>
+            <td>
+              Sáng Thứ 2 - 4 - 6 (Cấp tốc)<br />
+              <span style="color:#0284c7; font-weight:700;">08h30 - 11h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">TM</div>
+                <div>
+                  <div class="instructor-name">ThS. Trần Thị Mai</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('MW-LAB02', 'Ôn luyện MOS Word', 'Sáng Thứ 2 - 4 - 6 (Cấp tốc) (08h30 - 11h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="on-luyen-mos-word" data-group="on-luyen" data-format="online" data-time="toi" data-code="MW-ONL01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">MW-ONL01</span>
+                <span class="class-name">Ôn luyện MOS Word</span>
+                <span class="class-track">Khóa học ôn luyện MOS</span>
+              </div>
+            </td>
+            <td><strong>28/11/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">19h30 - 21h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">TM</div>
+                <div>
+                  <div class="instructor-name">ThS. Trần Thị Mai</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('MW-ONL01', 'Ôn luyện MOS Word', 'Tối Thứ 3 - 5 - 7 (19h30 - 21h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="on-luyen-mos-word" data-group="on-luyen" data-format="online" data-time="cuoituan" data-code="MW-ONL02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">MW-ONL02</span>
+                <span class="class-name">Ôn luyện MOS Word</span>
+                <span class="class-track">Khóa học ôn luyện MOS</span>
+              </div>
+            </td>
+            <td><strong>05/12/2026</strong></td>
+            <td>
+              Chiều Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">14h00 - 16h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">TM</div>
+                <div>
+                  <div class="instructor-name">ThS. Trần Thị Mai</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('MW-ONL02', 'Ôn luyện MOS Word', 'Chiều Thứ 7 & Chủ Nhật (14h00 - 16h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="on-luyen-mos-excel" data-group="on-luyen" data-format="offline" data-time="toi" data-code="ME-LAB01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">ME-LAB01</span>
+                <span class="class-name">Ôn luyện MOS Excel</span>
+                <span class="class-track">Khóa học ôn luyện MOS</span>
+              </div>
+            </td>
+            <td><strong>28/11/2026</strong></td>
+            <td>
+              Tối Thứ 2 - 4 - 6<br />
+              <span style="color:#0284c7; font-weight:700;">18h00 - 21h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HN</div>
+                <div>
+                  <div class="instructor-name">ThS. Lê Hoàng Nam</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill almost-full">● Sắp hết chỗ</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('ME-LAB01', 'Ôn luyện MOS Excel', 'Tối Thứ 2 - 4 - 6 (18h00 - 21h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="on-luyen-mos-excel" data-group="on-luyen" data-format="offline" data-time="toi" data-code="ME-LAB02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">ME-LAB02</span>
+                <span class="class-name">Ôn luyện MOS Excel</span>
+                <span class="class-track">Khóa học ôn luyện MOS</span>
+              </div>
+            </td>
+            <td><strong>02/12/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">18h00 - 21h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HN</div>
+                <div>
+                  <div class="instructor-name">ThS. Lê Hoàng Nam</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('ME-LAB02', 'Ôn luyện MOS Excel', 'Tối Thứ 3 - 5 - 7 (18h00 - 21h00)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="on-luyen-mos-excel" data-group="on-luyen" data-format="offline" data-time="cuoituan" data-code="ME-LAB03">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">ME-LAB03</span>
+                <span class="class-name">Ôn luyện MOS Excel</span>
+                <span class="class-track">Khóa học ôn luyện MOS</span>
+              </div>
+            </td>
+            <td><strong>06/12/2026</strong></td>
+            <td>
+              Sáng Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">08h30 - 11h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">NT</div>
+                <div>
+                  <div class="instructor-name">ThS. Nguyễn Thái Tuấn</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('ME-LAB03', 'Ôn luyện MOS Excel', 'Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="on-luyen-mos-excel" data-group="on-luyen" data-format="online" data-time="cuoituan" data-code="ME-ONL01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">ME-ONL01</span>
+                <span class="class-name">Ôn luyện MOS Excel</span>
+                <span class="class-track">Khóa học ôn luyện MOS</span>
+              </div>
+            </td>
+            <td><strong>29/11/2026</strong></td>
+            <td>
+              Chiều Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">14h00 - 17h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HN</div>
+                <div>
+                  <div class="instructor-name">ThS. Lê Hoàng Nam</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('ME-ONL01', 'Ôn luyện MOS Excel', 'Chiều Thứ 7 & Chủ Nhật (14h00 - 17h00)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="on-luyen-mos-excel" data-group="on-luyen" data-format="online" data-time="toi" data-code="ME-ONL02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">ME-ONL02</span>
+                <span class="class-name">Ôn luyện MOS Excel</span>
+                <span class="class-track">Khóa học ôn luyện MOS</span>
+              </div>
+            </td>
+            <td><strong>03/12/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">19h30 - 21h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HN</div>
+                <div>
+                  <div class="instructor-name">ThS. Lê Hoàng Nam</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('ME-ONL02', 'Ôn luyện MOS Excel', 'Tối Thứ 3 - 5 - 7 (19h30 - 21h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="on-luyen-mos-powerpoint" data-group="on-luyen" data-format="offline" data-time="toi" data-code="MP-LAB01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">MP-LAB01</span>
+                <span class="class-name">Ôn luyện MOS PowerPoint</span>
+                <span class="class-track">Khóa học ôn luyện MOS</span>
+              </div>
+            </td>
+            <td><strong>01/12/2026</strong></td>
+            <td>
+              Tối Thứ 2 - 4 - 6<br />
+              <span style="color:#0284c7; font-weight:700;">18h30 - 20h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HD</div>
+                <div>
+                  <div class="instructor-name">ThS. Vũ Hải Đăng</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('MP-LAB01', 'Ôn luyện MOS PowerPoint', 'Tối Thứ 2 - 4 - 6 (18h30 - 20h30)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="on-luyen-mos-powerpoint" data-group="on-luyen" data-format="offline" data-time="cuoituan" data-code="MP-LAB02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">MP-LAB02</span>
+                <span class="class-name">Ôn luyện MOS PowerPoint</span>
+                <span class="class-track">Khóa học ôn luyện MOS</span>
+              </div>
+            </td>
+            <td><strong>06/12/2026</strong></td>
+            <td>
+              Chiều Thứ 7 & Chủ Nhật<br />
+              <span style="color:#0284c7; font-weight:700;">14h00 - 16h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HD</div>
+                <div>
+                  <div class="instructor-name">ThS. Vũ Hải Đăng</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-offline">
+                Trực tiếp tại trung tâm</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('MP-LAB02', 'Ôn luyện MOS PowerPoint', 'Chiều Thứ 7 & Chủ Nhật (14h00 - 16h30)', 'Trực tiếp tại trung tâm')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="on-luyen-mos-powerpoint" data-group="on-luyen" data-format="online" data-time="toi" data-code="MP-ONL01">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">MP-ONL01</span>
+                <span class="class-name">Ôn luyện MOS PowerPoint</span>
+                <span class="class-track">Khóa học ôn luyện MOS</span>
+              </div>
+            </td>
+            <td><strong>02/12/2026</strong></td>
+            <td>
+              Tối Thứ 3 - 5 - 7<br />
+              <span style="color:#0284c7; font-weight:700;">18h00 - 20h00</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HD</div>
+                <div>
+                  <div class="instructor-name">ThS. Vũ Hải Đăng</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('MP-ONL01', 'Ôn luyện MOS PowerPoint', 'Tối Thứ 3 - 5 - 7 (18h00 - 20h00)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+          <tr data-course="on-luyen-mos-powerpoint" data-group="on-luyen" data-format="online" data-time="toi" data-code="MP-ONL02">
+            <td>
+              <div class="class-info-block">
+                <span class="class-code">MP-ONL02</span>
+                <span class="class-name">Ôn luyện MOS PowerPoint</span>
+                <span class="class-track">Khóa học ôn luyện MOS</span>
+              </div>
+            </td>
+            <td><strong>07/12/2026</strong></td>
+            <td>
+              Tối Thứ 2 - 4 - 6<br />
+              <span style="color:#0284c7; font-weight:700;">19h30 - 21h30</span>
+            </td>
+            <td>
+              <div class="instructor-cell">
+                <div class="instructor-avatar-icon">HD</div>
+                <div>
+                  <div class="instructor-name">ThS. Vũ Hải Đăng</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="table-fmt-badge format-online">
+                Trực tuyến</span>
+            </td>
+            <td><span class="status-pill open">Đang nhận học viên</span></td>
+            <td>
+              <button type="button" class="btn-enroll-trigger" onclick="openScheduleRegModal('MP-ONL02', 'Ôn luyện MOS PowerPoint', 'Tối Thứ 2 - 4 - 6 (19h30 - 21h30)', 'Trực tuyến')">
+                Đăng ký
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="empty-schedule-msg" id="emptyScheduleMsg">
+        Không tìm thấy lớp học nào phù hợp. Vui lòng bấm vào <a href="lich-khai-giang.html" style="color:#0284c7; font-weight:700;">Xem tất cả lịch khai giảng</a> để tham khảo toàn bộ lịch học đang mở!
+      </div>
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       BẢNG ĐĂNG KÝ Ở GIỮA MÀN HÌNH (MODAL ĐĂNG KÝ)
+       TỰ ĐỘNG NHẬP MÃ LỚP VÀ CÓ NÚT XEM HƯỚNG DẪN ĐĂNG KÝ
+       ====================================================================== -->
+  <div class="schedule-modal-backdrop" id="scheduleRegModal" onclick="closeScheduleRegModal(event)">
+    <div class="schedule-modal-card" onclick="event.stopPropagation()">
+      <div class="schedule-modal-header">
+        <div class="modal-header-titles">
+          <h3 class="modal-main-title">Đăng Ký Lớp Học Trực Tuyến</h3>
+          <p class="modal-main-sub">Hệ thống đã tự động nhập mã lớp và thông tin tương ứng</p>
+        </div>
+        <button type="button" class="modal-close-x" onclick="closeScheduleRegModal()" aria-label="Đóng">&times;</button>
+      </div>
+
+      <div class="schedule-modal-body">
+        <!-- Khối thông tin lớp tự động điền + Giá học phí -->
+        <div class="autofill-class-box">
+          <div class="autofill-row">
+            <span class="autofill-label">Mã lớp học đã chọn:</span>
+            <span class="autofill-badge-code" id="modalClassCode">LMS-CB01</span>
+          </div>
+          <div class="autofill-row">
+            <span class="autofill-label">Tên khóa học:</span>
+            <span class="autofill-value" id="modalClassName">Tin học căn bản</span>
+          </div>
+          <div class="autofill-row">
+            <span class="autofill-label">Lịch học:</span>
+            <span class="autofill-value" id="modalClassSchedule">Tối Thứ 2 - 4 - 6 (18h00 - 21h00)</span>
+          </div>
+          <div class="autofill-row">
+            <span class="autofill-label">Hình thức:</span>
+            <span class="autofill-value" id="modalClassFormat">Trực tiếp tại trung tâm</span>
+          </div>
+          <div class="autofill-row" style="border-top: 1px dashed #bae6fd; padding-top: 8px; margin-top: 2px;">
+            <span class="autofill-label" style="font-weight: 700; color: #0369a1;">Học phí khóa học:</span>
+            <span class="autofill-fee-price" id="modalClassFee">1.500.000 đ</span>
+          </div>
+        </div>
+
+        <!-- Khối Thông Tin Chuyển Khoản & Mã QR Ngân Hàng -->
+        <div class="modal-payment-card">
+          <div class="mpc-header">
+            <span class="mpc-title">Thông Tin Thanh Toán Học Phí</span>
+            <span class="mpc-tag">Chuyển khoản Napas 24/7</span>
+          </div>
+          <div class="mpc-body-grid">
+            <div class="mpc-qr-col">
+              <div class="mpc-qr-wrapper">
+                <svg width="118" height="118" viewBox="0 0 200 200" fill="none">
+                  <rect width="200" height="200" rx="10" fill="#ffffff" />
+                  <rect x="20" y="20" width="46" height="46" rx="6" fill="#075985" />
+                  <rect x="26" y="26" width="34" height="34" rx="4" fill="#ffffff" />
+                  <rect x="33" y="33" width="20" height="20" rx="2" fill="#0284c7" />
+                  <rect x="134" y="20" width="46" height="46" rx="6" fill="#075985" />
+                  <rect x="140" y="26" width="34" height="34" rx="4" fill="#ffffff" />
+                  <rect x="147" y="33" width="20" height="20" rx="2" fill="#0284c7" />
+                  <rect x="20" y="134" width="46" height="46" rx="6" fill="#075985" />
+                  <rect x="26" y="140" width="34" height="34" rx="4" fill="#ffffff" />
+                  <rect x="33" y="147" width="20" height="20" rx="2" fill="#0284c7" />
+                  <rect x="80" y="80" width="40" height="40" rx="8" fill="#0284c7" />
+                  <text x="100" y="105" fill="#ffffff" font-family="sans-serif" font-weight="800" font-size="12" text-anchor="middle">LMS</text>
+                  <rect x="76" y="22" width="10" height="10" fill="#0f172a" />
+                  <rect x="106" y="22" width="10" height="10" fill="#0f172a" />
+                  <rect x="76" y="42" width="10" height="10" fill="#0f172a" />
+                  <rect x="106" y="42" width="10" height="10" fill="#0f172a" />
+                  <rect x="22" y="76" width="10" height="10" fill="#0f172a" />
+                  <rect x="42" y="76" width="10" height="10" fill="#0f172a" />
+                  <rect x="140" y="76" width="10" height="10" fill="#0f172a" />
+                  <rect x="168" y="76" width="10" height="10" fill="#0f172a" />
+                  <rect x="22" y="96" width="10" height="10" fill="#0f172a" />
+                  <rect x="134" y="96" width="10" height="10" fill="#0f172a" />
+                  <rect x="164" y="96" width="10" height="10" fill="#0f172a" />
+                  <rect x="22" y="116" width="10" height="10" fill="#0f172a" />
+                  <rect x="52" y="116" width="10" height="10" fill="#0f172a" />
+                  <rect x="76" y="134" width="10" height="10" fill="#0f172a" />
+                  <rect x="106" y="134" width="10" height="10" fill="#0f172a" />
+                  <rect x="144" y="134" width="10" height="10" fill="#0f172a" />
+                  <rect x="76" y="154" width="10" height="10" fill="#0f172a" />
+                  <rect x="106" y="154" width="10" height="10" fill="#0f172a" />
+                  <rect x="154" y="154" width="10" height="10" fill="#0f172a" />
+                  <rect x="76" y="174" width="10" height="10" fill="#0f172a" />
+                  <rect x="96" y="174" width="10" height="10" fill="#0f172a" />
+                  <rect x="116" y="174" width="10" height="10" fill="#0f172a" />
+                </svg>
+              </div>
+              <small class="mpc-qr-sub">Quét mã VietQR chuyển khoản</small>
+            </div>
+            <div class="mpc-details-col">
+              <div class="mpc-row">
+                <span class="mpc-row-label">Ngân hàng:</span>
+                <span class="mpc-row-val">MBBank (Ngân hàng Quân Đội)</span>
+              </div>
+              <div class="mpc-row">
+                <span class="mpc-row-label">Số tài khoản:</span>
+                <span class="mpc-row-val">
+                  <strong class="mpc-highlight" id="modalBankAcc">0988888999</strong>
+                  <button type="button" class="btn-copy-chip" onclick="copyModalPaymentText('0988888999', this)">Sao chép</button>
+                </span>
+              </div>
+              <div class="mpc-row">
+                <span class="mpc-row-label">Chủ tài khoản:</span>
+                <span class="mpc-row-val">NGUYEN THAI TUAN</span>
+              </div>
+              <div class="mpc-syntax-box">
+                <span class="mpc-row-label" style="font-size: 0.76rem; text-transform: uppercase;">Cú pháp chuyển khoản:</span>
+                <div class="mpc-syntax-val">
+                  <code id="modalSyntaxCode">LMS [SĐT] [MÃ_LỚP]</code>
+                  <button type="button" class="btn-copy-chip" onclick="copyModalSyntax(this)">Sao chép</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Biểu mẫu điền thông tin học viên & Up minh chứng chuyển khoản -->
+        <form id="scheduleRegForm" onsubmit="handleScheduleSubmit(event)">
+          <input type="hidden" id="hiddenClassCode" value="" />
+          <input type="hidden" id="hiddenClassName" value="" />
+          <input type="hidden" id="hiddenClassFee" value="" />
+
+          <div class="modal-form-group">
+            <label class="modal-form-label" for="regName">Họ và tên học viên *</label>
+            <input type="text" id="regName" class="modal-form-input" placeholder="Ví dụ: Nguyễn Văn An" required />
+          </div>
+
+          <div class="modal-form-group">
+            <label class="modal-form-label" for="regPhone">Số điện thoại / Zalo *</label>
+            <input type="tel" id="regPhone" class="modal-form-input" placeholder="Ví dụ: 0912345678" oninput="onRegPhoneInput(this.value)" required />
+          </div>
+
+          <div class="modal-form-group">
+            <label class="modal-form-label" for="regEmail">Địa chỉ Gmail nhận thông báo học *</label>
+            <input type="email" id="regEmail" class="modal-form-input" placeholder="Ví dụ: vanan@gmail.com" required />
+          </div>
+
+          <!-- Up minh chứng chuyển khoản -->
+          <div class="modal-form-group">
+            <label class="modal-form-label" for="regReceiptFile">Up minh chứng chuyển khoản (Ảnh biên lai / Chụp màn hình) *</label>
+            <div class="upload-receipt-box" id="uploadReceiptBox" onclick="document.getElementById('regReceiptFile').click()">
+              <div class="urb-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+              <div class="urb-text">
+                <strong id="receiptFileName">Nhấn vào đây để tải ảnh biên lai / PDF chuyển khoản</strong>
+                <small>Hỗ trợ định dạng: JPG, PNG, WEBP, PDF (Dung lượng tối đa 10MB)</small>
+              </div>
+              <button type="button" class="btn-browse-file">Chọn tệp</button>
+            </div>
+            <input type="file" id="regReceiptFile" class="hidden-file-input" accept="image/*,.pdf" onchange="onReceiptFileSelected(this)" required />
+          </div>
+
+          <div class="modal-form-group">
+            <label class="modal-form-label" for="regNote">Ghi chú thêm (nếu có)</label>
+            <input type="text" id="regNote" class="modal-form-input" placeholder="Ví dụ: Cần xuất hóa đơn hoặc hỗ trợ ca học..." />
+          </div>
+
+          <div class="modal-actions-footer">
+            <!-- Nút trỏ tới xem hướng dẫn đăng ký & thanh toán (Mở cùng tab) -->
+            <a href="huong-dan-dang-ky.html" class="btn-link-guide">
+              <span>Xem Hướng Dẫn Đăng Ký &amp; Thanh Toán</span>
+            </a>
+
+            <!-- Nút xác nhận đăng ký -->
+            <button type="submit" class="btn-submit-reg">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Xác Nhận Đăng Ký Lớp &amp; Đã Chuyển Khoản</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Footer -->
+  <footer class="site-footer simple-footer">
+    <div class="footer-copyright">
+      © 2026 TRUNG TÂM TIN HỌC VĂN PHÒNG • BẢN QUYỀN THUỘC VỀ NHÓM 2 • HỆ THỐNG LMS TRỰC TUYẾN
+    </div>
+  </footer>
+
+  <script>
+    // Bảng giá học phí chuẩn cho từng khóa học
+    const courseFees = {
+      'Tin học căn bản': '1.500.000 đ',
+      'Tin học cơ bản': '1.500.000 đ',
+      'Tin học nâng cao': '1.650.000 đ',
+      'Word văn phòng': '850.000 đ',
+      'Excel văn phòng': '950.000 đ',
+      'PowerPoint thuyết trình': '850.000 đ',
+      'Công cụ văn phòng trực tuyến': '900.000 đ',
+      'Ứng dụng AI trong công việc văn phòng': '1.200.000 đ',
+      'Ôn luyện MOS Word': '1.200.000 đ',
+      'Ôn luyện MOS Excel': '1.200.000 đ',
+      'Ôn luyện MOS PowerPoint': '1.000.000 đ'
+    };
+
+    let activeModalClassCode = '';
+
+    // Mở bảng đăng ký ở giữa màn hình và tự động nhập mã lớp, học phí, cú pháp thanh toán
+    function openScheduleRegModal(classCode, className, classSchedule, classFormat) {
+      activeModalClassCode = classCode;
+      const fee = courseFees[className] || '1.500.000 đ';
+
+      document.getElementById('modalClassCode').innerText = classCode;
+      document.getElementById('modalClassName').innerText = className;
+      document.getElementById('modalClassSchedule').innerText = classSchedule;
+      document.getElementById('modalClassFormat').innerText = classFormat;
+      document.getElementById('modalClassFee').innerText = fee;
+
+      document.getElementById('hiddenClassCode').value = classCode;
+      document.getElementById('hiddenClassName').value = className;
+      document.getElementById('hiddenClassFee').value = fee;
+
+      // Cập nhật cú pháp chuyển khoản
+      const phoneInput = document.getElementById('regPhone');
+      const phoneVal = phoneInput ? phoneInput.value.trim() : '';
+      updateModalSyntaxDisplay(phoneVal, classCode);
+
+      // Reset file upload display
+      const receiptInput = document.getElementById('regReceiptFile');
+      if (receiptInput) receiptInput.value = '';
+      const fnameElem = document.getElementById('receiptFileName');
+      if (fnameElem) fnameElem.innerText = 'Nhấn vào đây để tải ảnh biên lai / PDF chuyển khoản';
+      const upBox = document.getElementById('uploadReceiptBox');
+      if (upBox) upBox.classList.remove('has-file');
+
+      const modal = document.getElementById('scheduleRegModal');
+      if (modal) {
+        modal.classList.add('open');
+        const nameInput = document.getElementById('regName');
+        if (nameInput) setTimeout(() => nameInput.focus(), 250);
+      }
+    }
+
+    function onRegPhoneInput(phone) {
+      updateModalSyntaxDisplay(phone.trim(), activeModalClassCode);
+    }
+
+    function updateModalSyntaxDisplay(phone, classCode) {
+      const codeElem = document.getElementById('modalSyntaxCode');
+      if (codeElem) {
+        const p = phone || '[SĐT]';
+        const c = classCode || '[MÃ_LỚP]';
+        codeElem.innerText = `LMS ${p} ${c}`;
+      }
+    }
+
+    function copyModalPaymentText(text, btn) {
+      navigator.clipboard.writeText(text).then(() => {
+        const oldText = btn.innerText;
+        btn.innerText = 'Đã chép!';
+        setTimeout(() => btn.innerText = oldText, 2000);
+      });
+    }
+
+    function copyModalSyntax(btn) {
+      const syntax = document.getElementById('modalSyntaxCode').innerText;
+      navigator.clipboard.writeText(syntax).then(() => {
+        const oldText = btn.innerText;
+        btn.innerText = 'Đã chép!';
+        setTimeout(() => btn.innerText = oldText, 2000);
+      });
+    }
+
+    function onReceiptFileSelected(input) {
+      const box = document.getElementById('uploadReceiptBox');
+      const textElem = document.getElementById('receiptFileName');
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        textElem.innerText = `Đã chọn: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+        if (box) box.classList.add('has-file');
+      } else {
+        textElem.innerText = 'Nhấn vào đây để tải ảnh biên lai / PDF chuyển khoản';
+        if (box) box.classList.remove('has-file');
+      }
+    }
+
+    function closeScheduleRegModal(e) {
+      if (e && e.target !== e.currentTarget) return;
+      const modal = document.getElementById('scheduleRegModal');
+      if (modal) {
+        modal.classList.remove('open');
+      }
+    }
+
+    function handleScheduleSubmit(e) {
+      e.preventDefault();
+      const code = document.getElementById('hiddenClassCode').value;
+      const cName = document.getElementById('hiddenClassName').value;
+      const fee = document.getElementById('hiddenClassFee').value || '1.500.000 đ';
+      const name = document.getElementById('regName').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const receiptInput = document.getElementById('regReceiptFile');
+
+      if (!name || !phone || !email) {
+        alert('Vui lòng điền đầy đủ họ tên, số điện thoại và email!');
+        return;
+      }
+
+      if (!receiptInput || !receiptInput.files || !receiptInput.files[0]) {
+        alert('Vui lòng đính kèm ảnh chụp màn hình / biên lai chuyển khoản học phí!');
+        return;
+      }
+
+      const fileName = receiptInput.files[0].name;
+
+      alert('ĐĂNG KÝ LỚP HỌC VÀ XÁC NHẬN HỌC PHÍ THÀNH CÔNG!\n\n' +
+            'Học viên: ' + name + '\n' +
+            'Lớp đăng ký: ' + cName + ' (Mã lớp: ' + code + ')\n' +
+            'Học phí: ' + fee + '\n' +
+            'Minh chứng chuyển khoản: ' + fileName + '\n' +
+            'Số điện thoại: ' + phone + '\n' +
+            'Email: ' + email + '\n\n' +
+            'Ban đào tạo LMS đã ghi nhận hồ sơ và tệp minh chứng thanh toán của bạn. Hệ thống sẽ đối soát và gửi tài khoản kích hoạt qua Email/Zalo trong vòng 10 phút!');
+
+      closeScheduleRegModal();
+      e.target.reset();
+    }
+
+    // XỬ LÝ HIỂN THỊ LỊCH KHAI GIẢNG:
+    // 1. Nếu vào trực tiếp từ Menu/Trang chủ -> Hiện FULL tất cả 22 lớp học, KHÔNG bộ lọc nào hết.
+    // 2. Nếu vào từ Xem chi tiết môn học (?course=...&format=...) -> Chỉ hiện ĐÚNG các lớp của môn đó và hình thức đó.
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const courseParam = urlParams.get('course');
+      const formatParam = urlParams.get('format');
+      const classParam = urlParams.get('class');
+
+      const fullBanner = document.getElementById('fullScheduleBanner');
+      const selectedNotice = document.getElementById('selectedScheduleNotice');
+      const ssnCourseName = document.getElementById('ssnCourseName');
+      const ssnFormatSub = document.getElementById('ssnFormatSub');
+      const emptyMsg = document.getElementById('emptyScheduleMsg');
+
+      const rows = document.querySelectorAll('#scheduleTable tbody tr');
+
+      if (courseParam) {
+        let visibleCount = 0;
+        let sampleCourseName = '';
+        let sampleFormatName = '';
+
+        rows.forEach(row => {
+          const rowCourse = row.getAttribute('data-course');
+          const rowFormat = row.getAttribute('data-format');
+          const cName = row.querySelector('.class-name') ? row.querySelector('.class-name').innerText : '';
+
+          let match = (rowCourse === courseParam);
+          if (formatParam) {
+            match = match && (rowFormat === formatParam);
+          }
+
+          if (match) {
+            row.style.display = '';
+            visibleCount++;
+            if (!sampleCourseName) sampleCourseName = cName;
+            if (!sampleFormatName) {
+              sampleFormatName = (rowFormat === 'offline') ? 'Trực tiếp tại trung tâm' : 'Trực tuyến';
+            }
+          } else {
+            row.style.display = 'none';
+          }
+        });
+
+        // Ẩn banner full, hiện thông báo khóa học đã chọn
+        if (fullBanner) fullBanner.style.display = 'none';
+        if (selectedNotice) {
+          selectedNotice.style.display = 'flex';
+          if (ssnCourseName) ssnCourseName.innerText = `Khóa học: ${sampleCourseName || courseParam}`;
+          const fmtText = formatParam ? (formatParam === 'offline' ? 'Trực tiếp tại trung tâm' : 'Trực tuyến') : 'Tất cả hình thức';
+          if (ssnFormatSub) {
+            ssnFormatSub.innerHTML = `Hình thức: <strong>${fmtText}</strong> • Đang hiển thị <strong>${visibleCount}</strong> lớp học phù hợp`;
+          }
+        }
+
+        if (emptyMsg) {
+          emptyMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
+        }
+      } else {
+        // Vào từ ngoài: Hiển thị TOÀN BỘ 22 lớp học
+        rows.forEach(row => {
+          row.style.display = '';
+        });
+        if (fullBanner) fullBanner.style.display = 'block';
+        if (selectedNotice) selectedNotice.style.display = 'none';
+        if (emptyMsg) emptyMsg.style.display = 'none';
+      }
+
+      // Tự động mở modal đăng ký nếu có chỉ định mã lớp
+      if (classParam) {
+        const targetClassRow = document.querySelector(`#scheduleTable tbody tr[data-code="${classParam}"]`);
+        if (targetClassRow) {
+          const btn = targetClassRow.querySelector('.btn-enroll-trigger');
+          if (btn) btn.click();
+        }
+      }
+    });
+
+
+    // Tools dropdown toggle
+    (function () {
+      const toolsDropdown = document.getElementById('nav-tools-dropdown');
+      const btnTools = document.getElementById('btn-tools-dropdown');
+      const toolsContent = toolsDropdown ? toolsDropdown.querySelector('.nav-dropdown-content') : null;
+
+      if (toolsDropdown && btnTools) {
+        btnTools.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toolsDropdown.classList.toggle('open');
+        });
+
+        if (toolsContent) {
+          toolsContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        }
+
+        document.addEventListener('click', () => {
+          toolsDropdown.classList.remove('open');
+        });
+      }
+    })();
+  </script>
+  <script src="auth.js"></script>
+  <!-- Nhúng Chatbot liên hệ ở góc dưới bên phải -->
+  <script src="lms-chatbot.js"></script>
+</body>
+
+</html>

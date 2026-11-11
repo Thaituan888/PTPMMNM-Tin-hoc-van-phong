@@ -1,0 +1,2740 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hướng Dẫn Đăng Ký &amp; Thanh Toán - Tin Học Văn Phòng LMS</title>
+  <meta name="description"
+    content="Hướng dẫn chi tiết quy trình đăng ký khóa học Tin học văn phòng LMS qua 6 bước: Tạo tài khoản, đăng nhập, chọn khóa, chọn lớp, thanh toán và truy cập học tập." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="lms-chatbot.css" />
+  <style>
+    body {
+      background: #f0f7ff;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .guide-page-container {
+      max-width: 1180px;
+      width: 100%;
+      margin: 28px auto 90px;
+      padding: 0 clamp(16px, 3vw, 32px);
+      flex: 1;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Breadcrumb */
+    .guide-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      color: #64748b;
+      margin-bottom: 24px;
+    }
+
+    .guide-breadcrumb a {
+      color: #0284c7;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .guide-breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    /* Hero Banner */
+    .guide-hero-banner {
+      background: linear-gradient(135deg, #b45309 0%, #d97706 60%, #f59e0b 100%);
+      border-radius: 26px;
+      padding: clamp(28px, 4vw, 44px);
+      color: #ffffff;
+      margin-bottom: 38px;
+      box-shadow: 0 14px 34px rgba(217, 119, 6, 0.22);
+    }
+
+    .hero-guide-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    .guide-hero-title {
+      font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .guide-hero-sub {
+      font-size: 1.05rem;
+      color: #fef3c7;
+      max-width: 780px;
+      line-height: 1.6;
+    }
+
+    /* 6 BƯỚC ĐĂNG KÝ (TIMELINE STEPS WITH ILLUSTRATIONS) */
+    .steps-timeline-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-bottom: 50px;
+    }
+
+    .step-timeline-item {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 30px;
+      border: 2px solid #e0f2fe;
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.06);
+      display: grid;
+      grid-template-columns: 80px 1fr 280px;
+      gap: 24px;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    @media (max-width: 900px) {
+      .step-timeline-item {
+        grid-template-columns: 70px 1fr;
+      }
+      .step-illus-box {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .step-timeline-item {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .step-timeline-item:hover {
+      border-color: #0284c7;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(2, 132, 199, 0.12);
+    }
+
+    .step-circle-badge {
+      width: 68px;
+      height: 68px;
+      border-radius: 22px;
+      background: #0284c7;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.3);
+      flex-shrink: 0;
+    }
+
+    .step-circle-badge span.num {
+      font-size: 1.5rem;
+      line-height: 1;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .step-circle-badge span.txt {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .step-content-area {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .step-heading {
+      font-size: 1.28rem;
+      font-weight: 800;
+      color: #075985;
+      margin-bottom: 8px;
+    }
+
+    .step-explanation {
+      font-size: 0.94rem;
+      color: #475569;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .step-instruction-box {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 12px 16px;
+      border-left: 4px solid #0284c7;
+      font-size: 0.88rem;
+      color: #334155;
+    }
+
+    /* Mockup minh họa bước học */
+    .step-illus-box {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 1.5px solid #bae6fd;
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 150px;
+    }
+
+    .mockup-icon {
+      font-size: 2.8rem;
+      margin-bottom: 8px;
+    }
+
+    .mockup-caption {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #075985;
+    }
+
+    /* Phần Thanh toán ngân hàng & QR */
+    .payment-guide-section {
+      background: #ffffff;
+      border-radius: 26px;
+      padding: clamp(24px, 4vw, 36px);
+      border: 2px solid #e0f2fe;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.07);
+      margin-bottom: 50px;
+    }
+
+    .pay-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 800px) {
+      .pay-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pay-info-box {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .pay-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 0.92rem;
+    }
+
+    .pay-info-label {
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .pay-info-val {
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pay-info-val.num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.15rem;
+      color: #0284c7;
+    }
+
+    .btn-copy-tag {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #475569;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-copy-tag:hover {
+      background: #0284c7;
+      color: #ffffff;
+    }
+
+    /* QR Mockup */
+    .qr-side-box {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border: 1.5px solid #bfdbfe;
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* Biểu mẫu đăng ký khóa học online */
+    .online-reg-section {
+      background: #ffffff;
+      border-radius: 26px;
+      padding: clamp(24px, 4vw, 36px);
+      border: 2px solid #bae6fd;
+      box-shadow: 0 10px 30px rgba(2, 132, 199, 0.09);
+      margin-bottom: 50px;
+    }
+
+    .reg-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 680px) {
+      .reg-form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group-item.full-span {
+      grid-column: 1 / -1;
+    }
+
+    .form-group-item label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .form-group-item input,
+    .form-group-item select,
+    .form-group-item textarea {
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      font-family: inherit;
+      font-size: 0.92rem;
+      box-sizing: border-box;
+      outline: none;
+    }
+
+    .form-group-item input:focus,
+    .form-group-item select:focus,
+    .form-group-item textarea:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .btn-send-registration {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      border: none;
+      padding: 14px 30px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .btn-send-registration:hover {
+      background: #0369a1;
+      transform: translateY(-2px);
+    }
+
+    .reg-toast-alert {
+      display: none;
+      background: #ecfdf5;
+      border: 1.5px solid #34d399;
+      color: #065f46;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin-top: 16px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .reg-toast-alert.show {
+      display: flex;
+    }
+
+    /* FAQ Accordion Section */
+    .faq-accordion-wrap {
+      background: #ffffff;
+      border-radius: 26px;
+      padding: clamp(24px, 4vw, 36px);
+      border: 1.5px solid #e0f2fe;
+      box-shadow: 0 6px 22px rgba(2, 132, 199, 0.05);
+      margin-bottom: 40px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 16px 0;
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-question {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #075985;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .faq-question:hover {
+      color: #0284c7;
+    }
+
+    .faq-chevron {
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-chevron {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      font-size: 0.92rem;
+      color: #475569;
+      line-height: 1.65;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+  
+    /* Top bar */
+    .guide-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .btn-top-enroll-fast {
+      display: inline-flex;
+      text-decoration: none;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 8px 18px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(217, 119, 6, 0.3);
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-top-enroll-fast:hover {
+      background: #b45309;
+      transform: translateY(-1px);
+      box-shadow: 0 5px 14px rgba(217, 119, 6, 0.4);
+    }
+
+    /* Nút Đăng Ký Ngay trên Hero Banner */
+    .guide-hero-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .hero-guide-text-wrap {
+      max-width: 740px;
+    }
+
+    .btn-hero-enroll-action {
+      display: inline-flex;
+      text-decoration: none;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      color: #b45309;
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: 15px 30px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+      transition: all 0.2s ease;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .btn-hero-enroll-action:hover {
+      background: #fef3c7;
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+    }
+
+    /* ======================================================================
+       CỬA SỔ NỔI ĐĂNG KÝ Ở GIỮA MÀN HÌNH (MODAL ĐĂNG KÝ NGAY)
+       ====================================================================== */
+    .guide-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(5px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .guide-modal-backdrop.open {
+      display: flex;
+    }
+
+    .guide-modal-card {
+      background: #ffffff;
+      width: 640px;
+      max-width: 100%;
+      max-height: 92vh;
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 1.5px solid #e0f2fe;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .guide-modal-header {
+      background: linear-gradient(135deg, #b45309 0%, #d97706 60%, #f59e0b 100%);
+      color: #ffffff;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .modal-badge-mini {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    .modal-main-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .modal-main-sub {
+      font-size: 0.84rem;
+      color: #fef3c7;
+      margin: 2px 0 0 0;
+    }
+
+    .modal-close-x {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #ffffff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .modal-close-x:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .guide-modal-body {
+      padding: 22px 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Hộp tự động điền mã lớp */
+    .guide-autofill-box {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .autofill-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .autofill-badge-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #15803d;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .autofill-code-pill {
+      background: #15803d;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 0.88rem;
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+
+    .autofill-fields-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .autofill-fields-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .af-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .af-item.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .af-lbl {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #64748b;
+    }
+
+    .af-input-readonly {
+      background: #ffffff;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #0f172a;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .modal-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .modal-form-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .modal-form-select {
+      background: #f0f9ff;
+      border: 1.5px solid #0284c7;
+      color: #075985;
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 10px 14px;
+      border-radius: 10px;
+      outline: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .modal-form-select:focus {
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+    }
+
+    .modal-form-grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .modal-form-grid-2col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .modal-form-input {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .modal-form-input:focus {
+      border-color: #d97706;
+      box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.18);
+    }
+
+    .modal-actions-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 16px 24px;
+      border-top: 1px solid #f1f5f9;
+      background: #f8fafc;
+    }
+
+    .btn-modal-cancel {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: #475569;
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 9px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-modal-cancel:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+
+    .btn-modal-submit-enroll {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      border: none;
+      padding: 11px 24px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-modal-submit-enroll:hover {
+      background: #059669;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
+    }
+
+  
+    /* Bottom CTA Card trỏ tới danh sách khóa học */
+    .guide-bottom-cta-card {
+      margin-top: 36px;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      border-radius: 20px;
+      padding: 30px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      box-shadow: 0 12px 30px rgba(2, 132, 199, 0.25);
+      flex-wrap: wrap;
+    }
+
+    .gbc-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin: 0 0 6px 0;
+      color: #ffffff;
+    }
+
+    .gbc-sub {
+      font-size: 0.95rem;
+      margin: 0;
+      color: #e0f2fe;
+    }
+
+    .btn-bottom-enroll {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      color: #0369a1;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-bottom-enroll:hover {
+      background: #f0f9ff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+    }
+
+  
+    /* Khối thông tin thanh toán & Mã QR trong Modal và Biểu mẫu */
+    .modal-payment-card {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .mpc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 8px;
+    }
+
+    .mpc-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #075985;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .mpc-tag {
+      font-size: 0.75rem;
+      background: #e0f2fe;
+      color: #0284c7;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .mpc-body-grid {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .mpc-qr-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .mpc-qr-wrapper {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .mpc-qr-sub {
+      font-size: 0.72rem;
+      color: #64748b;
+      text-align: center;
+    }
+
+    .mpc-details-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mpc-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+    }
+
+    .mpc-row-label {
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .mpc-row-val {
+      font-weight: 700;
+      color: #0f172a;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mpc-highlight {
+      color: #0284c7;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+    }
+
+    .btn-copy-chip {
+      background: #e0f2fe;
+      color: #0284c7;
+      border: 1px solid #bae6fd;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-copy-chip:hover {
+      background: #0284c7;
+      color: #ffffff;
+    }
+
+    .mpc-syntax-box {
+      background: #ffffff;
+      border: 1px dashed #0284c7;
+      border-radius: 8px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .mpc-syntax-val {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .mpc-syntax-val code {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      color: #0284c7;
+      font-size: 0.88rem;
+    }
+
+    .autofill-fee-price {
+      color: #dc2626;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    /* Khung upload minh chứng chuyển khoản */
+    .upload-receipt-box {
+      border: 2px dashed #93c5fd;
+      background: #f0f9ff;
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .upload-receipt-box:hover {
+      border-color: #0284c7;
+      background: #e0f2fe;
+    }
+
+    .upload-receipt-box.has-file {
+      border-color: #16a34a;
+      background: #f0fdf4;
+    }
+
+    .urb-icon {
+      font-size: 1.4rem;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+    }
+
+    .urb-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .urb-text strong {
+      font-size: 0.85rem;
+      color: #0f172a;
+    }
+
+    .urb-text small {
+      font-size: 0.74rem;
+      color: #64748b;
+    }
+
+    .btn-browse-file {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #334155;
+      pointer-events: none;
+    }
+
+    .hidden-file-input {
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      .mpc-body-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- Global Header -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon-box" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
+            <circle cx="13" cy="15.5" r="1.8" fill="#4f46e5" />
+            <circle cx="23" cy="15.5" r="1.8" fill="#4f46e5" />
+            <path d="M15.5 19.5c1.2 1.2 3.8 1.2 5 0" stroke="#ec4899" stroke-width="2" stroke-linecap="round" />
+            <path d="M12 7V4.5M24 7V4.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M11 29.5h14" stroke="#93c5fd" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">TIN HỌC VĂN PHÒNG</span>
+          <span class="brand-subtitle">Đào tạo Tin học Trực tuyến</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <!-- 1. KHÓA HỌC LMS (Active) -->
+        <a href="khoa-hoc-lms.html" style="color: var(--water-primary); font-weight: 800;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+          <span>KHÓA HỌC LMS</span>
+        </a>
+        <a href="lo-trinh-hoc-tap.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="6" cy="19" r="3" />
+            <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" />
+            <circle cx="18" cy="5" r="3" />
+          </svg>
+          <span>LỘ TRÌNH HỌC TẬP</span>
+        </a>
+        <a href="on-luyen-thi-thu.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+          <span>ÔN LUYỆN &amp; THI THỬ</span>
+        </a>
+        <a href="index.html#cong-dong">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>DIỄN ĐÀN</span>
+        </a>
+        <div class="nav-dropdown-wrap" id="nav-tools-dropdown">
+          <button type="button" class="nav-link-dropdown nav-dropdown-trigger" id="btn-tools-dropdown">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+            <span>CÔNG CỤ &amp; TIỆN ÍCH</span>
+            <svg class="nav-dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="nav-dropdown-content">
+            <a href="luyen-go-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8" stroke-width="2.2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>1. Luyện gõ phím 10 ngón</strong>
+                <small>Luyện gõ tiếng Việt Telex</small>
+              </div>
+            </a>
+            <a href="tra-cuu-phim-tat.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="#d97706" stroke-width="1.5">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>2. Tra cứu Phím tắt</strong>
+                <small>Phím tắt thông dụng Word, Excel, PPT</small>
+              </div>
+            </a>
+            <a href="kiem-tra-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <circle cx="7" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="12" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="17" cy="9" r="1" fill="#0284c7" />
+                  <line x1="6" y1="14" x2="18" y2="14" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>3. Kiểm tra Bàn phím Online</strong>
+                <small>Kiểm tra phím kẹt &amp; NKRO</small>
+              </div>
+            </a>
+            <a href="tim-hieu-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 6h10M6 10h10M6 14h6" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>4. Giới thiệu Bàn phím Máy tính</strong>
+                <small>Cấu tạo và gờ nổi chuẩn</small>
+              </div>
+            </a>
+          </div>
+        </div>
+        <a href="index.html#cua-hang">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span>CỬA HÀNG</span>
+        </a>
+      </nav>
+
+      <a href="index.html#dang-nhap" class="btn-login">ĐĂNG NHẬP</a>
+    </div>
+  </header>
+
+  <main class="guide-page-container">
+    <!-- Top Navigation Bar -->
+    <div class="guide-top-bar">
+      <nav class="guide-breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Trang chủ</a>
+        <span>/</span>
+        <a href="khoa-hoc-lms.html">Khóa học LMS</a>
+        <span>/</span>
+        <span>Hướng dẫn đăng ký &amp; thanh toán</span>
+      </nav>
+      <a href="danh-sach-khoa-hoc.html" class="btn-top-enroll-fast">
+        ĐĂNG KÝ NGAY
+      </a>
+    </div>
+
+    <!-- Hero Banner -->
+    <div class="guide-hero-banner">
+      <div class="hero-guide-text-wrap">
+        <div class="hero-guide-tag">HƯỚNG DẪN TỪNG BƯỚC CHI TIẾT</div>
+        <h1 class="guide-hero-title">Quy Trình Đăng Ký &amp; Thanh Toán Khóa Học LMS</h1>
+        <p class="guide-hero-sub">
+          Chỉ với 6 bước đơn giản từ tạo tài khoản đến kích hoạt phòng học trực tuyến. 
+          Mọi thủ tục đều được số hóa, nhanh chóng, minh bạch và có đội ngũ hỗ trợ 24/7.
+        </p>
+      </div>
+      <a href="danh-sach-khoa-hoc.html" class="btn-hero-enroll-action">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+        <span>ĐĂNG KÝ NGAY</span>
+      </a>
+    </div>
+
+    <!-- ======================================================================
+         6 BƯỚC ĐĂNG KÝ KHÓA HỌC (STEP-BY-STEP TIMELINE)
+         ====================================================================== -->
+    <div class="steps-timeline-wrap">
+      <!-- Bước 1 -->
+      <div class="step-timeline-item">
+        <div class="step-circle-badge">
+          <span class="num">01</span>
+          <span class="txt">Bước</span>
+        </div>
+        <div class="step-content-area">
+          <h2 class="step-heading">Tạo Tài Khoản Thành Viên</h2>
+          <p class="step-explanation">
+            Truy cập nút <strong>"ĐĂNG NHẬP"</strong> ở góc trên bên phải màn hình và chọn <strong>"Đăng ký tài khoản mới"</strong>. 
+            Điền Tên đăng nhập, Mật khẩu, Họ tên, MSSV (nếu là sinh viên) và địa chỉ Gmail chính xác của bạn.
+          </p>
+          <div class="step-instruction-box">
+            <em>Hệ thống sẽ gửi mã OTP 6 số về Gmail để xác thực tài khoản thật 100%.</em>
+          </div>
+        </div>
+        <div class="step-illus-box">
+          <div class="mockup-icon">01</div>
+          <div class="mockup-caption">Đăng ký thành viên &amp; Nhận mã OTP</div>
+        </div>
+      </div>
+
+      <!-- Bước 2 -->
+      <div class="step-timeline-item">
+        <div class="step-circle-badge" style="background:#0369a1;">
+          <span class="num">02</span>
+          <span class="txt">Bước</span>
+        </div>
+        <div class="step-content-area">
+          <h2 class="step-heading">Đăng Nhập Vào Hệ Thống</h2>
+          <p class="step-explanation">
+            Sau khi hoàn tất đăng ký, bạn sử dụng Tên đăng nhập/Gmail và Mật khẩu vừa tạo để đăng nhập vào website. 
+            Sau khi đăng nhập thành công, tên và ảnh đại diện học viên của bạn sẽ xuất hiện trên thanh menu.
+          </p>
+          <div class="step-instruction-box">
+            <em>Đăng nhập giúp hệ thống tự động lưu trữ tiến độ học, điểm thi thử và các bài nộp thực hành của bạn.</em>
+          </div>
+        </div>
+        <div class="step-illus-box">
+          <div class="mockup-icon">02</div>
+          <div class="mockup-caption">Đăng nhập tài khoản cá nhân</div>
+        </div>
+      </div>
+
+      <!-- Bước 3 -->
+      <div class="step-timeline-item">
+        <div class="step-circle-badge" style="background:#0284c7;">
+          <span class="num">03</span>
+          <span class="txt">Bước</span>
+        </div>
+        <div class="step-content-area">
+          <h2 class="step-heading">Lựa Chọn Khóa Học Phù Hợp</h2>
+          <p class="step-explanation">
+            Truy cập trang <a href="danh-sach-khoa-hoc.html" style="color:#0284c7; font-weight:700;">Danh sách khóa học</a> 
+            được phân chia thành 3 nhóm rõ ràng: <strong>Khóa học tổng hợp</strong> (Tin học cơ bản, Tin học nâng cao), <strong>Khóa học chuyên đề</strong> (Word, Excel, PowerPoint, Công cụ trực tuyến, Ứng dụng AI), và <strong>Khóa học ôn luyện</strong> (MOS Word, MOS Excel, MOS PowerPoint) tùy theo nhu cầu và lộ trình của bạn.
+          </p>
+          <div class="step-instruction-box">
+            <em>Bạn có thể nhờ Chatbot tư vấn lộ trình học nếu chưa biết nên bắt đầu từ khóa nào.</em>
+          </div>
+        </div>
+        <div class="step-illus-box">
+          <div class="mockup-icon">03</div>
+          <div class="mockup-caption">Chọn môn học &amp; Lộ trình đào tạo</div>
+        </div>
+      </div>
+
+      <!-- Bước 4 -->
+      <div class="step-timeline-item">
+        <div class="step-circle-badge" style="background:#059669;">
+          <span class="num">04</span>
+          <span class="txt">Bước</span>
+        </div>
+        <div class="step-content-area">
+          <h2 class="step-heading">Chọn Lớp &amp; Ca Học Phù Hợp</h2>
+          <p class="step-explanation">
+            Vào trang <a href="lich-khai-giang.html" style="color:#059669; font-weight:700;">Lịch khai giảng</a> để chọn ca học tối 
+            (Thứ 2-4-6 hoặc Thứ 3-5-7) hoặc ca cuối tuần (Thứ 7 - Chủ Nhật). Ghi lại <strong>Mã Lớp</strong> (ví dụ: <code>LMS-CB01</code>, <code>LMS-EX03</code>).
+          </p>
+          <div class="step-instruction-box">
+            <em>Lưu ý kiểm tra trạng thái lớp để chắc chắn lớp còn nhận học viên.</em>
+          </div>
+        </div>
+        <div class="step-illus-box">
+          <div class="mockup-icon">04</div>
+          <div class="mockup-caption">Tra cứu ca học tối &amp; cuối tuần</div>
+        </div>
+      </div>
+
+      <!-- Bước 5 -->
+      <div class="step-timeline-item">
+        <div class="step-circle-badge" style="background:#d97706;">
+          <span class="num">05</span>
+          <span class="txt">Bước</span>
+        </div>
+        <div class="step-content-area">
+          <h2 class="step-heading">Gửi Thông Tin &amp; Thanh Toán Học Phí</h2>
+          <p class="step-explanation">
+            Thực hiện quy trình đăng ký chuẩn gồm 5 bước: Kiểm tra <strong>mức học phí</strong> của lớp học, chuyển khoản theo cú pháp <code>LMS [Số Điện Thoại] [Mã Lớp]</code> hoặc quét mã VietQR MBBank, điền thông tin cá nhân và <strong>tải lên (upload) ảnh minh chứng chuyển khoản</strong> vào biểu mẫu để hoàn tất đăng ký.
+          </p>
+          <div class="step-instruction-box">
+            <em>Lưu ý: Bắt buộc tải lên ảnh chụp màn hình / biên lai chuyển khoản để hệ thống tự động kiểm tra và kích hoạt tài khoản trong vòng 5 - 15 phút.</em>
+          </div>
+        </div>
+        <div class="step-illus-box">
+          <div class="mockup-icon">05</div>
+          <div class="mockup-caption">Chuyển khoản Napas 24/7 &amp; MoMo</div>
+        </div>
+      </div>
+
+      <!-- Bước 6 -->
+      <div class="step-timeline-item">
+        <div class="step-circle-badge" style="background:#7c3aed;">
+          <span class="num">06</span>
+          <span class="txt">Bước</span>
+        </div>
+        <div class="step-content-area">
+          <h2 class="step-heading">Nhận Xác Nhận &amp; Truy Cập Khóa Học LMS</h2>
+          <p class="step-explanation">
+            Bộ phận đào tạo sẽ gửi email thông báo kích hoạt khóa học thành công, cung cấp link phòng Zoom học trực tiếp, 
+            mã PIN thi thử và link nhóm Zalo lớp học để trao đổi với Giảng viên.
+          </p>
+          <div class="step-instruction-box">
+            <em>Thời gian kích hoạt thông thường chỉ từ 5 đến 15 phút sau khi chuyển khoản.</em>
+          </div>
+        </div>
+        <div class="step-illus-box">
+          <div class="mockup-icon">06</div>
+          <div class="mockup-caption">Vào lớp học &amp; Nhận mã PIN thi thử</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         PHẦN HƯỚNG DẪN THANH TOÁN (PAYMENT DETAILS & QR)
+         ====================================================================== -->
+    <section class="payment-guide-section">
+      <h3 style="font-size: 1.4rem; font-weight: 800; color: #075985; margin-bottom: 6px;">
+        Thông Tin Tài Khoản Ngân Hàng Thanh Toán Học Phí
+      </h3>
+      <p style="font-size: 0.92rem; color: #64748b;">
+        Hỗ trợ chuyển khoản liên ngân hàng miễn phí Napas 24/7 và quét mã VietQR tự động điền nội dung.
+      </p>
+
+      <div class="pay-grid">
+        <div class="pay-info-box">
+          <div>
+            <div class="pay-info-row">
+              <span class="pay-info-label">Ngân hàng thụ hưởng:</span>
+              <span class="pay-info-val">MBBank (Ngân hàng Quân Đội)</span>
+            </div>
+
+            <div class="pay-info-row">
+              <span class="pay-info-label">Số tài khoản:</span>
+              <span class="pay-info-val num">
+                <span id="guideBankAcc">0988888999</span>
+                <button type="button" class="btn-copy-tag" onclick="copyGuideText('guideBankAcc', this)">Sao chép</button>
+              </span>
+            </div>
+
+            <div class="pay-info-row">
+              <span class="pay-info-label">Chủ tài khoản:</span>
+              <span class="pay-info-val">NGUYEN THAI TUAN</span>
+            </div>
+
+            <div class="pay-info-row">
+              <span class="pay-info-label">Chi nhánh:</span>
+              <span class="pay-info-val">TP. Hồ Chí Minh</span>
+            </div>
+
+            <div style="background:#ffffff; border:1.5px dashed #0284c7; padding:12px 16px; border-radius:12px; margin-top:10px;">
+              <span style="font-size:0.75rem; color:#64748b; font-weight:700; text-transform:uppercase;">Cú pháp chuyển khoản chuẩn:</span>
+              <div style="font-family:'JetBrains Mono',monospace; font-weight:800; color:#0284c7; font-size:1.05rem; display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+                <span id="guideSyntax">LMS [SĐT_CỦA_BẠN] [MÃ_LỚP]</span>
+                <button type="button" class="btn-copy-tag" onclick="copyGuideText('guideSyntax', this)">Sao chép</button>
+              </div>
+              <small style="color:#64748b; margin-top:4px; display:block;">Ví dụ: <strong>LMS 0912345678 CB01</strong></small>
+            </div>
+          </div>
+
+          <div style="margin-top:16px; font-size:0.82rem; color:#b45309; background:#fef3c7; padding:10px 14px; border-radius:10px;">
+            <em>Lưu ý: Quý học viên ghi đúng cú pháp chuyển khoản để hệ thống đối soát tự động kích hoạt nhanh nhất.</em>
+          </div>
+        </div>
+
+        <div class="qr-side-box">
+          <div style="font-weight:800; color:#075985; font-size:1.1rem; margin-bottom:4px;">Quét Mã QR Chuyển Khoản</div>
+          <div style="font-size:0.82rem; color:#475569; margin-bottom:14px;">Mở ứng dụng ngân hàng hoặc MoMo để quét</div>
+
+          <div style="background:#ffffff; padding:12px; border-radius:16px; box-shadow:0 6px 18px rgba(0,0,0,0.08); margin-bottom:10px;">
+            <!-- SVG QR Code VietQR Demo -->
+            <svg width="150" height="150" viewBox="0 0 200 200" fill="none">
+              <rect width="200" height="200" rx="10" fill="#ffffff" />
+              <rect x="20" y="20" width="46" height="46" rx="6" fill="#075985" />
+              <rect x="26" y="26" width="34" height="34" rx="4" fill="#ffffff" />
+              <rect x="33" y="33" width="20" height="20" rx="2" fill="#0284c7" />
+              <rect x="134" y="20" width="46" height="46" rx="6" fill="#075985" />
+              <rect x="140" y="26" width="34" height="34" rx="4" fill="#ffffff" />
+              <rect x="147" y="33" width="20" height="20" rx="2" fill="#0284c7" />
+              <rect x="20" y="134" width="46" height="46" rx="6" fill="#075985" />
+              <rect x="26" y="140" width="34" height="34" rx="4" fill="#ffffff" />
+              <rect x="33" y="147" width="20" height="20" rx="2" fill="#0284c7" />
+              <rect x="80" y="80" width="40" height="40" rx="8" fill="#0284c7" />
+              <text x="100" y="105" fill="#ffffff" font-family="'Plus Jakarta Sans'" font-weight="800" font-size="12" text-anchor="middle">LMS</text>
+              <rect x="76" y="22" width="10" height="10" fill="#0f172a" />
+              <rect x="106" y="22" width="10" height="10" fill="#0f172a" />
+              <rect x="76" y="42" width="10" height="10" fill="#0f172a" />
+              <rect x="106" y="42" width="10" height="10" fill="#0f172a" />
+              <rect x="22" y="76" width="10" height="10" fill="#0f172a" />
+              <rect x="42" y="76" width="10" height="10" fill="#0f172a" />
+              <rect x="140" y="76" width="10" height="10" fill="#0f172a" />
+              <rect x="168" y="76" width="10" height="10" fill="#0f172a" />
+              <rect x="22" y="96" width="10" height="10" fill="#0f172a" />
+              <rect x="134" y="96" width="10" height="10" fill="#0f172a" />
+              <rect x="164" y="96" width="10" height="10" fill="#0f172a" />
+              <rect x="22" y="116" width="10" height="10" fill="#0f172a" />
+              <rect x="52" y="116" width="10" height="10" fill="#0f172a" />
+              <rect x="76" y="134" width="10" height="10" fill="#0f172a" />
+              <rect x="106" y="134" width="10" height="10" fill="#0f172a" />
+              <rect x="144" y="134" width="10" height="10" fill="#0f172a" />
+              <rect x="76" y="154" width="10" height="10" fill="#0f172a" />
+              <rect x="106" y="154" width="10" height="10" fill="#0f172a" />
+              <rect x="154" y="154" width="10" height="10" fill="#0f172a" />
+              <rect x="76" y="174" width="10" height="10" fill="#0f172a" />
+              <rect x="96" y="174" width="10" height="10" fill="#0f172a" />
+              <rect x="116" y="174" width="10" height="10" fill="#0f172a" />
+            </svg>
+          </div>
+          <div style="font-size:0.78rem; font-weight:700; color:#0369a1; background:#ffffff; padding:4px 12px; border-radius:999px;">
+            Tự động điền số tài khoản MBBank
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         FORM GỬI THÔNG TIN ĐĂNG KÝ TRỰC TUYẾN
+         ====================================================================== -->
+    <section class="online-reg-section" id="form-dang-ky">
+      <h3 style="font-size: 1.4rem; font-weight: 800; color: #075985; margin-bottom: 6px;">
+        Biểu Mẫu Đăng Ký Khóa Học Trực Tuyến
+      </h3>
+      <p style="font-size: 0.92rem; color: #64748b;">
+        Điền thông tin của bạn vào biểu mẫu bên dưới. Ban đào tạo sẽ liên hệ xác nhận và bàn giao tài khoản học tập ngay lập tức.
+      </p>
+
+      <form id="guideRegForm" onsubmit="submitGuideReg(event)">
+        <div class="reg-form-grid">
+          <div class="form-group-item">
+            <label for="formFullName">Họ và tên học viên *</label>
+            <input type="text" id="formFullName" required placeholder="Ví dụ: Nguyễn Văn An" />
+          </div>
+
+          <div class="form-group-item">
+            <label for="formPhone">Số điện thoại / Zalo *</label>
+            <input type="tel" id="formPhone" required placeholder="Ví dụ: 0912345678" oninput="onFormPhoneInput(this.value)" />
+          </div>
+
+          <div class="form-group-item">
+            <label for="formEmail">Địa chỉ Gmail (Nhận thông báo kích hoạt) *</label>
+            <input type="email" id="formEmail" required placeholder="Ví dụ: vanan@gmail.com" />
+          </div>
+
+          <div class="form-group-item">
+            <label for="formSelectClass">Chọn Lớp &amp; Khóa học đăng ký *</label>
+            <select id="formSelectClass" onchange="onFormClassChange(this.value)" required>
+              <optgroup label="1. Khóa học tổng hợp">
+                <option value="CB-LAB01">CB-LAB01: Tin học căn bản -  Tối Thứ 2 - 4 - 6 (18h00 - 21h00)</option>
+                <option value="CB-LAB02">CB-LAB02: Tin học căn bản -  Tối Thứ 3 - 5 - 7 (18h00 - 21h00)</option>
+                <option value="CB-CT01">CB-CT01: Tin học căn bản -  Sáng Thứ 2 - 4 - 6 (Cấp tốc) (08h00 - 11h00)</option>
+                <option value="CB-WEND01">CB-WEND01: Tin học căn bản -  Chiều Thứ 7 & Chủ Nhật (13h30 - 16h30)</option>
+                <option value="CB-ONL01">CB-ONL01: Tin học căn bản -  Tối Thứ 2 - 4 - 6 (18h00 - 21h00)</option>
+                <option value="CB-ONL02">CB-ONL02: Tin học căn bản -  Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+                <option value="CB-ONL03">CB-ONL03: Tin học căn bản -  Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)</option>
+                <option value="NC-LAB01">NC-LAB01: Tin học nâng cao -  Tối Thứ 2 - 4 - 6 (18h30 - 21h00)</option>
+                <option value="NC-LAB02">NC-LAB02: Tin học nâng cao -  Chiều Thứ 7 & Chủ Nhật (14h00 - 17h00)</option>
+                <option value="NC-CT01">NC-CT01: Tin học nâng cao -  Sáng Thứ 3 - 5 - 7 (Cấp tốc) (08h30 - 11h30)</option>
+                <option value="NC-ONL01">NC-ONL01: Tin học nâng cao -  Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+                <option value="NC-ONL02">NC-ONL02: Tin học nâng cao -  Tối Thứ 2 - 4 - 6 (19h00 - 21h30)</option>
+              </optgroup>
+              <optgroup label="2. Khóa học chuyên đề">
+                <option value="WD-LAB01">WD-LAB01: Word văn phòng -  Tối Thứ 3 - 5 - 7 (18h00 - 20h30)</option>
+                <option value="WD-LAB02">WD-LAB02: Word văn phòng -  Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)</option>
+                <option value="WD-LAB03">WD-LAB03: Word văn phòng -  Tối Thứ 2 - 4 - 6 (18h30 - 21h00)</option>
+                <option value="WD-ONL01">WD-ONL01: Word văn phòng -  Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+                <option value="WD-ONL02">WD-ONL02: Word văn phòng -  Chiều Thứ 7 & Chủ Nhật (14h00 - 16h30)</option>
+                <option value="EX-LAB01">EX-LAB01: Excel văn phòng -  Tối Thứ 2 - 4 - 6 (18h00 - 21h00)</option>
+                <option value="EX-LAB02">EX-LAB02: Excel văn phòng -  Tối Thứ 3 - 5 - 7 (18h00 - 21h00)</option>
+                <option value="EX-LAB03">EX-LAB03: Excel văn phòng -  Sáng Thứ 2 - 4 - 6 (Cấp tốc) (08h00 - 11h00)</option>
+                <option value="EX-WEND01">EX-WEND01: Excel văn phòng -  Chiều Thứ 7 & Chủ Nhật (13h30 - 16h30)</option>
+                <option value="EX-ONL01">EX-ONL01: Excel văn phòng -  Tối Thứ 2 - 4 - 6 (19h00 - 21h30)</option>
+                <option value="EX-ONL02">EX-ONL02: Excel văn phòng -  Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+                <option value="EX-ONL03">EX-ONL03: Excel văn phòng -  Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)</option>
+                <option value="PP-LAB01">PP-LAB01: PowerPoint thuyết trình -  Tối Thứ 2 - 4 - 6 (18h30 - 21h00)</option>
+                <option value="PP-LAB02">PP-LAB02: PowerPoint thuyết trình -  Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)</option>
+                <option value="PP-ONL01">PP-ONL01: PowerPoint thuyết trình -  Chiều Thứ 7 & Chủ Nhật (14h00 - 17h00)</option>
+                <option value="PP-ONL02">PP-ONL02: PowerPoint thuyết trình -  Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+                <option value="OL-LAB01">OL-LAB01: Công cụ văn phòng trực tuyến -  Tối Thứ 3 - 5 - 7 (18h30 - 20h30)</option>
+                <option value="OL-LAB02">OL-LAB02: Công cụ văn phòng trực tuyến -  Sáng Thứ 7 & Chủ Nhật (08h30 - 11h00)</option>
+                <option value="OL-ONL01">OL-ONL01: Công cụ văn phòng trực tuyến -  Tối Thứ 2 - 4 - 6 (19h30 - 21h30)</option>
+                <option value="OL-ONL02">OL-ONL02: Công cụ văn phòng trực tuyến -  Tối Thứ 3 - 5 - 7 (18h30 - 20h30)</option>
+                <option value="AI-LAB01">AI-LAB01: Ứng dụng AI trong công việc văn phòng -  Tối Thứ 3 - 5 - 7 (18h30 - 21h00)</option>
+                <option value="AI-LAB02">AI-LAB02: Ứng dụng AI trong công việc văn phòng -  Chiều Thứ 7 & Chủ Nhật (14h00 - 17h00)</option>
+                <option value="AI-ONL01">AI-ONL01: Ứng dụng AI trong công việc văn phòng -  Tối Thứ 2 - 4 - 6 (19h30 - 21h30)</option>
+                <option value="AI-ONL02">AI-ONL02: Ứng dụng AI trong công việc văn phòng -  Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+              </optgroup>
+              <optgroup label="3. Khóa học ôn luyện MOS">
+                <option value="MW-LAB01">MW-LAB01: Ôn luyện MOS Word -  Tối Thứ 2 - 4 - 6 (18h30 - 21h00)</option>
+                <option value="MW-LAB02">MW-LAB02: Ôn luyện MOS Word -  Sáng Thứ 2 - 4 - 6 (Cấp tốc) (08h30 - 11h00)</option>
+                <option value="MW-ONL01">MW-ONL01: Ôn luyện MOS Word -  Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+                <option value="MW-ONL02">MW-ONL02: Ôn luyện MOS Word -  Chiều Thứ 7 & Chủ Nhật (14h00 - 16h30)</option>
+                <option value="ME-LAB01">ME-LAB01: Ôn luyện MOS Excel -  Tối Thứ 2 - 4 - 6 (18h00 - 21h00)</option>
+                <option value="ME-LAB02">ME-LAB02: Ôn luyện MOS Excel -  Tối Thứ 3 - 5 - 7 (18h00 - 21h00)</option>
+                <option value="ME-LAB03">ME-LAB03: Ôn luyện MOS Excel -  Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)</option>
+                <option value="ME-ONL01">ME-ONL01: Ôn luyện MOS Excel -  Chiều Thứ 7 & Chủ Nhật (14h00 - 17h00)</option>
+                <option value="ME-ONL02">ME-ONL02: Ôn luyện MOS Excel -  Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+                <option value="MP-LAB01">MP-LAB01: Ôn luyện MOS PowerPoint -  Tối Thứ 2 - 4 - 6 (18h30 - 20h30)</option>
+                <option value="MP-LAB02">MP-LAB02: Ôn luyện MOS PowerPoint -  Chiều Thứ 7 & Chủ Nhật (14h00 - 16h30)</option>
+                <option value="MP-ONL01">MP-ONL01: Ôn luyện MOS PowerPoint -  Tối Thứ 3 - 5 - 7 (18h00 - 20h00)</option>
+                <option value="MP-ONL02">MP-ONL02: Ôn luyện MOS PowerPoint -  Tối Thứ 2 - 4 - 6 (19h30 - 21h30)</option>
+              </optgroup>
+            </select>
+            <div class="guide-autofill-box" id="formClassInfoCard" style="margin-top: 14px;">
+              <div class="autofill-header-row">
+                <span class="autofill-badge-title">HỆ THỐNG ĐÃ TỰ ĐỘNG NHẬP MÃ LỚP:</span>
+                <span id="onpageDisplayCodeBadge" class="autofill-code-pill">CB-ONL01</span>
+              </div>
+              <div class="autofill-fields-grid">
+                <div class="af-item">
+                  <span class="af-lbl">Mã lớp:</span>
+                  <input type="text" id="onpageAfCode" class="af-input-readonly" readonly value="CB-ONL01" />
+                </div>
+                <div class="af-item">
+                  <span class="af-lbl">Khóa học:</span>
+                  <input type="text" id="onpageAfName" class="af-input-readonly" readonly value="Tin học căn bản" />
+                </div>
+                <div class="af-item">
+                  <span class="af-lbl">Ngày khai giảng:</span>
+                  <input type="text" id="onpageAfDate" class="af-input-readonly" readonly value="18/11/2026" />
+                </div>
+                <div class="af-item">
+                  <span class="af-lbl">Lịch học / Ca học:</span>
+                  <input type="text" id="onpageAfSchedule" class="af-input-readonly" readonly value="Tối Thứ 2 - 4 - 6 (18h00 - 21h00)" />
+                </div>
+                <div class="af-item full-width">
+                  <span class="af-lbl">Hình thức đào tạo:</span>
+                  <input type="text" id="onpageAfFormat" class="af-input-readonly" readonly value="Trực tuyến" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Up minh chứng chuyển khoản trên biểu mẫu -->
+          <div class="form-group-item full-span">
+            <label for="formReceiptFile">Up minh chứng chuyển khoản (Ảnh biên lai / Chụp màn hình) *</label>
+            <div class="upload-receipt-box" id="formUploadReceiptBox" onclick="document.getElementById('formReceiptFile').click()">
+              <div class="urb-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+              <div class="urb-text">
+                <strong id="formReceiptFileName">Nhấn vào đây để tải ảnh biên lai / PDF chuyển khoản</strong>
+                <small>Hỗ trợ định dạng: JPG, PNG, WEBP, PDF (Dung lượng tối đa 10MB)</small>
+              </div>
+              <button type="button" class="btn-browse-file">Chọn tệp</button>
+            </div>
+            <input type="file" id="formReceiptFile" class="hidden-file-input" accept="image/*,.pdf" onchange="onFormReceiptSelected(this)" required />
+          </div>
+
+          <div class="form-group-item full-span">
+            <label for="formTransactionCode">Ghi chú thêm (nếu có)</label>
+            <textarea id="formTransactionCode" rows="2" placeholder="Nhập mã giao dịch ngân hàng hoặc ca học bạn mong muốn để chuyên viên hỗ trợ sắp xếp..."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-send-registration">
+          <span>Gửi Đăng Ký Khóa Học</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="m22 2-7 20-4-9-9-4Z" />
+            <path d="M22 2 11 13" />
+          </svg>
+        </button>
+
+        <div class="reg-toast-alert" id="guideRegToast">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+          <div>
+            <strong>Gửi thông tin đăng ký thành công!</strong> Ban đào tạo đã tiếp nhận hồ sơ và sẽ liên hệ hỗ trợ kích hoạt khóa học cho bạn trong vòng 10 phút.
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- ======================================================================
+         GIẢI ĐÁP CÂU HỎI THƯỜNG GẶP (FAQ ACCORDION)
+         ====================================================================== -->
+    <section class="faq-accordion-wrap">
+      <h3 style="font-size: 1.4rem; font-weight: 800; color: #075985; margin-bottom: 6px;">
+        Giải Đáp Câu Hỏi Thường Gặp (FAQ)
+      </h3>
+      <p style="font-size: 0.92rem; color: #64748b; margin-bottom: 20px;">
+        Một số thắc mắc phổ biến của học viên khi đăng ký và tham gia học tập trên hệ thống LMS.
+      </p>
+
+      <div class="faq-item active">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>1. Sau khi chuyển khoản bao lâu thì tài khoản của tôi được kích hoạt?</span>
+          <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Hệ thống đối soát thanh toán tự động trong khoảng từ <strong>5 đến 15 phút</strong>. Sau khi kích hoạt thành công, bạn sẽ nhận được email hướng dẫn và tin nhắn xác nhận qua Zalo. Nếu sau 15 phút chưa thấy phản hồi, bạn có thể nhắn ngay với Chatbot ở góc phải để được duyệt thủ công tức thì.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>2. Nếu tôi bận một buổi học trực tiếp trên Zoom thì có được xem lại không?</span>
+          <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Có. Toàn bộ các buổi học qua Zoom đều được ghi hình lại chất lượng Full HD và tải lên tài khoản LMS của bạn trong vòng 2 giờ sau khi buổi học kết thúc. Bạn có thể xem lại video bài giảng và nộp bài thực hành bất cứ lúc nào.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>3. Tôi có thể học trên điện thoại hoặc máy tính bảng iPad được không?</span>
+          <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Hệ thống LMS được tối ưu hóa giao diện hoàn hảo trên điện thoại và máy tính bảng, giúp bạn thuận tiện xem bài giảng và làm bài trắc nghiệm. Tuy nhiên, đối với các bài tập thực hành Word, Excel và PowerPoint, bạn nên sử dụng máy tính cá nhân (laptop/PC) để thao tác phím và công thức chuẩn xác nhất.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>4. Chính sách bảo lưu hoặc chuyển đổi ca học như thế nào?</span>
+          <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Học viên được quyền bảo lưu khóa học tối đa <strong>12 tháng</strong> hoặc yêu cầu chuyển sang ca học khác hoàn toàn miễn phí. Bạn chỉ cần thông báo cho Giảng viên hoặc gửi yêu cầu qua Chatbot hỗ trợ trước buổi học tiếp theo.
+        </div>
+      </div>
+    </section>
+  
+    <!-- ======================================================================
+         CTA BANNER ĐĂNG KÝ NGAY TRỎ ĐẾN DANH SÁCH KHÓA HỌC
+         ====================================================================== -->
+    <div class="guide-bottom-cta-card">
+      <div class="gbc-text">
+        <h3 class="gbc-title">Sẵn Sàng Bắt Đầu Khóa Học Tin Học Văn Phòng?</h3>
+        <p class="gbc-sub">Xem ngay danh sách đầy đủ 10 khóa học trực tiếp và trực tuyến để chọn lộ trình phù hợp với bạn.</p>
+      </div>
+      <a href="danh-sach-khoa-hoc.html" class="btn-bottom-enroll">
+        <span>ĐĂNG KÝ NGAY</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+  </main>
+
+  
+  <!-- ======================================================================
+       CỬA SỔ NỔI ĐĂNG KÝ Ở GIỮA MÀN HÌNH (MODAL ĐĂNG KÝ NGAY)
+       TỰ ĐỘNG NHẬP MÃ LỚP VÀ CÁC THÔNG TIN TƯƠNG ỨNG KHI CHỌN LỚP
+       ====================================================================== -->
+  <div class="guide-modal-backdrop" id="guideEnrollModal" onclick="closeGuideEnrollModal(event)">
+    <div class="guide-modal-card" onclick="event.stopPropagation()">
+      <div class="guide-modal-header">
+        <div class="modal-header-titles">
+          <div class="modal-badge-mini">ĐĂNG KÝ TRỰC TUYẾN</div>
+          <h3 class="modal-main-title">Đăng Ký Khóa Học LMS</h3>
+          <p class="modal-main-sub">Chọn lớp học mong muốn, hệ thống sẽ tự động nhập mã lớp, học phí và lịch học tương ứng</p>
+        </div>
+        <button type="button" class="modal-close-x" onclick="closeGuideEnrollModal()" aria-label="Đóng">&times;</button>
+      </div>
+
+      <form id="modalEnrollForm" onsubmit="submitGuideModalReg(event)">
+        <div class="guide-modal-body">
+          <!-- BƯỚC 1: CHỌN LỚP HỌC -->
+          <div class="modal-form-group">
+            <label for="guideModalSelectClass" class="modal-form-label">
+              1. Chọn Lớp &amp; Khóa học mong muốn: *
+            </label>
+            <select id="guideModalSelectClass" class="modal-control-select" onchange="onModalClassChange(this.value)" required>
+              <optgroup label="1. Khóa học tổng hợp">
+                <option value="CB-LAB01">CB-LAB01: Tin học căn bản - Tối Thứ 2 - 4 - 6 (18h00 - 21h00)</option>
+                <option value="CB-LAB02">CB-LAB02: Tin học căn bản - Tối Thứ 3 - 5 - 7 (18h00 - 21h00)</option>
+                <option value="CB-CT01">CB-CT01: Tin học căn bản - Sáng Thứ 2 - 4 - 6 (Cấp tốc) (08h00 - 11h00)</option>
+                <option value="CB-WEND01">CB-WEND01: Tin học căn bản - Chiều Thứ 7 &amp; Chủ Nhật (13h30 - 16h30)</option>
+                <option value="CB-ONL01">CB-ONL01: Tin học căn bản - Tối Thứ 2 - 4 - 6 (18h00 - 21h00)</option>
+                <option value="CB-ONL02">CB-ONL02: Tin học căn bản - Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+                <option value="CB-ONL03">CB-ONL03: Tin học căn bản - Sáng Thứ 7 &amp; Chủ Nhật (08h30 - 11h30)</option>
+                <option value="NC-LAB01">NC-LAB01: Tin học nâng cao - Tối Thứ 2 - 4 - 6 (18h30 - 21h00)</option>
+                <option value="NC-LAB02">NC-LAB02: Tin học nâng cao - Chiều Thứ 7 &amp; Chủ Nhật (14h00 - 17h00)</option>
+                <option value="NC-CT01">NC-CT01: Tin học nâng cao - Sáng Thứ 3 - 5 - 7 (Cấp tốc) (08h30 - 11h30)</option>
+                <option value="NC-ONL01">NC-ONL01: Tin học nâng cao - Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+                <option value="NC-ONL02">NC-ONL02: Tin học nâng cao - Tối Thứ 2 - 4 - 6 (19h00 - 21h30)</option>
+              </optgroup>
+              <optgroup label="2. Khóa học chuyên đề">
+                <option value="WD-LAB01">WD-LAB01: Word văn phòng - Tối Thứ 3 - 5 - 7 (18h00 - 20h30)</option>
+                <option value="WD-LAB02">WD-LAB02: Word văn phòng - Sáng Thứ 7 &amp; Chủ Nhật (08h30 - 11h30)</option>
+                <option value="WD-LAB03">WD-LAB03: Word văn phòng - Tối Thứ 2 - 4 - 6 (18h30 - 21h00)</option>
+                <option value="WD-ONL01">WD-ONL01: Word văn phòng - Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+                <option value="WD-ONL02">WD-ONL02: Word văn phòng - Chiều Thứ 7 &amp; Chủ Nhật (14h00 - 16h30)</option>
+                <option value="EX-LAB01">EX-LAB01: Excel văn phòng - Tối Thứ 2 - 4 - 6 (18h00 - 21h00)</option>
+                <option value="EX-LAB02">EX-LAB02: Excel văn phòng - Tối Thứ 3 - 5 - 7 (18h00 - 21h00)</option>
+                <option value="EX-LAB03">EX-LAB03: Excel văn phòng - Sáng Thứ 2 - 4 - 6 (Cấp tốc) (08h00 - 11h00)</option>
+                <option value="EX-WEND01">EX-WEND01: Excel văn phòng - Chiều Thứ 7 &amp; Chủ Nhật (13h30 - 16h30)</option>
+                <option value="EX-ONL01">EX-ONL01: Excel văn phòng - Tối Thứ 2 - 4 - 6 (19h00 - 21h30)</option>
+                <option value="EX-ONL02">EX-ONL02: Excel văn phòng - Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+                <option value="PT-LAB01">PT-LAB01: PowerPoint thuyết trình - Tối Thứ 2 - 4 - 6 (18h30 - 20h30)</option>
+                <option value="PT-ONL01">PT-ONL01: PowerPoint thuyết trình - Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+                <option value="ON-LAB01">ON-LAB01: Công cụ văn phòng trực tuyến - Sáng Thứ 7 &amp; Chủ Nhật (08h30 - 11h30)</option>
+                <option value="ON-ONL01">ON-ONL01: Công cụ văn phòng trực tuyến - Tối Thứ 3 - 5 - 7 (19h00 - 21h00)</option>
+                <option value="AI-LAB01">AI-LAB01: Ứng dụng AI trong công việc văn phòng - Chiều Thứ 7 &amp; Chủ Nhật (14h00 - 17h00)</option>
+                <option value="AI-ONL01">AI-ONL01: Ứng dụng AI trong công việc văn phòng - Tối Thứ 2 - 4 - 6 (19h30 - 21h30)</option>
+                <option value="AI-ONL02">AI-ONL02: Ứng dụng AI trong công việc văn phòng - Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+              </optgroup>
+              <optgroup label="3. Khóa học ôn luyện MOS">
+                <option value="MW-LAB01">MW-LAB01: Ôn luyện MOS Word - Tối Thứ 2 - 4 - 6 (18h30 - 21h00)</option>
+                <option value="MW-LAB02">MW-LAB02: Ôn luyện MOS Word - Sáng Thứ 2 - 4 - 6 (Cấp tốc) (08h30 - 11h00)</option>
+                <option value="MW-ONL01">MW-ONL01: Ôn luyện MOS Word - Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+                <option value="MW-ONL02">MW-ONL02: Ôn luyện MOS Word - Chiều Thứ 7 &amp; Chủ Nhật (14h00 - 16h30)</option>
+                <option value="ME-LAB01">ME-LAB01: Ôn luyện MOS Excel - Tối Thứ 2 - 4 - 6 (18h00 - 21h00)</option>
+                <option value="ME-LAB02">ME-LAB02: Ôn luyện MOS Excel - Tối Thứ 3 - 5 - 7 (18h00 - 21h00)</option>
+                <option value="ME-LAB03">ME-LAB03: Ôn luyện MOS Excel - Sáng Thứ 7 &amp; Chủ Nhật (08h30 - 11h30)</option>
+                <option value="ME-ONL01">ME-ONL01: Ôn luyện MOS Excel - Chiều Thứ 7 &amp; Chủ Nhật (14h00 - 17h00)</option>
+                <option value="ME-ONL02">ME-ONL02: Ôn luyện MOS Excel - Tối Thứ 3 - 5 - 7 (19h30 - 21h30)</option>
+                <option value="MP-LAB01">MP-LAB01: Ôn luyện MOS PowerPoint - Tối Thứ 2 - 4 - 6 (18h30 - 20h30)</option>
+                <option value="MP-LAB02">MP-LAB02: Ôn luyện MOS PowerPoint - Chiều Thứ 7 &amp; Chủ Nhật (14h00 - 16h30)</option>
+                <option value="MP-ONL01">MP-ONL01: Ôn luyện MOS PowerPoint - Tối Thứ 3 - 5 - 7 (18h00 - 20h00)</option>
+                <option value="MP-ONL02">MP-ONL02: Ôn luyện MOS PowerPoint - Tối Thứ 2 - 4 - 6 (19h30 - 21h30)</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <!-- HỘP THÔNG TIN TỰ ĐỘNG ĐIỀN MÃ LỚP VÀ CHI TIẾT LỚP -->
+          <div class="guide-autofill-box">
+            <div class="autofill-header-row">
+              <span class="autofill-badge-title">HỆ THỐNG ĐÃ TỰ ĐỘNG ĐIỀN MÃ LỚP:</span>
+              <span id="displayClassCodeBadge" class="autofill-code-pill">CB-ONL01</span>
+            </div>
+            
+            <div class="autofill-fields-grid">
+              <div class="af-item">
+                <span class="af-lbl">Mã lớp:</span>
+                <input type="text" id="afClassCode" class="af-input-readonly" readonly value="CB-ONL01" />
+              </div>
+              <div class="af-item">
+                <span class="af-lbl">Khóa học:</span>
+                <input type="text" id="afCourseName" class="af-input-readonly" readonly value="Tin học căn bản" />
+              </div>
+              <div class="af-item">
+                <span class="af-lbl">Ngày khai giảng:</span>
+                <input type="text" id="afOpenDate" class="af-input-readonly" readonly value="18/11/2026" />
+              </div>
+              <div class="af-item">
+                <span class="af-lbl">Lịch học / Ca học:</span>
+                <input type="text" id="afSchedule" class="af-input-readonly" readonly value="Tối Thứ 2 - 4 - 6 (18h00 - 21h00)" />
+              </div>
+              <div class="af-item full-width">
+                <span class="af-lbl">Hình thức đào tạo:</span>
+                <input type="text" id="afFormat" class="af-input-readonly" readonly value="Trực tuyến" />
+              </div>
+              <div class="af-item full-width" style="border-top: 1px dashed #bae6fd; padding-top: 8px; margin-top: 4px;">
+                <span class="af-lbl" style="font-weight: 700; color: #0369a1;">Học phí khóa học:</span>
+                <span class="autofill-fee-price" id="modalClassFee">1.500.000 đ</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KHỐI THÔNG TIN CHUYỂN KHOẢN & MÃ QR NGÂN HÀNG TRONG MODAL -->
+          <div class="modal-payment-card">
+            <div class="mpc-header">
+              <span class="mpc-title">Thông Tin Thanh Toán Học Phí</span>
+              <span class="mpc-tag">Chuyển khoản Napas 24/7</span>
+            </div>
+            <div class="mpc-body-grid">
+              <div class="mpc-qr-col">
+                <div class="mpc-qr-wrapper">
+                  <svg width="118" height="118" viewBox="0 0 200 200" fill="none">
+                    <rect width="200" height="200" rx="10" fill="#ffffff" />
+                    <rect x="20" y="20" width="46" height="46" rx="6" fill="#075985" />
+                    <rect x="26" y="26" width="34" height="34" rx="4" fill="#ffffff" />
+                    <rect x="33" y="33" width="20" height="20" rx="2" fill="#0284c7" />
+                    <rect x="134" y="20" width="46" height="46" rx="6" fill="#075985" />
+                    <rect x="140" y="26" width="34" height="34" rx="4" fill="#ffffff" />
+                    <rect x="147" y="33" width="20" height="20" rx="2" fill="#0284c7" />
+                    <rect x="20" y="134" width="46" height="46" rx="6" fill="#075985" />
+                    <rect x="26" y="140" width="34" height="34" rx="4" fill="#ffffff" />
+                    <rect x="33" y="147" width="20" height="20" rx="2" fill="#0284c7" />
+                    <rect x="80" y="80" width="40" height="40" rx="8" fill="#0284c7" />
+                    <text x="100" y="105" fill="#ffffff" font-family="sans-serif" font-weight="800" font-size="12" text-anchor="middle">LMS</text>
+                    <rect x="76" y="22" width="10" height="10" fill="#0f172a" />
+                    <rect x="106" y="22" width="10" height="10" fill="#0f172a" />
+                    <rect x="76" y="42" width="10" height="10" fill="#0f172a" />
+                    <rect x="106" y="42" width="10" height="10" fill="#0f172a" />
+                    <rect x="22" y="76" width="10" height="10" fill="#0f172a" />
+                    <rect x="42" y="76" width="10" height="10" fill="#0f172a" />
+                    <rect x="140" y="76" width="10" height="10" fill="#0f172a" />
+                    <rect x="168" y="76" width="10" height="10" fill="#0f172a" />
+                    <rect x="22" y="96" width="10" height="10" fill="#0f172a" />
+                    <rect x="134" y="96" width="10" height="10" fill="#0f172a" />
+                    <rect x="164" y="96" width="10" height="10" fill="#0f172a" />
+                    <rect x="22" y="116" width="10" height="10" fill="#0f172a" />
+                    <rect x="52" y="116" width="10" height="10" fill="#0f172a" />
+                    <rect x="76" y="134" width="10" height="10" fill="#0f172a" />
+                    <rect x="106" y="134" width="10" height="10" fill="#0f172a" />
+                    <rect x="144" y="134" width="10" height="10" fill="#0f172a" />
+                    <rect x="76" y="154" width="10" height="10" fill="#0f172a" />
+                    <rect x="106" y="154" width="10" height="10" fill="#0f172a" />
+                    <rect x="154" y="154" width="10" height="10" fill="#0f172a" />
+                    <rect x="76" y="174" width="10" height="10" fill="#0f172a" />
+                    <rect x="96" y="174" width="10" height="10" fill="#0f172a" />
+                    <rect x="116" y="174" width="10" height="10" fill="#0f172a" />
+                  </svg>
+                </div>
+                <span class="mpc-qr-sub">Quét VietQR nhanh</span>
+              </div>
+              <div class="mpc-details-col">
+                <div class="mpc-row">
+                  <span class="mpc-row-label">Ngân hàng:</span>
+                  <span class="mpc-row-val">MBBank (Ngân hàng Quân Đội)</span>
+                </div>
+                <div class="mpc-row">
+                  <span class="mpc-row-label">Số tài khoản:</span>
+                  <span class="mpc-row-val">
+                    <strong class="mpc-highlight" id="guideModalBankAcc">0988888999</strong>
+                    <button type="button" class="btn-copy-chip" onclick="copyGuideText('guideModalBankAcc', this)">Sao chép</button>
+                  </span>
+                </div>
+                <div class="mpc-row">
+                  <span class="mpc-row-label">Chủ tài khoản:</span>
+                  <span class="mpc-row-val">NGUYEN THAI TUAN</span>
+                </div>
+                <div class="mpc-syntax-box">
+                  <span class="mpc-row-label" style="font-size: 0.76rem; text-transform: uppercase;">Cú pháp chuyển khoản:</span>
+                  <div class="mpc-syntax-val">
+                    <code id="modalSyntaxCode">LMS [SĐT] CB-ONL01</code>
+                    <button type="button" class="btn-copy-chip" onclick="copyGuideModalSyntax(this)">Sao chép</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BƯỚC 2: NHẬP THÔNG TIN HỌC VIÊN -->
+          <div class="modal-form-grid-2col">
+            <div class="modal-form-group">
+              <label for="modalStudentName" class="modal-form-label">Họ và tên học viên *</label>
+              <input type="text" id="modalStudentName" class="modal-form-input" required placeholder="Ví dụ: Nguyễn Văn An" />
+            </div>
+
+            <div class="modal-form-group">
+              <label for="modalStudentPhone" class="modal-form-label">Số điện thoại / Zalo *</label>
+              <input type="tel" id="modalStudentPhone" class="modal-form-input" required placeholder="Ví dụ: 0912345678" oninput="onModalPhoneInput(this.value)" />
+            </div>
+          </div>
+
+          <div class="modal-form-group">
+            <label for="modalStudentEmail" class="modal-form-label">Địa chỉ Gmail nhận thông tin kích hoạt phòng học *</label>
+            <input type="email" id="modalStudentEmail" class="modal-form-input" required placeholder="Ví dụ: vanan@gmail.com" />
+          </div>
+
+          <!-- Up minh chứng chuyển khoản trong Modal -->
+          <div class="modal-form-group">
+            <label class="modal-form-label" for="modalReceiptFile">Up minh chứng chuyển khoản (Ảnh biên lai / Chụp màn hình) *</label>
+            <div class="upload-receipt-box" id="modalUploadReceiptBox" onclick="document.getElementById('modalReceiptFile').click()">
+              <div class="urb-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+              <div class="urb-text">
+                <strong id="modalReceiptFileName">Nhấn vào đây để tải ảnh biên lai / PDF chuyển khoản</strong>
+                <small>Hỗ trợ định dạng: JPG, PNG, WEBP, PDF (Dung lượng tối đa 10MB)</small>
+              </div>
+              <button type="button" class="btn-browse-file">Chọn tệp</button>
+            </div>
+            <input type="file" id="modalReceiptFile" class="hidden-file-input" accept="image/*,.pdf" onchange="onModalReceiptSelected(this)" required />
+          </div>
+
+          <div class="modal-form-group">
+            <label for="modalStudentNote" class="modal-form-label">Ghi chú thêm (nếu có)</label>
+            <input type="text" id="modalStudentNote" class="modal-form-input" placeholder="Ví dụ: Cần hỗ trợ ca học hoặc xuất biên lai..." />
+          </div>
+        </div>
+
+        <div class="modal-actions-footer">
+          <button type="button" class="btn-modal-cancel" onclick="closeGuideEnrollModal()">Hủy bỏ</button>
+          <button type="submit" class="btn-modal-submit-enroll">
+            <span>Xác Nhận Đăng Ký Lớp &amp; Đã Chuyển Khoản</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Global Footer -->
+  <footer class="site-footer simple-footer">
+    <div class="footer-copyright">
+      © 2026 TRUNG TÂM TIN HỌC VĂN PHÒNG • BẢN QUYỀN THUỘC VỀ NHÓM 2 • HỆ THỐNG LMS TRỰC TUYẾN
+    </div>
+  </footer>
+
+  <script>
+    // Bảng giá học phí theo từng khóa học
+    const courseFees = {
+  "Tin học căn bản": "1.500.000 đ",
+  "Tin học nâng cao": "1.600.000 đ",
+  "Word văn phòng": "1.300.000 đ",
+  "Excel văn phòng": "1.400.000 đ",
+  "PowerPoint thuyết trình": "1.300.000 đ",
+  "Công cụ văn phòng trực tuyến": "1.300.000 đ",
+  "Ứng dụng AI trong công việc văn phòng": "1.600.000 đ",
+  "Ôn luyện MOS Word": "1.800.000 đ",
+  "Ôn luyện MOS Excel": "1.800.000 đ",
+  "Ôn luyện MOS PowerPoint": "1.800.000 đ"
+};
+
+    // Dữ liệu 32 lớp học có đầy đủ học phí và hình thức chuẩn hóa
+    const guideClassesDb = {
+  "CB-LAB01": {
+    "code": "CB-LAB01",
+    "name": "Tin học căn bản",
+    "group": "Khóa học tổng hợp",
+    "date": "18/11/2026",
+    "schedule": "Tối Thứ 2 - 4 - 6 (18h00 - 21h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Nguyễn Thái Tuấn",
+    "fee": "1.500.000 đ"
+  },
+  "CB-LAB02": {
+    "code": "CB-LAB02",
+    "name": "Tin học căn bản",
+    "group": "Khóa học tổng hợp",
+    "date": "20/11/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (18h00 - 21h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Trần Minh Đức",
+    "fee": "1.500.000 đ"
+  },
+  "CB-CT01": {
+    "code": "CB-CT01",
+    "name": "Tin học căn bản",
+    "group": "Khóa học tổng hợp",
+    "date": "24/11/2026",
+    "schedule": "Sáng Thứ 2 - 4 - 6 (Cấp tốc) (08h00 - 11h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Lê Hoàng Nam",
+    "fee": "1.500.000 đ"
+  },
+  "CB-WEND01": {
+    "code": "CB-WEND01",
+    "name": "Tin học căn bản",
+    "group": "Khóa học tổng hợp",
+    "date": "28/11/2026",
+    "schedule": "Chiều Thứ 7 & Chủ Nhật (13h30 - 16h30)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Trần Minh Đức",
+    "fee": "1.500.000 đ"
+  },
+  "CB-ONL01": {
+    "code": "CB-ONL01",
+    "name": "Tin học căn bản",
+    "group": "Khóa học tổng hợp",
+    "date": "18/11/2026",
+    "schedule": "Tối Thứ 2 - 4 - 6 (18h00 - 21h00)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Nguyễn Thái Tuấn",
+    "fee": "1.500.000 đ"
+  },
+  "CB-ONL02": {
+    "code": "CB-ONL02",
+    "name": "Tin học căn bản",
+    "group": "Khóa học tổng hợp",
+    "date": "21/11/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (19h30 - 21h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Trần Thị Mai",
+    "fee": "1.500.000 đ"
+  },
+  "CB-ONL03": {
+    "code": "CB-ONL03",
+    "name": "Tin học căn bản",
+    "group": "Khóa học tổng hợp",
+    "date": "29/11/2026",
+    "schedule": "Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Nguyễn Thái Tuấn",
+    "fee": "1.500.000 đ"
+  },
+  "NC-LAB01": {
+    "code": "NC-LAB01",
+    "name": "Tin học nâng cao",
+    "group": "Khóa học tổng hợp",
+    "date": "21/11/2026",
+    "schedule": "Tối Thứ 2 - 4 - 6 (18h30 - 21h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Trần Minh Đức",
+    "fee": "1.600.000 đ"
+  },
+  "NC-LAB02": {
+    "code": "NC-LAB02",
+    "name": "Tin học nâng cao",
+    "group": "Khóa học tổng hợp",
+    "date": "28/11/2026",
+    "schedule": "Chiều Thứ 7 & Chủ Nhật (14h00 - 17h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Trần Minh Đức",
+    "fee": "1.600.000 đ"
+  },
+  "NC-CT01": {
+    "code": "NC-CT01",
+    "name": "Tin học nâng cao",
+    "group": "Khóa học tổng hợp",
+    "date": "02/12/2026",
+    "schedule": "Sáng Thứ 3 - 5 - 7 (Cấp tốc) (08h30 - 11h30)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Lê Hoàng Nam",
+    "fee": "1.600.000 đ"
+  },
+  "NC-ONL01": {
+    "code": "NC-ONL01",
+    "name": "Tin học nâng cao",
+    "group": "Khóa học tổng hợp",
+    "date": "24/11/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (19h30 - 21h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Nguyễn Thái Tuấn",
+    "fee": "1.600.000 đ"
+  },
+  "NC-ONL02": {
+    "code": "NC-ONL02",
+    "name": "Tin học nâng cao",
+    "group": "Khóa học tổng hợp",
+    "date": "30/11/2026",
+    "schedule": "Tối Thứ 2 - 4 - 6 (19h00 - 21h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Nguyễn Thái Tuấn",
+    "fee": "1.600.000 đ"
+  },
+  "WD-LAB01": {
+    "code": "WD-LAB01",
+    "name": "Word văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "19/11/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (18h00 - 20h30)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Trần Thị Mai",
+    "fee": "1.300.000 đ"
+  },
+  "WD-LAB02": {
+    "code": "WD-LAB02",
+    "name": "Word văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "22/11/2026",
+    "schedule": "Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Trần Thị Mai",
+    "fee": "1.300.000 đ"
+  },
+  "WD-LAB03": {
+    "code": "WD-LAB03",
+    "name": "Word văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "26/11/2026",
+    "schedule": "Tối Thứ 2 - 4 - 6 (18h30 - 21h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Phạm Quốc Bảo",
+    "fee": "1.300.000 đ"
+  },
+  "WD-ONL01": {
+    "code": "WD-ONL01",
+    "name": "Word văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "20/11/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (19h30 - 21h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Trần Thị Mai",
+    "fee": "1.300.000 đ"
+  },
+  "WD-ONL02": {
+    "code": "WD-ONL02",
+    "name": "Word văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "27/11/2026",
+    "schedule": "Chiều Thứ 7 & Chủ Nhật (14h00 - 16h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Phạm Quốc Bảo",
+    "fee": "1.300.000 đ"
+  },
+  "EX-LAB01": {
+    "code": "EX-LAB01",
+    "name": "Excel văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "19/11/2026",
+    "schedule": "Tối Thứ 2 - 4 - 6 (18h00 - 21h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Lê Hoàng Nam",
+    "fee": "1.400.000 đ"
+  },
+  "EX-LAB02": {
+    "code": "EX-LAB02",
+    "name": "Excel văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "23/11/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (18h00 - 21h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Lê Hoàng Nam",
+    "fee": "1.400.000 đ"
+  },
+  "EX-LAB03": {
+    "code": "EX-LAB03",
+    "name": "Excel văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "27/11/2026",
+    "schedule": "Sáng Thứ 2 - 4 - 6 (Cấp tốc) (08h00 - 11h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Nguyễn Thái Tuấn",
+    "fee": "1.400.000 đ"
+  },
+  "EX-WEND01": {
+    "code": "EX-WEND01",
+    "name": "Excel văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "29/11/2026",
+    "schedule": "Chiều Thứ 7 & Chủ Nhật (13h30 - 16h30)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Nguyễn Thái Tuấn",
+    "fee": "1.400.000 đ"
+  },
+  "EX-ONL01": {
+    "code": "EX-ONL01",
+    "name": "Excel văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "22/11/2026",
+    "schedule": "Tối Thứ 2 - 4 - 6 (19h00 - 21h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Lê Hoàng Nam",
+    "fee": "1.400.000 đ"
+  },
+  "EX-ONL02": {
+    "code": "EX-ONL02",
+    "name": "Excel văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "26/11/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (19h30 - 21h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Lê Hoàng Nam",
+    "fee": "1.400.000 đ"
+  },
+  "EX-ONL03": {
+    "code": "EX-ONL03",
+    "name": "Excel văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "30/11/2026",
+    "schedule": "Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Nguyễn Thái Tuấn",
+    "fee": "1.400.000 đ"
+  },
+  "PP-LAB01": {
+    "code": "PP-LAB01",
+    "name": "PowerPoint thuyết trình",
+    "group": "Khóa học chuyên đề",
+    "date": "24/11/2026",
+    "schedule": "Tối Thứ 2 - 4 - 6 (18h30 - 21h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Vũ Hải Đăng",
+    "fee": "1.300.000 đ"
+  },
+  "PP-LAB02": {
+    "code": "PP-LAB02",
+    "name": "PowerPoint thuyết trình",
+    "group": "Khóa học chuyên đề",
+    "date": "28/11/2026",
+    "schedule": "Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Vũ Hải Đăng",
+    "fee": "1.300.000 đ"
+  },
+  "PP-ONL01": {
+    "code": "PP-ONL01",
+    "name": "PowerPoint thuyết trình",
+    "group": "Khóa học chuyên đề",
+    "date": "25/11/2026",
+    "schedule": "Chiều Thứ 7 & Chủ Nhật (14h00 - 17h00)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Vũ Hải Đăng",
+    "fee": "1.300.000 đ"
+  },
+  "PP-ONL02": {
+    "code": "PP-ONL02",
+    "name": "PowerPoint thuyết trình",
+    "group": "Khóa học chuyên đề",
+    "date": "01/12/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (19h30 - 21h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Vũ Hải Đăng",
+    "fee": "1.300.000 đ"
+  },
+  "OL-LAB01": {
+    "code": "OL-LAB01",
+    "name": "Công cụ văn phòng trực tuyến",
+    "group": "Khóa học chuyên đề",
+    "date": "25/11/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (18h30 - 20h30)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Phạm Quốc Bảo",
+    "fee": "1.300.000 đ"
+  },
+  "OL-LAB02": {
+    "code": "OL-LAB02",
+    "name": "Công cụ văn phòng trực tuyến",
+    "group": "Khóa học chuyên đề",
+    "date": "29/11/2026",
+    "schedule": "Sáng Thứ 7 & Chủ Nhật (08h30 - 11h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Phạm Quốc Bảo",
+    "fee": "1.300.000 đ"
+  },
+  "OL-ONL01": {
+    "code": "OL-ONL01",
+    "name": "Công cụ văn phòng trực tuyến",
+    "group": "Khóa học chuyên đề",
+    "date": "27/11/2026",
+    "schedule": "Tối Thứ 2 - 4 - 6 (19h30 - 21h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Phạm Quốc Bảo",
+    "fee": "1.300.000 đ"
+  },
+  "OL-ONL02": {
+    "code": "OL-ONL02",
+    "name": "Công cụ văn phòng trực tuyến",
+    "group": "Khóa học chuyên đề",
+    "date": "03/12/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (18h30 - 20h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Phạm Quốc Bảo",
+    "fee": "1.300.000 đ"
+  },
+  "AI-LAB01": {
+    "code": "AI-LAB01",
+    "name": "Ứng dụng AI trong công việc văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "28/11/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (18h30 - 21h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "TS. Hoàng Xuân Vinh",
+    "fee": "1.600.000 đ"
+  },
+  "AI-LAB02": {
+    "code": "AI-LAB02",
+    "name": "Ứng dụng AI trong công việc văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "05/12/2026",
+    "schedule": "Chiều Thứ 7 & Chủ Nhật (14h00 - 17h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "TS. Hoàng Xuân Vinh",
+    "fee": "1.600.000 đ"
+  },
+  "AI-ONL01": {
+    "code": "AI-ONL01",
+    "name": "Ứng dụng AI trong công việc văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "30/11/2026",
+    "schedule": "Tối Thứ 2 - 4 - 6 (19h30 - 21h30)",
+    "format": "Trực tuyến",
+    "teacher": "TS. Hoàng Xuân Vinh",
+    "fee": "1.600.000 đ"
+  },
+  "AI-ONL02": {
+    "code": "AI-ONL02",
+    "name": "Ứng dụng AI trong công việc văn phòng",
+    "group": "Khóa học chuyên đề",
+    "date": "04/12/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (19h30 - 21h30)",
+    "format": "Trực tuyến",
+    "teacher": "TS. Hoàng Xuân Vinh",
+    "fee": "1.600.000 đ"
+  },
+  "MW-LAB01": {
+    "code": "MW-LAB01",
+    "name": "Ôn luyện MOS Word",
+    "group": "Khóa học ôn luyện MOS",
+    "date": "26/11/2026",
+    "schedule": "Tối Thứ 2 - 4 - 6 (18h30 - 21h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Trần Thị Mai",
+    "fee": "1.800.000 đ"
+  },
+  "MW-LAB02": {
+    "code": "MW-LAB02",
+    "name": "Ôn luyện MOS Word",
+    "group": "Khóa học ôn luyện MOS",
+    "date": "01/12/2026",
+    "schedule": "Sáng Thứ 2 - 4 - 6 (Cấp tốc) (08h30 - 11h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Trần Thị Mai",
+    "fee": "1.800.000 đ"
+  },
+  "MW-ONL01": {
+    "code": "MW-ONL01",
+    "name": "Ôn luyện MOS Word",
+    "group": "Khóa học ôn luyện MOS",
+    "date": "28/11/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (19h30 - 21h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Trần Thị Mai",
+    "fee": "1.800.000 đ"
+  },
+  "MW-ONL02": {
+    "code": "MW-ONL02",
+    "name": "Ôn luyện MOS Word",
+    "group": "Khóa học ôn luyện MOS",
+    "date": "05/12/2026",
+    "schedule": "Chiều Thứ 7 & Chủ Nhật (14h00 - 16h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Trần Thị Mai",
+    "fee": "1.800.000 đ"
+  },
+  "ME-LAB01": {
+    "code": "ME-LAB01",
+    "name": "Ôn luyện MOS Excel",
+    "group": "Khóa học ôn luyện MOS",
+    "date": "28/11/2026",
+    "schedule": "Tối Thứ 2 - 4 - 6 (18h00 - 21h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Lê Hoàng Nam",
+    "fee": "1.800.000 đ"
+  },
+  "ME-LAB02": {
+    "code": "ME-LAB02",
+    "name": "Ôn luyện MOS Excel",
+    "group": "Khóa học ôn luyện MOS",
+    "date": "02/12/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (18h00 - 21h00)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Lê Hoàng Nam",
+    "fee": "1.800.000 đ"
+  },
+  "ME-LAB03": {
+    "code": "ME-LAB03",
+    "name": "Ôn luyện MOS Excel",
+    "group": "Khóa học ôn luyện MOS",
+    "date": "06/12/2026",
+    "schedule": "Sáng Thứ 7 & Chủ Nhật (08h30 - 11h30)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Nguyễn Thái Tuấn",
+    "fee": "1.800.000 đ"
+  },
+  "ME-ONL01": {
+    "code": "ME-ONL01",
+    "name": "Ôn luyện MOS Excel",
+    "group": "Khóa học ôn luyện MOS",
+    "date": "29/11/2026",
+    "schedule": "Chiều Thứ 7 & Chủ Nhật (14h00 - 17h00)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Lê Hoàng Nam",
+    "fee": "1.800.000 đ"
+  },
+  "ME-ONL02": {
+    "code": "ME-ONL02",
+    "name": "Ôn luyện MOS Excel",
+    "group": "Khóa học ôn luyện MOS",
+    "date": "03/12/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (19h30 - 21h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Lê Hoàng Nam",
+    "fee": "1.800.000 đ"
+  },
+  "MP-LAB01": {
+    "code": "MP-LAB01",
+    "name": "Ôn luyện MOS PowerPoint",
+    "group": "Khóa học ôn luyện MOS",
+    "date": "01/12/2026",
+    "schedule": "Tối Thứ 2 - 4 - 6 (18h30 - 20h30)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Vũ Hải Đăng",
+    "fee": "1.800.000 đ"
+  },
+  "MP-LAB02": {
+    "code": "MP-LAB02",
+    "name": "Ôn luyện MOS PowerPoint",
+    "group": "Khóa học ôn luyện MOS",
+    "date": "06/12/2026",
+    "schedule": "Chiều Thứ 7 & Chủ Nhật (14h00 - 16h30)",
+    "format": "Trực tiếp tại trung tâm",
+    "teacher": "ThS. Vũ Hải Đăng",
+    "fee": "1.800.000 đ"
+  },
+  "MP-ONL01": {
+    "code": "MP-ONL01",
+    "name": "Ôn luyện MOS PowerPoint",
+    "group": "Khóa học ôn luyện MOS",
+    "date": "02/12/2026",
+    "schedule": "Tối Thứ 3 - 5 - 7 (18h00 - 20h00)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Vũ Hải Đăng",
+    "fee": "1.800.000 đ"
+  },
+  "MP-ONL02": {
+    "code": "MP-ONL02",
+    "name": "Ôn luyện MOS PowerPoint",
+    "group": "Khóa học ôn luyện MOS",
+    "date": "07/12/2026",
+    "schedule": "Tối Thứ 2 - 4 - 6 (19h30 - 21h30)",
+    "format": "Trực tuyến",
+    "teacher": "ThS. Vũ Hải Đăng",
+    "fee": "1.800.000 đ"
+  }
+};
+
+
+    // Sao chép nội dung văn bản
+    function copyGuideText(elementId, btn) {
+      const elem = document.getElementById(elementId);
+      if (!elem) return;
+      const textToCopy = elem.innerText.trim();
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const old = btn.innerText;
+        btn.innerText = 'Đã chép!';
+        setTimeout(() => btn.innerText = old, 2000);
+      });
+    }
+
+    // Sao chép cú pháp chuyển khoản trong modal
+    function copyGuideModalSyntax(btn) {
+      const codeElem = document.getElementById('modalSyntaxCode');
+      if (!codeElem) return;
+      navigator.clipboard.writeText(codeElem.innerText.trim()).then(() => {
+        const old = btn.innerText;
+        btn.innerText = 'Đã chép!';
+        setTimeout(() => btn.innerText = old, 2000);
+      });
+    }
+
+    // Toggle FAQ Accordion
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      item.classList.toggle('active');
+    }
+
+    // Khi chọn tệp minh chứng trên form chính
+    function onFormReceiptSelected(input) {
+      const box = document.getElementById('formUploadReceiptBox');
+      const nameEl = document.getElementById('formReceiptFileName');
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        if (nameEl) nameEl.innerText = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+        if (box) box.classList.add('has-file');
+      } else {
+        if (nameEl) nameEl.innerText = 'Nhấn vào đây để tải ảnh biên lai / PDF chuyển khoản';
+        if (box) box.classList.remove('has-file');
+      }
+    }
+
+    // Khi chọn tệp minh chứng trong Modal
+    function onModalReceiptSelected(input) {
+      const box = document.getElementById('modalUploadReceiptBox');
+      const nameEl = document.getElementById('modalReceiptFileName');
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        if (nameEl) nameEl.innerText = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+        if (box) box.classList.add('has-file');
+      } else {
+        if (nameEl) nameEl.innerText = 'Nhấn vào đây để tải ảnh biên lai / PDF chuyển khoản';
+        if (box) box.classList.remove('has-file');
+      }
+    }
+
+    // Khi gõ số điện thoại trên Form chính -> Cập nhật cú pháp chuyển khoản
+    function onFormPhoneInput(phone) {
+      const code = document.getElementById('formSelectClass') ? document.getElementById('formSelectClass').value : 'CB01';
+      const cleanPhone = phone.trim() || '[SĐT]';
+      const syntaxEl = document.getElementById('guideSyntax');
+      if (syntaxEl) {
+        syntaxEl.innerText = 'LMS ' + cleanPhone + ' ' + code;
+      }
+    }
+
+    // Khi gõ số điện thoại trong Modal -> Cập nhật cú pháp chuyển khoản
+    function onModalPhoneInput(phone) {
+      const code = document.getElementById('afClassCode') ? document.getElementById('afClassCode').value : 'CB-ONL01';
+      const cleanPhone = phone.trim() || '[SĐT]';
+      const syntaxEl = document.getElementById('modalSyntaxCode');
+      if (syntaxEl) {
+        syntaxEl.innerText = 'LMS ' + cleanPhone + ' ' + code;
+      }
+    }
+
+    // Đổi lớp trên Form chính
+    function onFormClassChange(code) {
+      const item = guideClassesDb[code];
+      if (!item) return;
+      const b = document.getElementById('onpageDisplayCodeBadge');
+      const c = document.getElementById('onpageAfCode');
+      const n = document.getElementById('onpageAfName');
+      const d = document.getElementById('onpageAfDate');
+      const s = document.getElementById('onpageAfSchedule');
+      const f = document.getElementById('onpageAfFormat');
+      const fee = document.getElementById('onpageAfFee');
+
+      if (b) b.innerText = item.code;
+      if (c) c.value = item.code;
+      if (n) n.value = item.name;
+      if (d) d.value = item.date;
+      if (s) s.value = item.schedule;
+      if (f) f.value = item.format;
+      if (fee) fee.innerText = item.fee || courseFees[item.name] || '1.500.000 đ';
+
+      // Cập nhật cú pháp chuyển khoản
+      const phoneInput = document.getElementById('formPhone');
+      const phone = phoneInput ? phoneInput.value.trim() : '';
+      onFormPhoneInput(phone);
+    }
+
+    // Đổi lớp trong Modal
+    function onModalClassChange(classCode) {
+      const item = guideClassesDb[classCode];
+      if (!item) return;
+
+      const badge = document.getElementById('displayClassCodeBadge');
+      const afCode = document.getElementById('afClassCode');
+      const afName = document.getElementById('afCourseName');
+      const afDate = document.getElementById('afOpenDate');
+      const afSchedule = document.getElementById('afSchedule');
+      const afFormat = document.getElementById('afFormat');
+      const feeEl = document.getElementById('modalClassFee');
+
+      if (badge) badge.innerText = item.code;
+      if (afCode) afCode.value = item.code;
+      if (afName) afName.value = item.name;
+      if (afDate) afDate.value = item.date;
+      if (afSchedule) afSchedule.value = item.schedule;
+      if (afFormat) afFormat.value = item.format;
+      if (feeEl) feeEl.innerText = item.fee || courseFees[item.name] || '1.500.000 đ';
+
+      // Cập nhật cú pháp chuyển khoản trong modal
+      const phoneInput = document.getElementById('modalStudentPhone');
+      const phone = phoneInput ? phoneInput.value.trim() : '';
+      onModalPhoneInput(phone);
+    }
+
+    // Mở Modal
+    function openGuideEnrollModal(defaultClassCode) {
+      const modal = document.getElementById('guideEnrollModal');
+      if (!modal) return;
+
+      const select = document.getElementById('guideModalSelectClass');
+      if (defaultClassCode && select) {
+        select.value = defaultClassCode;
+      }
+      
+      const currentCode = select ? select.value : 'CB-ONL01';
+      onModalClassChange(currentCode);
+
+      modal.classList.add('open');
+    }
+
+    // Đóng Modal
+    function closeGuideEnrollModal(event) {
+      if (event && event.target !== event.currentTarget) return;
+      const modal = document.getElementById('guideEnrollModal');
+      if (modal) {
+        modal.classList.remove('open');
+      }
+    }
+
+    // Xử lý gửi Form trên trang chính
+    function submitGuideReg(event) {
+      event.preventDefault();
+      const receiptInput = document.getElementById('formReceiptFile');
+      if (!receiptInput || !receiptInput.files || receiptInput.files.length === 0) {
+        alert('Vui lòng tải lên ảnh minh chứng chuyển khoản (biên lai hoặc chụp màn hình giao dịch)!');
+        return;
+      }
+
+      const name = document.getElementById('formFullName').value.trim();
+      const phone = document.getElementById('formPhone').value.trim();
+      const email = document.getElementById('formEmail').value.trim();
+      const classCode = document.getElementById('formSelectClass').value;
+      const classItem = guideClassesDb[classCode] || {};
+      const fee = classItem.fee || courseFees[classItem.name] || '1.500.000 đ';
+      const fileName = receiptInput.files[0].name;
+
+      alert('ĐĂNG KÝ KHÓA HỌC THÀNH CÔNG!\n\n' +
+            'Học viên: ' + name + '\n' +
+            'Số điện thoại: ' + phone + '\n' +
+            'Email: ' + email + '\n' +
+            'Mã lớp đăng ký: ' + classCode + '\n' +
+            'Khóa học: ' + (classItem.name || '') + '\n' +
+            'Học phí: ' + fee + '\n' +
+            'Tệp minh chứng: ' + fileName + '\n\n' +
+            'Hệ thống LMS đã ghi nhận hồ sơ và tệp minh chứng chuyển khoản của bạn. Bộ phận đào tạo sẽ gửi email hướng dẫn phòng học và bàn giao tài khoản ngay trong vòng 5 - 15 phút!');
+
+      const toast = document.getElementById('guideRegToast');
+      if (toast) {
+        toast.classList.add('show');
+        setTimeout(() => toast.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+      }
+      document.getElementById('guideRegForm').reset();
+      const receiptNameEl = document.getElementById('formReceiptFileName');
+      if (receiptNameEl) receiptNameEl.innerText = 'Nhấn vào đây để tải ảnh biên lai / PDF chuyển khoản';
+      const box = document.getElementById('formUploadReceiptBox');
+      if (box) box.classList.remove('has-file');
+    }
+
+    // Xử lý gửi Form trong Modal
+    function submitGuideModalReg(event) {
+      event.preventDefault();
+      const receiptInput = document.getElementById('modalReceiptFile');
+      if (!receiptInput || !receiptInput.files || receiptInput.files.length === 0) {
+        alert('Vui lòng tải lên ảnh minh chứng chuyển khoản (biên lai hoặc chụp màn hình giao dịch)!');
+        return;
+      }
+
+      const code = document.getElementById('afClassCode').value;
+      const cName = document.getElementById('afCourseName').value;
+      const schedule = document.getElementById('afSchedule').value;
+      const name = document.getElementById('modalStudentName').value.trim();
+      const phone = document.getElementById('modalStudentPhone').value.trim();
+      const email = document.getElementById('modalStudentEmail').value.trim();
+      const fee = document.getElementById('modalClassFee') ? document.getElementById('modalClassFee').innerText : '1.500.000 đ';
+      const fileName = receiptInput.files[0].name;
+
+      if (!name || !phone || !email) {
+        alert('Vui lòng điền đầy đủ họ tên, số điện thoại và Gmail!');
+        return;
+      }
+
+      alert('ĐĂNG KÝ KHÓA HỌC THÀNH CÔNG!\n\n' +
+            'Học viên: ' + name + '\n' +
+            'Mã lớp: ' + code + '\n' +
+            'Khóa học: ' + cName + '\n' +
+            'Lịch học: ' + schedule + '\n' +
+            'Học phí: ' + fee + '\n' +
+            'Số điện thoại: ' + phone + '\n' +
+            'Email: ' + email + '\n' +
+            'Tệp minh chứng: ' + fileName + '\n\n' +
+            'Hệ thống LMS đã ghi nhận hồ sơ đăng ký của bạn. Ban đào tạo sẽ gửi email hướng dẫn phòng học và bàn giao tài khoản ngay trong vòng 5 - 15 phút!');
+
+      closeGuideEnrollModal();
+      document.getElementById('modalEnrollForm').reset();
+      const receiptNameEl = document.getElementById('modalReceiptFileName');
+      if (receiptNameEl) receiptNameEl.innerText = 'Nhấn vào đây để tải ảnh biên lai / PDF chuyển khoản';
+      const box = document.getElementById('modalUploadReceiptBox');
+      if (box) box.classList.remove('has-file');
+    }
+
+    // Khởi tạo giá trị ban đầu cho form chính khi tải trang
+    document.addEventListener('DOMContentLoaded', () => {
+      const formSelect = document.getElementById('formSelectClass');
+      if (formSelect) {
+        onFormClassChange(formSelect.value);
+      }
+    });
+
+    // Dropdown toggle for tools
+    (function () {
+      const toolsDropdown = document.getElementById('nav-tools-dropdown');
+      const btnTools = document.getElementById('btn-tools-dropdown');
+      const toolsContent = toolsDropdown ? toolsDropdown.querySelector('.nav-dropdown-content') : null;
+
+      if (toolsDropdown && btnTools) {
+        btnTools.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toolsDropdown.classList.toggle('open');
+        });
+
+        if (toolsContent) {
+          toolsContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        }
+
+        document.addEventListener('click', () => {
+          toolsDropdown.classList.remove('open');
+        });
+      }
+    })();
+  </script>
+  <script src="auth.js"></script>
+  <!-- Nhúng Chatbot liên hệ ở góc dưới bên phải -->
+  <script src="lms-chatbot.js"></script>
+</body>
+
+</html>
+

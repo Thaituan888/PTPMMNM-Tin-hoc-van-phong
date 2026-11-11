@@ -1,0 +1,2432 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Danh Sách Khóa Học - Tin Học Văn Phòng LMS</title>
+  <meta name="description"
+    content="Danh sách khóa học Tin học văn phòng LMS được phân chia thành 3 nhóm rõ ràng: Khóa học tổng hợp, Khóa học chuyên đề và Khóa học ôn luyện. Đầy đủ thông tin trình độ, thời lượng, mục tiêu, đối tượng và đề cương chi tiết." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="lms-chatbot.css" />
+  <style>
+    body {
+      background: #f0f7ff;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .courses-page-container {
+      max-width: 1240px;
+      width: 100%;
+      margin: 24px auto 90px;
+      padding: 0 clamp(16px, 3vw, 32px);
+      flex: 1;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Breadcrumb */
+    .course-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      color: #64748b;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .course-breadcrumb a {
+      color: #0284c7;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .course-breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    /* Header Hero */
+    .courses-hero-banner {
+      background: linear-gradient(135deg, #075985 0%, #0284c7 65%, #38bdf8 100%);
+      border-radius: 26px;
+      padding: clamp(28px, 4vw, 42px);
+      color: #ffffff;
+      margin-bottom: 32px;
+      box-shadow: 0 14px 34px rgba(2, 132, 199, 0.22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .courses-hero-banner::before {
+      content: "";
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    .courses-hero-title {
+      font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .courses-hero-sub {
+      font-size: 1.02rem;
+      color: #e0f2fe;
+      max-width: 820px;
+      line-height: 1.6;
+    }
+
+    /* BỘ LỌC 4 NÚT (FILTER TABS) */
+    .filter-tabs-wrapper {
+      background: #ffffff;
+      padding: 12px 16px;
+      border-radius: 20px;
+      border: 1.5px solid #e0f2fe;
+      box-shadow: 0 4px 18px rgba(2, 132, 199, 0.06);
+      margin-bottom: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-filter {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      color: #334155;
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-filter:hover {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      color: #0284c7;
+    }
+
+    .btn-filter.active {
+      background: #0284c7;
+      border-color: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+
+    .btn-schedule-shortcut {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #10b981;
+      border: 1.5px solid #10b981;
+      color: #ffffff;
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      margin-left: auto;
+    }
+
+    .btn-schedule-shortcut:hover {
+      background: #059669;
+      border-color: #059669;
+      transform: translateY(-1px);
+    }
+
+    /* NHÓM KHÓA HỌC (COURSE GROUPS) */
+    .course-group-section {
+      margin-bottom: 46px;
+      transition: opacity 0.3s ease;
+    }
+
+    .course-group-section.hidden {
+      display: none;
+    }
+
+    .group-header-box {
+      margin-bottom: 22px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .group-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .group-badge-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .badge-tong-hop {
+      background: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .badge-chuyen-de {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .badge-on-luyen {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .group-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #075985;
+      margin: 0;
+    }
+
+    .group-desc {
+      font-size: 0.95rem;
+      color: #64748b;
+      margin: 2px 0 0 0;
+    }
+
+    /* GRID THẺ KHÓA HỌC */
+    .course-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .course-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .course-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* THẺ KHÓA HỌC (CARD ITEM) */
+    .course-card {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1.5px solid #e0f2fe;
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.06);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .course-card:hover {
+      transform: translateY(-6px);
+      border-color: #0284c7;
+      box-shadow: 0 16px 36px rgba(2, 132, 199, 0.16);
+    }
+
+    /* Card Banner / Illustration */
+    .card-banner-box {
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-banner-box.bg-blue {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    }
+
+    .card-banner-box.bg-cyan {
+      background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+    }
+
+    .card-banner-box.bg-indigo {
+      background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+    }
+
+    .card-banner-box.bg-emerald {
+      background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+    }
+
+    .card-banner-box.bg-orange {
+      background: linear-gradient(135deg, #f97316 0%, #c2410c 100%);
+    }
+
+    .card-banner-box.bg-violet {
+      background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+    }
+
+    .card-banner-box.bg-purple {
+      background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);
+    }
+
+    .card-banner-box.bg-amber {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    }
+
+    .card-banner-box.bg-rose {
+      background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+    }
+
+    .card-banner-icon {
+      font-size: 3.2rem;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+      transition: transform 0.3s ease;
+    }
+
+    .course-card:hover .card-banner-icon {
+      transform: scale(1.1);
+    }
+
+    .card-group-pill {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      color: #075985;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Card Body */
+    .card-body {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    /* Format Choice Bar (2 nút lớn, đẹp mắt, trực quan, ít chữ) */
+    .format-choice-bar {
+      background: #ffffff;
+      border: 2px solid #e0f2fe;
+      border-radius: 20px;
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: 0 4px 20px rgba(2, 132, 199, 0.06);
+      flex-wrap: wrap;
+    }
+
+    .fcb-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .fcb-badge {
+      background: #e0f2fe;
+      color: #0284c7;
+      font-size: 0.82rem;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 999px;
+      letter-spacing: 0.05em;
+    }
+
+    .fcb-text {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .fcb-buttons {
+      display: flex;
+      gap: 14px;
+      flex: 1;
+      justify-content: flex-end;
+      min-width: 340px;
+    }
+
+    .btn-fmt-big {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px 26px;
+      border-radius: 14px;
+      font-size: 1.02rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid #cbd5e1;
+      background: #f8fafc;
+      color: #334155;
+      font-family: inherit;
+    }
+
+    .btn-fmt-big:hover {
+      border-color: #16a34a;
+      color: #15803d;
+      background: #f0fdf4;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(22, 163, 74, 0.15);
+    }
+
+    .btn-fmt-big .bf-icon {
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .btn-fmt-big .bf-label {
+      letter-spacing: 0.01em;
+    }
+
+    .btn-fmt-big .bf-indicator {
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.28);
+      margin-left: 4px;
+    }
+
+    .btn-fmt-offline.active {
+      background: linear-gradient(135deg, #15803d 0%, #16a34a 100%);
+      color: #ffffff;
+      border-color: #15803d;
+      box-shadow: 0 8px 22px rgba(22, 163, 74, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .btn-fmt-online.active {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      border-color: #0284c7;
+      box-shadow: 0 8px 22px rgba(2, 132, 199, 0.35);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 820px) {
+      .format-choice-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .fcb-buttons {
+        flex-direction: column;
+        min-width: 100%;
+      }
+      .btn-fmt-big {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    .card-course-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 12px 0;
+      line-height: 1.4;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-course-name .base-name {
+      color: #0f172a;
+      font-weight: 800;
+    }
+
+    /* Hình thức màu xanh lá cây nổi bật ở từng khóa học */
+    .card-course-name .fmt-suffix,
+    .fmt-suffix {
+      color: #15803d !important;
+      background: #dcfce7 !important;
+      border: 1.5px solid #86efac !important;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 6px rgba(22, 163, 74, 0.12);
+    }
+
+    .card-short-tagline {
+      font-size: 0.93rem;
+      color: #475569;
+      line-height: 1.6;
+      margin: 0 0 20px 0;
+      flex: 1;
+    }
+
+    /* Meta Info (Trình độ & Thời lượng) */
+    .card-meta-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+    }
+
+    .meta-row-label {
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .meta-row-val {
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .meta-row-val.highlight {
+      color: #0284c7;
+    }
+
+    /* Card Button */
+    .btn-card-detail {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      border: none;
+      padding: 11px 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
+    }
+
+    .btn-card-detail:hover {
+      background: #0369a1;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+    }
+
+    /* ======================================================================
+       CỬA SỔ NỔI XEM CHI TIẾT KHÓA HỌC (MODAL)
+       ====================================================================== */
+    .detail-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(5px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .detail-modal-backdrop.open {
+      display: flex;
+    }
+
+    .detail-modal-card {
+      background: #ffffff;
+      width: 760px;
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 1.5px solid #e0f2fe;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal-card-header {
+      background: linear-gradient(135deg, #075985 0%, #0284c7 100%);
+      color: #ffffff;
+      padding: 20px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .modal-header-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .modal-group-badge {
+      display: inline-block;
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 3px 10px;
+      border-radius: 999px;
+      width: fit-content;
+    }
+
+    .modal-course-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .modal-close-x {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #ffffff;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .modal-close-x:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .modal-card-body {
+      padding: 26px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Modal Meta Strip */
+    .modal-meta-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 18px;
+    }
+
+    .modal-meta-item strong {
+      color: #075985;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .modal-meta-item span {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    /* Modal Sections */
+    .modal-section-block {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .modal-section-title {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: #075985;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+    }
+
+    .modal-section-text {
+      font-size: 0.92rem;
+      color: #334155;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .modal-syllabus-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .modal-syllabus-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      color: #334155;
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .modal-syllabus-item::before {
+      content: "•";
+      color: #0284c7;
+      font-size: 1.3rem;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    /* Modal Footer (Bỏ nút đóng lại, chỉ còn nút Xem lịch khai giảng để đăng kí) */
+    .modal-card-footer {
+      padding: 18px 26px;
+      background: #f8fafc;
+      border-top: 1.5px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-modal-schedule {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: 14px 30px;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+      transition: all 0.2s ease;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .btn-modal-schedule:hover {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(16, 185, 129, 0.45);
+    }
+  
+    /* ======================================================================
+       PHẦN CHỌN KHÓA HỌC THEO MONG MUỐN (DESIRED COURSE SECTION)
+       Hiển thị bảng: Học về gì, Hình thức học, Thời gian học là khi nào
+       và nút chuyển nhanh đến Lịch khai giảng
+       ====================================================================== */
+    .desired-course-box {
+      background: #ffffff;
+      border-radius: 24px;
+      border: 2px solid #bae6fd;
+      box-shadow: 0 10px 30px rgba(2, 132, 199, 0.09);
+      padding: clamp(22px, 3.5vw, 34px);
+      margin-bottom: 38px;
+      position: relative;
+    }
+
+    .desired-header-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+      padding-bottom: 18px;
+      border-bottom: 1.5px solid #e0f2fe;
+    }
+
+    .desired-title-col {
+      max-width: 680px;
+    }
+
+    .desired-badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #e0f2fe;
+      color: #0284c7;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    .desired-title {
+      font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+      font-weight: 800;
+      color: #075985;
+      margin: 0 0 6px 0;
+      line-height: 1.3;
+    }
+
+    .desired-desc {
+      font-size: 0.94rem;
+      color: #475569;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .desired-selector-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 290px;
+    }
+
+    .desired-select-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #0369a1;
+    }
+
+    .desired-select-input {
+      background: #f0f9ff;
+      border: 2px solid #0284c7;
+      color: #075985;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 11px 16px;
+      border-radius: 12px;
+      outline: none;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 2px 10px rgba(2, 132, 199, 0.12);
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .desired-select-input:focus {
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25);
+    }
+
+    /* Bảng tóm tắt thông tin khóa học mong muốn */
+    .desired-summary-card {
+      background: #f8fafc;
+      border-radius: 18px;
+      border: 1.5px solid #e2e8f0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .desired-card-top {
+      background: linear-gradient(135deg, #075985 0%, #0284c7 100%);
+      color: #ffffff;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .desired-card-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .desired-group-pill {
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 3px 10px;
+      border-radius: 999px;
+      width: fit-content;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .desired-course-heading {
+      font-size: 1.45rem;
+      font-weight: 800;
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .btn-goto-schedule-prominent {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 12px 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-goto-schedule-prominent:hover {
+      background: #059669;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+    }
+
+    /* Lưới 3 cột: Học về gì - Hình thức học - Thời gian học */
+    .desired-specs-table-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 0;
+      border-collapse: collapse;
+    }
+
+    @media (max-width: 900px) {
+      .desired-specs-table-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .desired-spec-col {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #e2e8f0;
+      border-bottom: 1px solid #e2e8f0;
+      background: #ffffff;
+    }
+
+    .desired-spec-col:last-child {
+      border-right: none;
+    }
+
+    @media (max-width: 900px) {
+      .desired-spec-col {
+        border-right: none;
+      }
+    }
+
+    .spec-col-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e0f2fe;
+    }
+
+    .spec-col-icon {
+      font-size: 1.3rem;
+    }
+
+    .spec-col-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #075985;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .spec-col-body {
+      font-size: 0.92rem;
+      color: #334155;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .spec-col-text {
+      margin: 0 0 10px 0;
+      font-weight: 500;
+    }
+
+    .spec-mini-highlights {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .spec-mini-highlights li {
+      position: relative;
+      padding-left: 18px;
+      font-size: 0.88rem;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    .spec-mini-highlights li::before {
+      content: "✔";
+      position: absolute;
+      left: 0;
+      color: #10b981;
+      font-weight: 800;
+      font-size: 0.82rem;
+    }
+
+    .spec-col-sub {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin: 8px 0 0 0;
+      line-height: 1.5;
+    }
+
+    .spec-time-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px dashed #e2e8f0;
+      font-size: 0.88rem;
+    }
+
+    .spec-time-row:last-child {
+      border-bottom: none;
+    }
+
+    .time-label {
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .time-val {
+      font-weight: 700;
+      color: #0f172a;
+      text-align: right;
+    }
+
+    .time-val.highlight-blue {
+      color: #0284c7;
+      font-weight: 800;
+    }
+
+    .time-val.highlight-green {
+      color: #15803d;
+      font-weight: 800;
+    }
+
+    /* ======================================================================
+       BẢNG THÔNG TIN MINI VÀ CẶP NÚT TRÊN TỪNG THẺ KHÓA HỌC
+       ====================================================================== */
+    .card-course-table {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cct-row {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .cct-label {
+      font-weight: 700;
+      color: #075985;
+      font-size: 0.82rem;
+    }
+
+    .cct-val {
+      color: #334155;
+    }
+
+    .cct-val.highlight-format {
+      font-weight: 700;
+      color: #0284c7;
+    }
+
+    .cct-val.highlight-time {
+      font-weight: 700;
+      color: #15803d;
+    }
+
+    .card-action-btns-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .btn-card-schedule-direct {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      color: #15803d;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      padding: 11px 12px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-card-schedule-direct:hover {
+      background: #dcfce7;
+      border-color: #15803d;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(21, 128, 61, 0.18);
+    }
+
+  
+    /* ======================================================================
+       BỘ CHỌN HÌNH THỨC HỌC: TRỰC TUYẾN HAY TRỰC TIẾP (TO RÕ, TRỰC QUAN)
+       ====================================================================== */
+    .learning-format-banner {
+      background: #ffffff;
+      border-radius: 24px;
+      border: 2px solid #bae6fd;
+      padding: clamp(24px, 3.5vw, 36px);
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(2, 132, 199, 0.08);
+    }
+
+    .lfb-header {
+      margin-bottom: 22px;
+      max-width: 820px;
+    }
+
+    .lfb-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #e0f2fe;
+      color: #0284c7;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .lfb-title {
+      font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+      font-weight: 800;
+      color: #075985;
+      margin: 0 0 8px 0;
+      line-height: 1.3;
+    }
+
+    .lfb-sub {
+      font-size: 0.95rem;
+      color: #475569;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .format-choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr 1.3fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .format-choice-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .format-card {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      text-align: left;
+    }
+
+    .format-card:hover {
+      border-color: #0284c7;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 22px rgba(2, 132, 199, 0.12);
+    }
+
+    .format-card.active {
+      background: #f0f9ff;
+      border-color: #0284c7;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.18);
+    }
+
+    .fc-badge-tag {
+      display: inline-block;
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: #e2e8f0;
+      color: #475569;
+      width: fit-content;
+      margin-bottom: 12px;
+    }
+
+    .fc-badge-tag.online-tag {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .fc-badge-tag.offline-tag {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .fc-icon {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .fc-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #075985;
+      margin: 0 0 6px 0;
+    }
+
+    .fc-desc {
+      font-size: 0.88rem;
+      color: #475569;
+      line-height: 1.55;
+      margin: 0 0 14px 0;
+      flex: 1;
+    }
+
+    .fc-check-indicator {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #0284c7;
+      display: none;
+      align-items: center;
+      gap: 4px;
+      margin-top: auto;
+    }
+
+    .format-card.active .fc-check-indicator {
+      display: flex;
+    }
+
+    /* Thẻ khóa học: Huy hiệu to rõ & 1 đoạn nội dung */
+    .card-format-badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .badge-fmt {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    .badge-fmt.online {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .badge-fmt.offline {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .card-course-desc-brief {
+      font-size: 0.92rem;
+      color: #334155;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-brief-meta-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      color: #64748b;
+      margin-bottom: 16px;
+    }
+
+    .card-brief-meta-line strong {
+      color: #075985;
+    }
+
+    .btn-card-detail-prominent {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+    }
+
+    .btn-card-detail-prominent:hover {
+      background: #0369a1;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
+    }
+
+    /* Modal Formats Showcase Box */
+    .modal-formats-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: #f0f9ff;
+      border: 1.5px solid #bae6fd;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 600px) {
+      .modal-formats-box {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .modal-fmt-item {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 12px;
+      border: 1px solid #e0f2fe;
+    }
+
+    .modal-fmt-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #075985;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .modal-fmt-text {
+      font-size: 0.82rem;
+      color: #475569;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- Global Header -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon-box" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
+            <circle cx="13" cy="15.5" r="1.8" fill="#4f46e5" />
+            <circle cx="23" cy="15.5" r="1.8" fill="#4f46e5" />
+            <path d="M15.5 19.5c1.2 1.2 3.8 1.2 5 0" stroke="#ec4899" stroke-width="2" stroke-linecap="round" />
+            <path d="M12 7V4.5M24 7V4.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M11 29.5h14" stroke="#93c5fd" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">TIN HỌC VĂN PHÒNG</span>
+          <span class="brand-subtitle">Đào tạo Tin học Trực tuyến</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <!-- 1. KHÓA HỌC LMS (Active) -->
+        <a href="khoa-hoc-lms.html" style="color: var(--water-primary); font-weight: 800;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+          <span>KHÓA HỌC LMS</span>
+        </a>
+
+        <!-- 2. LỘ TRÌNH HỌC TẬP -->
+        <a href="lo-trinh-hoc-tap.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="6" cy="19" r="3" />
+            <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" />
+            <circle cx="18" cy="5" r="3" />
+          </svg>
+          <span>LỘ TRÌNH HỌC TẬP</span>
+        </a>
+
+        <!-- 3. ÔN LUYỆN & THI THỬ -->
+        <a href="on-luyen-thi-thu.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+          <span>ÔN LUYỆN &amp; THI THỬ</span>
+        </a>
+
+        <!-- 4. DIỄN ĐÀN -->
+        <a href="index.html#cong-dong">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>DIỄN ĐÀN</span>
+        </a>
+
+        <!-- 5. CÔNG CỤ & TIỆN ÍCH -->
+        <div class="nav-dropdown-wrap" id="nav-tools-dropdown">
+          <button type="button" class="nav-link-dropdown nav-dropdown-trigger" id="btn-tools-dropdown">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+            <span>CÔNG CỤ &amp; TIỆN ÍCH</span>
+            <svg class="nav-dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="nav-dropdown-content">
+            <a href="luyen-go-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8" stroke-width="2.2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>1. Luyện gõ phím 10 ngón</strong>
+                <small>Luyện gõ tiếng Việt Telex &amp; đo WPM</small>
+              </div>
+            </a>
+            <a href="tra-cuu-phim-tat.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="#d97706" stroke-width="1.5">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>2. Tra cứu Phím tắt</strong>
+                <small>Phím tắt thông dụng Word, Excel, PPT</small>
+              </div>
+            </a>
+            <a href="kiem-tra-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <circle cx="7" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="12" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="17" cy="9" r="1" fill="#0284c7" />
+                  <line x1="6" y1="14" x2="18" y2="14" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>3. Kiểm tra Bàn phím Online</strong>
+                <small>Phát hiện kẹt/liệt phím, đo NKRO</small>
+              </div>
+            </a>
+            <a href="tim-hieu-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 6h10M6 10h10M6 14h6" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>4. Giới thiệu Bàn phím Máy tính</strong>
+                <small>Cấu tạo 100% Full-size, gờ nổi F/J</small>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 6. CỬA HÀNG -->
+        <a href="index.html#cua-hang">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span>CỬA HÀNG</span>
+        </a>
+      </nav>
+
+      <a href="index.html#dang-nhap" class="btn-login">ĐĂNG NHẬP</a>
+    </div>
+  </header>
+
+    <main class="courses-page-container">
+    <!-- Breadcrumb -->
+    <nav class="course-breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Trang chủ</a>
+      <span>/</span>
+      <a href="khoa-hoc-lms.html">Khóa học LMS</a>
+      <span>/</span>
+      <span>Danh sách khóa học</span>
+    </nav>
+
+    <!-- Hero Banner -->
+    <div class="courses-hero-banner">
+      <div class="hero-badge-tag">HỆ THỐNG ĐÀO TẠO TIN HỌC VĂN PHÒNG CHUẨN HÓA</div>
+      <h1 class="courses-hero-title">Danh Sách Các Khóa Học Tin Học Văn Phòng</h1>
+      <p class="courses-hero-sub">
+        Chương trình đào tạo được xây dựng khoa học theo 3 nhóm rõ ràng: Khóa học tổng hợp, Khóa học chuyên đề và Khóa học ôn luyện. 
+        Tất cả các khóa học đều hỗ trợ song song hai hình thức đào tạo: <strong>Trực tuyến</strong> và <strong>Trực tiếp</strong>.
+      </p>
+    </div>
+
+        <!-- ======================================================================
+         CHỌN HÌNH THỨC HỌC: 2 NÚT LỚN, HIỆN ĐẠI, TRỰC QUAN & ÍT CHỮ
+         ====================================================================== -->
+    <div class="format-choice-bar">
+      <div class="fcb-label">
+        <span class="fcb-badge">HÌNH THỨC HỌC</span>
+        <span class="fcb-text">Chọn hình thức bạn mong muốn:</span>
+      </div>
+      <div class="fcb-buttons">
+        <button type="button" class="btn-fmt-big btn-fmt-offline active" id="btnFmtOffline" onclick="setSimpleFormat('offline')">
+          <span class="bf-label">Trực tiếp tại trung tâm</span>
+          <span class="bf-indicator" id="indicatorOffline">● Đang chọn</span>
+        </button>
+        <button type="button" class="btn-fmt-big btn-fmt-online" id="btnFmtOnline" onclick="setSimpleFormat('online')">
+          <span class="bf-label">Trực tuyến</span>
+          <span class="bf-indicator" id="indicatorOnline" style="display:none;">● Đang chọn</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         BỘ LỌC THEO NHÓM: TẤT CẢ - TỔNG HỢP - CHUYÊN ĐỀ - ÔN LUYỆN
+         ====================================================================== -->
+    <div class="filter-tabs-wrapper">
+      <div class="filter-btn-group" id="courseFilterGroup">
+        <button type="button" class="btn-filter active" data-filter="all" onclick="filterCourses('all')">
+          <span>Tất cả</span>
+        </button>
+        <button type="button" class="btn-filter" data-filter="tong-hop" onclick="filterCourses('tong-hop')">
+          <span>Khóa học tổng hợp</span>
+        </button>
+        <button type="button" class="btn-filter" data-filter="chuyen-de" onclick="filterCourses('chuyen-de')">
+          <span>Khóa học chuyên đề</span>
+        </button>
+        <button type="button" class="btn-filter" data-filter="on-luyen" onclick="filterCourses('on-luyen')">
+          <span>Khóa học ôn luyện</span>
+        </button>
+      </div>
+
+      <a href="lich-khai-giang.html" class="btn-schedule-shortcut">
+        <span>Xem Lịch Khai Giảng Tất Cả Lớp</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+    <!-- ======================================================================
+         NHÓM 1: KHÓA HỌC TỔNG HỢP
+         ====================================================================== -->
+    <section class="course-group-section" id="group-tong-hop" data-group-id="tong-hop">
+      <div class="group-header-box">
+        <div class="group-title-row">
+          <h2 class="group-title">1. Khóa Học Tổng Hợp</h2>
+        </div>
+        <p class="group-desc">Dành cho người muốn học theo lộ trình bao quát nhiều phần mềm.</p>
+      </div>
+
+      <div class="course-cards-grid">
+        <!-- Khóa: Tin học căn bản -->
+        <article class="course-card">
+          <div class="card-banner-box bg-blue">
+            <span class="card-group-pill">Khóa tổng hợp</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-course-name" data-base-name="Tin học căn bản"><span class="base-name">Tin học căn bản</span> <span class="fmt-suffix">| Trực tiếp tại trung tâm</span></h3>
+            
+            <!-- 1 câu ngắn gọn thôi -->
+            <p class="card-short-tagline">
+              Làm chủ máy tính, Windows, Word, Excel và PowerPoint chuẩn công sở.
+            </p>
+
+            <button type="button" class="btn-card-detail" onclick="openCourseDetailModal('tin-hoc-co-ban')">
+              <span>Xem chi tiết</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+        <!-- Khóa: Tin học nâng cao -->
+        <article class="course-card">
+          <div class="card-banner-box bg-indigo">
+            <span class="card-group-pill">Khóa tổng hợp</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-course-name" data-base-name="Tin học nâng cao"><span class="base-name">Tin học nâng cao</span> <span class="fmt-suffix">| Trực tiếp tại trung tâm</span></h3>
+            
+            <!-- 1 câu ngắn gọn thôi -->
+            <p class="card-short-tagline">
+              Nâng tầm kỹ năng soạn thảo văn bản nâng cao và xử lý dữ liệu chuyên nghiệp.
+            </p>
+
+            <button type="button" class="btn-card-detail" onclick="openCourseDetailModal('tin-hoc-nang-cao')">
+              <span>Xem chi tiết</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         NHÓM 2: KHÓA HỌC CHUYÊN ĐỀ
+         ====================================================================== -->
+    <section class="course-group-section" id="group-chuyen-de" data-group-id="chuyen-de">
+      <div class="group-header-box">
+        <div class="group-title-row">
+          <h2 class="group-title">2. Khóa Học Chuyên Đề</h2>
+        </div>
+        <p class="group-desc">Dành cho người muốn tập trung vào từng kỹ năng chuyên sâu.</p>
+      </div>
+
+      <div class="course-cards-grid">
+        <!-- Khóa: Word văn phòng -->
+        <article class="course-card">
+          <div class="card-banner-box bg-blue">
+            <span class="card-group-pill">Khóa chuyên đề</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-course-name" data-base-name="Word văn phòng"><span class="base-name">Word văn phòng</span> <span class="fmt-suffix">| Trực tiếp tại trung tâm</span></h3>
+            
+            <!-- 1 câu ngắn gọn thôi -->
+            <p class="card-short-tagline">
+              Soạn thảo và định dạng văn bản hành chính chuẩn quy định nhanh chóng.
+            </p>
+
+            <button type="button" class="btn-card-detail" onclick="openCourseDetailModal('word-van-phong')">
+              <span>Xem chi tiết</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+        <!-- Khóa: Excel văn phòng -->
+        <article class="course-card">
+          <div class="card-banner-box bg-emerald">
+            <span class="card-group-pill">Khóa chuyên đề</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-course-name" data-base-name="Excel văn phòng"><span class="base-name">Excel văn phòng</span> <span class="fmt-suffix">| Trực tiếp tại trung tâm</span></h3>
+            
+            <!-- 1 câu ngắn gọn thôi -->
+            <p class="card-short-tagline">
+              Thành thạo lập bảng tính, sử dụng các hàm thống kê và lập báo cáo quản trị.
+            </p>
+
+            <button type="button" class="btn-card-detail" onclick="openCourseDetailModal('excel-van-phong')">
+              <span>Xem chi tiết</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+        <!-- Khóa: PowerPoint thuyết trình -->
+        <article class="course-card">
+          <div class="card-banner-box bg-amber">
+            <span class="card-group-pill">Khóa chuyên đề</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-course-name" data-base-name="PowerPoint thuyết trình"><span class="base-name">PowerPoint thuyết trình</span> <span class="fmt-suffix">| Trực tiếp tại trung tâm</span></h3>
+            
+            <!-- 1 câu ngắn gọn thôi -->
+            <p class="card-short-tagline">
+              Thiết kế slide thuyết trình ấn tượng, hiện đại với hiệu ứng chuyên nghiệp.
+            </p>
+
+            <button type="button" class="btn-card-detail" onclick="openCourseDetailModal('powerpoint-thuyet-trinh')">
+              <span>Xem chi tiết</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+        <!-- Khóa: Công cụ văn phòng trực tuyến -->
+        <article class="course-card">
+          <div class="card-banner-box bg-cyan">
+            <span class="card-group-pill">Khóa chuyên đề</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-course-name" data-base-name="Công cụ văn phòng trực tuyến"><span class="base-name">Công cụ văn phòng trực tuyến</span> <span class="fmt-suffix">| Trực tiếp tại trung tâm</span></h3>
+            
+            <!-- 1 câu ngắn gọn thôi -->
+            <p class="card-short-tagline">
+              Làm việc nhóm và cộng tác dữ liệu thời gian thực trên Google & Microsoft 365.
+            </p>
+
+            <button type="button" class="btn-card-detail" onclick="openCourseDetailModal('cong-cu-truc-tuyen')">
+              <span>Xem chi tiết</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+        <!-- Khóa: Ứng dụng AI trong công việc văn phòng -->
+        <article class="course-card">
+          <div class="card-banner-box bg-purple">
+            <span class="card-group-pill">Khóa chuyên đề</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-course-name" data-base-name="Ứng dụng AI trong công việc văn phòng"><span class="base-name">Ứng dụng AI trong công việc văn phòng</span> <span class="fmt-suffix">| Trực tiếp tại trung tâm</span></h3>
+            
+            <!-- 1 câu ngắn gọn thôi -->
+            <p class="card-short-tagline">
+              Đột phá năng suất làm việc văn phòng cùng các trợ lý AI thông minh.
+            </p>
+
+            <button type="button" class="btn-card-detail" onclick="openCourseDetailModal('ung-dung-ai')">
+              <span>Xem chi tiết</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         NHÓM 3: KHÓA HỌC ÔN LUYỆN
+         ====================================================================== -->
+    <section class="course-group-section" id="group-on-luyen" data-group-id="on-luyen">
+      <div class="group-header-box">
+        <div class="group-title-row">
+          <h2 class="group-title">3. Khóa Học Ôn Luyện</h2>
+        </div>
+        <p class="group-desc">Dành cho học viên cần ôn thi và lấy chứng chỉ chuẩn quốc tế MOS.</p>
+      </div>
+
+      <div class="course-cards-grid">
+        <!-- Khóa: Ôn luyện MOS Word -->
+        <article class="course-card">
+          <div class="card-banner-box bg-rose">
+            <span class="card-group-pill">Khóa ôn luyện</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-course-name" data-base-name="Ôn luyện MOS Word"><span class="base-name">Ôn luyện MOS Word</span> <span class="fmt-suffix">| Trực tiếp tại trung tâm</span></h3>
+            
+            <!-- 1 câu ngắn gọn thôi -->
+            <p class="card-short-tagline">
+              Luyện giải đề thi chuẩn quốc tế Certiport và tự tin đạt điểm cao bài thi MOS Word.
+            </p>
+
+            <button type="button" class="btn-card-detail" onclick="openCourseDetailModal('on-luyen-mos-word')">
+              <span>Xem chi tiết</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+        <!-- Khóa: Ôn luyện MOS Excel -->
+        <article class="course-card">
+          <div class="card-banner-box bg-amber">
+            <span class="card-group-pill">Khóa ôn luyện</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-course-name" data-base-name="Ôn luyện MOS Excel"><span class="base-name">Ôn luyện MOS Excel</span> <span class="fmt-suffix">| Trực tiếp tại trung tâm</span></h3>
+            
+            <!-- 1 câu ngắn gọn thôi -->
+            <p class="card-short-tagline">
+              Ôn luyện toàn diện kiến thức ma trận đề thi MOS Excel với phần mềm thi thử.
+            </p>
+
+            <button type="button" class="btn-card-detail" onclick="openCourseDetailModal('on-luyen-mos-excel')">
+              <span>Xem chi tiết</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+        <!-- Khóa: Ôn luyện MOS PowerPoint -->
+        <article class="course-card">
+          <div class="card-banner-box bg-emerald">
+            <span class="card-group-pill">Khóa ôn luyện</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-course-name" data-base-name="Ôn luyện MOS PowerPoint"><span class="base-name">Ôn luyện MOS PowerPoint</span> <span class="fmt-suffix">| Trực tiếp tại trung tâm</span></h3>
+            
+            <!-- 1 câu ngắn gọn thôi -->
+            <p class="card-short-tagline">
+              Thực hành bộ đề thi mẫu bám sát đề thi thật, chinh phục chứng chỉ MOS PowerPoint.
+            </p>
+
+            <button type="button" class="btn-card-detail" onclick="openCourseDetailModal('on-luyen-mos-powerpoint')">
+              <span>Xem chi tiết</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================================================================
+       CỬA SỔ NỔI XEM CHI TIẾT KHÓA HỌC (MODAL)
+       ====================================================================== -->
+  <div class="detail-modal-backdrop" id="courseDetailModal" onclick="closeDetailModal(event)">
+    <div class="detail-modal-card" onclick="event.stopPropagation()">
+      <div class="modal-card-header">
+        <div class="modal-header-info">
+          <span class="modal-group-badge" id="modalGroupBadge">Khóa học</span>
+          <h3 class="modal-course-title" id="modalCourseTitle">Tên Khóa Học</h3>
+        </div>
+        <button type="button" class="modal-close-x" onclick="closeDetailModal()" aria-label="Đóng">&times;</button>
+      </div>
+
+      <div class="modal-card-body" id="modalCourseBody">
+        <!-- Nội dung chi tiết được render động bằng JavaScript -->
+      </div>
+
+      <div class="modal-card-footer">
+        <a href="lich-khai-giang.html" id="modalScheduleBtn" class="btn-modal-schedule">
+          <span>Xem lịch khai giảng để đăng kí</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Footer -->
+  <footer class="site-footer simple-footer">
+    <div class="footer-copyright">
+      © 2026 TRUNG TÂM TIN HỌC VĂN PHÒNG • BẢN QUYỀN THUỘC VỀ NHÓM 2 • HỆ THỐNG LMS TRỰC TUYẾN
+    </div>
+  </footer>
+
+  <script>
+    // Dữ liệu chi tiết 10 khóa học thuộc 3 nhóm (Giá tiền và nội dung đầy đủ ở trong modal)
+    const coursesDatabase = {
+  "tin-hoc-co-ban": {
+    "id": "tin-hoc-co-ban",
+    "name": "Tin học căn bản",
+    "group": "tong-hop",
+    "groupName": "Khóa học tổng hợp",
+    "badgePill": "Khóa tổng hợp",
+    "icon": "",
+    "bgClass": "bg-blue",
+    "shortTagline": "Làm chủ máy tính, Windows, Word, Excel và PowerPoint chuẩn công sở.",
+    "duration": "42 giờ (14 buổi)",
+    "level": "Cơ bản",
+    "fee": "1.500.000 đ",
+    "onlineFormat": "Học qua Zoom tương tác 2 chiều với giảng viên, có trợ giảng hướng dẫn, xem lại video Full HD 24/7 trên hệ thống LMS.",
+    "offlineFormat": "Thực hành 100% trên dàn máy tính cấu hình cao tại phòng Lab trung tâm (Cơ sở Q.5 & Q.10), giảng viên kèm 1-1 trực tiếp.",
+    "intro": "Khóa học Tin học căn bản được thiết kế theo khung chuẩn kỹ năng CNTT của Bộ Giáo dục & Đào tạo. Giúp học viên từ con số 0 làm chủ máy tính, tự tin xử lý mọi công việc văn phòng và đạt chứng chỉ quốc gia.",
+    "target": "Làm chủ máy tính và Windows; soạn thảo văn bản Word chuẩn thể thức; tính toán thành thạo các hàm Excel thông dụng; thiết kế slide PowerPoint ấn tượng; ứng dụng AI hỗ trợ học tập.",
+    "audience": "Người mới bắt đầu làm quen máy tính, học sinh, sinh viên cần chuẩn đầu ra tốt nghiệp, nhân viên văn phòng cần củng cố kiến thức nền tảng.",
+    "syllabus": [
+      "Module 1: Hiểu biết về CNTT cơ bản & Hệ điều hành Windows",
+      "Module 2: Quản lý tệp tin, thư mục & Kiểu gõ tiếng Việt Unikey",
+      "Module 3: Soạn thảo và định dạng văn bản Microsoft Word chuẩn thể thức",
+      "Module 4: Tạo lập bảng tính & Sử dụng các hàm tính toán Excel cơ bản",
+      "Module 5: Thiết kế và trình diễn slide Microsoft PowerPoint hiện đại",
+      "Module 6: Khai thác Internet an toàn & Ứng dụng AI thông minh hỗ trợ"
+    ]
+  },
+  "tin-hoc-nang-cao": {
+    "id": "tin-hoc-nang-cao",
+    "name": "Tin học nâng cao",
+    "group": "tong-hop",
+    "groupName": "Khóa học tổng hợp",
+    "badgePill": "Khóa tổng hợp",
+    "icon": "",
+    "bgClass": "bg-indigo",
+    "shortTagline": "Nâng tầm kỹ năng soạn thảo văn bản nâng cao và xử lý dữ liệu chuyên nghiệp.",
+    "duration": "45 giờ (15 buổi)",
+    "level": "Nâng cao",
+    "fee": "1.600.000 đ",
+    "onlineFormat": "Lớp học Zoom tương tác trực tiếp với chuyên gia dữ liệu, gửi file mẫu thực tế và lưu trữ bài giảng trọn đời.",
+    "offlineFormat": "Thực hành tại phòng Lab chuyên sâu với hệ thống bài tập thực tế doanh nghiệp và giảng viên hướng dẫn chuyên môn.",
+    "intro": "Khóa học bứt phá kỹ năng dành cho người đã nắm vững cơ bản, phục vụ nhu cầu xử lý văn bản phức tạp, phân tích dữ liệu chuyên nghiệp và thi chứng chỉ Ứng dụng CNTT Nâng cao.",
+    "target": "Làm chủ Mail Merge, Styles, Table of Contents nâng cao trong Word; thành thạo PivotTable, VLOOKUP, INDEX/MATCH, Macro cơ bản trong Excel; tối ưu hóa báo cáo số.",
+    "audience": "Học viên đã học qua Tin học cơ bản, sinh viên năm cuối, nhân viên hành chính - kế toán - nhân sự cần nâng cao hiệu suất công việc.",
+    "syllabus": [
+      "Module 1: Soạn thảo và quản lý tài liệu dài Microsoft Word nâng cao",
+      "Module 2: Thiết lập mẫu văn bản Form, Mail Merge & Bảo mật tài liệu",
+      "Module 3: Xử lý dữ liệu lớn, tổ hợp hàm phức tạp trong Microsoft Excel",
+      "Module 4: Phân tích báo cáo với PivotTable, PivotChart & Dashboard",
+      "Module 5: Giới thiệu Macro tự động hóa thao tác lặp lại trong Excel",
+      "Module 6: Ôn tập đề thi chuẩn CNTT Nâng cao theo Thông tư 03"
+    ]
+  },
+  "word-van-phong": {
+    "id": "word-van-phong",
+    "name": "Word văn phòng",
+    "group": "chuyen-de",
+    "groupName": "Khóa học chuyên đề",
+    "badgePill": "Khóa chuyên đề",
+    "icon": "",
+    "bgClass": "bg-blue",
+    "shortTagline": "Soạn thảo và định dạng văn bản hành chính chuẩn quy định nhanh chóng.",
+    "duration": "24 giờ (8 buổi)",
+    "level": "Mọi trình độ",
+    "fee": "950.000 đ",
+    "onlineFormat": "Lớp học trực tuyến qua Zoom, tặng kho 300+ mẫu văn bản hợp đồng, báo cáo chuẩn doanh nghiệp.",
+    "offlineFormat": "Thực hành trực tiếp trên máy Lab, rèn tốc độ gõ phím 10 ngón và xử lý lỗi định dạng văn bản thực tế.",
+    "intro": "Khóa học chuyên sâu giúp bạn làm chủ hoàn toàn Microsoft Word, từ văn bản công văn hành chính đến sách, tài liệu nghiên cứu và hợp đồng kinh tế.",
+    "target": "Soạn thảo văn bản cực nhanh, đúng quy chuẩn nhà nước; trình bày bố cục văn bản đẹp mắt, chuyên nghiệp.",
+    "audience": "Nhân viên văn phòng, thư ký, trợ lý, sinh viên làm đồ án, khóa luận tốt nghiệp.",
+    "syllabus": [
+      "Module 1: Quy chuẩn thể thức trình bày văn bản hành chính (Nghị định 30)",
+      "Module 2: Căn chỉnh Font, Tab, Paragraph, Header/Footer đa trang",
+      "Module 3: Tạo mục lục tự động, danh mục bảng biểu và chú thích tham chiếu",
+      "Module 4: Xử lý bảng biểu, biểu đồ và chèn hình ảnh minh họa chuẩn",
+      "Module 5: Kỹ thuật trộn thư Mail Merge xuất file hàng loạt",
+      "Module 6: Khóa bảo vệ văn bản, phân quyền chỉnh sửa và xuất file PDF chuẩn in"
+    ]
+  },
+  "excel-van-phong": {
+    "id": "excel-van-phong",
+    "name": "Excel văn phòng",
+    "group": "chuyen-de",
+    "groupName": "Khóa học chuyên đề",
+    "badgePill": "Khóa chuyên đề",
+    "icon": "",
+    "bgClass": "bg-emerald",
+    "shortTagline": "Thành thạo lập bảng tính, sử dụng các hàm thống kê và lập báo cáo quản trị.",
+    "duration": "30 giờ (10 buổi)",
+    "level": "Mọi trình độ",
+    "fee": "1.200.000 đ",
+    "onlineFormat": "Học online tương tác trực tiếp, thực hành trên file dữ liệu doanh nghiệp thật, giải đáp bài tập 24/7.",
+    "offlineFormat": "Phòng máy cấu hình cao tại trung tâm, giáo viên kèm từng hàm tính toán, hướng dẫn logic xử lý dữ liệu.",
+    "intro": "Khóa học thiết yếu cho mọi nhân sự thời đại số. Giúp bạn biến các bảng dữ liệu khô khan thành các báo cáo trực quan, tự động và chính xác 100%.",
+    "target": "Hiểu rõ bản chất các nhóm hàm; tự tin xử lý dữ liệu kế toán, tiền lương, bán hàng; xây dựng báo cáo PivotTable động.",
+    "audience": "Nhân viên kế toán, tài chính, nhân sự, bán hàng, sinh viên khối ngành kinh tế và người đi làm.",
+    "syllabus": [
+      "Module 1: Cơ bản về bảng tính Excel & Tổ chức cấu trúc dữ liệu chuẩn",
+      "Module 2: Nhóm hàm toán học, xử lý chuỗi văn bản và ngày tháng thời gian",
+      "Module 3: Nhóm hàm thống kê có điều kiện (COUNTIF, SUMIF, AVERAGEIF)",
+      "Module 4: Nhóm hàm logic & Tìm kiếm dữ liệu nâng cao (IF, AND, OR, VLOOKUP, XLOOKUP)",
+      "Module 5: Phân tích dữ liệu, lọc nâng cao Advanced Filter & Định dạng có điều kiện",
+      "Module 6: Xây dựng báo cáo động với PivotTable, Slicer và Dashboard trực quan"
+    ]
+  },
+  "powerpoint-thuyet-trinh": {
+    "id": "powerpoint-thuyet-trinh",
+    "name": "PowerPoint thuyết trình",
+    "group": "chuyen-de",
+    "groupName": "Khóa học chuyên đề",
+    "badgePill": "Khóa chuyên đề",
+    "icon": "",
+    "bgClass": "bg-amber",
+    "shortTagline": "Thiết kế slide thuyết trình ấn tượng, hiện đại với hiệu ứng chuyên nghiệp.",
+    "duration": "24 giờ (8 buổi)",
+    "level": "Mọi trình độ",
+    "fee": "850.000 đ",
+    "onlineFormat": "Học trực tuyến sáng tạo, tặng 1000+ template PowerPoint độc quyền và bộ font việt hóa cao cấp.",
+    "offlineFormat": "Thực hành trên máy tính tại trung tâm, rèn kỹ năng thuyết trình tự tin trước đám đông.",
+    "intro": "Đừng để bài thuyết trình nhàm chán làm giảm giá trị ý tưởng của bạn. Khóa học giúp bạn tạo nên những slide chuẩn quốc tế thu hút người xem từ ánh nhìn đầu tiên.",
+    "target": "Nắm vững nguyên lý thị giác, phối màu; thành thạo công cụ thiết kế slide; sử dụng hiệu ứng Animation & Transition tinh tế.",
+    "audience": "Người thường xuyên thuyết trình báo cáo, giáo viên, chuyên viên đào tạo, sinh viên bảo vệ đồ án.",
+    "syllabus": [
+      "Module 1: Tư duy thiết kế slide hiện đại: Bố cục, Typography & Bánh xe màu sắc",
+      "Module 2: Làm chủ Slide Master xây dựng hệ thống template đồng bộ thương hiệu",
+      "Module 3: Trực quan hóa số liệu và quy trình với SmartArt và Icon đồ họa",
+      "Module 4: Nghệ thuật sử dụng chuyển động Morph và hiệu ứng Zoom tương tác",
+      "Module 5: Tích hợp Infographic, âm thanh, video và nhúng dữ liệu Excel",
+      "Module 6: Kỹ năng trình chiếu chuyên nghiệp, Presenter View và xuất video 4K"
+    ]
+  },
+  "cong-cu-truc-tuyen": {
+    "id": "cong-cu-truc-tuyen",
+    "name": "Công cụ văn phòng trực tuyến",
+    "group": "chuyen-de",
+    "groupName": "Khóa học chuyên đề",
+    "badgePill": "Khóa chuyên đề",
+    "icon": "",
+    "bgClass": "bg-cyan",
+    "shortTagline": "Làm việc nhóm và cộng tác dữ liệu thời gian thực trên Google & Microsoft 365.",
+    "duration": "24 giờ (8 buổi)",
+    "level": "Cơ bản đến trung cấp",
+    "fee": "850.000 đ",
+    "onlineFormat": "Thực hành cộng tác thời gian thực qua môi trường đám mây trên máy tính học viên.",
+    "offlineFormat": "Luyện tập mô phỏng quy trình làm việc nhóm hybrid thực tế tại phòng Lab trung tâm.",
+    "intro": "Xu thế làm việc từ xa (Work from home) và văn phòng không giấy tờ đòi hỏi khả năng cộng tác tài liệu trực tuyến tức thì. Khóa học trang bị đầy đủ bộ kỹ năng này.",
+    "target": "Quản lý dữ liệu an toàn trên Google Drive; tạo biểu mẫu khảo sát trực tuyến; cùng đồng nghiệp soạn thảo và duyệt báo cáo theo thời gian thực.",
+    "audience": "Người đi làm trong môi trường linh hoạt, nhóm khởi nghiệp, sinh viên làm việc nhóm trực tuyến.",
+    "syllabus": [
+      "Module 1: Tổng quan hệ sinh thái Google Workspace & Microsoft 365 Cloud",
+      "Module 2: Quản lý kho lưu trữ đám mây, chia sẻ tài nguyên và phân quyền an toàn",
+      "Module 3: Soạn thảo và chỉnh sửa văn bản cộng tác trên Google Docs",
+      "Module 4: Làm việc với bảng tính Google Sheets: Tính năng cộng tác & Hàm đặc thù",
+      "Module 5: Thiết kế khảo sát, bài kiểm tra và thu thập thông tin với Google Forms",
+      "Module 6: Tích hợp lịch hẹn Google Calendar, họp trực tuyến Google Meet & Quản lý tác vụ"
+    ]
+  },
+  "ung-dung-ai": {
+    "id": "ung-dung-ai",
+    "name": "Ứng dụng AI trong công việc văn phòng",
+    "group": "chuyen-de",
+    "groupName": "Khóa học chuyên đề",
+    "badgePill": "Khóa chuyên đề",
+    "icon": "",
+    "bgClass": "bg-purple",
+    "shortTagline": "Đột phá năng suất làm việc văn phòng cùng các trợ lý AI thông minh.",
+    "duration": "24 giờ (8 buổi)",
+    "level": "Mọi trình độ",
+    "fee": "1.200.000 đ",
+    "onlineFormat": "Học online Zoom với tài khoản AI thực hành được cấp sẵn trong suốt khóa học.",
+    "offlineFormat": "Thực hành trực tiếp tại phòng máy Lab trung tâm với các tình huống nghiệp vụ thực tế.",
+    "intro": "Trí tuệ nhân tạo đang định hình lại cách chúng ta làm việc. Khóa học này giúp bạn biến AI thành trợ lý đắc lực giải phóng khỏi những công việc thủ công nhàm chán.",
+    "target": "Nắm vững kỹ thuật viết câu lệnh (Prompt Engineering); ứng dụng AI tạo nội dung, công thức Excel và tự động hóa xử lý công việc.",
+    "audience": "Nhân viên văn phòng, cán bộ quản lý, người làm kinh doanh muốn gia tăng hiệu suất vượt trội.",
+    "syllabus": [
+      "Module 1: Tổng quan các mô hình ngôn ngữ lớn (LLM): ChatGPT, Copilot, Gemini",
+      "Module 2: Kỹ thuật viết câu lệnh Prompt Engineering đỉnh cao cho dân văn phòng",
+      "Module 3: Sử dụng AI soạn thảo email chuyên nghiệp, công văn và báo cáo tóm tắt",
+      "Module 4: Tận dụng AI để viết công thức Excel phức tạp và gỡ lỗi dữ liệu",
+      "Module 5: Tạo slide thuyết trình tự động và biên tập nội dung cùng AI",
+      "Module 6: Bảo mật thông tin doanh nghiệp và đạo đức khi khai thác Trí tuệ nhân tạo"
+    ]
+  },
+  "on-luyen-mos-word": {
+    "id": "on-luyen-mos-word",
+    "name": "Ôn luyện MOS Word",
+    "group": "on-luyen",
+    "groupName": "Khóa học ôn luyện MOS",
+    "badgePill": "Khóa ôn luyện",
+    "icon": "",
+    "bgClass": "bg-rose",
+    "shortTagline": "Luyện giải đề thi chuẩn quốc tế Certiport và tự tin đạt điểm cao bài thi MOS Word.",
+    "duration": "24 giờ (8 buổi)",
+    "level": "Cơ bản - Trung cấp",
+    "fee": "1.200.000 đ",
+    "onlineFormat": "Học qua Zoom, cung cấp phần mềm thi thử bản quyền GMetrix luyện tập tại nhà.",
+    "offlineFormat": "Phòng thi mô phỏng chuẩn quốc tế tại Lab trung tâm, giáo viên sửa từng lỗi thao tác.",
+    "intro": "Chứng chỉ Microsoft Office Specialist (MOS) là bảo chứng vàng về kỹ năng tin học trên toàn cầu. Khóa học giúp học viên tự tin đạt 900+ điểm ngay lần thi đầu tiên.",
+    "target": "Nắm trọn vẹn 100% mục tiêu bài thi MOS Word; rèn phản xạ thao tác trên giao diện tiếng Anh chuẩn bài thi thật.",
+    "audience": "Sinh viên cần chứng chỉ chuẩn đầu ra tốt nghiệp, người đi làm cần bổ sung hồ sơ xin việc doanh nghiệp nước ngoài.",
+    "syllabus": [
+      "Module 1: Cấu trúc bài thi MOS Word & Hướng dẫn cài đặt phần mềm thi thử",
+      "Module 2: Quản lý tài liệu và thiết lập các tùy chọn hệ thống Word",
+      "Module 3: Chèn và định dạng văn bản, đoạn văn và các Section phức tạp",
+      "Module 4: Quản lý bảng biểu, danh sách và liên kết tài liệu",
+      "Module 5: Chèn và định dạng các đối tượng đồ họa trong văn bản",
+      "Module 6: Giải bộ đề thực chiến Practice Exam 1, 2, 3 và phân tích lỗi mất điểm"
+    ]
+  },
+  "on-luyen-mos-excel": {
+    "id": "on-luyen-mos-excel",
+    "name": "Ôn luyện MOS Excel",
+    "group": "on-luyen",
+    "groupName": "Khóa học ôn luyện MOS",
+    "badgePill": "Khóa ôn luyện",
+    "icon": "",
+    "bgClass": "bg-amber",
+    "shortTagline": "Ôn luyện toàn diện kiến thức ma trận đề thi MOS Excel với phần mềm thi thử.",
+    "duration": "24 giờ (8 buổi)",
+    "level": "Cơ bản - Trung cấp",
+    "fee": "1.400.000 đ",
+    "onlineFormat": "Học online Zoom kèm bản quyền phần mềm luyện thi thử GMetrix tương đương bài thi thật.",
+    "offlineFormat": "Học tại phòng máy Lab trung tâm, luyện đề trực tiếp trên máy chấm điểm tự động.",
+    "intro": "Bài thi MOS Excel luôn là thách thức lớn đối với nhiều thí sinh. Khóa ôn luyện bám sát ma trận đề thi, giúp bạn chinh phục chứng chỉ quốc tế giá trị vĩnh viễn.",
+    "target": "Nắm vững mọi kỹ năng trong khung ma trận MOS Excel; giải đề nhanh và chính xác dưới áp lực thời gian 50 phút.",
+    "audience": "Sinh viên các trường Đại học, Cao đẳng, nhân viên ngân hàng, tài chính, kiểm toán, kinh doanh.",
+    "syllabus": [
+      "Module 1: Tổng quan bài thi MOS Excel và ma trận kỹ năng chuẩn Certiport",
+      "Module 2: Quản lý bảng tính Worksheet và sổ tính Workbook",
+      "Module 3: Quản lý ô dữ liệu và vùng dữ liệu (Data Cells and Ranges)",
+      "Module 4: Quản lý bảng tính Table và các tùy chọn kiểu hiển thị bảng",
+      "Module 5: Thực hiện các phép toán với công thức và hàm chuẩn MOS",
+      "Module 6: Luyện giải trọn bộ 5 đề thi thử sát đề thi thật và thi thử mô phỏng"
+    ]
+  },
+  "on-luyen-mos-powerpoint": {
+    "id": "on-luyen-mos-powerpoint",
+    "name": "Ôn luyện MOS PowerPoint",
+    "group": "on-luyen",
+    "groupName": "Khóa học ôn luyện MOS",
+    "badgePill": "Khóa ôn luyện",
+    "icon": "",
+    "bgClass": "bg-emerald",
+    "shortTagline": "Thực hành bộ đề thi mẫu bám sát đề thi thật, chinh phục chứng chỉ MOS PowerPoint.",
+    "duration": "20 giờ (7 buổi)",
+    "level": "Cơ bản - Trung cấp",
+    "fee": "1.200.000 đ",
+    "onlineFormat": "Học trực tuyến Zoom với giáo viên kinh nghiệm luyện thi MOS hàng đầu.",
+    "offlineFormat": "Thực hành tại phòng máy Lab trung tâm với tài liệu ôn tập và đề thi độc quyền.",
+    "intro": "Khóa học ngắn hạn nhưng hiệu quả vượt bậc, trang bị cho học viên đầy đủ kỹ năng và mẹo làm bài để đạt điểm tuyệt đối trong kỳ thi MOS PowerPoint quốc tế.",
+    "target": "Thao tác thành thạo tất cả dạng bài trong bài thi; xử lý đề thi chuẩn Certiport trong thời gian ngắn nhất.",
+    "audience": "Sinh viên, học sinh, nhân viên văn phòng muốn sở hữu chứng chỉ tin học quốc tế uy tín.",
+    "syllabus": [
+      "Module 1: Cấu trúc bài thi MOS PowerPoint và phương pháp làm bài đạt điểm tối đa",
+      "Module 2: Quản lý bài thuyết trình, Slide Master và chia Section",
+      "Module 3: Chèn và định dạng văn bản, hình khối và hình ảnh",
+      "Module 4: Chèn bảng biểu, biểu đồ, SmartArt, mô hình 3D và đa phương tiện",
+      "Module 5: Áp dụng hiệu ứng chuyển trang Transitions và hoạt ảnh Animations",
+      "Module 6: Giải bộ đề thi mẫu MOS PowerPoint thực chiến và thi thử chuẩn"
+    ]
+  }
+};
+
+    // Hình thức học được chọn hiện tại: 'offline' (mặc định Trực tiếp) hoặc 'online'
+    let currentGlobalFormat = 'offline';
+
+    // Xử lý nút to rõ chọn hình thức học: Cập nhật giao diện nút và tự động đổi tên các khóa học (ví dụ: Tin học căn bản | Trực tiếp)
+    function setSimpleFormat(format) {
+      currentGlobalFormat = format;
+      const bOffline = document.getElementById('btnFmtOffline');
+      const bOnline = document.getElementById('btnFmtOnline');
+      const indOff = document.getElementById('indicatorOffline');
+      const indOn = document.getElementById('indicatorOnline');
+
+      if (format === 'offline') {
+        if (bOffline) bOffline.classList.add('active');
+        if (bOnline) bOnline.classList.remove('active');
+        if (indOff) indOff.style.display = 'inline-block';
+        if (indOn) indOn.style.display = 'none';
+      } else {
+        if (bOnline) bOnline.classList.add('active');
+        if (bOffline) bOffline.classList.remove('active');
+        if (indOn) indOn.style.display = 'inline-block';
+        if (indOff) indOff.style.display = 'none';
+      }
+
+      // Cập nhật tên tất cả các khóa học hiển thị kèm hình thức màu xanh lá cây nổi bật
+      const suffixHtml = format === 'offline' 
+        ? '<span class="fmt-suffix">| Trực tiếp tại trung tâm</span>' 
+        : '<span class="fmt-suffix">| Trực tuyến</span>';
+
+      document.querySelectorAll('.card-course-name').forEach(titleElem => {
+        const baseName = titleElem.getAttribute('data-base-name');
+        if (baseName) {
+          titleElem.innerHTML = `<span class="base-name">${baseName}</span> ${suffixHtml}`;
+        }
+      });
+    }
+
+    // Xử lý bấm các nút bộ lọc nhóm khóa học: "Tất cả", "Khóa học tổng hợp", "Khóa học chuyên đề", "Khóa học ôn luyện"
+    function filterCourses(groupId) {
+      // Đổi trạng thái active trên các nút
+      const buttons = document.querySelectorAll('.btn-filter');
+      buttons.forEach(btn => {
+        if (btn.getAttribute('data-filter') === groupId) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Ẩn/hiện các nhóm khóa học
+      const sections = document.querySelectorAll('.course-group-section');
+      sections.forEach(sec => {
+        const secId = sec.getAttribute('data-group-id');
+        if (groupId === 'all' || secId === groupId) {
+          sec.style.display = 'block';
+        } else {
+          sec.style.display = 'none';
+        }
+      });
+    }
+
+    // Mở modal xem chi tiết từ thẻ khóa học
+    function openCourseDetailModal(courseKey) {
+      openDetailModal(courseKey, currentGlobalFormat);
+    }
+
+    let currentModalCourseKey = null;
+    let currentModalFormat = 'offline';
+
+    // Mở Modal xem chi tiết khóa học
+    function openDetailModal(courseKey, format) {
+      const data = coursesDatabase[courseKey];
+      if (!data) return;
+
+      currentModalCourseKey = courseKey;
+      currentModalFormat = format || currentGlobalFormat || 'offline';
+
+      const badgeElem = document.getElementById('modalGroupBadge');
+      const titleElem = document.getElementById('modalCourseTitle');
+      if (badgeElem) badgeElem.innerText = data.groupName;
+      if (titleElem) titleElem.innerText = data.name;
+
+      renderModalBodyContent(data, currentModalFormat);
+
+      const modal = document.getElementById('courseDetailModal');
+      if (modal) {
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function renderModalBodyContent(data, format) {
+      let syllabusHtml = '';
+      if (data.syllabus) {
+        data.syllabus.forEach(item => {
+          syllabusHtml += `<li class="modal-syllabus-item">${item}</li>`;
+        });
+      }
+
+      // Khối hình thức học: CHỈ HIỆN ĐÚNG 1 HÌNH THỨC ĐÃ CHỌN
+      let formatBoxHtml = '';
+      if (format === 'offline') {
+        formatBoxHtml = `
+          <div class="modal-single-format-box offline-mode">
+            <div class="msf-header">
+              <h4 class="msf-title">
+                <span>Hình Thức Trực Tiếp Tại Trung Tâm</span>
+              </h4>
+              <span class="msf-badge">ĐÃ CHỌN HÌNH THỨC NÀY</span>
+            </div>
+            <p class="msf-desc">${data.offlineFormat}</p>
+            <div class="msf-switch-box">
+              <span>Bạn muốn đổi sang hình thức Trực tuyến?</span>
+              <button type="button" class="btn-switch-format" onclick="switchModalFormat('${data.id}', 'online')">
+                Đổi sang Trực tuyến
+              </button>
+            </div>
+          </div>
+        `;
+      } else {
+        formatBoxHtml = `
+          <div class="modal-single-format-box online-mode">
+            <div class="msf-header">
+              <h4 class="msf-title">
+                <span>Hình Thức Trực Tuyến</span>
+              </h4>
+              <span class="msf-badge">ĐÃ CHỌN HÌNH THỨC NÀY</span>
+            </div>
+            <p class="msf-desc">${data.onlineFormat}</p>
+            <div class="msf-switch-box">
+              <span>Bạn muốn đổi sang hình thức Trực tiếp tại trung tâm?</span>
+              <button type="button" class="btn-switch-format" onclick="switchModalFormat('${data.id}', 'offline')">
+                Đổi sang Trực tiếp tại trung tâm
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      const bodyHtml = `
+        <!-- Khối hình thức học đã chọn -->
+        ${formatBoxHtml}
+
+        <!-- Thông tin cơ bản: Có giá tiền / Học phí nổi bật ở trong modal -->
+        <div class="modal-meta-strip">
+          <div class="modal-meta-item">
+            <strong>Trình độ yêu cầu</strong>
+            <span>${data.level}</span>
+          </div>
+          <div class="modal-meta-item">
+            <strong>Thời lượng đào tạo</strong>
+            <span>${data.duration}</span>
+          </div>
+          <div class="modal-meta-item modal-fee-item">
+            <strong>Học phí trọn gói</strong>
+            <span class="modal-fee-price">${data.fee}</span>
+          </div>
+        </div>
+
+        <div class="modal-section-block">
+          <h4 class="modal-section-title">Giới Thiệu Khóa Học</h4>
+          <p class="modal-section-text">${data.intro}</p>
+        </div>
+
+        <div class="modal-section-block">
+          <h4 class="modal-section-title">Mục Tiêu Khóa Học</h4>
+          <p class="modal-section-text">${data.target}</p>
+        </div>
+
+        <div class="modal-section-block">
+          <h4 class="modal-section-title">Đối Tượng Phù Hợp</h4>
+          <p class="modal-section-text">${data.audience}</p>
+        </div>
+
+        <div class="modal-section-block">
+          <h4 class="modal-section-title">Đề Cương Chi Tiết Chương Trình</h4>
+          <ul class="modal-syllabus-list">
+            ${syllabusHtml}
+          </ul>
+        </div>
+      `;
+
+      const bodyElem = document.getElementById('modalCourseBody');
+      if (bodyElem) bodyElem.innerHTML = bodyHtml;
+
+      // Nút Xem Lịch Khai Giảng trong modal: CHỈ DẪN ĐÚNG LỊCH CỦA MÔN ĐÓ VÀ HÌNH THỨC ĐÓ
+      const schedBtn = document.getElementById('modalScheduleBtn');
+      if (schedBtn) {
+        schedBtn.href = `lich-khai-giang.html?course=${data.id}&format=${format}`;
+        schedBtn.innerHTML = `<span>Xem lịch khai giảng để đăng kí</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+      }
+    }
+
+    function switchModalFormat(courseKey, newFormat) {
+      currentModalFormat = newFormat;
+      setSimpleFormat(newFormat);
+      const data = coursesDatabase[courseKey];
+      if (data) {
+        renderModalBodyContent(data, newFormat);
+      }
+    }
+
+    function closeDetailModal(e) {
+      if (e && e.target !== e.currentTarget) return;
+      const modal = document.getElementById('courseDetailModal');
+      if (modal) {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // Tự động nhận diện URL parameters
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const groupParam = urlParams.get('group');
+      if (groupParam && ['tong-hop', 'chuyen-de', 'on-luyen'].includes(groupParam)) {
+        filterCourses(groupParam);
+      }
+      const courseParam = urlParams.get('course');
+      if (courseParam && coursesDatabase[courseParam]) {
+        openCourseDetailModal(courseParam);
+      }
+    });
+
+    // Dropdown toggle cho menu Tiện ích
+    (function () {
+      const toolsDropdown = document.getElementById('nav-tools-dropdown');
+      const btnTools = document.getElementById('btn-tools-dropdown');
+      const toolsContent = toolsDropdown ? toolsDropdown.querySelector('.nav-dropdown-content') : null;
+
+      if (toolsDropdown && btnTools) {
+        btnTools.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toolsDropdown.classList.toggle('open');
+        });
+
+        if (toolsContent) {
+          toolsContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        }
+
+        document.addEventListener('click', () => {
+          toolsDropdown.classList.remove('open');
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>
