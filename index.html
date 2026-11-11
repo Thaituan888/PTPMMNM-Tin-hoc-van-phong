@@ -3,6 +3,13 @@
 
 <head>
   <meta charset="UTF-8" />
+  <script>
+    // Bắt buộc luôn cuộn lên đầu trang khi tải hoặc F5 tải lại trang bất kể vị trí trước đó
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TIN HỌC VĂN PHÒNG - Nền tảng học tập và phát triển kỹ năng số</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -322,7 +329,7 @@
 
           <div class="illustration-frame">
             <div class="illustration-img-wrap">
-              <img src="sec2_kynangso.jpg" alt="Minh họa nền tảng kỹ năng số Tin học văn phòng" />
+              <img src="images/sec2_kynangso.jpg" alt="Minh họa nền tảng kỹ năng số Tin học văn phòng" />
             </div>
             <div class="illustration-stats">
               <div class="illus-pillar-item">
@@ -1273,7 +1280,7 @@
           <div class="community-banner-inner">
             <!-- Left 3D Model: Laptop + Graduation Cap + Stacked Books + Plant -->
             <div class="cb-illus-left">
-              <img src="sec11_community_laptop.png" alt="Laptop và mũ tốt nghiệp cộng đồng học tập" />
+              <img src="images/sec11_community_laptop.png" alt="Laptop và mũ tốt nghiệp cộng đồng học tập" />
             </div>
 
             <!-- Center Content: Crisp Vector Title + 4 Horizontal Buttons -->
@@ -1345,7 +1352,7 @@
 
             <!-- Right 3D Model: Floating Frosted Glass Chat & Community Bubbles -->
             <div class="cb-illus-right">
-              <img src="sec11_community_chat.png" alt="Biểu tượng trò chuyện và chia sẻ cộng đồng" />
+              <img src="images/sec11_community_chat.png" alt="Biểu tượng trò chuyện và chia sẻ cộng đồng" />
             </div>
           </div>
         </div>

@@ -3,6 +3,13 @@
 
 <head>
   <meta charset="UTF-8" />
+  <script>
+    // Bắt buộc luôn cuộn lên đầu trang khi tải hoặc F5 tải lại trang bất kể vị trí trước đó
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tra Cứu Phím Tắt - Tin Học Văn Phòng</title>
   <meta name="description"
