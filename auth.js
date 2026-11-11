@@ -1,3 +1,18 @@
+
+// ===================================================================
+// BẮT BUỘC LUÔN CUỘN LÊN ĐẦU TRANG KHI F5 / TẢI LẠI TRANG
+// ===================================================================
+if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+window.addEventListener('beforeunload', function () {
+  window.scrollTo(0, 0);
+});
+window.addEventListener('load', function () {
+  window.scrollTo(0, 0);
+});
+
 /**
  * ===================================================================
  * HỆ THỐNG XÁC THỰC, ĐĂNG KÝ HỌC VIÊN, GỬI MÃ OTP 6 SỐ & QUÊN MẬT KHẨU

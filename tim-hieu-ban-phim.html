@@ -3,6 +3,13 @@
 
 <head>
   <meta charset="UTF-8" />
+  <script>
+    // Bắt buộc luôn cuộn lên đầu trang khi tải hoặc F5 tải lại trang bất kể vị trí trước đó
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Giới Thiệu Bàn Phím Máy Tính (Full 100%) - Tin Học Văn Phòng</title>
   <meta name="description"
@@ -2013,7 +2020,6 @@
         const data = clustersData[cl];
         if (!data) return;
 
-        playSwitchSound();
         detailIcon.innerHTML = clusterIcons[cl] || clusterIcons.alpha;
         detailTitle.textContent = data.name;
         detailSubtitle.textContent = data.sub;
@@ -2070,7 +2076,6 @@
         const data = rowsData[rw];
         if (!data) return;
 
-        playSwitchSound();
         detailIcon.innerHTML = rowIcons[rw] || rowIcons.home;
         detailTitle.textContent = data.name;
         detailSubtitle.textContent = data.sub;
@@ -2190,7 +2195,6 @@
             const correctLetter = String.fromCharCode(65 + q.correct);
             const correctText = `${correctLetter}. ${q.opts[q.correct]}`;
 
-            playSwitchSound();
             if (selectedIdx === q.correct) {
               quizScore++;
               scoreBadge.textContent = `Điểm số: ${quizScore} / ${quizQuestions.length}`;
