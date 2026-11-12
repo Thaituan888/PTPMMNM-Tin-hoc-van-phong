@@ -82,9 +82,23 @@
   }
 
   // --- HELPER FUNCTIONS ---
+  function isTeacherAccount(role, username) {
+    const r = String(role || '').trim().toLowerCase();
+    const u = String(username || '').trim().toLowerCase();
+    return r === 'admin' || r === 'teacher' || r === 'giangvien' || u === 'giangvien';
+  }
+
+  function canDeletePost(post, user = state.currentUser) {
+    if (!user || !post) return false;
+    if (isTeacherAccount(user.role, user.username)) return true;
+    const curUsername = String(user.username || '').trim().toLowerCase();
+    const authorUsername = String(post.author_username || '').trim().toLowerCase();
+    return Boolean(curUsername && curUsername === authorUsername);
+  }
+
   function getAvatarUrl(username, role, customAvatar) {
     if (customAvatar && customAvatar.length > 5) return customAvatar;
-    if (role === 'admin' || role === 'teacher' || (username && username.toLowerCase() === 'giangvien')) {
+    if (isTeacherAccount(role, username)) {
       return 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80';
     }
     return 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&h=120&q=80';
@@ -233,7 +247,7 @@
       return;
     }
 
-    const isTeacher = user.role === 'admin' || user.role === 'teacher';
+    const isTeacher = isTeacherAccount(user.role, user.username);
     const roleLabel = isTeacher ? 'Giảng viên' : 'Học viên';
     const avatar = getAvatarUrl(user.username, user.role, user.avatar);
     badgeEl.textContent = '1 ONLINE';
@@ -436,7 +450,7 @@
     // Sắp xếp
     if (state.activeSort === 'teacher') {
       filteredPosts = filteredPosts.filter(
-        p => p.author_role === 'admin' || p.author_role === 'teacher' || p.author_username === 'Giangvien'
+        p => isTeacherAccount(p.author_role, p.author_username)
       );
     } else if (state.activeSort === 'score') {
       filteredPosts = filteredPosts.filter(p => p.post_type === 'score_brag' || p.meta_score);
@@ -504,7 +518,7 @@
           </div>
         `;
       } else {
-        const isTeacher = user.role === 'admin' || user.role === 'teacher';
+        const isTeacher = isTeacherAccount(user.role, user.username);
         const roleName = isTeacher ? 'Giảng viên' : 'Học viên';
         const roleClass = isTeacher ? 'teacher' : 'student';
         const avatar = getAvatarUrl(user.username, user.role, user.avatar);
@@ -610,7 +624,7 @@
   }
 
   function createPostCardHtml(post) {
-    const isTeacher = post.author_role === 'admin' || post.author_role === 'teacher' || post.author_username === 'Giangvien';
+    const isTeacher = isTeacherAccount(post.author_role, post.author_username);
     const roleBadgeHtml = isTeacher
       ? `<span class="role-badge teacher">Giảng viên</span>`
       : `<span class="role-badge student">Học viên</span>`;
@@ -711,10 +725,12 @@
     const currentReactionConfig = myReaction ? REACTION_CONFIG[myReaction] : { label: 'Thích', icon: '👍', color: '' };
     const reactionBtnClass = myReaction ? `btn-toolbar-action reaction-btn active-reaction active-${myReaction}` : `btn-toolbar-action reaction-btn`;
 
-    // Dropdown menu (Xóa bài nếu là tác giả hoặc admin)
-    const canDelete = state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.username === post.author_username);
+    // Dropdown menu (Xóa bài nếu là tác giả hoặc tài khoản giáo viên)
+    const canDelete = canDeletePost(post);
+    const isAuthor = state.currentUser && String(state.currentUser.username || '').trim().toLowerCase() === String(post.author_username || '').trim().toLowerCase();
+    const isTeacherDelete = canDelete && !isAuthor && isTeacherAccount(state.currentUser.role, state.currentUser.username);
     const menuBtnHtml = canDelete
-      ? `<button type="button" class="post-menu-btn" onclick="window.THVP_FORUM.deletePost(${post.id})" title="Xóa bài viết">🗑️</button>`
+      ? `<button type="button" class="post-menu-btn${isTeacherDelete ? ' post-delete-teacher' : ''}" onclick="window.THVP_FORUM.deletePost(${post.id})" title="${isTeacherDelete ? 'Xóa bài viết của học viên (Quyền Giáo viên)' : 'Xóa bài viết'}">${isTeacherDelete ? '🗑️ Xóa bài' : '🗑️'}</button>`
       : '';
 
     // Thẻ Pinned
@@ -901,7 +917,7 @@
   }
 
   function renderSingleCommentHtml(c, postId, isNested = false) {
-    const isTeacher = c.author_role === 'admin' || c.author_role === 'teacher' || c.author_username === 'Giangvien';
+    const isTeacher = isTeacherAccount(c.author_role, c.author_username);
     const badgeHtml = isTeacher ? `<span class="role-badge teacher" style="font-size: 9px; padding: 1px 5px;">GV</span>` : '';
     const avatar = getAvatarUrl(c.author_username, c.author_role, c.author_avatar);
 
@@ -1452,9 +1468,29 @@
   }
 
   async function deletePost(postId) {
-    if (!confirm('Bạn có chắc chắn muốn xóa bài viết này không?')) return;
+    if (!state.currentUser) {
+      triggerLoginPrompt('Vui lòng đăng nhập để thực hiện thao tác xóa bài viết.');
+      return;
+    }
+
+    const targetPost = state.posts.find(p => Number(p.id) === Number(postId))
+      || (state.allPostsCache || []).find(p => Number(p.id) === Number(postId))
+      || getLocalPosts().find(p => Number(p.id) === Number(postId));
+
+    if (targetPost && !canDeletePost(targetPost)) {
+      showToast('Bạn không có quyền xóa bài viết của thành viên khác!', 'error');
+      return;
+    }
+
+    const isTeacher = isTeacherAccount(state.currentUser.role, state.currentUser.username);
+    const isAuthor = targetPost && String(state.currentUser.username || '').trim().toLowerCase() === String(targetPost.author_username || '').trim().toLowerCase();
+    const confirmMsg = (isTeacher && targetPost && !isAuthor)
+      ? `Bạn có chắc chắn muốn xóa bài viết của "${targetPost.author_name || 'học viên'}" với quyền Giáo viên không?`
+      : 'Bạn có chắc chắn muốn xóa bài viết này không?';
+    if (!confirm(confirmMsg)) return;
 
     // 1. Thử gọi API
+    let apiHandled = false;
     try {
       const fd = new FormData();
       fd.append('id', postId);
@@ -1464,17 +1500,29 @@
       const res = await fetch('api.php?action=forum_delete_post', { method: 'POST', body: fd });
       if (res.ok) {
         const json = await res.json();
+        apiHandled = true;
         if (json.success) {
           showToast('Đã xóa bài viết!', 'success');
           state.page = 1;
           await loadPostsData();
           return;
         }
+        showToast(json.message || 'Bạn không có quyền xóa bài viết này!', 'error');
+        return;
       }
-    } catch (e) {}
+    } catch (e) {
+      if (apiHandled) return;
+    }
 
     // 2. Fallback LocalStorage
-    const localPosts = getLocalPosts().filter(p => Number(p.id) !== Number(postId));
+    const allLocalPosts = getLocalPosts();
+    const storedPost = allLocalPosts.find(p => Number(p.id) === Number(postId));
+    if (storedPost && !canDeletePost(storedPost)) {
+      showToast('Bạn không có quyền xóa bài viết của thành viên khác!', 'error');
+      return;
+    }
+
+    const localPosts = allLocalPosts.filter(p => Number(p.id) !== Number(postId));
     localStorage.setItem(LOCAL_POSTS_KEY, JSON.stringify(localPosts));
 
     const remainingComments = getLocalComments().filter(c => Number(c.post_id) !== Number(postId));
@@ -1702,7 +1750,7 @@
     }
 
     const u = profileData.user || { username };
-    const isTeacher = u.role === 'admin' || u.role === 'teacher';
+    const isTeacher = isTeacherAccount(u.role, u.username);
     const roleHtml = isTeacher ? `<span class="role-badge teacher">Giảng viên</span>` : `<span class="role-badge student">Học viên</span>`;
     const avatar = getAvatarUrl(u.username, u.role, u.avatar);
     const displayBio = u.bio || savedBios[unameLower] || '';
@@ -1816,7 +1864,9 @@
   function initEvents() {
     // Lắng nghe thay đổi tài khoản từ auth.js
     window.addEventListener('thvp:auth_change', evt => {
-      const nextUser = (evt && evt.detail) ? evt.detail : (window.THVP_AUTH ? window.THVP_AUTH.getCurrentUser() : null);
+      const nextUser = (evt && evt.detail && Object.prototype.hasOwnProperty.call(evt.detail, 'user'))
+        ? evt.detail.user
+        : (window.THVP_AUTH ? window.THVP_AUTH.getCurrentUser() : null);
       const nextKey = nextUser ? `${nextUser.username || ''}:${nextUser.role || ''}` : '';
       const changed = nextKey !== state.lastAuthUserKey;
       state.lastAuthUserKey = nextKey;

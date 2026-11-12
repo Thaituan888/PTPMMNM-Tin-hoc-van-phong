@@ -25,6 +25,33 @@ function jsonResponse($success, $message, $data = null) {
     exit;
 }
 
+function isTeacherRole($role, $username = '') {
+    $r = strtolower(trim((string)$role));
+    $u = strtolower(trim((string)$username));
+    return in_array($r, ['admin', 'teacher', 'giangvien'], true) || $u === 'giangvien';
+}
+
+function canDeleteForumPost($pdo, $authorUsername, $actorUsername, $actorRole = 'student') {
+    $sessionUser = $_SESSION['user'] ?? null;
+    $effectiveUsername = $sessionUser ? trim((string)($sessionUser['username'] ?? '')) : trim((string)$actorUsername);
+    $effectiveRole = $sessionUser ? trim((string)($sessionUser['role'] ?? 'student')) : trim((string)$actorRole);
+
+    if (!$sessionUser && $pdo && $effectiveUsername !== '') {
+        $stmtU = $pdo->prepare("SELECT `role` FROM `users` WHERE LOWER(`username`) = LOWER(?) LIMIT 1");
+        $stmtU->execute([$effectiveUsername]);
+        $dbUser = $stmtU->fetch();
+        if ($dbUser && !empty($dbUser['role'])) {
+            $effectiveRole = $dbUser['role'];
+        }
+    }
+
+    if (isTeacherRole($effectiveRole, $effectiveUsername)) {
+        return true;
+    }
+
+    return $effectiveUsername !== '' && strcasecmp((string)$authorUsername, $effectiveUsername) === 0;
+}
+
 // Hàm xuất file tải về (Ưu tiên file đĩa, nếu không có lấy trực tiếp từ database MySQL)
 function serveFileDownload($fileName, $filePath, $fileDataBase64) {
     // 1. Nếu có file vật lý trên hosting thì tải từ đĩa
@@ -737,8 +764,7 @@ switch ($action) {
                 return false;
             }
             if ($sort === 'teacher') {
-                $role = strtolower($p['author_role'] ?? '');
-                if ($role !== 'admin' && $role !== 'teacher' && strcasecmp($p['author_username'] ?? '', 'Giangvien') !== 0) {
+                if (!isTeacherRole($p['author_role'] ?? '', $p['author_username'] ?? '')) {
                     return false;
                 }
             } elseif ($sort === 'score') {
@@ -886,8 +912,8 @@ switch ($action) {
         $row = $stmt->fetch();
         if (!$row) jsonResponse(false, 'Không tìm thấy bài viết!');
 
-        if ($role !== 'admin' && strcasecmp($row['author_username'], $username) !== 0) {
-            jsonResponse(false, 'Bạn không có quyền xóa bài viết này!');
+        if (!canDeleteForumPost($pdo, $row['author_username'], $username, $role)) {
+            jsonResponse(false, 'Bạn không có quyền xóa bài viết này! Chỉ tác giả bài viết hoặc tài khoản Giáo viên mới được phép xóa.');
         }
 
         if (!empty($row['file_path']) && file_exists(__DIR__ . '/' . $row['file_path'])) {

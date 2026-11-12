@@ -760,6 +760,26 @@ body.forum-body {
   color: var(--text-main);
 }
 
+.post-menu-btn.post-delete-teacher {
+  width: auto;
+  height: auto;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.post-menu-btn.post-delete-teacher:hover {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
 /* Post Content */
 .post-title {
   font-size: 17px;
