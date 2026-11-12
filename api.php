@@ -146,6 +146,33 @@ if ($action === 'download_submission') {
     serveFileDownload($dlName, $row['file_path'], $row['file_data']);
 }
 
+// Xem ảnh hoặc tải file đính kèm trên Diễn đàn
+if ($action === 'preview_forum_image') {
+    if (!$pdo) die('Chưa kết nối Database!');
+    $id = intval($_GET['id'] ?? 0);
+    $type = $_GET['type'] ?? 'image';
+    $table = ($type === 'comment') ? 'forum_comments' : 'forum_posts';
+    $stmt = $pdo->prepare("SELECT `image_name`, `image_path`, `image_data` FROM `$table` WHERE `id` = ?");
+    $stmt->execute([$id]);
+    $row = $stmt->fetch();
+    if (!$row) die('Không tìm thấy hình ảnh!');
+    $base64 = $row['image_data'] ?? '';
+    if (strpos($base64, 'base64,') !== false) {
+        $base64 = substr($base64, strpos($base64, 'base64,') + 7);
+    }
+    serveFileInline($row['image_name'] ?: 'image.png', $row['image_path'], $base64);
+}
+
+if ($action === 'download_forum_file') {
+    if (!$pdo) die('Chưa kết nối Database!');
+    $id = intval($_GET['id'] ?? 0);
+    $stmt = $pdo->prepare("SELECT `file_name`, `file_path`, `file_data` FROM `forum_posts` WHERE `id` = ?");
+    $stmt->execute([$id]);
+    $row = $stmt->fetch();
+    if (!$row || empty($row['file_name'])) die('Không tìm thấy file đính kèm!');
+    serveFileDownload($row['file_name'], $row['file_path'], $row['file_data']);
+}
+
 // Kiểm tra kết nối Database cho các API JSON khác
 if (!$pdo && $action !== 'status') {
     jsonResponse(false, 'Chưa kết nối được MySQL. Vui lòng mở file config.php để điền đúng thông số MySQL Database của InfinityFree.');
@@ -613,6 +640,496 @@ switch ($action) {
         $stmt = $pdo->prepare("DELETE FROM `submissions` WHERE `id` = ?");
         $stmt->execute([$id]);
         jsonResponse(true, 'Đã xóa bài nộp khỏi Database MySQL thành công!');
+        break;
+
+    // -------------------------------------------------------------
+    // DIỄN ĐÀN CỘNG ĐỒNG: LẤY DANH SÁCH BÀI VIẾT & THỐNG KÊ
+    // -------------------------------------------------------------
+    case 'forum_get_posts':
+        $sort = trim($_GET['sort'] ?? 'recent');
+        $tag = ltrim(trim($_GET['tag'] ?? ''), '#');
+        $group = trim($_GET['group'] ?? '');
+        $type = trim($_GET['type'] ?? '');
+        $author = trim($_GET['author'] ?? '');
+        $search = trim($_GET['search'] ?? '');
+        $page = max(1, intval($_GET['page'] ?? 1));
+        $limit = max(1, min(50, intval($_GET['limit'] ?? 8)));
+
+        $sql = "SELECT p.`id`, p.`user_id`, p.`author_name`, p.`author_username`, p.`author_role`,
+                       p.`author_avatar`, p.`author_mssv`, p.`post_type`, p.`title`, p.`content`,
+                       p.`feeling`, p.`tags`, p.`group_name`, p.`file_name`, p.`file_path`, p.`file_size`,
+                       p.`image_name`, p.`image_path`, p.`meta_score`, p.`reactions`, p.`is_pinned`,
+                       p.`views`, p.`created_at`,
+                       (SELECT COUNT(*) FROM `forum_comments` c WHERE c.`post_id` = p.`id`) AS `comment_count`
+                FROM `forum_posts` p
+                ORDER BY p.`is_pinned` DESC, p.`id` DESC";
+        $stmt = $pdo->query($sql);
+        $allRows = $stmt->fetchAll();
+
+        $defaultReactions = ['like' => [], 'love' => [], 'idea' => [], 'wow' => [], 'sad' => []];
+        $groupCounts = [];
+        $tagCounts = [];
+        $contribMap = [];
+
+        foreach ($allRows as &$row) {
+            $decodedReactions = json_decode($row['reactions'] ?? '', true);
+            $row['reactions'] = is_array($decodedReactions) ? array_merge($defaultReactions, $decodedReactions) : $defaultReactions;
+            $row['meta_score'] = !empty($row['meta_score']) ? json_decode($row['meta_score'], true) : null;
+            $row['comment_count'] = intval($row['comment_count'] ?? 0);
+            $row['is_pinned'] = intval($row['is_pinned'] ?? 0);
+            $row['file_size'] = intval($row['file_size'] ?? 0);
+
+            if (!empty($row['group_name'])) {
+                $groupCounts[$row['group_name']] = ($groupCounts[$row['group_name']] ?? 0) + 1;
+            }
+            if (!empty($row['tags'])) {
+                foreach (explode(',', $row['tags']) as $t) {
+                    $cleanT = ltrim(trim($t), '#');
+                    if ($cleanT !== '') {
+                        $tagCounts[$cleanT] = ($tagCounts[$cleanT] ?? 0) + 1;
+                    }
+                }
+            }
+
+            $uKey = $row['author_username'];
+            if (!isset($contribMap[$uKey])) {
+                $contribMap[$uKey] = [
+                    'username' => $uKey,
+                    'name' => $row['author_name'],
+                    'role' => $row['author_role'],
+                    'points' => 0
+                ];
+            }
+            $rxTotal = 0;
+            foreach ($row['reactions'] as $rxArr) {
+                $rxTotal += is_array($rxArr) ? count($rxArr) : 0;
+            }
+            $contribMap[$uKey]['points'] += 10 + ($rxTotal * 5) + ($row['comment_count'] * 2);
+        }
+        unset($row);
+
+        arsort($tagCounts);
+        $trendingTags = [];
+        foreach (array_slice($tagCounts, 0, 6, true) as $tName => $tCount) {
+            $trendingTags[] = ['tag' => $tName, 'count' => $tCount];
+        }
+
+        $leaderboard = array_values($contribMap);
+        usort($leaderboard, function ($a, $b) {
+            return $b['points'] <=> $a['points'];
+        });
+        $leaderboard = array_slice($leaderboard, 0, 5);
+
+        $filtered = array_values(array_filter($allRows, function ($p) use ($tag, $group, $type, $author, $search, $sort) {
+            if ($tag !== '') {
+                $hay = mb_strtolower(($p['tags'] ?? '') . ' ' . ($p['content'] ?? ''), 'UTF-8');
+                if (mb_strpos($hay, '#' . mb_strtolower($tag, 'UTF-8')) === false && mb_strpos($hay, mb_strtolower($tag, 'UTF-8')) === false) {
+                    return false;
+                }
+            }
+            if ($group !== '' && ($p['group_name'] ?? '') !== $group) {
+                return false;
+            }
+            if ($type !== '' && ($p['post_type'] ?? '') !== $type) {
+                return false;
+            }
+            if ($author !== '' && strcasecmp($p['author_username'] ?? '', $author) !== 0) {
+                return false;
+            }
+            if ($sort === 'teacher') {
+                $role = strtolower($p['author_role'] ?? '');
+                if ($role !== 'admin' && $role !== 'teacher' && strcasecmp($p['author_username'] ?? '', 'Giangvien') !== 0) {
+                    return false;
+                }
+            } elseif ($sort === 'score') {
+                if (($p['post_type'] ?? '') !== 'score_brag' && empty($p['meta_score'])) {
+                    return false;
+                }
+            }
+            if ($search !== '') {
+                $kw = mb_strtolower($search, 'UTF-8');
+                $text = mb_strtolower(($p['title'] ?? '') . ' ' . ($p['content'] ?? '') . ' ' . ($p['author_name'] ?? ''), 'UTF-8');
+                if (mb_strpos($text, $kw) === false) {
+                    return false;
+                }
+            }
+            return true;
+        }));
+
+        if ($sort === 'hot') {
+            usort($filtered, function ($a, $b) {
+                $sumA = 0;
+                foreach ($a['reactions'] as $arr) { $sumA += is_array($arr) ? count($arr) : 0; }
+                $sumB = 0;
+                foreach ($b['reactions'] as $arr) { $sumB += is_array($arr) ? count($arr) : 0; }
+                return ($sumB + $b['comment_count']) <=> ($sumA + $a['comment_count']);
+            });
+        }
+
+        $offset = ($page - 1) * $limit;
+        $paged = array_slice($filtered, $offset, $limit);
+        $hasMore = ($offset + count($paged)) < count($filtered);
+
+        jsonResponse(true, 'Lấy bài viết diễn đàn thành công', [
+            'posts' => $paged,
+            'has_more' => $hasMore,
+            'summary' => [
+                'group_counts' => $groupCounts,
+                'trending_tags' => $trendingTags,
+                'leaderboard' => $leaderboard
+            ]
+        ]);
+        break;
+
+    // -------------------------------------------------------------
+    // DIỄN ĐÀN CỘNG ĐỒNG: TẠO BÀI VIẾT MỚI
+    // -------------------------------------------------------------
+    case 'forum_create_post':
+        $authorName = trim($_POST['author_name'] ?? '');
+        $authorUsername = trim($_POST['author_username'] ?? '');
+        $authorRole = trim($_POST['author_role'] ?? 'student');
+        $authorAvatar = trim($_POST['author_avatar'] ?? '');
+        $authorMssv = trim($_POST['author_mssv'] ?? '');
+        $userId = intval($_POST['user_id'] ?? 0);
+        $postType = trim($_POST['post_type'] ?? 'general');
+        $title = trim($_POST['title'] ?? '');
+        $content = trim($_POST['content'] ?? '');
+        $feeling = trim($_POST['feeling'] ?? '');
+        $groupName = trim($_POST['group_name'] ?? '');
+        $metaScoreRaw = trim($_POST['meta_score'] ?? '');
+
+        if (empty($authorUsername) || empty($content)) {
+            jsonResponse(false, 'Vui lòng đăng nhập và nhập nội dung bài viết!');
+        }
+
+        preg_match_all('/#([a-zA-Z0-9_\p{L}]+)/u', $content, $tagMatches);
+        $tagsStr = !empty($tagMatches[0]) ? implode(',', array_unique($tagMatches[0])) : '';
+
+        $imageName = '';
+        $imagePath = '';
+        $imageData = null;
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $img = $_FILES['image'];
+            $imageName = basename($img['name']);
+            $rawImg = file_get_contents($img['tmp_name']);
+            $mime = $img['type'] ?: 'image/png';
+            $imageData = 'data:' . $mime . ';base64,' . base64_encode($rawImg);
+            $ext = pathinfo($imageName, PATHINFO_EXTENSION) ?: 'png';
+            $safeImgName = 'forum_img_' . time() . '_' . rand(1000, 9999) . '.' . $ext;
+            if (@move_uploaded_file($img['tmp_name'], UPLOAD_DIR . $safeImgName)) {
+                $imagePath = 'uploads/' . $safeImgName;
+            }
+        }
+
+        $fileName = '';
+        $filePath = '';
+        $fileData = null;
+        $fileSize = 0;
+        if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+            $f = $_FILES['file'];
+            $fileName = basename($f['name']);
+            $fileSize = intval($f['size']);
+            $rawFile = file_get_contents($f['tmp_name']);
+            $fileData = base64_encode($rawFile);
+            $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+            $safeFileName = 'forum_file_' . time() . '_' . rand(1000, 9999) . ($ext ? '.' . $ext : '');
+            if (@move_uploaded_file($f['tmp_name'], UPLOAD_DIR . $safeFileName)) {
+                $filePath = 'uploads/' . $safeFileName;
+            }
+        }
+
+        $emptyReactions = json_encode(['like' => [], 'love' => [], 'idea' => [], 'wow' => [], 'sad' => []]);
+        $stmt = $pdo->prepare("INSERT INTO `forum_posts`
+            (`user_id`, `author_name`, `author_username`, `author_role`, `author_avatar`, `author_mssv`,
+             `post_type`, `title`, `content`, `feeling`, `tags`, `group_name`,
+             `file_name`, `file_path`, `file_data`, `file_size`,
+             `image_name`, `image_path`, `image_data`, `meta_score`, `reactions`)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([
+            $userId,
+            $authorName ?: $authorUsername,
+            $authorUsername,
+            $authorRole,
+            $authorAvatar,
+            $authorMssv,
+            $postType,
+            $title,
+            $content,
+            $feeling,
+            $tagsStr,
+            $groupName,
+            $fileName,
+            $filePath,
+            $fileData,
+            $fileSize,
+            $imageName,
+            $imagePath,
+            $imageData,
+            $metaScoreRaw !== '' ? $metaScoreRaw : null,
+            $emptyReactions
+        ]);
+
+        jsonResponse(true, 'Đăng bài viết thành công!', ['id' => intval($pdo->lastInsertId())]);
+        break;
+
+    // -------------------------------------------------------------
+    // DIỄN ĐÀN CỘNG ĐỒNG: XÓA BÀI VIẾT
+    // -------------------------------------------------------------
+    case 'forum_delete_post':
+        $id = intval($_POST['id'] ?? 0);
+        $username = trim($_POST['username'] ?? '');
+        $role = strtolower(trim($_POST['role'] ?? 'student'));
+        if ($id <= 0) jsonResponse(false, 'ID bài viết không hợp lệ!');
+
+        $stmt = $pdo->prepare("SELECT `author_username`, `file_path`, `image_path` FROM `forum_posts` WHERE `id` = ?");
+        $stmt->execute([$id]);
+        $row = $stmt->fetch();
+        if (!$row) jsonResponse(false, 'Không tìm thấy bài viết!');
+
+        if ($role !== 'admin' && strcasecmp($row['author_username'], $username) !== 0) {
+            jsonResponse(false, 'Bạn không có quyền xóa bài viết này!');
+        }
+
+        if (!empty($row['file_path']) && file_exists(__DIR__ . '/' . $row['file_path'])) {
+            @unlink(__DIR__ . '/' . $row['file_path']);
+        }
+        if (!empty($row['image_path']) && file_exists(__DIR__ . '/' . $row['image_path'])) {
+            @unlink(__DIR__ . '/' . $row['image_path']);
+        }
+
+        $pdo->prepare("DELETE FROM `forum_comments` WHERE `post_id` = ?")->execute([$id]);
+        $pdo->prepare("DELETE FROM `forum_posts` WHERE `id` = ?")->execute([$id]);
+        jsonResponse(true, 'Đã xóa bài viết thành công!');
+        break;
+
+    // -------------------------------------------------------------
+    // DIỄN ĐÀN CỘNG ĐỒNG: THẢ CẢM XÚC BÀI VIẾT
+    // -------------------------------------------------------------
+    case 'forum_react_post':
+        $postId = intval($_POST['post_id'] ?? 0);
+        $reaction = trim($_POST['reaction'] ?? 'like');
+        $username = trim($_POST['username'] ?? '');
+        $allowed = ['like', 'love', 'idea', 'wow', 'sad'];
+
+        if ($postId <= 0 || empty($username) || !in_array($reaction, $allowed, true)) {
+            jsonResponse(false, 'Thông tin biểu cảm không hợp lệ!');
+        }
+
+        $stmt = $pdo->prepare("SELECT `reactions` FROM `forum_posts` WHERE `id` = ?");
+        $stmt->execute([$postId]);
+        $row = $stmt->fetch();
+        if (!$row) jsonResponse(false, 'Bài viết không tồn tại!');
+
+        $defaultReactions = ['like' => [], 'love' => [], 'idea' => [], 'wow' => [], 'sad' => []];
+        $decoded = json_decode($row['reactions'] ?? '', true);
+        $reactions = is_array($decoded) ? array_merge($defaultReactions, $decoded) : $defaultReactions;
+
+        $prevType = null;
+        foreach ($allowed as $t) {
+            $list = is_array($reactions[$t]) ? $reactions[$t] : [];
+            $idx = array_search($username, $list, true);
+            if ($idx !== false) {
+                $prevType = $t;
+                array_splice($list, $idx, 1);
+                $reactions[$t] = array_values($list);
+            }
+        }
+        if ($prevType !== $reaction) {
+            $reactions[$reaction][] = $username;
+        }
+
+        $upd = $pdo->prepare("UPDATE `forum_posts` SET `reactions` = ? WHERE `id` = ?");
+        $upd->execute([json_encode($reactions, JSON_UNESCAPED_UNICODE), $postId]);
+        jsonResponse(true, 'Đã cập nhật cảm xúc', ['reactions' => $reactions]);
+        break;
+
+    // -------------------------------------------------------------
+    // DIỄN ĐÀN CỘNG ĐỒNG: LẤY BÌNH LUẬN BÀI VIẾT
+    // -------------------------------------------------------------
+    case 'forum_get_comments':
+        $postId = intval($_GET['post_id'] ?? 0);
+        if ($postId <= 0) jsonResponse(false, 'ID bài viết không hợp lệ!');
+
+        $stmt = $pdo->prepare("SELECT `id`, `post_id`, `parent_id`, `user_id`, `author_name`, `author_username`,
+                                      `author_role`, `author_avatar`, `content`, `image_name`, `image_path`,
+                                      `reactions`, `created_at`
+                               FROM `forum_comments`
+                               WHERE `post_id` = ?
+                               ORDER BY `id` ASC");
+        $stmt->execute([$postId]);
+        $comments = $stmt->fetchAll();
+        foreach ($comments as &$c) {
+            $c['id'] = intval($c['id']);
+            $c['post_id'] = intval($c['post_id']);
+            $c['parent_id'] = intval($c['parent_id']);
+            $decoded = json_decode($c['reactions'] ?? '', true);
+            $c['reactions'] = is_array($decoded) ? $decoded : ['like' => []];
+        }
+        unset($c);
+        jsonResponse(true, 'Lấy bình luận thành công', $comments);
+        break;
+
+    // -------------------------------------------------------------
+    // DIỄN ĐÀN CỘNG ĐỒNG: THÊM BÌNH LUẬN
+    // -------------------------------------------------------------
+    case 'forum_add_comment':
+        $postId = intval($_POST['post_id'] ?? 0);
+        $parentId = intval($_POST['parent_id'] ?? 0);
+        $content = trim($_POST['content'] ?? '');
+        $authorName = trim($_POST['author_name'] ?? '');
+        $authorUsername = trim($_POST['author_username'] ?? '');
+        $authorRole = trim($_POST['author_role'] ?? 'student');
+        $authorAvatar = trim($_POST['author_avatar'] ?? '');
+        $userId = intval($_POST['user_id'] ?? 0);
+
+        $imageName = '';
+        $imagePath = '';
+        $imageData = null;
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $img = $_FILES['image'];
+            $imageName = basename($img['name']);
+            $rawImg = file_get_contents($img['tmp_name']);
+            $mime = $img['type'] ?: 'image/png';
+            $imageData = 'data:' . $mime . ';base64,' . base64_encode($rawImg);
+            $ext = pathinfo($imageName, PATHINFO_EXTENSION) ?: 'png';
+            $safeImgName = 'forum_cmt_' . time() . '_' . rand(1000, 9999) . '.' . $ext;
+            if (@move_uploaded_file($img['tmp_name'], UPLOAD_DIR . $safeImgName)) {
+                $imagePath = 'uploads/' . $safeImgName;
+            }
+        } elseif (!empty($_POST['image_base64'])) {
+            $imageName = 'comment_img.png';
+            $imageData = trim($_POST['image_base64']);
+        }
+
+        if ($postId <= 0 || empty($authorUsername) || ($content === '' && $imageName === '')) {
+            jsonResponse(false, 'Vui lòng nhập nội dung bình luận!');
+        }
+
+        $reactionsJson = json_encode(['like' => []]);
+        $stmt = $pdo->prepare("INSERT INTO `forum_comments`
+            (`post_id`, `parent_id`, `user_id`, `author_name`, `author_username`, `author_role`, `author_avatar`,
+             `content`, `image_name`, `image_path`, `image_data`, `reactions`)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([
+            $postId,
+            $parentId,
+            $userId,
+            $authorName ?: $authorUsername,
+            $authorUsername,
+            $authorRole,
+            $authorAvatar,
+            $content,
+            $imageName,
+            $imagePath,
+            $imageData,
+            $reactionsJson
+        ]);
+
+        jsonResponse(true, 'Đã gửi bình luận!', ['id' => intval($pdo->lastInsertId())]);
+        break;
+
+    // -------------------------------------------------------------
+    // DIỄN ĐÀN CỘNG ĐỒNG: THẢ TIM BÌNH LUẬN
+    // -------------------------------------------------------------
+    case 'forum_react_comment':
+        $commentId = intval($_POST['comment_id'] ?? 0);
+        $username = trim($_POST['username'] ?? '');
+        if ($commentId <= 0 || empty($username)) {
+            jsonResponse(false, 'Thông tin không hợp lệ!');
+        }
+
+        $stmt = $pdo->prepare("SELECT `reactions` FROM `forum_comments` WHERE `id` = ?");
+        $stmt->execute([$commentId]);
+        $row = $stmt->fetch();
+        if (!$row) jsonResponse(false, 'Không tìm thấy bình luận!');
+
+        $decoded = json_decode($row['reactions'] ?? '', true);
+        $likes = (is_array($decoded) && isset($decoded['like']) && is_array($decoded['like'])) ? $decoded['like'] : [];
+        $idx = array_search($username, $likes, true);
+        if ($idx !== false) {
+            array_splice($likes, $idx, 1);
+        } else {
+            $likes[] = $username;
+        }
+        $newReactions = ['like' => array_values($likes)];
+        $pdo->prepare("UPDATE `forum_comments` SET `reactions` = ? WHERE `id` = ?")
+            ->execute([json_encode($newReactions, JSON_UNESCAPED_UNICODE), $commentId]);
+
+        jsonResponse(true, 'Đã cập nhật thích bình luận', ['reactions' => $newReactions]);
+        break;
+
+    // -------------------------------------------------------------
+    // DIỄN ĐÀN CỘNG ĐỒNG: TRANG CÁ NHÂN (PROFILE WALL)
+    // -------------------------------------------------------------
+    case 'forum_get_profile':
+        $username = trim($_GET['username'] ?? '');
+        if ($username === '') jsonResponse(false, 'Thiếu tên người dùng!');
+
+        $stmtU = $pdo->prepare("SELECT `id`, `username`, `fullname`, `role`, `mssv` FROM `users` WHERE LOWER(`username`) = LOWER(?) LIMIT 1");
+        $stmtU->execute([$username]);
+        $userRow = $stmtU->fetch();
+
+        $stmtP = $pdo->prepare("SELECT p.`id`, p.`user_id`, p.`author_name`, p.`author_username`, p.`author_role`,
+                                       p.`author_avatar`, p.`author_mssv`, p.`post_type`, p.`title`, p.`content`,
+                                       p.`feeling`, p.`tags`, p.`group_name`, p.`file_name`, p.`file_path`, p.`file_size`,
+                                       p.`image_name`, p.`image_path`, p.`meta_score`, p.`reactions`, p.`is_pinned`,
+                                       p.`views`, p.`created_at`,
+                                       (SELECT COUNT(*) FROM `forum_comments` c WHERE c.`post_id` = p.`id`) AS `comment_count`
+                                FROM `forum_posts` p
+                                WHERE LOWER(p.`author_username`) = LOWER(?)
+                                ORDER BY p.`id` DESC");
+        $stmtP->execute([$username]);
+        $userPosts = $stmtP->fetchAll();
+
+        $defaultReactions = ['like' => [], 'love' => [], 'idea' => [], 'wow' => [], 'sad' => []];
+        $appreciationCount = 0;
+        foreach ($userPosts as &$p) {
+            $decodedRx = json_decode($p['reactions'] ?? '', true);
+            $p['reactions'] = is_array($decodedRx) ? array_merge($defaultReactions, $decodedRx) : $defaultReactions;
+            $p['meta_score'] = !empty($p['meta_score']) ? json_decode($p['meta_score'], true) : null;
+            $p['comment_count'] = intval($p['comment_count'] ?? 0);
+            foreach ($p['reactions'] as $arr) {
+                $appreciationCount += is_array($arr) ? count($arr) : 0;
+            }
+        }
+        unset($p);
+
+        $stmtC = $pdo->prepare("SELECT COUNT(*) FROM `forum_comments` WHERE LOWER(`author_username`) = LOWER(?)");
+        $stmtC->execute([$username]);
+        $commentsCount = intval($stmtC->fetchColumn());
+
+        $resolvedName = $userRow ? $userRow['fullname'] : (!empty($userPosts) ? $userPosts[0]['author_name'] : $username);
+        $resolvedRole = $userRow ? $userRow['role'] : (!empty($userPosts) ? $userPosts[0]['author_role'] : 'student');
+        $resolvedMssv = $userRow ? $userRow['mssv'] : (!empty($userPosts) ? $userPosts[0]['author_mssv'] : '');
+
+        $badges = [];
+        if (count($userPosts) >= 1) {
+            $badges[] = ['name' => 'Thành viên tích cực', 'icon' => '🏅', 'desc' => 'Đã đóng góp bài viết trên diễn đàn'];
+        }
+        if ($commentsCount >= 3) {
+            $badges[] = ['name' => 'Người bạn nhiệt tình', 'icon' => '💬', 'desc' => 'Tích cực thảo luận và hỗ trợ lớp'];
+        }
+        if ($appreciationCount >= 5) {
+            $badges[] = ['name' => 'Bài viết hữu ích', 'icon' => '🌟', 'desc' => 'Nhận được nhiều cảm xúc tích cực'];
+        }
+
+        jsonResponse(true, 'Lấy hồ sơ thành viên thành công', [
+            'user' => [
+                'username' => $userRow ? $userRow['username'] : $username,
+                'fullname' => $resolvedName,
+                'role' => $resolvedRole,
+                'mssv' => $resolvedMssv,
+                'bio' => ''
+            ],
+            'stats' => [
+                'posts_count' => count($userPosts),
+                'comments_count' => $commentsCount,
+                'appreciation_count' => $appreciationCount
+            ],
+            'badges' => $badges,
+            'posts' => $userPosts
+        ]);
         break;
 
     default:

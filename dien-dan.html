@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cộng Đồng &amp; Diễn Đàn Tin Học Văn Phòng - Dòng Thời Gian Học Tập</title>
+  <meta name="description"
+    content="Diễn đàn trao đổi bài tập, hỏi đáp hàm Excel, chia sẻ thủ thuật Word, mẹo phím tắt và khoe điểm thi thử chuẩn kỹ năng CNTT cùng giảng viên và bạn bè." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="dien-dan.css?v=3.0" />
+</head>
+
+<body class="forum-body">
+
+  <!-- ========================================================================
+       1. STICKY HEADER NAVBAR (Chuẩn hệ thống, đồng bộ 100%)
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon-box" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
+            <circle cx="13" cy="15.5" r="1.8" fill="#4f46e5" />
+            <circle cx="23" cy="15.5" r="1.8" fill="#4f46e5" />
+            <path d="M15.5 19.5c1.2 1.2 3.8 1.2 5 0" stroke="#ec4899" stroke-width="2" stroke-linecap="round" />
+            <path d="M12 7V4.5M24 7V4.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M11 29.5h14" stroke="#93c5fd" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">TIN HỌC VĂN PHÒNG</span>
+          <span class="brand-subtitle">Đào tạo Tin học Trực tuyến</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <!-- 1. KHÓA HỌC LMS -->
+        <a href="khoa-hoc-lms.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+          <span>KHÓA HỌC LMS</span>
+        </a>
+
+        <!-- 2. LỘ TRÌNH HỌC TẬP -->
+        <a href="lo-trinh-hoc-tap.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="6" cy="19" r="3" />
+            <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" />
+            <circle cx="18" cy="5" r="3" />
+          </svg>
+          <span>LỘ TRÌNH HỌC TẬP</span>
+        </a>
+
+        <!-- 3. ÔN LUYỆN & THI THỬ -->
+        <a href="on-luyen-thi-thu.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+            <path d="m9 14 2 2 4-4" />
+          </svg>
+          <span>ÔN LUYỆN &amp; THI THỬ</span>
+        </a>
+
+        <!-- 4. DIỄN ĐÀN (ACTIVE) -->
+        <a href="dien-dan.html" style="background: #e0f2fe; color: #075985; font-weight: 700; border-radius: 8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>DIỄN ĐÀN</span>
+        </a>
+
+        <!-- 5. CÔNG CỤ & TIỆN ÍCH -->
+        <div class="nav-dropdown-wrap" id="nav-tools-dropdown">
+          <button type="button" class="nav-link-dropdown nav-dropdown-trigger" id="btn-tools-dropdown">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+            <span>CÔNG CỤ &amp; TIỆN ÍCH</span>
+            <svg class="nav-dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="nav-dropdown-content">
+            <!-- 1. Luyện gõ phím 10 ngón -->
+            <a href="luyen-go-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8" stroke-width="2.2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>1. Luyện gõ phím 10 ngón</strong>
+                <small>Luyện gõ tiếng Việt Telex &amp; kiểm tra WPM</small>
+              </div>
+            </a>
+
+            <!-- 2. Tra cứu Phím tắt -->
+            <a href="tra-cuu-phim-tat.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="#d97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>2. Tra cứu Phím tắt</strong>
+                <small>Phím tắt thông dụng Word, Excel, PPT</small>
+              </div>
+            </a>
+
+            <!-- 3. Kiểm tra Bàn phím Online -->
+            <a href="kiem-tra-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <circle cx="7" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="12" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="17" cy="9" r="1" fill="#0284c7" />
+                  <line x1="6" y1="14" x2="18" y2="14" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>3. Kiểm tra Bàn phím Online</strong>
+                <small>Phát hiện kẹt/liệt phím, đo NKRO</small>
+              </div>
+            </a>
+
+            <!-- 4. Giới thiệu Bàn phím Máy tính -->
+            <a href="tim-hieu-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 6h10M6 10h10M6 14h6" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>4. Giới thiệu Bàn phím Máy tính</strong>
+                <small>Cấu tạo 100% Full-size &amp; gờ nổi F/J</small>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 6. CỬA HÀNG -->
+        <a href="index.html#cua-hang">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span>CỬA HÀNG</span>
+        </a>
+      </nav>
+
+      <!-- Nút Đăng nhập / User Profile (Tự động hook bởi auth.js) -->
+      <a href="#dang-nhap" class="btn-login" id="headerAuthBtn">ĐĂNG NHẬP</a>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       2. BANNER DIỄN ĐÀN (HERO HEADER CỘNG ĐỒNG)
+       ======================================================================== -->
+  <section class="forum-hero-banner">
+    <div class="banner-inner">
+      <div class="banner-title-box">
+        <h1>
+          <span>💬 Cộng Đồng Học Tập &amp; Hỏi Đáp</span>
+          <span class="banner-badge">DÒNG THỜI GIAN</span>
+        </h1>
+        <p>
+          Không gian sinh hoạt trực tuyến kết nối học viên và giảng viên Tin Học Văn Phòng. Trao đổi bài tập, chia sẻ thủ thuật Word/Excel, quăng file nhờ sửa và cùng nhau tiến bộ mỗi ngày!
+        </p>
+      </div>
+
+      <div class="banner-quick-actions">
+        <button type="button" class="btn-banner-action primary" onclick="window.THVP_FORUM.openComposer()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Đăng bài mới
+        </button>
+        <button type="button" class="btn-banner-action" onclick="window.THVP_FORUM.setTab('score')">
+          🏆 Khoe điểm thi thử
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       3. BỐ CỤC 3 CỘT (UI 3 COLUMNS LAYOUT)
+       ======================================================================== -->
+  <main class="forum-main-container">
+
+    <!-- --------------------------------------------------------------------
+         CỘT TRÁI (LEFT SIDEBAR: MENU, NHÓM, TRENDING HASHTAGS)
+         -------------------------------------------------------------------- -->
+    <aside class="forum-col-left" aria-label="Menu điều hướng diễn đàn">
+      <!-- 1. Mini Profile của tôi -->
+      <div class="forum-card-mini-profile" id="forumMiniProfile">
+        <!-- Render động qua JS -->
+      </div>
+
+      <!-- 2. Lối tắt bảng tin -->
+      <div class="forum-nav-box">
+        <div class="forum-nav-title">Lối tắt Dòng thời gian</div>
+        <ul class="forum-nav-list">
+          <li class="forum-nav-item active" data-nav="recent">
+            <button type="button" onclick="window.THVP_FORUM.clearActiveFilters()">
+              <span class="nav-link-left">
+                <span class="nav-icon">🌐</span>
+                <span>Toàn bộ Bảng tin</span>
+              </span>
+              <span class="nav-count-badge">Tất cả</span>
+            </button>
+          </li>
+          <li class="forum-nav-item" data-nav="hot">
+            <button type="button" onclick="window.THVP_FORUM.setTab('hot')">
+              <span class="nav-link-left">
+                <span class="nav-icon">🔥</span>
+                <span>Đang Hot (24h)</span>
+              </span>
+              <span class="nav-count-badge">Hot</span>
+            </button>
+          </li>
+          <li class="forum-nav-item" data-nav="teacher">
+            <button type="button" onclick="window.THVP_FORUM.setTab('teacher')">
+              <span class="nav-link-left">
+                <span class="nav-icon">🎓</span>
+                <span>Bài từ Giảng viên</span>
+              </span>
+              <span class="nav-count-badge">VIP</span>
+            </button>
+          </li>
+          <li class="forum-nav-item" data-nav="score">
+            <button type="button" onclick="window.THVP_FORUM.setTab('score')">
+              <span class="nav-link-left">
+                <span class="nav-icon">🏆</span>
+                <span>Khoe điểm thi thử</span>
+              </span>
+              <span class="nav-count-badge">Hot</span>
+            </button>
+          </li>
+          <li class="forum-nav-item" data-nav="tag-HoiDapExcel">
+            <button type="button" onclick="window.THVP_FORUM.filterByTag('HoiDapExcel')">
+              <span class="nav-link-left">
+                <span class="nav-icon">❓</span>
+                <span>Hỏi đáp bài tập</span>
+              </span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 3. Danh sách Nhóm Học Tập (Groups) -->
+      <div class="forum-nav-box">
+        <div class="forum-nav-title">Nhóm học tập chuyên đề</div>
+        <ul class="forum-nav-list">
+          <li class="forum-nav-item" data-group="Nhóm Kế toán & Phân tích Excel">
+            <button type="button" onclick="window.THVP_FORUM.filterByGroup('Nhóm Kế toán & Phân tích Excel')">
+              <span class="nav-link-left">
+                <span class="nav-icon">📊</span>
+                <span>Nhóm Kế toán &amp; Excel</span>
+              </span>
+              <span class="nav-count-badge" data-group-count="Nhóm Kế toán & Phân tích Excel">0</span>
+            </button>
+          </li>
+          <li class="forum-nav-item" data-group="Nhóm Soạn thảo Văn bản & Luận văn">
+            <button type="button" onclick="window.THVP_FORUM.filterByGroup('Nhóm Soạn thảo Văn bản & Luận văn')">
+              <span class="nav-link-left">
+                <span class="nav-icon">📝</span>
+                <span>Nhóm Soạn thảo Word</span>
+              </span>
+              <span class="nav-count-badge" data-group-count="Nhóm Soạn thảo Văn bản & Luận văn">0</span>
+            </button>
+          </li>
+          <li class="forum-nav-item" data-group="Nhóm Thiết kế Slide PowerPoint">
+            <button type="button" onclick="window.THVP_FORUM.filterByGroup('Nhóm Thiết kế Slide PowerPoint')">
+              <span class="nav-link-left">
+                <span class="nav-icon">🎨</span>
+                <span>Nhóm Chuyên làm Slide</span>
+              </span>
+              <span class="nav-count-badge" data-group-count="Nhóm Thiết kế Slide PowerPoint">0</span>
+            </button>
+          </li>
+          <li class="forum-nav-item" data-group="CLB Gõ phím Thần tốc">
+            <button type="button" onclick="window.THVP_FORUM.filterByGroup('CLB Gõ phím Thần tốc')">
+              <span class="nav-link-left">
+                <span class="nav-icon">⚡</span>
+                <span>CLB Gõ phím Thần tốc</span>
+              </span>
+              <span class="nav-count-badge" data-group-count="CLB Gõ phím Thần tốc">0</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 4. Danh sách Hashtag thịnh hành (#Trending) -->
+      <div class="trending-tags-box">
+        <div class="trending-header">
+          <h3>
+            <span>🔥</span>
+            <span>Chủ đề thịnh hành</span>
+          </h3>
+          <span style="font-size: 11px; color: var(--text-sub);">Hôm nay</span>
+        </div>
+        <div class="trending-list" id="trendingTagsList">
+          <div class="forum-empty-note">Chưa có chủ đề thảo luận nào.</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- --------------------------------------------------------------------
+         CỘT GIỮA (MAIN FEED: CREATE POST, SORT TABS, POSTS LIST)
+         -------------------------------------------------------------------- -->
+    <section class="forum-col-main" aria-label="Bảng tin cộng đồng">
+
+      <!-- 1. KHUNG ĐĂNG BÀI NHANH KIỂU FACEBOOK -->
+      <div class="forum-create-box">
+        <div class="create-box-top">
+          <div class="create-avatar-wrap" onclick="window.THVP_FORUM.openComposer()">
+            <img id="createPostAvatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&h=120&q=80" alt="Avatar" />
+          </div>
+          <button type="button" class="create-input-trigger" id="createPostInput" onclick="window.THVP_FORUM.openComposer()">
+            Bạn đang gặp khó khăn gì với bài tập hôm nay?
+          </button>
+        </div>
+
+        <div class="create-actions-row">
+          <div class="btn-create-action action-photo" onclick="window.THVP_FORUM.openComposer('exercise_help')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+            <span>Ảnh lỗi bài tập</span>
+          </div>
+
+          <div class="btn-create-action action-file" onclick="window.THVP_FORUM.openComposer('exercise_help')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>Đính kèm File .xlsx/.docx</span>
+          </div>
+
+          <div class="btn-create-action action-brag" onclick="window.THVP_FORUM.openComposer('score_brag')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+            <span>Khoe điểm thi thử</span>
+          </div>
+
+          <div class="btn-create-action action-feeling" onclick="window.THVP_FORUM.openComposer('general')">
+            <span>😃</span>
+            <span>Cảm xúc</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. THANH BỘ LỌC & SẮP XẾP (SORT TABS) -->
+      <div class="forum-filter-bar">
+        <div class="filter-tabs-left">
+          <button type="button" class="tab-btn active" data-tab="recent" onclick="window.THVP_FORUM.setTab('recent')">
+            <span>🕒 Mới nhất</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="hot" onclick="window.THVP_FORUM.setTab('hot')">
+            <span>🔥 Đang Hot (24h)</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="teacher" onclick="window.THVP_FORUM.setTab('teacher')">
+            <span>🎓 Giảng viên</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="score" onclick="window.THVP_FORUM.setTab('score')">
+            <span>🏆 Khoe điểm</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. THANH THÔNG BÁO BỘ LỌC ĐANG CHỌN (NẾU CÓ) -->
+      <div class="active-filter-alert" id="activeFilterAlert" style="display: none;">
+        <span id="activeFilterText">Đang lọc theo hashtag: #HoiDapExcel</span>
+        <button type="button" class="btn-clear-filter" onclick="window.THVP_FORUM.clearActiveFilters()">✕ Xóa lọc</button>
+      </div>
+
+      <!-- 4. DANH SÁCH BÀI VIẾT (INFINITE FEED) -->
+      <div class="forum-feed-list" id="forumFeedList">
+        <div class="feed-loader-container">
+          <div class="feed-spinner"></div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- --------------------------------------------------------------------
+         CỘT PHẢI (RIGHT SIDEBAR: ONLINE USERS, LEADERBOARD, QUICK TOOLS)
+         -------------------------------------------------------------------- -->
+    <aside class="forum-col-right" aria-label="Khám phá và thành viên">
+
+      <!-- 1. Danh sách Online (Active Members) -->
+      <div class="online-widget-card">
+        <div class="widget-header-row">
+          <h3>
+            <span class="green-pulse-dot"></span>
+            <span>Trực tuyến ngay</span>
+          </h3>
+          <span id="onlineCountBadge" style="font-size: 11px; font-weight: 700; color: #10b981;">0 ONLINE</span>
+        </div>
+
+        <div class="online-users-list" id="onlineUsersList">
+          <div class="forum-empty-note">Chưa có thành viên nào trực tuyến.</div>
+        </div>
+      </div>
+
+      <!-- 2. Bảng Vàng Tuần (Weekly Leaderboard) -->
+      <div class="leaderboard-widget-card">
+        <div class="widget-header-row">
+          <h3>
+            <span>🏆</span>
+            <span>Bảng Vàng Tuần</span>
+          </h3>
+          <span style="font-size: 11px; color: var(--text-sub);">Top cống hiến</span>
+        </div>
+
+        <div class="leaderboard-list" id="forumLeaderboardList">
+          <div class="forum-empty-note">Chưa có dữ liệu xếp hạng tuần này.</div>
+        </div>
+      </div>
+
+      <!-- 3. Lối tắt Tiện ích Học tập -->
+      <div class="quick-tools-widget">
+        <div class="widget-header-row">
+          <h3>
+            <span>⚡</span>
+            <span>Lối tắt tiện ích</span>
+          </h3>
+        </div>
+        <div class="quick-tools-grid">
+          <a href="on-luyen-thi-thu.html" class="quick-tool-btn">
+            <span class="quick-tool-icon">📝</span>
+            <span>Thi Thử Ngay</span>
+          </a>
+          <a href="luyen-go-phim.html" class="quick-tool-btn">
+            <span class="quick-tool-icon">⌨️</span>
+            <span>Luyện Gõ Phím</span>
+          </a>
+          <a href="tra-cuu-phim-tat.html" class="quick-tool-btn">
+            <span class="quick-tool-icon">🔍</span>
+            <span>Tra Phím Tắt</span>
+          </a>
+          <a href="kiem-tra-ban-phim.html" class="quick-tool-btn">
+            <span class="quick-tool-icon">🛠️</span>
+            <span>Test Bàn Phím</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 4. Văn hóa sinh hoạt cộng đồng -->
+      <div style="background: #ffffff; border: 1px solid var(--border-light); border-radius: 16px; padding: 16px; font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
+        <strong style="color: var(--text-main); display: block; margin-bottom: 6px;">💡 Quy tắc chia sẻ cộng đồng:</strong>
+        • Khi hỏi bài tập Excel, vui lòng đính kèm ảnh lỗi hoặc file .xlsx để mọi người hỗ trợ nhanh nhất.<br />
+        • Tôn trọng bạn bè và tích cực thả cảm xúc ❤️ / 💡 để động viên nhau ôn thi tốt!
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- ========================================================================
+       FOOTER (ĐỒNG BỘ HỆ THỐNG)
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="section-container">
+      <div class="footer-top-grid">
+        <div>
+          <div class="footer-brand-row">
+            <div class="logo-icon-box" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 36 36" fill="none">
+                <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
+                <circle cx="13" cy="15.5" r="1.8" fill="#0284c7" />
+                <circle cx="23" cy="15.5" r="1.8" fill="#0284c7" />
+              </svg>
+            </div>
+            <span class="footer-brand-title">TIN HỌC VĂN PHÒNG</span>
+          </div>
+          <p class="footer-desc">
+            Nền tảng học tập trực tuyến kết hợp bài giảng, tài liệu, bài tập, luyện tập trắc nghiệm và thi thử, giúp người học phát triển kiến thức và kỹ năng số.
+          </p>
+        </div>
+
+        <div class="footer-col col-purple">
+          <h4>HỌC TẬP</h4>
+          <ul class="footer-links">
+            <li><a href="luyen-go-phim.html">Luyện gõ phím 10 ngón</a></li>
+            <li><a href="on-luyen-thi-thu.html">Ôn luyện &amp; Thi thử</a></li>
+            <li><a href="dien-dan.html">Diễn đàn Cộng đồng</a></li>
+            <li><a href="lo-trinh-hoc-tap.html">Lộ trình học tập</a></li>
+            <li><a href="khoa-hoc-lms.html">Khóa học LMS</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col col-indigo">
+          <h4>TÍNH NĂNG</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#tien-ich">Trung tâm Tiện ích</a></li>
+            <li><a href="kiem-tra-ban-phim.html">Test Bàn Phím</a></li>
+            <li><a href="tra-cuu-phim-tat.html">Tra cứu Phím tắt</a></li>
+            <li><a href="tim-hieu-ban-phim.html">Khám phá Bàn phím</a></li>
+            <li><a href="index.html#cua-hang">Cửa hàng tài nguyên</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col col-green">
+          <h4>CHÍNH SÁCH</h4>
+          <ul class="footer-links">
+            <li><a href="#dieu-khoan">Điều khoản dịch vụ</a></li>
+            <li><a href="#bao-mat">Chính sách bảo mật</a></li>
+            <li><a href="#ve-gia">Chính sách về giá</a></li>
+            <li><a href="#thanh-toan">Chính sách thanh toán</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-copyright">
+        © 2026 TRUNG TÂM TIN HỌC VĂN PHÒNG • BẢN QUYỀN THUỘC VỀ NHÓM 2
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       MODAL 1: HỘP SOẠN BÀI VIẾT (POST COMPOSER MODAL)
+       ======================================================================== -->
+  <div class="composer-modal-backdrop" id="composerModal">
+    <div class="composer-modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="composer-modal-header">
+        <h2 id="modalTitle">Tạo bài viết trên Diễn đàn</h2>
+        <button type="button" class="btn-close-modal" onclick="window.THVP_FORUM.closeComposer()" title="Đóng">✕</button>
+      </div>
+
+      <div class="composer-modal-body">
+        <!-- User info in composer -->
+        <div class="composer-user-row">
+          <img id="composerUserAvatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&h=120&q=80" class="composer-user-avatar" alt="Avatar" />
+          <div class="composer-user-meta">
+            <span class="composer-user-name" id="composerUserName">Học viên</span>
+            <div class="composer-selectors-row">
+              <select class="composer-select" id="composerGroupSelect">
+                <option value="">🌐 Chia sẻ Toàn cộng đồng</option>
+                <option value="Nhóm Kế toán & Phân tích Excel">📊 Nhóm Kế toán &amp; Excel</option>
+                <option value="Nhóm Soạn thảo Văn bản & Luận văn">📝 Nhóm Soạn thảo Word</option>
+                <option value="Nhóm Thiết kế Slide PowerPoint">🎨 Nhóm Slide PowerPoint</option>
+                <option value="CLB Gõ phím Thần tốc">⚡ CLB Gõ phím Thần tốc</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Post Types Chips -->
+        <div class="post-types-chips">
+          <button type="button" class="post-type-chip active" data-type="general" onclick="window.THVP_FORUM.setComposerPostType('general')">
+            💬 Thảo luận chung
+          </button>
+          <button type="button" class="post-type-chip" data-type="exercise_help" onclick="window.THVP_FORUM.setComposerPostType('exercise_help')">
+            ❓ Hỏi bài tập Excel/Word
+          </button>
+          <button type="button" class="post-type-chip" data-type="tip_trick" onclick="window.THVP_FORUM.setComposerPostType('tip_trick')">
+            💡 Chia sẻ Thủ thuật hay
+          </button>
+          <button type="button" class="post-type-chip" data-type="score_brag" onclick="window.THVP_FORUM.setComposerPostType('score_brag')">
+            🏆 Khoe điểm thi thử
+          </button>
+        </div>
+
+        <!-- Title Input -->
+        <input type="text" class="composer-title-input" id="composerTitleInput" placeholder="Tiêu đề bài viết (không bắt buộc)..." />
+
+        <!-- Khoe Điểm Inputs (Ẩn mặc định, hiện khi chọn Khoe điểm) -->
+        <div class="score-brag-inputs-row" id="composerScoreInputsRow" style="display: none;">
+          <div>
+            <label style="font-size: 11px; font-weight: 700; color: #1e3a8a; display: block; margin-bottom: 2px;">ĐIỂM SỐ ĐẠT ĐƯỢC</label>
+            <input type="text" id="composerScoreValue" value="10.0" placeholder="10.0" />
+          </div>
+          <div>
+            <label style="font-size: 11px; font-weight: 700; color: #1e3a8a; display: block; margin-bottom: 2px;">MÔN THI / BÀI THI THỬ</label>
+            <input type="text" id="composerScoreSubject" value="Excel &amp; Word Chuẩn CNTT" placeholder="Tên môn thi..." />
+          </div>
+        </div>
+
+        <!-- Textarea Content -->
+        <textarea class="composer-textarea" id="composerContentText" placeholder="Bạn muốn chia sẻ điều gì? Hãy gõ #Hashtag hoặc @Giangvien để nhờ trợ giúp..."></textarea>
+
+        <!-- Feeling Selector Strip -->
+        <div class="feeling-selector-strip">
+          <span style="font-size: 18px;">😃</span>
+          <select id="composerFeelingSelect">
+            <option value="">-- Chọn cảm xúc / trạng thái --</option>
+            <option value="đang cảm thấy bế tắc với Hàm VLOOKUP 😭">đang cảm thấy bế tắc với Hàm VLOOKUP 😭</option>
+            <option value="đang cảm thấy phấn khởi vì đạt điểm 10 🌟">đang cảm thấy phấn khởi vì đạt điểm 10 🌟</option>
+            <option value="đang cảm thấy hoang mang vì quên Ctrl+S 😵">đang cảm thấy hoang mang vì quên Ctrl+S 😵</option>
+            <option value="đang cảm thấy tự tin với phím tắt thần tốc ⚡">đang cảm thấy tự tin với phím tắt thần tốc ⚡</option>
+            <option value="đang cảm thấy hào hứng chia sẻ thủ thuật 💡">đang cảm thấy hào hứng chia sẻ thủ thuật 💡</option>
+          </select>
+          <input type="text" id="composerCustomFeeling" placeholder="Hoặc tự gõ cảm xúc..." />
+        </div>
+
+        <!-- Previews Area (Ảnh và File) -->
+        <div class="composer-previews-area" id="composerPreviewsArea"></div>
+
+        <!-- Tag Suggestion Strip -->
+        <div class="composer-tags-strip">
+          <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Gợi ý Tag nhanh:</span>
+          <span class="tag-suggestion-chip" onclick="window.THVP_FORUM.insertTagInComposer('HoiDapExcel')">#HoiDapExcel</span>
+          <span class="tag-suggestion-chip" onclick="window.THVP_FORUM.insertTagInComposer('ThuThuatWord')">#ThuThuatWord</span>
+          <span class="tag-suggestion-chip" onclick="window.THVP_FORUM.insertTagInComposer('HamVLOOKUP')">#HamVLOOKUP</span>
+          <span class="tag-suggestion-chip" onclick="window.THVP_FORUM.insertTagInComposer('KhoeThanhTich')">#KhoeThanhTich</span>
+          <span class="tag-suggestion-chip" onclick="window.THVP_FORUM.insertTagInComposer('LuyenThi')">#LuyenThi</span>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="composer-modal-footer">
+        <div class="composer-toolbar-left">
+          <!-- Đính kèm ảnh -->
+          <label class="btn-composer-icon" title="Đính kèm ảnh chụp màn hình bài tập">
+            📷
+            <input type="file" id="composerImageFileInput" accept="image/*" style="display: none;" onchange="window.THVP_FORUM.handleComposerPhotoSelect(event)" />
+          </label>
+          <!-- Đính kèm file -->
+          <label class="btn-composer-icon" title="Đính kèm file .docx, .xlsx, .pdf">
+            📎
+            <input type="file" id="composerDocFileInput" accept=".docx,.doc,.xlsx,.xls,.pptx,.ppt,.pdf,.zip" style="display: none;" onchange="window.THVP_FORUM.handleComposerDocSelect(event)" />
+          </label>
+          <!-- Tag mention -->
+          <button type="button" class="btn-composer-icon" title="Tag giảng viên" onclick="window.THVP_FORUM.insertTagInComposer('@Giangvien')">
+            @
+          </button>
+        </div>
+
+        <button type="button" class="btn-submit-post" onclick="window.THVP_FORUM.submitPostFromComposer()">
+          ĐĂNG BÀI VIẾT
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 2: TRANG CÁ NHÂN / TƯỜNG CÁ NHÂN (PROFILE WALL)
+       ======================================================================== -->
+  <div class="profile-wall-backdrop" id="profileWallModal">
+    <div class="profile-wall-box" role="dialog" aria-modal="true">
+      <div class="profile-wall-header">
+        <button type="button" class="btn-close-wall" onclick="window.THVP_FORUM.closeProfileWall()" title="Đóng">✕</button>
+      </div>
+      <div class="profile-wall-body" id="profileWallBody">
+        <!-- Render động thông tin Profile và danh sách bài viết -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 3: LIGHTBOX XEM ẢNH PHÓNG TO
+       ======================================================================== -->
+  <div class="lightbox-modal" id="lightboxModal" onclick="window.THVP_FORUM.closeLightbox()">
+    <button type="button" class="lightbox-close-btn" onclick="window.THVP_FORUM.closeLightbox()">✕</button>
+    <img id="lightboxImg" class="lightbox-img" src="" alt="Ảnh phóng to" onclick="event.stopPropagation()" />
+  </div>
+
+  <!-- ========================================================================
+       MODAL 4: HỘP THOẠI YÊU CẦU ĐĂNG NHẬP (GUEST INTERACTION PROMPT)
+       ======================================================================== -->
+  <div class="login-prompt-dialog" id="loginPromptDialog">
+    <div class="login-prompt-box">
+      <div class="prompt-icon-bubble">🔒</div>
+      <h3>Yêu cầu Đăng nhập</h3>
+      <p id="loginPromptMsg">
+        Bạn cần có tài khoản trong hệ thống để đăng bài, thả biểu cảm và tham gia bình luận cùng giảng viên và bạn bè.
+      </p>
+      <div class="prompt-actions">
+        <button type="button" class="btn-prompt-login" onclick="document.getElementById('loginPromptDialog').classList.remove('open'); window.THVP_AUTH && window.THVP_AUTH.showModal('login')">
+          ĐĂNG NHẬP NGAY
+        </button>
+        <button type="button" class="btn-prompt-close" onclick="document.getElementById('loginPromptDialog').classList.remove('open')">
+          Tiếp tục xem bài với tư cách Khách
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       SCRIPTS
+       ======================================================================== -->
+  <script>
+    // Xử lý đóng/mở dropdown "CÔNG CỤ & TIỆN ÍCH"
+    (function () {
+      const toolsDropdown = document.getElementById('nav-tools-dropdown');
+      const btnTools = document.getElementById('btn-tools-dropdown');
+      const toolsContent = toolsDropdown ? toolsDropdown.querySelector('.nav-dropdown-content') : null;
+
+      if (toolsDropdown && btnTools) {
+        btnTools.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toolsDropdown.classList.toggle('open');
+        });
+
+        if (toolsContent) {
+          toolsContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        }
+
+        document.addEventListener('click', (e) => {
+          if (!toolsDropdown.contains(e.target)) {
+            toolsDropdown.classList.remove('open');
+          }
+        });
+      }
+    })();
+  </script>
+  <script src="dien-dan.js?v=3.1"></script>
+  <script src="auth.js"></script>
+</body>
+
+</html>
+

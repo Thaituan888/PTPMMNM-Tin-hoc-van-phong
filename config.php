@@ -97,6 +97,53 @@ function initDatabaseTables($pdo) {
         `submitted_at` DATETIME DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 
+    // Bảng bài viết diễn đàn (forum_posts) - Khởi tạo trống, không chèn dữ liệu mẫu
+    $pdo->exec("CREATE TABLE IF NOT EXISTS `forum_posts` (
+        `id` INT AUTO_INCREMENT PRIMARY KEY,
+        `user_id` INT DEFAULT 0,
+        `author_name` VARCHAR(100) NOT NULL,
+        `author_username` VARCHAR(50) NOT NULL,
+        `author_role` VARCHAR(20) NOT NULL DEFAULT 'student',
+        `author_avatar` TEXT DEFAULT NULL,
+        `author_mssv` VARCHAR(50) DEFAULT '',
+        `post_type` VARCHAR(30) NOT NULL DEFAULT 'general',
+        `title` VARCHAR(255) DEFAULT '',
+        `content` TEXT NOT NULL,
+        `feeling` VARCHAR(255) DEFAULT '',
+        `tags` TEXT DEFAULT NULL,
+        `group_name` VARCHAR(150) DEFAULT '',
+        `file_name` VARCHAR(255) DEFAULT '',
+        `file_path` VARCHAR(255) DEFAULT '',
+        `file_data` LONGTEXT DEFAULT NULL,
+        `file_size` INT DEFAULT 0,
+        `image_name` VARCHAR(255) DEFAULT '',
+        `image_path` VARCHAR(255) DEFAULT '',
+        `image_data` LONGTEXT DEFAULT NULL,
+        `meta_score` TEXT DEFAULT NULL,
+        `reactions` TEXT DEFAULT NULL,
+        `is_pinned` TINYINT(1) DEFAULT 0,
+        `views` INT DEFAULT 0,
+        `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+    // Bảng bình luận diễn đàn (forum_comments) - Khởi tạo trống, không chèn dữ liệu mẫu
+    $pdo->exec("CREATE TABLE IF NOT EXISTS `forum_comments` (
+        `id` INT AUTO_INCREMENT PRIMARY KEY,
+        `post_id` INT NOT NULL,
+        `parent_id` INT NOT NULL DEFAULT 0,
+        `user_id` INT DEFAULT 0,
+        `author_name` VARCHAR(100) NOT NULL,
+        `author_username` VARCHAR(50) NOT NULL,
+        `author_role` VARCHAR(20) NOT NULL DEFAULT 'student',
+        `author_avatar` TEXT DEFAULT NULL,
+        `content` TEXT NOT NULL,
+        `image_name` VARCHAR(255) DEFAULT '',
+        `image_path` VARCHAR(255) DEFAULT '',
+        `image_data` LONGTEXT DEFAULT NULL,
+        `reactions` TEXT DEFAULT NULL,
+        `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
     // Đảm bảo chỉ có 1 tài khoản Giảng viên (admin): Giangvien / 12345678 / Nguyễn Thái Tuấn
     // Xóa các tài khoản admin cũ và các tài khoản sinh viên mẫu tạo thủ công bằng code
     $pdo->exec("DELETE FROM `users` WHERE `username` IN ('admin', 'sv01', 'sv02', 'sv03', 'sv04', 'sv05')");
