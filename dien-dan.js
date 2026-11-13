@@ -58,6 +58,18 @@
   const LOCAL_POSTS_KEY = 'thvp_forum_posts';
   const LOCAL_COMMENTS_KEY = 'thvp_forum_comments';
   const LOCAL_BIOS_KEY = 'thvp_forum_bios';
+  const LOCAL_AVATARS_KEY = 'thvp_forum_custom_avatars';
+
+  const PRESET_AVATARS = [
+    { name: 'Giảng viên', url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80' },
+    { name: 'Học viên IT', url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&h=200&q=80' },
+    { name: 'Học viên Nữ', url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80' },
+    { name: 'Chuyên viên Excel', url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80' },
+    { name: 'Giảng viên Nữ', url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&h=200&q=80' },
+    { name: 'Tốt nghiệp CNTT', url: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&h=200&q=80' },
+    { name: 'Slide PPT', url: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&h=200&q=80' },
+    { name: 'Kế toán VP', url: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&h=200&q=80' }
+  ];
 
   function clearLegacySeedData() {
     // Xóa dữ liệu demo cũ (nếu có từ phiên bản trước) để diễn đàn luôn sạch trống
@@ -81,6 +93,14 @@
     }
   }
 
+  function getLocalAvatars() {
+    try {
+      return JSON.parse(localStorage.getItem(LOCAL_AVATARS_KEY) || '{}');
+    } catch (e) {
+      return {};
+    }
+  }
+
   // --- HELPER FUNCTIONS ---
   function isTeacherAccount(role, username) {
     const r = String(role || '').trim().toLowerCase();
@@ -97,6 +117,11 @@
   }
 
   function getAvatarUrl(username, role, customAvatar) {
+    if (username) {
+      const savedAvatars = getLocalAvatars();
+      const saved = savedAvatars[String(username).toLowerCase()];
+      if (saved && saved.length > 5) return saved;
+    }
     if (customAvatar && customAvatar.length > 5) return customAvatar;
     if (isTeacherAccount(role, username)) {
       return 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80';
@@ -1783,38 +1808,134 @@
     if (bodyEl) {
       const canEditBio = state.currentUser && String(state.currentUser.username || '').toLowerCase() === unameLower;
       bodyEl.innerHTML = `
-        <div class="wall-avatar-container">
-          <img src="${avatar}" class="wall-avatar-big" alt="${escapeHtml(u.fullname || u.username)}" />
-          ${canEditBio ? `<button type="button" class="btn-clear-filter" onclick="window.THVP_FORUM.editBioPrompt()">✏️ Sửa Tiểu Sử</button>` : ''}
-        </div>
-        
-        <div class="wall-user-title-box">
-          <h2>${escapeHtml(u.fullname || u.username)} ${roleHtml}</h2>
-          <div class="wall-user-sub">${u.mssv ? 'Mã định danh: ' + escapeHtml(u.mssv) + ' • ' : ''}@${escapeHtml(u.username)}</div>
-        </div>
-
-        <div class="wall-bio-text" id="wallBioDisplay">${escapeHtml(displayBio || 'Chưa cập nhật tiểu sử.')}</div>
-
-        <div class="mini-profile-stats" style="margin-bottom: 20px;">
-          <div>
-            <div class="stat-item-num">${postsCount}</div>
-            <div class="stat-item-label">Bài viết đã đăng</div>
-          </div>
-          <div>
-            <div class="stat-item-num">${commentsCount}</div>
-            <div class="stat-item-label">Bình luận giúp bạn bè</div>
+        <!-- Cover Banner Header -->
+        <div class="profile-wall-cover">
+          <div class="wall-cover-pattern"></div>
+          <div class="wall-cover-badge">
+            <span class="badge-dot"></span>
+            <span>Cộng Đồng Học Tập Tin Học Văn Phòng</span>
           </div>
         </div>
 
-        <!-- Badges Showcase -->
-        <div class="wall-badges-box">
-          <div class="wall-badges-title">Huy hiệu danh dự đạt được</div>
-          <div class="badges-grid">${badgesHtml}</div>
-        </div>
+        <div class="wall-main-content">
+          <div class="wall-avatar-container">
+            <div class="wall-avatar-wrap">
+              <img src="${avatar}" class="wall-avatar-big" id="wallUserAvatarImg" alt="${escapeHtml(u.fullname || u.username)}" />
+              ${canEditBio ? `
+                <button type="button" class="btn-avatar-camera" onclick="window.THVP_FORUM.openAvatarModal()" title="Thay đổi ảnh đại diện">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                  </svg>
+                </button>
+              ` : ''}
+            </div>
+            
+            <div class="wall-action-btns-row">
+              ${canEditBio ? `
+                <button type="button" class="btn-action-change-avatar" onclick="window.THVP_FORUM.openAvatarModal()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                  </svg>
+                  <span>Đổi Ảnh Đại Diện</span>
+                </button>
+                <button type="button" class="btn-clear-filter" onclick="window.THVP_FORUM.startEditBio()">
+                  ✏️ Sửa Tiểu Sử
+                </button>
+              ` : ''}
+            </div>
+          </div>
+          
+          <div class="wall-user-title-box">
+            <h2>${escapeHtml(u.fullname || u.username)} ${roleHtml}</h2>
+            <div class="wall-user-sub">${u.mssv ? 'Mã định danh: ' + escapeHtml(u.mssv) + ' • ' : ''}@${escapeHtml(u.username)}</div>
+          </div>
 
-        <!-- Post History -->
-        <div class="wall-posts-header">Lịch sử bài viết trên Dòng thời gian (${userPosts.length})</div>
-        <div class="forum-feed-list">${userPostsHtml}</div>
+          <!-- Khung Tiểu Sử Cá Nhân Trực Tiếp -->
+          <div class="wall-bio-container" id="wallBioContainer">
+            <div class="wall-bio-view" id="wallBioView">
+              <div
+                class="wall-bio-content ${canEditBio ? 'can-edit' : ''} ${!displayBio ? 'is-empty' : ''}"
+                id="wallBioDisplay"
+                ${canEditBio ? 'onclick="window.THVP_FORUM.startEditBio()"' : ''}
+                title="${canEditBio ? 'Bấm để chỉnh sửa tiểu sử trực tiếp' : ''}"
+              >${escapeHtml(displayBio || (canEditBio ? 'Chưa cập nhật tiểu sử. Bấm vào đây để giới thiệu đôi nét về bản thân ✨' : 'Chưa cập nhật tiểu sử.'))}</div>
+              ${canEditBio ? `
+                <button type="button" class="btn-edit-bio-inline" onclick="window.THVP_FORUM.startEditBio()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"/>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                  </svg>
+                  <span>Chỉnh sửa tiểu sử</span>
+                </button>
+              ` : ''}
+            </div>
+
+            ${canEditBio ? `
+              <div class="wall-bio-editor" id="wallBioEditor" style="display: none;">
+                <div class="wall-bio-editor-header">
+                  <span class="wall-bio-editor-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                      <path d="M12 20h9"/>
+                      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                    </svg>
+                    Chỉnh sửa tiểu sử bản thân
+                  </span>
+                  <span class="wall-bio-char-count" id="wallBioCharCount">0/200</span>
+                </div>
+                <textarea
+                  id="wallBioInput"
+                  class="wall-bio-textarea"
+                  maxlength="200"
+                  rows="3"
+                  placeholder="Chia sẻ về sở thích tin học, chuyên môn (Word/Excel/PowerPoint), mục tiêu học tập..."
+                  oninput="window.THVP_FORUM.onBioInput(this)"
+                  onkeydown="window.THVP_FORUM.handleBioKeyDown(event)"
+                ></textarea>
+                <div class="wall-bio-quick-chips">
+                  <span class="bio-chip-label">Gợi ý nhanh:</span>
+                  <button type="button" class="bio-quick-chip" onclick="window.THVP_FORUM.appendBioChip('Đam mê tự động hóa Excel 📊')">📊 Đam mê Excel</button>
+                  <button type="button" class="bio-quick-chip" onclick="window.THVP_FORUM.appendBioChip('Luyện gõ 10 ngón thần tốc ⚡')">⚡ Gõ phím thần tốc</button>
+                  <button type="button" class="bio-quick-chip" onclick="window.THVP_FORUM.appendBioChip('Mục tiêu đạt điểm 10 Chuẩn CNTT 🌟')">🌟 Mục tiêu điểm 10</button>
+                  <button type="button" class="bio-quick-chip" onclick="window.THVP_FORUM.appendBioChip('Thích thiết kế Slide PowerPoint hiện đại 🎨')">🎨 Slide PowerPoint</button>
+                </div>
+                <div class="wall-bio-actions">
+                  <button type="button" class="btn-bio-cancel" onclick="window.THVP_FORUM.cancelEditBio()">Hủy</button>
+                  <button type="button" class="btn-bio-save" onclick="window.THVP_FORUM.saveBioInline()">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                      <polyline points="17 21 17 13 7 13 7 21"/>
+                      <polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                    Lưu tiểu sử
+                  </button>
+                </div>
+              </div>
+            ` : ''}
+          </div>
+
+          <div class="mini-profile-stats" style="margin-bottom: 20px;">
+            <div>
+              <div class="stat-item-num">${postsCount}</div>
+              <div class="stat-item-label">Bài viết đã đăng</div>
+            </div>
+            <div>
+              <div class="stat-item-num">${commentsCount}</div>
+              <div class="stat-item-label">Bình luận giúp bạn bè</div>
+            </div>
+          </div>
+
+          <!-- Badges Showcase -->
+          <div class="wall-badges-box">
+            <div class="wall-badges-title">Huy hiệu danh dự đạt được</div>
+            <div class="badges-grid">${badgesHtml}</div>
+          </div>
+
+          <!-- Post History -->
+          <div class="wall-posts-header">Lịch sử bài viết trên Dòng thời gian (${userPosts.length})</div>
+          <div class="forum-feed-list">${userPostsHtml}</div>
+        </div>
       `;
     }
 
@@ -1822,27 +1943,270 @@
   }
 
   function closeProfileWall() {
+    cancelEditBio();
     const backdrop = document.getElementById('profileWallModal');
     if (backdrop) backdrop.classList.remove('open');
   }
 
-  function editBioPrompt() {
+  function startEditBio() {
+    const viewEl = document.getElementById('wallBioView');
+    const editorEl = document.getElementById('wallBioEditor');
+    const inputEl = document.getElementById('wallBioInput');
+    const countEl = document.getElementById('wallBioCharCount');
+    if (!editorEl || !inputEl) return;
+
     const bioEl = document.getElementById('wallBioDisplay');
-    const rawCurBio = bioEl ? bioEl.textContent : '';
-    const curBio = rawCurBio === 'Chưa cập nhật tiểu sử.' ? '' : rawCurBio;
-    const newBio = prompt('Nhập tiểu sử giới thiệu về bản thân:', curBio);
-    if (newBio !== null) {
-      const trimmed = newBio.trim();
-      if (state.currentUser && state.currentUser.username) {
-        const bios = getLocalBios();
-        bios[state.currentUser.username.toLowerCase()] = trimmed;
-        localStorage.setItem(LOCAL_BIOS_KEY, JSON.stringify(bios));
-      }
-      if (bioEl) {
-        bioEl.textContent = trimmed || 'Chưa cập nhật tiểu sử.';
-      }
-      showToast('Đã lưu tiểu sử mới!', 'success');
+    const rawCurBio = bioEl ? bioEl.textContent.trim() : '';
+    const isEmptyHint = !rawCurBio || rawCurBio.startsWith('Chưa cập nhật tiểu sử.');
+    const curBio = isEmptyHint ? '' : rawCurBio;
+
+    inputEl.value = curBio;
+    if (countEl) countEl.textContent = `${inputEl.value.length}/200`;
+    if (viewEl) viewEl.style.display = 'none';
+    editorEl.style.display = 'flex';
+    inputEl.focus();
+    inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length);
+  }
+
+  function cancelEditBio() {
+    const viewEl = document.getElementById('wallBioView');
+    const editorEl = document.getElementById('wallBioEditor');
+    if (editorEl) editorEl.style.display = 'none';
+    if (viewEl) viewEl.style.display = 'flex';
+  }
+
+  function onBioInput(textarea) {
+    const countEl = document.getElementById('wallBioCharCount');
+    if (countEl && textarea) {
+      countEl.textContent = `${textarea.value.length}/200`;
     }
+  }
+
+  function appendBioChip(text) {
+    const inputEl = document.getElementById('wallBioInput');
+    if (!inputEl) return;
+    const current = inputEl.value.trim();
+    if (!current) {
+      inputEl.value = text;
+    } else if (!current.includes(text)) {
+      if (current.length + text.length + 3 <= 200) {
+        inputEl.value = `${current} • ${text}`;
+      } else {
+        inputEl.value = text;
+      }
+    }
+    onBioInput(inputEl);
+    inputEl.focus();
+  }
+
+  function handleBioKeyDown(e) {
+    if (e.key === 'Escape') {
+      e.stopPropagation();
+      cancelEditBio();
+    } else if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      saveBioInline();
+    }
+  }
+
+  function saveBioInline() {
+    const inputEl = document.getElementById('wallBioInput');
+    const newBio = inputEl ? inputEl.value.trim() : '';
+    if (!state.currentUser || !state.currentUser.username) {
+      triggerLoginPrompt('Vui lòng đăng nhập để lưu tiểu sử.');
+      return;
+    }
+
+    const uname = state.currentUser.username.toLowerCase();
+    const bios = getLocalBios();
+    bios[uname] = newBio;
+    localStorage.setItem(LOCAL_BIOS_KEY, JSON.stringify(bios));
+
+    const bioEl = document.getElementById('wallBioDisplay');
+    if (bioEl) {
+      if (newBio) {
+        bioEl.textContent = newBio;
+        bioEl.classList.remove('is-empty');
+      } else {
+        bioEl.textContent = 'Chưa cập nhật tiểu sử. Bấm vào đây để giới thiệu đôi nét về bản thân ✨';
+        bioEl.classList.add('is-empty');
+      }
+    }
+
+    cancelEditBio();
+    showToast('Đã lưu tiểu sử mới thành công! ✨', 'success');
+  }
+
+  function editBioPrompt() {
+    startEditBio();
+  }
+
+  // --- AVATAR CHOOSER MODAL (ĐỔI ẢNH ĐẠI DIỆN) ---
+  function openAvatarModal() {
+    if (!state.currentUser) {
+      triggerLoginPrompt('Vui lòng đăng nhập để thay đổi ảnh đại diện.');
+      return;
+    }
+
+    const modal = document.getElementById('avatarChooserModal');
+    if (!modal) return;
+
+    const curAvatar = getAvatarUrl(state.currentUser.username, state.currentUser.role, state.currentUser.avatar);
+    state.selectedAvatarCandidate = curAvatar;
+
+    const previewImg = document.getElementById('avatarModalPreviewImg');
+    const previewName = document.getElementById('avatarModalPreviewName');
+    if (previewImg) previewImg.src = curAvatar;
+    if (previewName) previewName.textContent = state.currentUser.fullname || state.currentUser.username;
+
+    // Render presets grid
+    const gridEl = document.getElementById('avatarPresetsGrid');
+    if (gridEl) {
+      gridEl.innerHTML = PRESET_AVATARS.map((p, idx) => {
+        const isSelected = p.url === curAvatar;
+        return `
+          <div class="avatar-preset-item ${isSelected ? 'selected' : ''}" data-idx="${idx}" onclick="window.THVP_FORUM.selectPresetAvatar('${escapeJsAttr(p.url)}', this)">
+            <img src="${p.url}" alt="${escapeHtml(p.name)}" />
+            <div class="avatar-preset-label">${escapeHtml(p.name)}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Reset file input
+    const fileInput = document.getElementById('avatarFileInput');
+    if (fileInput) fileInput.value = '';
+
+    modal.classList.add('open');
+  }
+
+  function closeAvatarModal() {
+    const modal = document.getElementById('avatarChooserModal');
+    if (modal) modal.classList.remove('open');
+    state.selectedAvatarCandidate = null;
+  }
+
+  function selectPresetAvatar(url, el) {
+    state.selectedAvatarCandidate = url;
+    const previewImg = document.getElementById('avatarModalPreviewImg');
+    if (previewImg) previewImg.src = url;
+
+    document.querySelectorAll('.avatar-preset-item').forEach(item => item.classList.remove('selected'));
+    if (el) el.classList.add('selected');
+  }
+
+  function handleAvatarFileSelect(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      showToast('Vui lòng chọn tệp hình ảnh hợp lệ (JPG, PNG, WebP)!', 'warning');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('Kích thước ảnh tối đa là 5MB. Vui lòng chọn ảnh nhỏ hơn!', 'warning');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (evt) {
+      const img = new Image();
+      img.onload = function () {
+        // Tạo canvas vuông 200x200 để canh tâm chuẩn tỉ lệ avatar
+        const canvas = document.createElement('canvas');
+        const size = 200;
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        const minDim = Math.min(img.width, img.height);
+        const sx = (img.width - minDim) / 2;
+        const sy = (img.height - minDim) / 2;
+
+        ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
+        const squareDataUrl = canvas.toDataURL('image/jpeg', 0.88);
+
+        state.selectedAvatarCandidate = squareDataUrl;
+        const previewImg = document.getElementById('avatarModalPreviewImg');
+        if (previewImg) previewImg.src = squareDataUrl;
+
+        document.querySelectorAll('.avatar-preset-item').forEach(item => item.classList.remove('selected'));
+        showToast('Đã chọn ảnh! Bấm "Lưu Ảnh Đại Diện" để áp dụng.', 'info');
+      };
+      img.src = evt.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function saveAvatarSelection() {
+    if (!state.selectedAvatarCandidate) {
+      showToast('Vui lòng chọn hoặc tải ảnh đại diện!', 'warning');
+      return;
+    }
+    if (!state.currentUser || !state.currentUser.username) {
+      triggerLoginPrompt('Vui lòng đăng nhập để lưu ảnh đại diện.');
+      return;
+    }
+
+    const newAvatar = state.selectedAvatarCandidate;
+    const uname = String(state.currentUser.username).toLowerCase();
+
+    // 1. Lưu vào Custom Avatars Map trong LocalStorage
+    const avatars = getLocalAvatars();
+    avatars[uname] = newAvatar;
+    localStorage.setItem(LOCAL_AVATARS_KEY, JSON.stringify(avatars));
+
+    // 2. Cập nhật state & Auth
+    state.currentUser.avatar = newAvatar;
+    if (window.THVP_AUTH && typeof window.THVP_AUTH.setCurrentUser === 'function') {
+      const u = window.THVP_AUTH.getCurrentUser();
+      if (u) {
+        window.THVP_AUTH.setCurrentUser({ ...u, avatar: newAvatar }, true);
+      }
+    }
+
+    // 3. Cập nhật giao diện tức thì
+    const wallImg = document.getElementById('wallUserAvatarImg');
+    if (wallImg) wallImg.src = newAvatar;
+
+    updateCurrentUserDisplay();
+
+    // 4. Cập nhật các bài viết & bình luận của người này trong LocalStorage
+    const localPosts = getLocalPosts();
+    let postChanged = false;
+    localPosts.forEach(p => {
+      if (String(p.author_username || '').toLowerCase() === uname) {
+        p.author_avatar = newAvatar;
+        postChanged = true;
+      }
+    });
+    if (postChanged) {
+      localStorage.setItem(LOCAL_POSTS_KEY, JSON.stringify(localPosts));
+    }
+
+    const localComments = getLocalComments();
+    let cmtChanged = false;
+    localComments.forEach(c => {
+      if (String(c.author_username || '').toLowerCase() === uname) {
+        c.author_avatar = newAvatar;
+        cmtChanged = true;
+      }
+    });
+    if (cmtChanged) {
+      localStorage.setItem(LOCAL_COMMENTS_KEY, JSON.stringify(localComments));
+    }
+
+    // Re-render feed với avatar mới
+    state.posts.forEach(p => {
+      if (String(p.author_username || '').toLowerCase() === uname) {
+        p.author_avatar = newAvatar;
+      }
+    });
+    renderFeed();
+
+    closeAvatarModal();
+    showToast('Đã đổi ảnh đại diện thành công! 📸', 'success');
   }
 
   // --- LIGHTBOX ---
@@ -1912,6 +2276,7 @@
     document.addEventListener('click', e => {
       if (e.target.classList.contains('composer-modal-backdrop')) closeComposer();
       if (e.target.classList.contains('profile-wall-backdrop')) closeProfileWall();
+      if (e.target.classList.contains('avatar-modal-backdrop')) closeAvatarModal();
       if (e.target.classList.contains('lightbox-modal')) closeLightbox();
       if (e.target.classList.contains('login-prompt-dialog')) {
         document.getElementById('loginPromptDialog')?.classList.remove('open');
@@ -1921,6 +2286,16 @@
     // ESC to close modals
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
+        const avatarModal = document.getElementById('avatarChooserModal');
+        if (avatarModal && avatarModal.classList.contains('open')) {
+          closeAvatarModal();
+          return;
+        }
+        const bioEditor = document.getElementById('wallBioEditor');
+        if (bioEditor && bioEditor.style.display !== 'none') {
+          cancelEditBio();
+          return;
+        }
         closeComposer();
         closeProfileWall();
         closeLightbox();
@@ -1959,7 +2334,18 @@
     reactComment,
     openProfileWall,
     closeProfileWall,
+    startEditBio,
+    cancelEditBio,
+    saveBioInline,
+    appendBioChip,
+    onBioInput,
+    handleBioKeyDown,
     editBioPrompt,
+    openAvatarModal,
+    closeAvatarModal,
+    selectPresetAvatar,
+    handleAvatarFileSelect,
+    saveAvatarSelection,
     openLightbox,
     closeLightbox,
     loadMorePosts: () => {

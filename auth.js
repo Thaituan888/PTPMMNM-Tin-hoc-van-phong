@@ -1089,11 +1089,12 @@ window.addEventListener('load', function () {
             <div class="header-user-avatar-col">
               <div class="header-avatar-ring">
                 <div class="header-avatar-inner">
+                  ${user.avatar ? `<img src="${user.avatar}" alt="${displayName}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;" />` : `
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d="M7.5 10.5c.6-.7 1.8-.7 2.4 0" stroke="#64748b" stroke-width="1.8" stroke-linecap="round"/>
                     <path d="M14.1 10.5c.6-.7 1.8-.7 2.4 0" stroke="#64748b" stroke-width="1.8" stroke-linecap="round"/>
                     <path d="M9.5 15.2c1.3 1.2 3.7 1.2 5 0" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round"/>
-                  </svg>
+                  </svg>`}
                 </div>
                 <span class="header-avatar-dot"></span>
               </div>
