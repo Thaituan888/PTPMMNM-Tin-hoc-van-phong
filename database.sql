@@ -21,6 +21,8 @@ CREATE TABLE `users` (
     `email` VARCHAR(150) DEFAULT '',
     `mssv` VARCHAR(50) DEFAULT '',
     `role` ENUM('admin', 'student') NOT NULL DEFAULT 'student',
+    `avatar` LONGTEXT DEFAULT NULL,
+    `bio` TEXT DEFAULT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

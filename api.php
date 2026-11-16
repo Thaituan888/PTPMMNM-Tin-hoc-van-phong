@@ -241,11 +241,42 @@ switch ($action) {
                 'username' => $user['username'],
                 'fullname' => $user['fullname'],
                 'email' => $user['email'] ?? '',
-                'role' => $user['role']
+                'mssv' => $user['mssv'] ?? '',
+                'role' => $user['role'],
+                'avatar' => $user['avatar'] ?? '',
+                'bio' => $user['bio'] ?? ''
             ];
             jsonResponse(true, 'Đăng nhập thành công!', $_SESSION['user']);
         } else {
             jsonResponse(false, 'Tên đăng nhập/email hoặc mật khẩu không chính xác!');
+        }
+        break;
+
+    // -------------------------------------------------------------
+    // LẤY THÔNG TIN TÀI KHOẢN ĐANG ĐĂNG NHẬP (SESSION)
+    // -------------------------------------------------------------
+    case 'get_user':
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['username'])) {
+            try {
+                $stmtU = $pdo->prepare("SELECT `id`, `username`, `fullname`, `email`, `mssv`, `role`, `avatar`, `bio` FROM `users` WHERE LOWER(`username`) = LOWER(?) LIMIT 1");
+                $stmtU->execute([$_SESSION['user']['username']]);
+                $uRow = $stmtU->fetch();
+                if ($uRow) {
+                    $_SESSION['user'] = [
+                        'id' => $uRow['id'],
+                        'username' => $uRow['username'],
+                        'fullname' => $uRow['fullname'],
+                        'email' => $uRow['email'] ?? '',
+                        'mssv' => $uRow['mssv'] ?? '',
+                        'role' => $uRow['role'],
+                        'avatar' => $uRow['avatar'] ?? '',
+                        'bio' => $uRow['bio'] ?? ''
+                    ];
+                }
+            } catch (Exception $e) {}
+            jsonResponse(true, 'Đã đăng nhập', $_SESSION['user']);
+        } else {
+            jsonResponse(false, 'Chưa đăng nhập');
         }
         break;
 
@@ -415,7 +446,10 @@ switch ($action) {
             'username' => $username,
             'fullname' => $fullname,
             'email' => $email,
-            'role' => 'student'
+            'mssv' => '',
+            'role' => 'student',
+            'avatar' => '',
+            'bio' => ''
         ];
         $_SESSION['user'] = $newUser;
         unset($_SESSION['pending_otp']);
@@ -724,6 +758,7 @@ switch ($action) {
                     'username' => $uKey,
                     'name' => $row['author_name'],
                     'role' => $row['author_role'],
+                    'avatar' => $row['author_avatar'] ?? '',
                     'points' => 0
                 ];
             }
@@ -1092,7 +1127,7 @@ switch ($action) {
         $username = trim($_GET['username'] ?? '');
         if ($username === '') jsonResponse(false, 'Thiếu tên người dùng!');
 
-        $stmtU = $pdo->prepare("SELECT `id`, `username`, `fullname`, `role`, `mssv` FROM `users` WHERE LOWER(`username`) = LOWER(?) LIMIT 1");
+        $stmtU = $pdo->prepare("SELECT `id`, `username`, `fullname`, `role`, `mssv`, `avatar`, `bio` FROM `users` WHERE LOWER(`username`) = LOWER(?) LIMIT 1");
         $stmtU->execute([$username]);
         $userRow = $stmtU->fetch();
 
@@ -1128,6 +1163,10 @@ switch ($action) {
         $resolvedName = $userRow ? $userRow['fullname'] : (!empty($userPosts) ? $userPosts[0]['author_name'] : $username);
         $resolvedRole = $userRow ? $userRow['role'] : (!empty($userPosts) ? $userPosts[0]['author_role'] : 'student');
         $resolvedMssv = $userRow ? $userRow['mssv'] : (!empty($userPosts) ? $userPosts[0]['author_mssv'] : '');
+        $resolvedAvatar = ($userRow && !empty($userRow['avatar']))
+            ? $userRow['avatar']
+            : (!empty($userPosts[0]['author_avatar']) ? $userPosts[0]['author_avatar'] : '');
+        $resolvedBio = ($userRow && !empty($userRow['bio'])) ? $userRow['bio'] : '';
 
         $badges = [];
         if (count($userPosts) >= 1) {
@@ -1146,7 +1185,8 @@ switch ($action) {
                 'fullname' => $resolvedName,
                 'role' => $resolvedRole,
                 'mssv' => $resolvedMssv,
-                'bio' => ''
+                'avatar' => $resolvedAvatar,
+                'bio' => $resolvedBio
             ],
             'stats' => [
                 'posts_count' => count($userPosts),
@@ -1156,6 +1196,93 @@ switch ($action) {
             'badges' => $badges,
             'posts' => $userPosts
         ]);
+        break;
+
+    // -------------------------------------------------------------
+    // DIỄN ĐÀN CỘNG ĐỒNG: CẬP NHẬT ẢNH ĐẠI DIỆN (AVATAR)
+    // -------------------------------------------------------------
+    case 'forum_update_avatar':
+        $username = trim($_POST['username'] ?? '');
+        $avatar = trim($_POST['avatar'] ?? '');
+
+        // Ưu tiên username từ session nếu có
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['username'])) {
+            $username = $_SESSION['user']['username'];
+        }
+
+        if (empty($username)) {
+            jsonResponse(false, 'Vui lòng đăng nhập để đổi ảnh đại diện!');
+        }
+
+        // Xử lý nếu gửi file ảnh qua $_FILES
+        if (isset($_FILES['avatar_file']) && $_FILES['avatar_file']['error'] === UPLOAD_ERR_OK) {
+            $img = $_FILES['avatar_file'];
+            $rawImg = file_get_contents($img['tmp_name']);
+            $ext = pathinfo($img['name'], PATHINFO_EXTENSION) ?: 'jpg';
+            $safeName = 'avatar_' . strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $username)) . '_' . time() . '.' . $ext;
+            if (@move_uploaded_file($img['tmp_name'], UPLOAD_DIR . $safeName)) {
+                $avatar = 'uploads/' . $safeName;
+            } else {
+                $mime = $img['type'] ?: 'image/jpeg';
+                $avatar = 'data:' . $mime . ';base64,' . base64_encode($rawImg);
+            }
+        }
+
+        if (empty($avatar)) {
+            jsonResponse(false, 'Chưa chọn ảnh đại diện!');
+        }
+
+        // 1. Cập nhật bảng users
+        try {
+            $stmtU = $pdo->prepare("UPDATE `users` SET `avatar` = ? WHERE LOWER(`username`) = LOWER(?)");
+            $stmtU->execute([$avatar, $username]);
+        } catch (Exception $e) {}
+
+        // 2. Cập nhật đồng loạt các bài viết của user trong forum_posts
+        try {
+            $stmtP = $pdo->prepare("UPDATE `forum_posts` SET `author_avatar` = ? WHERE LOWER(`author_username`) = LOWER(?)");
+            $stmtP->execute([$avatar, $username]);
+        } catch (Exception $e) {}
+
+        // 3. Cập nhật đồng loạt các bình luận của user trong forum_comments
+        try {
+            $stmtC = $pdo->prepare("UPDATE `forum_comments` SET `author_avatar` = ? WHERE LOWER(`author_username`) = LOWER(?)");
+            $stmtC->execute([$avatar, $username]);
+        } catch (Exception $e) {}
+
+        // 4. Cập nhật session nếu có
+        if (isset($_SESSION['user'])) {
+            $_SESSION['user']['avatar'] = $avatar;
+        }
+
+        jsonResponse(true, 'Cập nhật ảnh đại diện thành công!', ['avatar' => $avatar]);
+        break;
+
+    // -------------------------------------------------------------
+    // DIỄN ĐÀN CỘNG ĐỒNG: CẬP NHẬT TIỂU SỬ (BIO)
+    // -------------------------------------------------------------
+    case 'forum_update_bio':
+        $username = trim($_POST['username'] ?? '');
+        $bio = trim($_POST['bio'] ?? '');
+
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['username'])) {
+            $username = $_SESSION['user']['username'];
+        }
+
+        if (empty($username)) {
+            jsonResponse(false, 'Vui lòng đăng nhập để cập nhật tiểu sử!');
+        }
+
+        try {
+            $stmtU = $pdo->prepare("UPDATE `users` SET `bio` = ? WHERE LOWER(`username`) = LOWER(?)");
+            $stmtU->execute([$bio, $username]);
+        } catch (Exception $e) {}
+
+        if (isset($_SESSION['user'])) {
+            $_SESSION['user']['bio'] = $bio;
+        }
+
+        jsonResponse(true, 'Cập nhật tiểu sử thành công!', ['bio' => $bio]);
         break;
 
     default:

@@ -1064,6 +1064,22 @@ window.addEventListener('load', function () {
     apiCall('logout');
   }
 
+  function resolveUserAvatar(username, role, customAvatar) {
+    if (customAvatar && customAvatar.length > 5) return customAvatar;
+    try {
+      const saved = JSON.parse(localStorage.getItem('thvp_forum_custom_avatars') || '{}');
+      if (username && saved[String(username).toLowerCase()]) {
+        return saved[String(username).toLowerCase()];
+      }
+    } catch (e) {}
+    const r = String(role || '').toLowerCase();
+    const u = String(username || '').toLowerCase();
+    if (r === 'admin' || r === 'teacher' || u === 'giangvien') {
+      return 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80';
+    }
+    return 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&h=120&q=80';
+  }
+
   // 9. Cập nhật Huy hiệu Avatar + Tên + Nút Đăng xuất trên Header
   function updateAuthInterface() {
     const user = getCurrentUser();
@@ -1083,13 +1099,14 @@ window.addEventListener('load', function () {
         // HỌC VIÊN HOẶC GIÁO VIÊN (Khung tròn Avatar + Chấm xanh + Tên bên dưới + Nút Đăng xuất vuông bo góc)
         const isTeacher = user.role === 'admin' || user.role === 'teacher';
         const displayName = isTeacher ? 'Giáo viên' : (user.fullname || 'Nguyễn Thái Tuấn');
+        const headerAvatar = resolveUserAvatar(user.username, user.role, user.avatar);
 
         btn.innerHTML = `
           <div class="header-user-widget">
             <div class="header-user-avatar-col">
               <div class="header-avatar-ring">
                 <div class="header-avatar-inner">
-                  ${user.avatar ? `<img src="${user.avatar}" alt="${displayName}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;" />` : `
+                  ${headerAvatar ? `<img src="${headerAvatar}" alt="${displayName}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;" />` : `
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d="M7.5 10.5c.6-.7 1.8-.7 2.4 0" stroke="#64748b" stroke-width="1.8" stroke-linecap="round"/>
                     <path d="M14.1 10.5c.6-.7 1.8-.7 2.4 0" stroke="#64748b" stroke-width="1.8" stroke-linecap="round"/>

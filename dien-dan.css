@@ -204,6 +204,24 @@ body.forum-body {
   object-fit: cover;
 }
 
+.mini-avatar-camera-badge {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 16px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.mini-profile-avatar-wrap:hover .mini-avatar-camera-badge {
+  opacity: 1;
+}
+
 .mini-profile-name {
   font-size: 15px;
   font-weight: 700;
@@ -589,6 +607,54 @@ body.forum-body {
   color: var(--primary-dark);
   background: var(--primary-light);
   font-weight: 700;
+}
+
+/* Forum Search Bar */
+.forum-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 220px;
+  max-width: 320px;
+  flex: 1;
+  margin-left: auto;
+}
+
+.forum-search-input {
+  width: 100%;
+  padding: 7px 30px 7px 32px;
+  font-size: 13px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  background: #f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E") no-repeat 10px center;
+  color: var(--text-main);
+  outline: none;
+  transition: var(--transition);
+}
+
+.forum-search-input:focus {
+  background-color: #ffffff;
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+}
+
+.btn-clear-search {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-sub);
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 50%;
+}
+
+.btn-clear-search:hover {
+  color: #ef4444;
 }
 
 /* Filter Tag / Group Indicator Bar */

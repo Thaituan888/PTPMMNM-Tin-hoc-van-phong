@@ -57,9 +57,15 @@ function initDatabaseTables($pdo) {
         `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 
-    // Thêm cột email nếu chưa có
+    // Thêm cột email, avatar, bio nếu chưa có
     try {
         $pdo->exec("ALTER TABLE `users` ADD COLUMN `email` VARCHAR(150) DEFAULT '' AFTER `fullname`");
+    } catch (Exception $e) {}
+    try {
+        $pdo->exec("ALTER TABLE `users` ADD COLUMN `avatar` LONGTEXT DEFAULT NULL");
+    } catch (Exception $e) {}
+    try {
+        $pdo->exec("ALTER TABLE `users` ADD COLUMN `bio` TEXT DEFAULT NULL");
     } catch (Exception $e) {}
 
     // Bảng bài tập / tài liệu (exercises)

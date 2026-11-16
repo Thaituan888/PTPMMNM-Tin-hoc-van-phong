@@ -354,9 +354,11 @@
   function renderFormattedContent(text) {
     let safe = escapeHtml(text);
     // Replace hashtags: #HoiDapExcel -> <a class="tag-link" data-tag="HoiDapExcel">#HoiDapExcel</a>
-    safe = safe.replace(/#([a-zA-Z0-9_\u00C0-\u024F\u1E00-\u1EFF]+)/g, '<a href="javascript:void(0)" class="tag-link" data-tag="$1">#$1</a>');
-    // Replace mentions: @Giangvien -> <span class="mention-tag">@Giangvien</span>
-    safe = safe.replace(/@([a-zA-Z0-9_\u00C0-\u024F\u1E00-\u1EFF]+)/g, '<span class="mention-tag">@$1</span>');
+    safe = safe.replace(/#([a-zA-Z0-9_\p{L}]+)/gu, '<a href="javascript:void(0)" class="tag-link" data-tag="$1">#$1</a>');
+    // Replace mentions: @Giangvien -> <span class="mention-tag" onclick="window.THVP_FORUM.openProfileWall('$1')" style="cursor: pointer;">@$1</span>
+    safe = safe.replace(/@([a-zA-Z0-9_\p{L}]+)/gu, '<span class="mention-tag" onclick="window.THVP_FORUM.openProfileWall(\'$1\')" style="cursor: pointer;" title="Xem trang cá nhân của @$1">@$1</span>');
+    // Giữ nguyên xuống dòng
+    safe = safe.replace(/\n/g, '<br />');
     return safe;
   }
 
@@ -565,8 +567,9 @@
         leftProfileEl.innerHTML = `
           <div class="mini-profile-cover"></div>
           <div class="mini-profile-body">
-            <div class="mini-profile-avatar-wrap" onclick="window.THVP_FORUM.openProfileWall('${escapeJsAttr(user.username)}')">
+            <div class="mini-profile-avatar-wrap" onclick="window.THVP_FORUM.openAvatarModal()" title="Bấm để đổi ảnh đại diện 📷">
               <img src="${avatar}" class="mini-profile-avatar" alt="${escapeHtml(user.fullname || user.username)}" />
+              <span class="mini-avatar-camera-badge" title="Đổi ảnh đại diện">📷</span>
             </div>
             <div class="mini-profile-name" onclick="window.THVP_FORUM.openProfileWall('${escapeJsAttr(user.username)}')">
               ${escapeHtml(user.fullname || user.username)}
@@ -667,20 +670,27 @@
     // Xử lý thẻ khoe điểm thi thử
     let scoreCardHtml = '';
     if (post.meta_score) {
-      const ms = typeof post.meta_score === 'string' ? JSON.parse(post.meta_score) : post.meta_score;
-      scoreCardHtml = `
-        <div class="score-brag-card">
-          <div class="score-left-info">
-            <div class="score-subject">${escapeHtml(ms.subject || 'Tin Học Văn Phòng')}</div>
-            <div class="score-exam-name">${escapeHtml(ms.exam || 'Bài Thi Thử Chuẩn Kỹ Năng')}</div>
-            <div class="score-stars">⭐⭐⭐⭐⭐ Hoàn thành xuất sắc</div>
+      let ms = null;
+      try {
+        ms = typeof post.meta_score === 'string' ? JSON.parse(post.meta_score) : post.meta_score;
+      } catch (e) {
+        ms = null;
+      }
+      if (ms) {
+        scoreCardHtml = `
+          <div class="score-brag-card">
+            <div class="score-left-info">
+              <div class="score-subject">${escapeHtml(ms.subject || 'Tin Học Văn Phòng')}</div>
+              <div class="score-exam-name">${escapeHtml(ms.exam || 'Bài Thi Thử Chuẩn Kỹ Năng')}</div>
+              <div class="score-stars">⭐⭐⭐⭐⭐ Hoàn thành xuất sắc</div>
+            </div>
+            <div class="score-circle-badge">
+              <span class="score-val">${escapeHtml(ms.score || '10.0')}</span>
+              <span class="score-max">/10 ĐIỂM</span>
+            </div>
           </div>
-          <div class="score-circle-badge">
-            <span class="score-val">${escapeHtml(ms.score || '10.0')}</span>
-            <span class="score-max">/10 ĐIỂM</span>
-          </div>
-        </div>
-      `;
+        `;
+      }
     }
 
     // Xử lý ảnh đính kèm
@@ -732,7 +742,7 @@
     const iconsPresent = [];
 
     Object.keys(REACTION_CONFIG).forEach(type => {
-      const list = reactions[type] || [];
+      const list = Array.isArray(reactions[type]) ? reactions[type] : [];
       if (list.length > 0) {
         iconsPresent.push(REACTION_CONFIG[type].icon);
         totalReactions += list.length;
@@ -955,7 +965,7 @@
     }
 
     const myUsername = state.currentUser ? state.currentUser.username : null;
-    const likesList = (c.reactions && c.reactions.like) || [];
+    const likesList = (c.reactions && Array.isArray(c.reactions.like)) ? c.reactions.like : [];
     const isLiked = myUsername && likesList.includes(myUsername);
 
     return `
@@ -1080,16 +1090,19 @@
     } catch (e) {}
 
     // 2. Fallback LocalStorage
-    const allComments = JSON.parse(localStorage.getItem(LOCAL_COMMENTS_KEY) || '[]');
-    const c = allComments.find(x => x.id === commentId);
-    if (c) {
-      if (!c.reactions) c.reactions = { like: [] };
-      const idx = c.reactions.like.indexOf(username);
-      if (idx !== -1) c.reactions.like.splice(idx, 1);
-      else c.reactions.like.push(username);
-      localStorage.setItem(LOCAL_COMMENTS_KEY, JSON.stringify(allComments));
-      await loadAndRenderComments(postId);
-    }
+    try {
+      const allComments = JSON.parse(localStorage.getItem(LOCAL_COMMENTS_KEY) || '[]');
+      const c = allComments.find(x => Number(x.id) === Number(commentId));
+      if (c) {
+        if (!c.reactions || typeof c.reactions !== 'object') c.reactions = { like: [] };
+        if (!Array.isArray(c.reactions.like)) c.reactions.like = [];
+        const idx = c.reactions.like.indexOf(username);
+        if (idx !== -1) c.reactions.like.splice(idx, 1);
+        else c.reactions.like.push(username);
+        localStorage.setItem(LOCAL_COMMENTS_KEY, JSON.stringify(allComments));
+        await loadAndRenderComments(postId);
+      }
+    } catch (e) {}
   }
 
   function prepareReply(postId, parentId, authorName) {
@@ -1175,6 +1188,7 @@
     }
 
     const parentId = (state.replyingToComment && state.replyingToComment.postId === postId) ? state.replyingToComment.parentId : 0;
+    const userAvatar = getAvatarUrl(state.currentUser.username, state.currentUser.role, state.currentUser.avatar);
 
     // 1. Gọi API PHP
     try {
@@ -1185,7 +1199,7 @@
       fd.append('author_name', state.currentUser.fullname || state.currentUser.username);
       fd.append('author_username', state.currentUser.username);
       fd.append('author_role', state.currentUser.role || 'student');
-      fd.append('author_avatar', state.currentUser.avatar || '');
+      fd.append('author_avatar', userAvatar);
       fd.append('user_id', state.currentUser.id || 0);
 
       if (imgData) {
@@ -1203,6 +1217,9 @@
           cancelReply(postId);
           await loadAndRenderComments(postId);
           return;
+        } else {
+          showToast(json.message || 'Lỗi khi gửi bình luận!', 'error');
+          return;
         }
       }
     } catch (e) {}
@@ -1217,7 +1234,7 @@
       author_name: state.currentUser.fullname || state.currentUser.username,
       author_username: state.currentUser.username,
       author_role: state.currentUser.role || 'student',
-      author_avatar: state.currentUser.avatar || '',
+      author_avatar: userAvatar,
       content: content,
       image_name: imgData ? 'comment_img.png' : '',
       image_data: imgData ? imgData.dataUrl : null,
@@ -1416,13 +1433,15 @@
       return;
     }
 
+    const userAvatar = getAvatarUrl(state.currentUser.username, state.currentUser.role, state.currentUser.avatar);
+
     // 1. Thử gửi qua API PHP
     try {
       const fd = new FormData();
       fd.append('author_name', state.currentUser.fullname || state.currentUser.username);
       fd.append('author_username', state.currentUser.username);
       fd.append('author_role', state.currentUser.role || 'student');
-      fd.append('author_avatar', state.currentUser.avatar || '');
+      fd.append('author_avatar', userAvatar);
       fd.append('author_mssv', state.currentUser.mssv || '');
       fd.append('user_id', state.currentUser.id || 0);
 
@@ -1449,6 +1468,9 @@
           state.page = 1;
           await loadPostsData();
           return;
+        } else {
+          showToast(json.message || 'Lỗi khi đăng bài!', 'error');
+          return;
         }
       }
     } catch (e) {}
@@ -1456,7 +1478,7 @@
     // 2. Fallback LocalStorage
     const localPosts = getLocalPosts();
     const extractedTags = Array.from(
-      new Set((content.match(/#([a-zA-Z0-9_\u00C0-\u024F\u1E00-\u1EFF]+)/g) || []).map(t => t.slice(1)))
+      new Set((content.match(/#([a-zA-Z0-9_\p{L}]+)/gu) || []).map(t => t.slice(1)))
     ).join(',');
     const newPost = {
       id: Date.now(),
@@ -1464,7 +1486,7 @@
       author_name: state.currentUser.fullname || state.currentUser.username,
       author_username: state.currentUser.username,
       author_role: state.currentUser.role || 'student',
-      author_avatar: state.currentUser.avatar || '',
+      author_avatar: userAvatar,
       author_mssv: state.currentUser.mssv || '',
       post_type: state.composerPostType,
       title: title,
@@ -1558,14 +1580,33 @@
     await loadPostsData();
   }
 
+  function fallbackCopyText(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      showToast('Đã sao chép liên kết bài viết vào bộ nhớ tạm! 📋', 'success');
+    } catch (err) {
+      showToast('Link bài viết: ' + text, 'info');
+    }
+    document.body.removeChild(textArea);
+  }
+
   function sharePost(postId) {
     const url = window.location.origin + window.location.pathname + '#post-' + postId;
-    if (navigator.clipboard) {
+    if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(url).then(() => {
-        showToast('Đã sao chép liên kết bài viết vào bộ nhớ tạm!', 'success');
+        showToast('Đã sao chép liên kết bài viết vào bộ nhớ tạm! 📋', 'success');
+      }).catch(() => {
+        fallbackCopyText(url);
       });
     } else {
-      showToast('Link bài viết: ' + url, 'info');
+      fallbackCopyText(url);
     }
   }
 
@@ -1657,6 +1698,45 @@
     loadPostsData();
   }
 
+  let searchDebounceTimer = null;
+
+  function handleSearchInput(val) {
+    const clearBtn = document.getElementById('btnClearSearch');
+    if (clearBtn) clearBtn.style.display = val ? 'block' : 'none';
+
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => {
+      state.searchKeyword = val.trim();
+      state.page = 1;
+      updateFilterIndicator();
+      loadPostsData();
+    }, 300);
+  }
+
+  function handleSearchKeyDown(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      clearTimeout(searchDebounceTimer);
+      state.searchKeyword = (e.target.value || '').trim();
+      state.page = 1;
+      updateFilterIndicator();
+      loadPostsData();
+    } else if (e.key === 'Escape') {
+      clearSearch();
+    }
+  }
+
+  function clearSearch() {
+    const input = document.getElementById('forumSearchInput');
+    if (input) input.value = '';
+    const clearBtn = document.getElementById('btnClearSearch');
+    if (clearBtn) clearBtn.style.display = 'none';
+    state.searchKeyword = '';
+    state.page = 1;
+    updateFilterIndicator();
+    loadPostsData();
+  }
+
   function clearActiveFilters() {
     state.activeSort = 'recent';
     state.activeTag = '';
@@ -1664,6 +1744,10 @@
     state.activeAuthor = '';
     state.searchKeyword = '';
     state.page = 1;
+    const input = document.getElementById('forumSearchInput');
+    if (input) input.value = '';
+    const clearBtn = document.getElementById('btnClearSearch');
+    if (clearBtn) clearBtn.style.display = 'none';
     updateFilterIndicator();
     updateNavActiveState();
     loadPostsData();
@@ -1683,6 +1767,9 @@
     } else if (state.activeAuthor) {
       alertBox.style.display = 'flex';
       txtBox.innerHTML = `Đang xem bài viết của: <strong>@${escapeHtml(state.activeAuthor)}</strong>`;
+    } else if (state.searchKeyword) {
+      alertBox.style.display = 'flex';
+      txtBox.innerHTML = `Kết quả tìm kiếm cho: <strong>"${escapeHtml(state.searchKeyword)}"</strong>`;
     } else {
       alertBox.style.display = 'none';
     }
@@ -2020,7 +2107,29 @@
     const uname = state.currentUser.username.toLowerCase();
     const bios = getLocalBios();
     bios[uname] = newBio;
-    localStorage.setItem(LOCAL_BIOS_KEY, JSON.stringify(bios));
+    try {
+      localStorage.setItem(LOCAL_BIOS_KEY, JSON.stringify(bios));
+    } catch (e) {
+      console.warn('LocalStorage save bio warning:', e);
+    }
+
+    // Cập nhật state & auth
+    state.currentUser.bio = newBio;
+    if (window.THVP_AUTH && typeof window.THVP_AUTH.setCurrentUser === 'function') {
+      const u = window.THVP_AUTH.getCurrentUser();
+      if (u) {
+        window.THVP_AUTH.setCurrentUser({ ...u, bio: newBio }, true);
+      }
+    }
+
+    // Gửi cập nhật lên backend
+    const formData = new FormData();
+    formData.append('username', state.currentUser.username);
+    formData.append('bio', newBio);
+    fetch('api.php?action=forum_update_bio', {
+      method: 'POST',
+      body: formData
+    }).catch(err => console.warn('API update bio warning:', err));
 
     const bioEl = document.getElementById('wallBioDisplay');
     if (bioEl) {
@@ -2043,6 +2152,11 @@
 
   // --- AVATAR CHOOSER MODAL (ĐỔI ẢNH ĐẠI DIỆN) ---
   function openAvatarModal() {
+    if (window.THVP_AUTH && typeof window.THVP_AUTH.getCurrentUser === 'function') {
+      const liveUser = window.THVP_AUTH.getCurrentUser();
+      if (liveUser) state.currentUser = liveUser;
+    }
+
     if (!state.currentUser) {
       triggerLoginPrompt('Vui lòng đăng nhập để thay đổi ảnh đại diện.');
       return;
@@ -2063,7 +2177,7 @@
     const gridEl = document.getElementById('avatarPresetsGrid');
     if (gridEl) {
       gridEl.innerHTML = PRESET_AVATARS.map((p, idx) => {
-        const isSelected = p.url === curAvatar;
+        const isSelected = p.url === curAvatar || (p.url.split('?')[0] === curAvatar.split('?')[0] && curAvatar.startsWith('https://api.dicebear.com'));
         return `
           <div class="avatar-preset-item ${isSelected ? 'selected' : ''}" data-idx="${idx}" onclick="window.THVP_FORUM.selectPresetAvatar('${escapeJsAttr(p.url)}', this)">
             <img src="${p.url}" alt="${escapeHtml(p.name)}" />
@@ -2101,42 +2215,58 @@
 
     if (!file.type.startsWith('image/')) {
       showToast('Vui lòng chọn tệp hình ảnh hợp lệ (JPG, PNG, WebP)!', 'warning');
+      e.target.value = '';
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
       showToast('Kích thước ảnh tối đa là 5MB. Vui lòng chọn ảnh nhỏ hơn!', 'warning');
+      e.target.value = '';
       return;
     }
 
     const reader = new FileReader();
+    reader.onerror = function () {
+      showToast('Không thể đọc file ảnh. Vui lòng thử lại!', 'error');
+      e.target.value = '';
+    };
     reader.onload = function (evt) {
       const img = new Image();
+      img.onerror = function () {
+        showToast('Ảnh không hợp lệ hoặc bị lỗi tải!', 'error');
+        e.target.value = '';
+      };
       img.onload = function () {
-        // Tạo canvas vuông 200x200 để canh tâm chuẩn tỉ lệ avatar
-        const canvas = document.createElement('canvas');
-        const size = 200;
-        canvas.width = size;
-        canvas.height = size;
-        const ctx = canvas.getContext('2d');
+        try {
+          // Tạo canvas vuông 200x200 để canh tâm chuẩn tỉ lệ avatar và nén dung lượng gọn nhẹ
+          const canvas = document.createElement('canvas');
+          const size = 200;
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext('2d');
 
-        const minDim = Math.min(img.width, img.height);
-        const sx = (img.width - minDim) / 2;
-        const sy = (img.height - minDim) / 2;
+          const minDim = Math.min(img.width, img.height);
+          const sx = (img.width - minDim) / 2;
+          const sy = (img.height - minDim) / 2;
 
-        ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
-        const squareDataUrl = canvas.toDataURL('image/jpeg', 0.88);
+          ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
+          const squareDataUrl = canvas.toDataURL('image/jpeg', 0.85);
 
-        state.selectedAvatarCandidate = squareDataUrl;
-        const previewImg = document.getElementById('avatarModalPreviewImg');
-        if (previewImg) previewImg.src = squareDataUrl;
+          state.selectedAvatarCandidate = squareDataUrl;
+          const previewImg = document.getElementById('avatarModalPreviewImg');
+          if (previewImg) previewImg.src = squareDataUrl;
 
-        document.querySelectorAll('.avatar-preset-item').forEach(item => item.classList.remove('selected'));
-        showToast('Đã chọn ảnh! Bấm "Lưu Ảnh Đại Diện" để áp dụng.', 'info');
+          document.querySelectorAll('.avatar-preset-item').forEach(item => item.classList.remove('selected'));
+          showToast('Đã chọn ảnh! Bấm "Lưu Ảnh Đại Diện" để áp dụng.', 'info');
+        } catch (err) {
+          console.error('Error processing avatar image:', err);
+          showToast('Lỗi xử lý ảnh!', 'error');
+        }
       };
       img.src = evt.target.result;
     };
     reader.readAsDataURL(file);
+    e.target.value = '';
   }
 
   function saveAvatarSelection() {
@@ -2152,12 +2282,16 @@
     const newAvatar = state.selectedAvatarCandidate;
     const uname = String(state.currentUser.username).toLowerCase();
 
-    // 1. Lưu vào Custom Avatars Map trong LocalStorage
-    const avatars = getLocalAvatars();
-    avatars[uname] = newAvatar;
-    localStorage.setItem(LOCAL_AVATARS_KEY, JSON.stringify(avatars));
+    // 1. Lưu vào Custom Avatars Map trong LocalStorage (bảo vệ bằng try-catch chống QuotaExceededError)
+    try {
+      const avatars = getLocalAvatars();
+      avatars[uname] = newAvatar;
+      localStorage.setItem(LOCAL_AVATARS_KEY, JSON.stringify(avatars));
+    } catch (e) {
+      console.warn('LocalStorage save avatar warning:', e);
+    }
 
-    // 2. Cập nhật state & Auth
+    // 2. Cập nhật state & Auth session
     state.currentUser.avatar = newAvatar;
     if (window.THVP_AUTH && typeof window.THVP_AUTH.setCurrentUser === 'function') {
       const u = window.THVP_AUTH.getCurrentUser();
@@ -2165,46 +2299,84 @@
         window.THVP_AUTH.setCurrentUser({ ...u, avatar: newAvatar }, true);
       }
     }
+    if (window.THVP_AUTH && typeof window.THVP_AUTH.updateAuthInterface === 'function') {
+      window.THVP_AUTH.updateAuthInterface();
+    }
 
-    // 3. Cập nhật giao diện tức thì
+    // 3. Gửi cập nhật avatar lên server MySQL backend (api.php?action=forum_update_avatar)
+    const formData = new FormData();
+    formData.append('username', state.currentUser.username);
+    formData.append('avatar', newAvatar);
+    fetch('api.php?action=forum_update_avatar', {
+      method: 'POST',
+      body: formData
+    }).then(res => res.json()).then(data => {
+      if (!data.success) {
+        console.warn('Backend avatar update warning:', data.error);
+      }
+    }).catch(err => {
+      console.warn('Backend avatar update fetch error:', err);
+    });
+
+    // 4. Cập nhật giao diện tức thì
     const wallImg = document.getElementById('wallUserAvatarImg');
     if (wallImg) wallImg.src = newAvatar;
 
+    document.querySelectorAll('.profile-wall-body .post-avatar-wrap img').forEach(img => {
+      img.src = newAvatar;
+    });
+
     updateCurrentUserDisplay();
 
-    // 4. Cập nhật các bài viết & bình luận của người này trong LocalStorage
-    const localPosts = getLocalPosts();
-    let postChanged = false;
-    localPosts.forEach(p => {
-      if (String(p.author_username || '').toLowerCase() === uname) {
-        p.author_avatar = newAvatar;
-        postChanged = true;
+    // 5. Cập nhật trong bộ nhớ cache allPostsCache & posts
+    [state.posts, state.allPostsCache].forEach(arr => {
+      if (Array.isArray(arr)) {
+        arr.forEach(p => {
+          if (String(p.author_username || '').toLowerCase() === uname) {
+            p.author_avatar = newAvatar;
+          }
+          if (Array.isArray(p.comments)) {
+            p.comments.forEach(c => {
+              if (String(c.author_username || '').toLowerCase() === uname) {
+                c.author_avatar = newAvatar;
+              }
+            });
+          }
+        });
       }
     });
-    if (postChanged) {
-      localStorage.setItem(LOCAL_POSTS_KEY, JSON.stringify(localPosts));
+
+    // 6. Cập nhật các bài viết & bình luận của người này trong LocalStorage an toàn
+    try {
+      const localPosts = getLocalPosts();
+      let postChanged = false;
+      localPosts.forEach(p => {
+        if (String(p.author_username || '').toLowerCase() === uname) {
+          p.author_avatar = newAvatar;
+          postChanged = true;
+        }
+      });
+      if (postChanged) {
+        localStorage.setItem(LOCAL_POSTS_KEY, JSON.stringify(localPosts));
+      }
+
+      const localComments = getLocalComments();
+      let cmtChanged = false;
+      localComments.forEach(c => {
+        if (String(c.author_username || '').toLowerCase() === uname) {
+          c.author_avatar = newAvatar;
+          cmtChanged = true;
+        }
+      });
+      if (cmtChanged) {
+        localStorage.setItem(LOCAL_COMMENTS_KEY, JSON.stringify(localComments));
+      }
+    } catch (e) {
+      console.warn('LocalStorage update posts/comments avatar warning:', e);
     }
 
-    const localComments = getLocalComments();
-    let cmtChanged = false;
-    localComments.forEach(c => {
-      if (String(c.author_username || '').toLowerCase() === uname) {
-        c.author_avatar = newAvatar;
-        cmtChanged = true;
-      }
-    });
-    if (cmtChanged) {
-      localStorage.setItem(LOCAL_COMMENTS_KEY, JSON.stringify(localComments));
-    }
-
-    // Re-render feed với avatar mới
-    state.posts.forEach(p => {
-      if (String(p.author_username || '').toLowerCase() === uname) {
-        p.author_avatar = newAvatar;
-      }
-    });
+    // 7. Re-render feed với avatar mới
     renderFeed();
-
     closeAvatarModal();
     showToast('Đã đổi ảnh đại diện thành công! 📸', 'success');
   }
@@ -2272,6 +2444,38 @@
       }
     });
 
+    // Hỗ trợ dán (Ctrl+V) ảnh trực tiếp từ clipboard vào Composer hoặc Bình luận
+    document.addEventListener('paste', e => {
+      const items = (e.clipboardData || window.clipboardData)?.items;
+      if (!items) return;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type && items[i].type.indexOf('image') !== -1) {
+          const file = items[i].getAsFile();
+          if (!file) continue;
+
+          const composerModal = document.getElementById('composerModal');
+          if (composerModal && composerModal.classList.contains('open')) {
+            const fakeEvent = { target: { files: [file] } };
+            handleComposerPhotoSelect(fakeEvent);
+            showToast('Đã dán ảnh từ clipboard vào bài viết! 📋', 'info');
+            break;
+          }
+
+          const activeEl = document.activeElement;
+          const commentBox = activeEl ? activeEl.closest('.comment-composer-box') : null;
+          if (commentBox) {
+            const postId = commentBox.getAttribute('data-post-id');
+            if (postId) {
+              const fakeEvent = { target: { files: [file] } };
+              handleCommentImageSelect(postId, fakeEvent);
+              showToast('Đã dán ảnh từ clipboard vào bình luận! 📋', 'info');
+              break;
+            }
+          }
+        }
+      }
+    });
+
     // Close modals khi click ra ngoài backdrop
     document.addEventListener('click', e => {
       if (e.target.classList.contains('composer-modal-backdrop')) closeComposer();
@@ -2310,6 +2514,9 @@
     filterByTag,
     filterByGroup,
     clearActiveFilters,
+    handleSearchInput,
+    handleSearchKeyDown,
+    clearSearch,
     openComposer,
     closeComposer,
     setComposerPostType,
