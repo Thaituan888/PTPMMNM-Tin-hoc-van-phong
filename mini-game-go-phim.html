@@ -1,0 +1,2441 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đấu Trường Mini Game Luyện Gõ Phím - Tin Học Văn Phòng</title>
+  <meta name="description" content="Trung tâm Mini Game luyện gõ phím 10 ngón phản xạ, đua tốc độ và từ vựng tin học văn phòng." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* =========================================================================
+       MINI GAME HUB & 4-CARD GRID VIEW
+       Clean Solid Flat Theme (No Purple: Navy, Slate, Blue, Cyan, Emerald, Amber)
+       ========================================================================= */
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --navy: #0f172a;
+      --surface: #ffffff;
+      --bg: #f0f7ff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* SUBPAGE CONTAINER */
+    .gamehub-container {
+      max-width: 1280px;
+      width: 100%;
+      margin: 24px auto 80px;
+      padding: 0 clamp(16px, 2.5vw, 32px);
+      flex: 1;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* =========================================================================
+       PAGE HERO SECTION: DEEP NAVY-OCEAN GRADIENT WITH LUMINOUS GLOW
+       ========================================================================= */
+    .gamehub-hero {
+      background: linear-gradient(135deg, #0b1329 0%, #172554 45%, #0369a1 85%, #0284c7 100%);
+      border-radius: 26px;
+      padding: clamp(24px, 3.2vw, 38px);
+      color: #ffffff;
+      box-shadow: 0 18px 42px rgba(11, 19, 41, 0.24), 0 4px 14px rgba(2, 132, 199, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gamehub-hero::before {
+      content: "";
+      position: absolute;
+      top: -40%;
+      right: -10%;
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.22) 0%, rgba(2, 132, 199, 0.08) 50%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .gamehub-hero::after {
+      content: "";
+      position: absolute;
+      bottom: -30%;
+      left: 5%;
+      width: 360px;
+      height: 360px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.16) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* TOP BACK LINK & BADGE ROW (INSIDE HERO) */
+    .gh-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+    }
+
+    .gh-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      padding: 7px 16px;
+      border-radius: 999px;
+      color: #ffffff;
+      font-size: 0.84rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .gh-back-link:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: #38bdf8;
+      color: #38bdf8;
+      transform: translateX(-3px);
+    }
+
+    .gh-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #bae6fd;
+      backdrop-filter: blur(10px);
+    }
+
+    .gh-title {
+      font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      color: #ffffff;
+      position: relative;
+      z-index: 2;
+      line-height: 1.25;
+    }
+
+    .gh-desc {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: #e0f2fe;
+      max-width: 820px;
+      margin: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* STATS ROW IN HERO WITH ACCENT BORDERS */
+    .gh-stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (max-width: 860px) {
+      .gh-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .gh-stats-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .gh-stat-box {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 13px 16px;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      transition: all 0.22s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .gh-stat-box:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .gh-stat-box:nth-child(1) { border-left: 3.5px solid #38bdf8; }
+    .gh-stat-box:nth-child(2) { border-left: 3.5px solid #34d399; }
+    .gh-stat-box:nth-child(3) { border-left: 3.5px solid #fbbf24; }
+    .gh-stat-box:nth-child(4) { border-left: 3.5px solid #22d3ee; }
+
+    .gh-stat-val {
+      font-size: 1.02rem;
+      font-weight: 800;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .gh-stat-lbl {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #bae6fd;
+      text-transform: uppercase;
+      margin-top: 4px;
+      white-space: nowrap;
+    }
+
+    /* =========================================================================
+       FILTER TABS BAR
+       ========================================================================= */
+    .game-filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 12px 20px;
+      margin-bottom: 26px;
+      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+      flex-wrap: wrap;
+    }
+
+    .gfb-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .gfb-pill {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      color: #475569;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .gfb-pill:hover {
+      border-color: #0284c7;
+      color: #0284c7;
+      background: #eff6ff;
+    }
+
+    .gfb-pill.active {
+      background: #0284c7;
+      border-color: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.28);
+    }
+
+    .gfb-info-text {
+      color: #64748b;
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+
+    /* =========================================================================
+       3-COLUMN CARDS GRID: TỐI ĐA 3 THẺ TRÊN 1 HÀNG (KÍCH THƯỚC THẺ GIỮ NGUYÊN)
+       ========================================================================= */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 992px) {
+      .games-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .games-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* GAME CARD ITEM */
+    .game-card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+    }
+
+    .game-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 38px rgba(2, 132, 199, 0.16);
+      border-color: #38bdf8;
+    }
+
+    .gc-banner {
+      height: 175px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #ffffff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gc-banner::after {
+      content: "";
+      position: absolute;
+      top: -20%;
+      right: -20%;
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .gc-banner.theme-bubble {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    }
+
+    .gc-banner.theme-space {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+
+    .gc-banner.theme-speed {
+      background: linear-gradient(135deg, #064e3b 0%, #059669 100%);
+    }
+
+    .gc-banner.theme-gold {
+      background: linear-gradient(135deg, #7c2d12 0%, #d97706 100%);
+    }
+
+    .gc-banner-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+
+    .gc-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .gc-status-pill.live {
+      background: #10b981;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .gc-status-pill.coming {
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(6px);
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .gc-mode-pill {
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(6px);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .gc-banner-art {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .gc-banner-art-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      flex-shrink: 0;
+    }
+
+    .gc-banner-art-text {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .gc-banner-genre {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .gc-banner-callout {
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+
+    .gc-body {
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+    }
+
+    .gc-title {
+      font-size: 1.18rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 6px;
+      line-height: 1.3;
+    }
+
+    .gc-desc {
+      font-size: 0.86rem;
+      color: #475569;
+      line-height: 1.55;
+      margin: 0 0 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 4em;
+    }
+
+    .gc-meta-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .gc-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+    }
+
+    .gc-meta-lbl {
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .gc-meta-val {
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    .gc-meta-val.highlight {
+      color: #0284c7;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .btn-game-launch {
+      width: 100%;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.28);
+      transition: all 0.2s ease;
+    }
+
+    .btn-game-launch:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(2, 132, 199, 0.45);
+      background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+    }
+
+    .btn-game-launch.btn-disabled {
+      background: #f1f5f9;
+      color: #94a3b8;
+      cursor: not-allowed;
+      border: 1.5px solid #e2e8f0;
+      box-shadow: none;
+    }
+
+    .btn-game-launch.btn-disabled:hover {
+      transform: none;
+      box-shadow: none;
+      background: #f1f5f9;
+    }
+
+    /* =========================================================================
+       FULLSCREEN GAME ARENA MODAL (100% ORIGINAL GAME ENGINE)
+       ========================================================================= */
+    /* Đảm bảo cửa sổ Đăng nhập / Đăng ký luôn nổi lên hàng đầu trên cùng (trên cả sàn đấu z-index 999999) */
+    .auth-modal-overlay,
+    #thvpAuthModal {
+      z-index: 10000000 !important;
+    }
+    .thvp-toast {
+      z-index: 10000010 !important;
+    }
+
+    #gameArenaModal {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #090d16;
+      z-index: 999999;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .mg-fullscreen-header {
+      height: 68px;
+      min-height: 68px;
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 40;
+      gap: 16px;
+      position: relative;
+    }
+
+    .btn-game-back {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1.5px solid rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.22s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-game-back:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: #38bdf8;
+      color: #38bdf8;
+      transform: translateX(-3px);
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.25);
+    }
+
+    .mg-header-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .mg-header-right {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mg-fullscreen-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(30, 41, 59, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      letter-spacing: 0.02em;
+    }
+
+    .mg-fullscreen-badge .hud-lbl {
+      color: #94a3b8;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+
+    .mg-fullscreen-badge .hud-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: #38bdf8;
+    }
+
+    .mg-fullscreen-badge .hud-val.blue {
+      color: #38bdf8;
+    }
+
+    .mg-fullscreen-badge .hud-val.orange {
+      color: #fb923c;
+    }
+
+    /* LIVES HEARTS */
+    .hud-hearts {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .life-heart-svg {
+      width: 22px;
+      height: 22px;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .life-heart-svg.filled {
+      fill: #f43f5e;
+      filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.65));
+      transform: scale(1);
+    }
+
+    .life-heart-svg.empty {
+      fill: none;
+      stroke: #475569;
+      stroke-width: 2;
+      opacity: 0.45;
+      transform: scale(0.85);
+    }
+
+    /* PLAY AREA */
+    #gamePlayArea {
+      flex: 1;
+      width: 100%;
+      height: calc(100vh - 68px);
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 20%, #172554 0%, #090d16 65%, #050811 100%);
+    }
+
+    /* WORD BUBBLE */
+    .game-word-bubble {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #ffffff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.35);
+      border: 2px solid rgba(255, 255, 255, 0.28);
+      white-space: nowrap;
+      pointer-events: none;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.18s ease;
+      will-change: top, left, transform;
+      z-index: 10;
+    }
+
+    .game-word-bubble.targeted {
+      border-color: #facc15 !important;
+      box-shadow: 0 0 24px rgba(250, 204, 21, 0.75), inset 0 2px 6px rgba(255, 255, 255, 0.5) !important;
+      transform: scale(1.12);
+      z-index: 20;
+    }
+
+    .game-word-bubble.popping {
+      transform: scale(1.55) !important;
+      opacity: 0 !important;
+      transition: all 0.22s ease-out !important;
+    }
+
+    .game-word-bubble .char-done {
+      color: #fde047;
+      text-shadow: 0 0 8px rgba(253, 224, 71, 0.8);
+    }
+
+    .game-word-bubble .char-pending {
+      color: #ffffff;
+      opacity: 0.95;
+    }
+
+    /* FLOAT SCORES */
+    .mg-score-float {
+      position: absolute;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 900;
+      font-size: 1.15rem;
+      color: #facc15;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+      pointer-events: none;
+      animation: floatUpFade 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      z-index: 30;
+    }
+
+    @keyframes floatUpFade {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-48px) scale(1.25); }
+    }
+
+    /* MILESTONE POPUP */
+    .mg-milestone-popup {
+      position: absolute;
+      top: 24%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: linear-gradient(135deg, rgba(234, 179, 8, 0.95) 0%, rgba(202, 138, 4, 0.95) 100%);
+      color: #0f172a;
+      padding: 12px 32px;
+      border-radius: 999px;
+      font-size: 1.35rem;
+      font-weight: 900;
+      box-shadow: 0 12px 36px rgba(234, 179, 8, 0.55);
+      border: 2px solid #fef08a;
+      pointer-events: none;
+      z-index: 50;
+      animation: milestonePop 1.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes milestonePop {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+      18% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+      28% { transform: translate(-50%, -50%) scale(1); }
+      80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -65%) scale(0.9); }
+    }
+
+    /* OVERLAY MODAL FOR START & GAME OVER */
+    #gameOverlayMsg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(9, 13, 22, 0.88);
+      backdrop-filter: blur(14px);
+      z-index: 100;
+      padding: 24px;
+      text-align: center;
+      gap: 16px;
+    }
+
+    .mg-intro-icon-circle {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(56, 189, 248, 0.15);
+      border: 2px solid rgba(56, 189, 248, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 28px rgba(56, 189, 248, 0.25);
+    }
+
+    .mg-intro-icon-circle.gameover {
+      background: rgba(248, 113, 113, 0.15);
+      border-color: rgba(248, 113, 113, 0.45);
+      box-shadow: 0 0 28px rgba(248, 113, 113, 0.25);
+    }
+
+    .btn-bubble-play {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      border: none;
+      padding: 13px 34px;
+      border-radius: 999px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .btn-bubble-play:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(2, 132, 199, 0.5);
+    }
+
+    .btn-bubble-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      padding: 13px 30px;
+      border-radius: 999px;
+      font-size: 1.02rem;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-bubble-secondary:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    /* MODERN COINS SUMMARY CARD (STUDENT & TEACHER GAME OVER) */
+    .mg-coins-summary-card {
+      width: 100%;
+      max-width: 480px;
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.88) 0%, rgba(15, 23, 42, 0.96) 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+      border-radius: 20px;
+      padding: 16px 20px;
+      margin: 8px 0 12px;
+      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(12px);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .mg-coins-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 8px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      transition: background 0.15s ease;
+    }
+
+    .mg-coins-row:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .mg-coins-row-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+
+    .mg-coins-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .mg-coins-dot.green {
+      background: #4ade80;
+      box-shadow: 0 0 10px rgba(74, 222, 128, 0.7);
+    }
+
+    .mg-coins-dot.blue {
+      background: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.7);
+    }
+
+    .mg-coins-dot.red {
+      background: #f87171;
+      box-shadow: 0 0 10px rgba(248, 113, 113, 0.7);
+    }
+
+    .mg-coins-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 0.98rem;
+    }
+
+    .mg-coins-val.green {
+      color: #4ade80;
+    }
+
+    .mg-coins-val.blue {
+      color: #38bdf8;
+    }
+
+    .mg-coins-val.red {
+      color: #f87171;
+    }
+
+    .mg-coins-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: 2px 0;
+    }
+
+    .mg-coins-total-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, rgba(234, 179, 8, 0.18) 0%, rgba(202, 138, 4, 0.08) 100%);
+      border: 1.5px solid rgba(250, 204, 21, 0.45);
+      border-radius: 14px;
+      padding: 10px 16px;
+      box-shadow: 0 4px 16px rgba(234, 179, 8, 0.15);
+    }
+
+    .mg-coins-total-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.98rem;
+      letter-spacing: 0.02em;
+    }
+
+    .mg-coin-gold-icon {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 6px rgba(250, 204, 21, 0.5));
+    }
+
+    .mg-coins-total-val {
+      color: #fde047;
+      font-size: 1.35rem;
+      font-weight: 900;
+      font-family: 'JetBrains Mono', monospace;
+      text-shadow: 0 2px 10px rgba(250, 204, 21, 0.45);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       1. STICKY HEADER NAVBAR
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon-box" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
+            <circle cx="13" cy="15.5" r="1.8" fill="#4f46e5" />
+            <circle cx="23" cy="15.5" r="1.8" fill="#4f46e5" />
+            <path d="M15.5 19.5c1.2 1.2 3.8 1.2 5 0" stroke="#ec4899" stroke-width="2" stroke-linecap="round" />
+            <path d="M12 7V4.5M24 7V4.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M11 29.5h14" stroke="#93c5fd" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">TIN HỌC VĂN PHÒNG</span>
+          <span class="brand-subtitle">Đào tạo Tin học Trực tuyến</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <!-- 1. KHÓA HỌC LMS -->
+        <a href="khoa-hoc-lms.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+          <span>KHÓA HỌC LMS</span>
+        </a>
+
+        <!-- 2. LỘ TRÌNH HỌC TẬP -->
+        <a href="lo-trinh-hoc-tap.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="6" cy="19" r="3" />
+            <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" />
+            <circle cx="18" cy="5" r="3" />
+          </svg>
+          <span>LỘ TRÌNH HỌC TẬP</span>
+        </a>
+
+        <!-- 3. ÔN LUYỆN & THI THỬ -->
+        <a href="on-luyen-thi-thu.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+            <path d="m9 14 2 2 4-4" />
+          </svg>
+          <span>ÔN LUYỆN &amp; THI THỬ</span>
+        </a>
+
+        <!-- 4. DIỄN ĐÀN -->
+        <a href="index.html#cong-dong">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>DIỄN ĐÀN</span>
+        </a>
+
+        <!-- 5. CÔNG CỤ & TIỆN ÍCH -->
+        <div class="nav-dropdown-wrap" id="nav-tools-dropdown">
+          <button type="button" class="nav-link-dropdown nav-dropdown-trigger" id="btn-tools-dropdown">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+            <span>CÔNG CỤ &amp; TIỆN ÍCH</span>
+            <svg class="nav-dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="nav-dropdown-content">
+            <a href="luyen-go-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8" stroke-width="2.2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>1. Luyện gõ phím 10 ngón</strong>
+                <small>Luyện gõ tiếng Việt Telex &amp; kiểm tra WPM</small>
+              </div>
+            </a>
+            <a href="mini-game-go-phim.html" class="nav-sub-item active">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="6" width="20" height="12" rx="6" fill="#e0f2fe" fill-opacity="0.6" />
+                  <line x1="6" y1="12" x2="10" y2="12"></line>
+                  <line x1="8" y1="10" x2="8" y2="14"></line>
+                  <circle cx="15" cy="13" r="1" fill="#0284c7"></circle>
+                  <circle cx="18" cy="11" r="1" fill="#0284c7"></circle>
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>Đấu trường Mini Game</strong>
+                <small>Bong bóng từ rơi, bắn thiên thạch, đua tốc độ</small>
+              </div>
+            </a>
+            <a href="tra-cuu-phim-tat.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="#d97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>2. Tra cứu Phím tắt</strong>
+                <small>Phím tắt thông dụng Word, Excel, PPT</small>
+              </div>
+            </a>
+            <a href="kiem-tra-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <circle cx="7" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="12" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="17" cy="9" r="1" fill="#0284c7" />
+                  <line x1="6" y1="14" x2="18" y2="14" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>3. Kiểm tra Bàn phím Online</strong>
+                <small>Phát hiện kẹt/liệt phím, đo NKRO &amp; Switch cơ</small>
+              </div>
+            </a>
+            <a href="tim-hieu-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 6h10M6 10h10M6 14h6" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>4. Giới thiệu Bàn phím Máy tính</strong>
+                <small>Cấu tạo 100% Full-size, các hàng phím &amp; gờ nổi F/J</small>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 6. CỬA HÀNG -->
+        <a href="index.html#cua-hang">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span>CỬA HÀNG</span>
+        </a>
+      </nav>
+
+      <!-- Nút Đăng nhập hệ thống chuẩn -->
+      <a href="#dang-nhap" class="btn-login" id="headerAuthBtn">ĐĂNG NHẬP</a>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       2. MAIN PAGE CONTENT: TRANG CHỨA DANH SÁCH 4 THẺ MINI GAME
+       ======================================================================== -->
+    <main class="gamehub-container">
+    <!-- HERO HEADER WITH DEEP NAVY-OCEAN GRADIENT -->
+    <section class="gamehub-hero">
+      <div class="gh-top-row">
+        <a href="luyen-go-phim.html" class="gh-back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>Quay lại Luyện Gõ Phím</span>
+        </a>
+
+        <div class="gh-pill-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          <span>ĐẤU TRƯỜNG MINI GAME</span>
+        </div>
+      </div>
+
+      <h1 class="gh-title">ĐẤU TRƯỜNG MINI GAME LUYỆN GÕ PHÍM</h1>
+      <p class="gh-desc">
+        Hệ thống trò chơi tương tác sinh động giúp rèn luyện khả năng quan sát nhanh, phản xạ mắt - tay và bứt phá tốc độ gõ phím 10 ngón.
+      </p>
+    </section>
+
+    <!-- FILTER BAR -->
+    <div class="game-filter-bar">
+      <div class="gfb-left">
+        <button type="button" class="gfb-pill active" data-filter="all">Tất cả trò chơi (3)</button>
+        <button type="button" class="gfb-pill" data-filter="active">Đang mở (1)</button>
+        <button type="button" class="gfb-pill" data-filter="upcoming">Sắp ra mắt (2)</button>
+      </div>
+      <div class="gfb-info-text">
+        <span>Chọn trò chơi để bắt đầu rèn luyện</span>
+      </div>
+    </div>
+
+    <!-- LƯỚI THẺ GAME: TỐI ĐA 3 THẺ / HÀNG, KÍCH THƯỚC GIỮ NGUYÊN -->
+    <div class="games-grid">
+
+      <!-- THẺ 1: BONG BÓNG TỪ RƠI (ĐANG MỞ - CHƠI ĐƯỢC NGAY) -->
+      <article class="game-card" data-category="active all">
+        <div class="gc-banner theme-bubble">
+          <div class="gc-banner-top">
+            <span class="gc-status-pill live">
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+              ĐANG MỞ
+            </span>
+            <span class="gc-mode-pill">1 NGƯỜI CHƠI • PHẢN XẠ</span>
+          </div>
+
+          <div class="gc-banner-art">
+            <div class="gc-banner-art-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="22" y1="12" x2="18" y2="12"></line>
+                <line x1="6" y1="12" x2="2" y2="12"></line>
+                <line x1="12" y1="6" x2="12" y2="2"></line>
+                <line x1="12" y1="22" x2="12" y2="18"></line>
+              </svg>
+            </div>
+            <div class="gc-banner-art-text">
+              <span class="gc-banner-genre">PHẢN XẠ SINH TỒN</span>
+              <span class="gc-banner-callout">WORD BUBBLES</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gc-body">
+          <div>
+            <h2 class="gc-title">Bong Bóng Từ Rơi</h2>
+            <p class="gc-desc">
+              Bong bóng từ vựng tiếng Anh và thuật ngữ tin học rơi tự do. Nhìn nhanh, gõ chữ cái đầu tiên để khóa và gõ hoàn thành từ trước khi chạm đáy!
+            </p>
+
+            <div class="gc-meta-box">
+              <div class="gc-meta-row">
+                <span class="gc-meta-lbl">Thể loại:</span>
+                <span class="gc-meta-val highlight">Phản xạ sinh tồn</span>
+              </div>
+              <div class="gc-meta-row">
+                <span class="gc-meta-lbl">Độ khó:</span>
+                <span class="gc-meta-val">Tăng dần theo thời gian</span>
+              </div>
+              <div class="gc-meta-row">
+                <span class="gc-meta-lbl">Số mạng:</span>
+                <span class="gc-meta-val">3 lượt tim</span>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn-game-launch" id="btnOpenGameArena">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>VÀO CHƠI NGAY</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- THẺ 2: TRÒ CHƠI MỚI (CHỜ LÊN Ý TƯỞNG) -->
+      <article class="game-card" data-category="upcoming all">
+        <div class="gc-banner theme-space">
+          <div class="gc-banner-top">
+            <span class="gc-status-pill coming">
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+              SẮP RA MẮT
+            </span>
+            <span class="gc-mode-pill">ĐANG LÊN Ý TƯỞNG</span>
+          </div>
+
+          <div class="gc-banner-art">
+            <div class="gc-banner-art-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+            <div class="gc-banner-art-text">
+              <span class="gc-banner-genre">ĐẤU TRƯỜNG MỚI</span>
+              <span class="gc-banner-callout">COMING SOON</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gc-body">
+          <div>
+            <h2 class="gc-title">Trò Chơi Mới #2</h2>
+            <p class="gc-desc">
+              Mini game luyện gõ phím tiếp theo đang trong giai đoạn lên ý tưởng và hoàn thiện kịch bản thử thách. Sẽ sớm ra mắt học viên!
+            </p>
+
+            <div class="gc-meta-box">
+              <div class="gc-meta-row">
+                <span class="gc-meta-lbl">Thể loại:</span>
+                <span class="gc-meta-val">Đang cập nhật</span>
+              </div>
+              <div class="gc-meta-row">
+                <span class="gc-meta-lbl">Độ khó:</span>
+                <span class="gc-meta-val">Đang thiết kế</span>
+              </div>
+              <div class="gc-meta-row">
+                <span class="gc-meta-lbl">Số mạng:</span>
+                <span class="gc-meta-val">Đang thiết kế</span>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn-game-launch btn-disabled" disabled>
+            <span>ĐANG PHÁT TRIỂN</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- THẺ 3: TRÒ CHƠI MỚI (CHỜ LÊN Ý TƯỞNG) -->
+      <article class="game-card" data-category="upcoming all">
+        <div class="gc-banner theme-speed">
+          <div class="gc-banner-top">
+            <span class="gc-status-pill coming">
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+              SẮP RA MẮT
+            </span>
+            <span class="gc-mode-pill">ĐANG LÊN Ý TƯỞNG</span>
+          </div>
+
+          <div class="gc-banner-art">
+            <div class="gc-banner-art-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
+              </svg>
+            </div>
+            <div class="gc-banner-art-text">
+              <span class="gc-banner-genre">ĐẤU TRƯỜNG MỚI</span>
+              <span class="gc-banner-callout">COMING SOON</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gc-body">
+          <div>
+            <h2 class="gc-title">Trò Chơi Mới #3</h2>
+            <p class="gc-desc">
+              Đấu trường mini game thứ ba đang chờ lên ý tưởng thử thách mới để mang đến trải nghiệm luyện gõ 10 ngón thú vị và bổ ích nhất!
+            </p>
+
+            <div class="gc-meta-box">
+              <div class="gc-meta-row">
+                <span class="gc-meta-lbl">Thể loại:</span>
+                <span class="gc-meta-val">Đang cập nhật</span>
+              </div>
+              <div class="gc-meta-row">
+                <span class="gc-meta-lbl">Độ khó:</span>
+                <span class="gc-meta-val">Đang thiết kế</span>
+              </div>
+              <div class="gc-meta-row">
+                <span class="gc-meta-lbl">Số mạng:</span>
+                <span class="gc-meta-val">Đang thiết kế</span>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn-game-launch btn-disabled" disabled>
+            <span>ĐANG PHÁT TRIỂN</span>
+          </button>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <!-- ========================================================================
+       3. SITE FOOTER
+       ======================================================================== -->
+  <footer class="site-footer simple-footer">
+    <div class="footer-copyright">
+      &copy; 2026 TRUNG TÂM TIN HỌC VĂN PHÒNG • BẢN QUYỀN THUỘC VỀ NHÓM 2
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       4. FULLSCREEN GAME ARENA (MỞ RA KHI BẤM "BẮT ĐẦU CHƠI" TRÊN THẺ 1)
+       GIỮ NGUYÊN 100% CƠ CHẾ GỐC, KHÔNG CÓ NÚT THỪA BÊN TRONG MODAL
+       ======================================================================== -->
+  <div id="gameArenaModal">
+    <header class="mg-fullscreen-header">
+      <button type="button" class="btn-game-back" id="btnCloseGameArena" title="Quay lại danh sách game">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span>Quay lại</span>
+      </button>
+
+      <div class="mg-header-center">
+        <div class="mg-fullscreen-badge mg-hud-time">
+          <span class="hud-lbl">THỜI GIAN:</span>
+          <span id="gameTimeText" class="hud-val">00:00</span>
+        </div>
+      </div>
+
+      <div class="mg-header-right">
+        <div class="mg-fullscreen-badge mg-hud-score">
+          <span class="hud-lbl">ĐIỂM:</span>
+          <span id="gameScoreText" class="hud-val">0</span>
+        </div>
+
+        <div class="mg-fullscreen-badge mg-hud-words">
+          <span class="hud-lbl">TỪ:</span>
+          <span id="gameWordsCount" class="hud-val blue">0</span>
+        </div>
+
+        <div class="mg-fullscreen-badge mg-hud-combo" id="gameComboBadge" style="display: none;">
+          <span class="hud-lbl">COMBO:</span>
+          <span id="gameComboText" class="hud-val orange">Combo x0</span>
+        </div>
+
+        <div class="mg-fullscreen-badge mg-hud-lives">
+          <span class="hud-lbl">MẠNG:</span>
+          <div id="gameLivesIcons" class="hud-hearts">
+            <svg class="life-heart-svg filled" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            <svg class="life-heart-svg filled" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            <svg class="life-heart-svg filled" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="gamePlayArea">
+      <div id="gameOverlayMsg">
+        <div class="mg-intro-icon-circle">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="22" y1="12" x2="18" y2="12"></line>
+            <line x1="6" y1="12" x2="2" y2="12"></line>
+            <line x1="12" y1="6" x2="12" y2="2"></line>
+            <line x1="12" y1="22" x2="12" y2="18"></line>
+          </svg>
+        </div>
+        <h3 style="margin: 0; font-size: 1.55rem; font-weight: 800; color: #ffffff;">Sẵn sàng thử thách phản xạ từ vựng?</h3>
+        <p style="margin: 0 0 6px; font-size: 0.98rem; color: #cbd5e1; max-width: 540px; line-height: 1.6;">
+          1.000 từ vựng sẽ rơi ngẫu nhiên theo nhịp độ sóng sinh tồn. Gõ chữ cái đầu tiên để khóa từ, gõ hoàn thành toàn bộ chữ cái để làm nổ bong bóng!
+        </p>
+        <button type="button" class="btn-bubble-play" id="btnStartBubbleGame">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          BẮT ĐẦU CHƠI
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      // =========================================================================
+      // 1. ROLE & AUTH INTEGRATION (ORIGINAL PERMISSION MECHANISM)
+      // Reset tài khoản Giáo Viên về đúng 10.000 Xu và xóa vai trò mô phỏng nếu có
+      // =========================================================================
+      try {
+        sessionStorage.removeItem('thvp_test_role');
+        let teacherPet = JSON.parse(localStorage.getItem('thvp_pet_system_teacher') || 'null');
+        if (!teacherPet) {
+          teacherPet = { coins: 10000, owned: ['pet1'], equipped: 'pet1' };
+        } else {
+          teacherPet.coins = 10000;
+        }
+        localStorage.setItem('thvp_pet_system_teacher', JSON.stringify(teacherPet));
+        localStorage.setItem('thvp_teacher_reset_10k', 'done');
+
+        // Hiển thị kỷ lục cá nhân lên thẻ 1
+        const initialHs = localStorage.getItem('thvp_bubble_highscore') || '0';
+        const cardHs = document.getElementById('cardBubbleHighScore');
+        if (cardHs) cardHs.textContent = initialHs + ' điểm';
+      } catch (e) {}
+
+      function readStoredAuthUser() {
+        try {
+          const raw = sessionStorage.getItem('thvp_current_user') || localStorage.getItem('thvp_current_user');
+          return raw ? JSON.parse(raw) : null;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function getCurrentRole() {
+        const storedUser = readStoredAuthUser();
+        if (storedUser) {
+          return (storedUser.role === 'admin' || storedUser.role === 'teacher') ? 'teacher' : 'student';
+        }
+        return 'guest';
+      }
+
+      function getEffectiveUser() {
+        const storedUser = readStoredAuthUser();
+        if (storedUser) {
+          const isTeacher = storedUser.role === 'admin' || storedUser.role === 'teacher';
+          return {
+            name: isTeacher ? 'Giáo viên' : (storedUser.fullname || 'Nguyễn Thái Tuấn'),
+            username: storedUser.username || (isTeacher ? 'Giangvien' : 'hocvien01'),
+            role: isTeacher ? 'teacher' : 'student',
+            email: storedUser.email || (isTeacher ? 'giangvien@gmail.com' : 'hocvien01@gmail.com')
+          };
+        }
+        return null;
+      }
+
+      // =========================================================================
+      // 2. PET & COINS SYSTEM (ORIGINAL STORAGE)
+      // =========================================================================
+      function getUserPetStorage(roleKey) {
+        if (roleKey === 'guest') {
+          return { coins: 0, owned: [], equipped: null };
+        }
+        const storageKey = 'thvp_pet_system_' + roleKey;
+        let data = null;
+        try {
+          const raw = localStorage.getItem(storageKey);
+          if (raw) data = JSON.parse(raw);
+        } catch (e) {}
+
+        if (!data) {
+          const initCoins = roleKey === 'teacher' ? 10000 : 0;
+          data = {
+            coins: initCoins,
+            owned: ['pet1'],
+            equipped: 'pet1'
+          };
+          try {
+            localStorage.setItem(storageKey, JSON.stringify(data));
+          } catch (e) {}
+        }
+        return data;
+      }
+
+      function saveUserPetStorage(roleKey, data) {
+        if (roleKey === 'guest') return;
+        const storageKey = 'thvp_pet_system_' + roleKey;
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(data));
+        } catch (e) {}
+      }
+
+      function getEquippedPetId() {
+        const role = getCurrentRole();
+        if (role === 'guest') return null;
+        const data = getUserPetStorage(role);
+        return data ? data.equipped : null;
+      }
+
+      // =========================================================================
+      // 3. SOUND SYNTHESIZER (ORIGINAL AUDIO ENGINE)
+      // =========================================================================
+      let audioCtx = null;
+      let soundEnabled = true;
+
+      function playKeySound(type) {
+        if (!soundEnabled) return;
+        try {
+          if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          const now = audioCtx.currentTime;
+          if (type === 'click') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(550, now);
+            osc.frequency.exponentialRampToValueAtTime(180, now + 0.04);
+            gain.gain.setValueAtTime(0.08, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+            osc.start(now);
+            osc.stop(now + 0.04);
+          } else if (type === 'error') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(180, now);
+            osc.frequency.exponentialRampToValueAtTime(70, now + 0.16);
+            gain.gain.setValueAtTime(0.14, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+            osc.start(now);
+            osc.stop(now + 0.16);
+          } else if (type === 'success') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(523.25, now);
+            osc.frequency.setValueAtTime(659.25, now + 0.05);
+            osc.frequency.setValueAtTime(783.99, now + 0.1);
+            gain.gain.setValueAtTime(0.12, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+            osc.start(now);
+            osc.stop(now + 0.22);
+          }
+        } catch (e) {}
+      }
+
+      // =========================================================================
+      // 4. MINI GAME DATASET & VARIABLES (1.000 WORDS ORIGINAL BANK)
+      // =========================================================================
+      const MINI_GAME_WORDS = [
+        "a","an","i","you","he","she","we","they","it","me","my","your","his","her","our","their","this","that","these","those","yes","no","not","and","or","but","if","in","on","at","to","of","for","from","by","with","up","down","out","off","go","come","get","put","see","look","say","tell","ask","eat","drink","run","walk","sit","stand","sleep","wake","play","read","write","sing","jump","stop","start","open","close","big","small","good","bad","hot","cold","new","old","young","long","short","tall","fast","slow","happy","sad","red","blue","green","black","white","pink","brown","gray","one","two","three","four","five","six","seven","eight","nine","ten","apple","banana","orange","lemon","grape","mango","peach","pear","cherry","melon","carrot","potato","tomato","onion","garlic","pepper","corn","bean","pea","cake","cookie","candy","sugar","salt","soup","cheese","butter","meat","chicken","beef","pork","breakfast","lunch","dinner","kitchen","table","chair","desk","sofa","door","window","wall","floor","roof","room","house","home","garden","park","road","street","car","bus","train","bike","boat","plane","ship","truck","taxi","wheel","engine","key","phone","clock","watch","lamp","light","mirror","towel","soap","brush","comb","shirt","pants","dress","skirt","coat","jacket","sock","glove","scarf","belt","cap","pocket","button","toy","ball","doll","game","kite","robot","bear","lion","tiger","panda","monkey","rabbit","mouse","horse","family","father","mother","parent","brother","sister","son","daughter","baby","child","children","uncle","aunt","cousin","grandfather","grandmother","husband","wife","friend","neighbor","people","person","man","woman","boy","girl","adult","teacher","student","doctor","nurse","driver","farmer","worker","chef","artist","singer","dancer","actor","writer","reader","visitor","guest","customer","shop","store","market","money","price","cost","buy","sell","pay","save","spend","cheap","expensive","clean","dirty","wash","cook","bake","boil","fry","cut","chop","mix","taste","smell","touch","feel","hear","listen","speak","talk","shout","whisper","smile","laugh","cry","think","know","learn","teach","study","remember","forget","understand","choose","find","lose","bring","take","give","send","receive","carry","hold","pull","push","school","classroom","lesson","subject","homework","notebook","textbook","pencil","eraser","ruler","marker","crayon","paper","page","paragraph","sentence","word","letter","alphabet","spelling","grammar","vocabulary","language","english","math","science","history","geography","biology","chemistry","physics","music","art","sport","exam","test","quiz","question","answer","score","grade","result","mistake","correct","wrong","easy","difficult","simple","complex","problem","solution","example","explanation","instruction","direction","project","assignment","presentation","discussion","group","team","partner","class","course","library","dictionary","encyclopedia","computer","keyboard","screen","monitor","printer","folder","file","document","website","browser","internet","email","message","account","password","search","download","upload","click","scroll","type","print","copy","paste","delete","edit","format","submit","complete","finish","begin","continue","repeat","office","company","business","manager","employee","employer","colleague","client","meeting","schedule","calendar","appointment","deadline","agenda","minutes","invoice","receipt","budget","salary","income","expense","profit","loss","tax","bank","payment","cash","credit","debit","contract","agreement","policy","rule","regulation","procedure","process","workflow","department","division","branch","headquarters","director","supervisor","assistant","secretary","receptionist","accountant","analyst","consultant","engineer","technician","developer","designer","administrator","operator","coordinator","leader","executive","entrepreneur","investor","supplier","vendor","retailer","manufacturer","warehouse","inventory","stock","order","delivery","shipment","package","product","service","quality","standard","performance","productivity","efficiency","accuracy","priority","strategy","objective","target","milestone","outcome","feedback","evaluation","assessment","training","recruitment","interview","application","resume","career","profession","promotion","responsibility","authority","decision","negotiation","technology","software","hardware","firmware","network","server","device","system","platform","program","algorithm","coding","programming","script","command","terminal","console","interface","dashboard","menu","toolbar","shortcut","setting","configuration","preference","installation","upgrade","patch","processor","disk","drive","directory","path"
+      ];
+
+      let bubbleScore = 0;
+      let bubbleWordsCount = 0;
+      let bubbleLives = 3;
+      let heartsLostCount = 0;
+      let earnedCoinsFromWords = 0;
+      let earnedCoinsFromCombos = 0;
+      let currentComboStreak = 0;
+      let maxComboStreak = 0;
+      let bubbleGameTimer = null;
+      let bubbleSpawnTimer = null;
+      let bubbleAnimationId = null;
+      let gameElapsedSeconds = 0;
+
+      let activeTargetWordEl = null;
+      let activeTargetWordText = '';
+      let activeTargetTypedIndex = 0;
+
+      const gameArenaModal = document.getElementById('gameArenaModal');
+      const btnOpenGameArena = document.getElementById('btnOpenGameArena');
+      const btnCloseGameArena = document.getElementById('btnCloseGameArena');
+
+      const gamePlayArea = document.getElementById('gamePlayArea');
+      const gameTimeText = document.getElementById('gameTimeText');
+      const gameScoreText = document.getElementById('gameScoreText');
+      const gameWordsCount = document.getElementById('gameWordsCount');
+      const gameLivesIcons = document.getElementById('gameLivesIcons');
+      const gameOverlayMsg = document.getElementById('gameOverlayMsg');
+      const btnStartBubbleGame = document.getElementById('btnStartBubbleGame');
+
+      // Tools Dropdown Navbar
+      const toolsDropdown = document.getElementById('nav-tools-dropdown');
+      const toolsBtn = document.getElementById('btn-tools-dropdown');
+      if (toolsBtn && toolsDropdown) {
+        toolsBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toolsDropdown.classList.toggle('open');
+        });
+        document.addEventListener('click', () => toolsDropdown.classList.remove('open'));
+      }
+
+      // FILTER TABS LOGIC
+      document.querySelectorAll('.gfb-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.gfb-pill').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const filter = btn.dataset.filter;
+          const cards = document.querySelectorAll('.game-card');
+          cards.forEach(card => {
+            const cat = card.dataset.category || '';
+            if (filter === 'all' || cat.includes(filter)) {
+              card.style.display = 'flex';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+
+      function formatGameTime(sec) {
+        const m = Math.floor(sec / 60);
+        const s = sec % 60;
+        return (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+      }
+
+      function getWaveConfig(seconds) {
+        const loopSec = seconds % 390;
+        if (loopSec < 120) {
+          return {
+            baseFallDuration: 10500,
+            spawnInterval: 2600
+          };
+        } else if (loopSec < 180) {
+          return {
+            baseFallDuration: 7800,
+            spawnInterval: 1900
+          };
+        } else if (loopSec < 300) {
+          return {
+            baseFallDuration: 10500,
+            spawnInterval: 2600
+          };
+        } else if (loopSec < 330) {
+          return {
+            baseFallDuration: 5400,
+            spawnInterval: 1400
+          };
+        } else {
+          return {
+            baseFallDuration: 7800,
+            spawnInterval: 2000
+          };
+        }
+      }
+
+      let maxGameLives = 3;
+      function getMaxGameLives() {
+        const user = getEffectiveUser();
+        if (!user) return 3;
+        const petId = getEquippedPetId();
+        if (petId === 'pet3') return 4;
+        if (petId === 'pet10') return 5;
+        return 3;
+      }
+
+      function updateLivesDisplay(lives, maxLives = maxGameLives) {
+        if (!gameLivesIcons) return;
+        const heartSvg = (filled) => `
+          <svg class="life-heart-svg ${filled ? 'filled' : 'empty'}" viewBox="0 0 24 24">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+          </svg>
+        `;
+        let html = '';
+        for (let i = maxLives; i >= 1; i--) {
+          html += heartSvg(lives >= i);
+        }
+        gameLivesIcons.innerHTML = html;
+      }
+
+      function updateComboHUD() {
+        const comboBadge = document.getElementById('gameComboBadge');
+        const comboText = document.getElementById('gameComboText');
+        if (!comboBadge || !comboText) return;
+        if (currentComboStreak >= 2) {
+          comboBadge.style.display = 'inline-flex';
+          comboText.textContent = `Combo x${currentComboStreak}`;
+        } else {
+          comboBadge.style.display = 'none';
+        }
+      }
+
+      function resetBubbleOverlay() {
+        if (gamePlayArea) {
+          gamePlayArea.querySelectorAll('.game-word-bubble, .mg-score-float, .mg-milestone-popup').forEach(el => el.remove());
+        }
+        activeTargetWordEl = null;
+        activeTargetWordText = '';
+        activeTargetTypedIndex = 0;
+        bubbleScore = 0;
+        bubbleWordsCount = 0;
+        maxGameLives = getMaxGameLives();
+        bubbleLives = maxGameLives;
+        heartsLostCount = 0;
+        earnedCoinsFromWords = 0;
+        earnedCoinsFromCombos = 0;
+        currentComboStreak = 0;
+        maxComboStreak = 0;
+        gameElapsedSeconds = 0;
+
+        if (gameScoreText) gameScoreText.textContent = '0';
+        if (gameWordsCount) gameWordsCount.textContent = '0';
+        if (gameTimeText) gameTimeText.textContent = '00:00';
+        updateComboHUD();
+        updateLivesDisplay(bubbleLives, maxGameLives);
+
+        if (gameOverlayMsg) {
+          gameOverlayMsg.style.display = 'flex';
+          gameOverlayMsg.innerHTML = `
+            <div class="mg-intro-icon-circle">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="22" y1="12" x2="18" y2="12"></line>
+                <line x1="6" y1="12" x2="2" y2="12"></line>
+                <line x1="12" y1="6" x2="12" y2="2"></line>
+                <line x1="12" y1="22" x2="12" y2="18"></line>
+              </svg>
+            </div>
+            <h3 style="margin: 0; font-size: 1.55rem; font-weight: 800; color: #ffffff;">Sẵn sàng thử thách phản xạ từ vựng?</h3>
+            <p style="margin: 0 0 6px; font-size: 0.98rem; color: #cbd5e1; max-width: 540px; line-height: 1.6;">
+              1.000 từ vựng sẽ rơi ngẫu nhiên theo nhịp độ sóng sinh tồn. Gõ chữ cái đầu tiên để khóa từ, gõ hoàn thành toàn bộ chữ cái để làm nổ bong bóng!
+            </p>
+            <button type="button" class="btn-bubble-play" id="btnStartBubbleGame">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              BẮT ĐẦU CHƠI
+            </button>
+          `;
+          document.getElementById('btnStartBubbleGame')?.addEventListener('click', startBubbleGame);
+        }
+      }
+
+      function stopBubbleGame() {
+        if (bubbleGameTimer) { clearInterval(bubbleGameTimer); bubbleGameTimer = null; }
+        if (bubbleSpawnTimer) { clearTimeout(bubbleSpawnTimer); bubbleSpawnTimer = null; }
+        if (bubbleAnimationId) { cancelAnimationFrame(bubbleAnimationId); bubbleAnimationId = null; }
+      }
+
+      function openArena() {
+        if (!gameArenaModal) return;
+        gameArenaModal.style.display = 'flex';
+        resetBubbleOverlay();
+      }
+
+      function closeArena() {
+        if (!gameArenaModal) return;
+        stopBubbleGame();
+        resetBubbleOverlay();
+        gameArenaModal.style.display = 'none';
+      }
+
+      if (btnOpenGameArena) {
+        btnOpenGameArena.addEventListener('click', openArena);
+      }
+
+      if (btnCloseGameArena) {
+        btnCloseGameArena.addEventListener('click', closeArena);
+      }
+
+      function startBubbleGame() {
+        stopBubbleGame();
+        bubbleScore = 0;
+        bubbleWordsCount = 0;
+        maxGameLives = getMaxGameLives();
+        bubbleLives = maxGameLives;
+        heartsLostCount = 0;
+        earnedCoinsFromWords = 0;
+        earnedCoinsFromCombos = 0;
+        currentComboStreak = 0;
+        maxComboStreak = 0;
+        gameElapsedSeconds = 0;
+
+        activeTargetWordEl = null;
+        activeTargetWordText = '';
+        activeTargetTypedIndex = 0;
+
+        if (gameScoreText) gameScoreText.textContent = '0';
+        if (gameWordsCount) gameWordsCount.textContent = '0';
+        if (gameTimeText) gameTimeText.textContent = '00:00';
+        updateComboHUD();
+        updateLivesDisplay(bubbleLives, maxGameLives);
+
+        if (gameOverlayMsg) gameOverlayMsg.style.display = 'none';
+        if (gamePlayArea) {
+          gamePlayArea.querySelectorAll('.game-word-bubble, .mg-score-float, .mg-milestone-popup').forEach(el => el.remove());
+        }
+
+        bubbleGameTimer = setInterval(() => {
+          gameElapsedSeconds++;
+          if (gameTimeText) gameTimeText.textContent = formatGameTime(gameElapsedSeconds);
+        }, 1000);
+
+        scheduleNextSpawn();
+        animateBubbleWords();
+      }
+
+      const WORD_BUBBLE_GRADIENTS = [
+        'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
+        'linear-gradient(135deg, #0f766e 0%, #115e59 100%)',
+        'linear-gradient(135deg, #0d9488 0%, #134e4a 100%)',
+        'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
+        'linear-gradient(135deg, #e11d48 0%, #9f1239 100%)',
+        'linear-gradient(135deg, #0284c7 0%, #075985 100%)',
+        'linear-gradient(135deg, #059669 0%, #065f46 100%)'
+      ];
+
+      function scheduleNextSpawn() {
+        if (bubbleLives <= 0) return;
+        const wave = getWaveConfig(gameElapsedSeconds);
+        bubbleSpawnTimer = setTimeout(() => {
+          if (bubbleLives > 0) {
+            spawnWordBubble();
+            scheduleNextSpawn();
+          }
+        }, wave.spawnInterval);
+      }
+
+      function spawnWordBubble() {
+        if (!gamePlayArea || bubbleLives <= 0) return;
+        const areaWidth = gamePlayArea.clientWidth;
+        if (!areaWidth || areaWidth < 100) return;
+
+        const randomWord = MINI_GAME_WORDS[Math.floor(Math.random() * MINI_GAME_WORDS.length)] || 'typing';
+        const wave = getWaveConfig(gameElapsedSeconds);
+
+        const bubble = document.createElement('div');
+        bubble.className = 'game-word-bubble';
+        bubble.dataset.word = randomWord;
+
+        const grad = WORD_BUBBLE_GRADIENTS[Math.floor(Math.random() * WORD_BUBBLE_GRADIENTS.length)];
+        bubble.style.background = grad;
+
+        bubble.innerHTML = renderBubbleWordChars(randomWord, 0);
+
+        gamePlayArea.appendChild(bubble);
+
+        const bubbleWidth = bubble.offsetWidth || 120;
+        const minLeft = 24;
+        const maxLeft = Math.max(minLeft, areaWidth - bubbleWidth - 36);
+        const randomLeft = Math.floor(Math.random() * (maxLeft - minLeft + 1)) + minLeft;
+        bubble.style.left = randomLeft + 'px';
+
+        const wordLen = randomWord.length;
+        let fallDuration = wave.baseFallDuration;
+        if (wordLen >= 8) {
+          fallDuration += 2400;
+        } else if (wordLen <= 4) {
+          fallDuration -= 1400;
+        }
+
+        const user = getEffectiveUser();
+        if (user) {
+          const equippedPet = getEquippedPetId();
+          if (equippedPet === 'pet7') {
+            fallDuration += 200;
+          } else if (equippedPet === 'pet9' && wordLen >= 7) {
+            fallDuration += 600;
+          } else if (equippedPet === 'pet10' && wordLen <= 4) {
+            fallDuration = Math.max(1000, fallDuration - 400);
+          }
+        }
+
+        bubble.dataset.startTime = String(performance.now());
+        bubble.dataset.duration = String(fallDuration);
+      }
+
+      function renderBubbleWordChars(word, typedCount) {
+        let out = '';
+        for (let i = 0; i < word.length; i++) {
+          const ch = word[i].toUpperCase();
+          if (i < typedCount) {
+            out += `<span class="char-done">${ch}</span>`;
+          } else {
+            out += `<span class="char-pending">${ch}</span>`;
+          }
+        }
+        return out;
+      }
+
+      function animateBubbleWords() {
+        if (bubbleLives <= 0) return;
+
+        const now = performance.now();
+        const areaHeight = gamePlayArea ? gamePlayArea.clientHeight : 600;
+        const bubbles = gamePlayArea ? gamePlayArea.querySelectorAll('.game-word-bubble:not(.popping)') : [];
+
+        bubbles.forEach(b => {
+          const start = parseFloat(b.dataset.startTime) || now;
+          const dur = parseFloat(b.dataset.duration) || 10000;
+          const progress = (now - start) / dur;
+
+          const currentY = -65 + progress * (areaHeight + 25);
+          b.style.top = currentY + 'px';
+
+          if (progress >= 1) {
+            b.classList.add('popping');
+            b.remove();
+
+            if (activeTargetWordEl === b) {
+              activeTargetWordEl = null;
+              activeTargetWordText = '';
+              activeTargetTypedIndex = 0;
+            }
+
+            bubbleLives--;
+            heartsLostCount++;
+            currentComboStreak = 0;
+            updateComboHUD();
+            updateLivesDisplay(bubbleLives, maxGameLives);
+            playKeySound('error');
+
+            if (bubbleLives <= 0) {
+              endBubbleGame();
+            }
+          }
+        });
+
+        if (bubbleLives > 0) {
+          bubbleAnimationId = requestAnimationFrame(animateBubbleWords);
+        }
+      }
+
+      function showMilestonePopup(label) {
+        if (!gamePlayArea) return;
+        const popup = document.createElement('div');
+        popup.className = 'mg-milestone-popup';
+        popup.textContent = label;
+        gamePlayArea.appendChild(popup);
+        setTimeout(() => popup.remove(), 1600);
+      }
+
+      function handleWordSuccess(targetEl, targetText) {
+        playKeySound('success');
+        if (targetEl) targetEl.classList.add('popping');
+
+        const wordLen = targetText.length;
+        let wordPts = 10;
+        if (wordLen >= 8) {
+          wordPts = 30;
+        } else if (wordLen >= 5) {
+          wordPts = 20;
+        }
+
+        bubbleScore += wordPts;
+        bubbleWordsCount++;
+
+        const user = getEffectiveUser();
+        const isGuest = !user;
+        if (!isGuest) {
+          earnedCoinsFromWords += 1;
+        }
+
+        currentComboStreak++;
+        if (currentComboStreak > maxComboStreak) {
+          maxComboStreak = currentComboStreak;
+        }
+
+        let comboBonusCoins = 0;
+        let comboBonusPts = 0;
+        let comboLabel = '';
+
+        if (currentComboStreak === 5) {
+          comboBonusCoins = 2;
+          comboBonusPts = 20;
+          comboLabel = !isGuest ? 'Combo x5 (+2 Xu)' : 'Combo x5';
+        } else if (currentComboStreak === 10) {
+          comboBonusCoins = 3;
+          comboBonusPts = 30;
+          comboLabel = !isGuest ? 'Combo x10 (+3 Xu)' : 'Combo x10';
+        } else if (currentComboStreak === 15) {
+          comboBonusCoins = 4;
+          comboBonusPts = 40;
+          comboLabel = !isGuest ? 'Combo x15 (+4 Xu)' : 'Combo x15';
+        } else if (currentComboStreak === 20) {
+          comboBonusCoins = 5;
+          comboBonusPts = 50;
+          comboLabel = !isGuest ? 'Combo x20 (+5 Xu)' : 'Combo x20';
+        } else if (currentComboStreak === 25) {
+          comboBonusCoins = 6;
+          comboBonusPts = 60;
+          comboLabel = !isGuest ? 'Combo x25 (+6 Xu)' : 'Combo x25';
+        } else if (currentComboStreak >= 30 && currentComboStreak % 5 === 0) {
+          comboBonusCoins = 8;
+          comboBonusPts = 80;
+          comboLabel = !isGuest ? `Combo x${currentComboStreak} (+8 Xu)` : `Combo x${currentComboStreak}`;
+        }
+
+        if (comboBonusCoins > 0) {
+          bubbleScore += comboBonusPts;
+          if (!isGuest) {
+            earnedCoinsFromCombos += comboBonusCoins;
+          }
+          showMilestonePopup(comboLabel);
+        }
+
+        if (gameScoreText) gameScoreText.textContent = bubbleScore;
+        if (gameWordsCount) gameWordsCount.textContent = bubbleWordsCount;
+        updateComboHUD();
+
+        if (targetEl) {
+          const rect = targetEl.getBoundingClientRect();
+          const areaRect = gamePlayArea.getBoundingClientRect();
+          const floatEl = document.createElement('div');
+          floatEl.className = 'mg-score-float';
+          floatEl.textContent = `+${wordPts}đ${!isGuest ? ' (+1 Xu)' : ''}`;
+          floatEl.style.left = (rect.left - areaRect.left + 10) + 'px';
+          floatEl.style.top = (rect.top - areaRect.top - 12) + 'px';
+          gamePlayArea.appendChild(floatEl);
+          setTimeout(() => floatEl.remove(), 750);
+
+          setTimeout(() => targetEl.remove(), 160);
+        }
+
+        activeTargetWordEl = null;
+        activeTargetWordText = '';
+        activeTargetTypedIndex = 0;
+      }
+
+      function endBubbleGame() {
+        stopBubbleGame();
+        playKeySound('error');
+
+        const user = getEffectiveUser();
+        const isGuest = !user;
+        const equippedPet = (!isGuest) ? getEquippedPetId() : null;
+
+        const totalCoinsGained = earnedCoinsFromWords + earnedCoinsFromCombos;
+        const penaltyPerHeart = (equippedPet === 'pet7') ? 2 : 5;
+        const totalPenaltyCoins = heartsLostCount * penaltyPerHeart;
+        let netCoinsEarned = Math.max(0, totalCoinsGained - totalPenaltyCoins);
+
+        if (!isGuest && netCoinsEarned > 0 && equippedPet) {
+          let multiplier = 1.0;
+          if (equippedPet === 'pet2') multiplier += 0.05;
+          else if (equippedPet === 'pet3') multiplier += 0.02;
+          else if (equippedPet === 'pet4') multiplier += 0.10;
+          else if (equippedPet === 'pet6') multiplier += 0.10;
+          else if (equippedPet === 'pet9') multiplier += 0.07;
+          else if (equippedPet === 'pet10') multiplier += 0.15;
+
+          if (multiplier > 1.0) {
+            netCoinsEarned = Math.round(netCoinsEarned * multiplier);
+          }
+        }
+
+        if (!isGuest && netCoinsEarned > 0) {
+          const role = getCurrentRole();
+          const petData = getUserPetStorage(role);
+          petData.coins = (petData.coins || 0) + netCoinsEarned;
+          saveUserPetStorage(role, petData);
+        }
+
+        // Cập nhật kỷ lục cá nhân
+        try {
+          let curHighScore = parseInt(localStorage.getItem('thvp_bubble_highscore') || '0', 10);
+          if (bubbleScore > curHighScore) {
+            curHighScore = bubbleScore;
+            localStorage.setItem('thvp_bubble_highscore', String(curHighScore));
+          }
+          const cardBubbleHighScoreEl = document.getElementById('cardBubbleHighScore');
+          if (cardBubbleHighScoreEl) {
+            cardBubbleHighScoreEl.textContent = curHighScore + ' điểm';
+          }
+        } catch (e) {}
+
+        if (gameOverlayMsg) {
+          gameOverlayMsg.style.display = 'flex';
+
+          if (isGuest) {
+            // MÀN HÌNH TỔNG KẾT CHO KHÁCH (CHỈ HIỆN ĐIỂM, KHÔNG HIỆN XU, KHÔNG LƯU)
+            // Đã bỏ nút "Quay lại danh sách" theo đúng ảnh 2
+            gameOverlayMsg.innerHTML = `
+              <div class="mg-intro-icon-circle gameover">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+              </div>
+              <h3 style="margin: 0; font-size: 1.55rem; font-weight: 900; color: #f87171;">HẾT LƯỢT CHƠI! KẾT THÚC VÁN ĐẤU</h3>
+              <p style="margin: 0; font-size: 1rem; color: #cbd5e1;">
+                Thời gian sống sót: <strong style="color: #38bdf8;">${formatGameTime(gameElapsedSeconds)}</strong> &bull; Giải cứu: <strong style="color: #38bdf8;">${bubbleWordsCount} từ</strong> &bull; Chuỗi cao nhất: <strong style="color: #fb923c;">Combo x${maxComboStreak}</strong>
+              </p>
+              <div style="font-size: 1.45rem; font-weight: 900; color: #facc15; margin: 4px 0;">
+                Điểm số phản xạ: ${bubbleScore} điểm
+              </div>
+              <div style="display: flex; gap: 14px; margin-top: 14px; flex-wrap: wrap; justify-content: center;">
+                <button type="button" class="btn-bubble-play" id="btnGuestLoginFromGame" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;">
+                  ĐĂNG NHẬP ĐỂ TÍCH XU
+                </button>
+                <button type="button" class="btn-bubble-secondary" id="btnRestartBubble">
+                  CHƠI LẠI
+                </button>
+              </div>
+            `;
+
+            document.getElementById('btnGuestLoginFromGame')?.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (window.THVP_AUTH && typeof window.THVP_AUTH.showModal === 'function') {
+                window.THVP_AUTH.showModal('login');
+              } else {
+                window.location.href = 'index.html#dang-nhap';
+              }
+            });
+          } else {
+            // MÀN HÌNH TỔNG KẾT CHO HỌC VIÊN & GIÁO VIÊN (BẢNG SAO KÊ XU RÕ RÀNG)
+            // Đã bỏ nút "Quay lại danh sách" theo đúng ảnh 2
+            gameOverlayMsg.innerHTML = `
+              <div class="mg-intro-icon-circle gameover">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+              </div>
+              <h3 style="margin: 0; font-size: 1.55rem; font-weight: 900; color: #f87171;">HẾT LƯỢT CHƠI! TRÒ CHƠI KẾT THÚC</h3>
+              <p style="margin: 0; font-size: 1rem; color: #cbd5e1;">
+                Thời gian sống sót: <strong style="color: #38bdf8;">${formatGameTime(gameElapsedSeconds)}</strong> &bull; Số từ đã gõ: <strong style="color: #38bdf8;">${bubbleWordsCount} từ</strong> &bull; Chuỗi cao nhất: <strong style="color: #fb923c;">Combo x${maxComboStreak}</strong> &bull; Điểm: <strong style="color: #facc15;">${bubbleScore}</strong>
+              </p>
+
+              <!-- Bảng Tổng Kết Xu Thưởng -->
+              <div class="mg-coins-summary-card">
+                <div class="mg-coins-row">
+                  <div class="mg-coins-row-left">
+                    <span class="mg-coins-dot green"></span>
+                    <span>Xu kiếm được từ gõ từ:</span>
+                  </div>
+                  <div class="mg-coins-val green">+${earnedCoinsFromWords} Xu</div>
+                </div>
+
+                <div class="mg-coins-row">
+                  <div class="mg-coins-row-left">
+                    <span class="mg-coins-dot blue"></span>
+                    <span>Xu thưởng chuỗi Combo:</span>
+                  </div>
+                  <div class="mg-coins-val blue">+${earnedCoinsFromCombos} Xu</div>
+                </div>
+
+                <div class="mg-coins-row">
+                  <div class="mg-coins-row-left">
+                    <span class="mg-coins-dot red"></span>
+                    <span>Khấu trừ do lỡ ${heartsLostCount} từ (${penaltyPerHeart} Xu/tim):</span>
+                  </div>
+                  <div class="mg-coins-val red">-${totalPenaltyCoins} Xu</div>
+                </div>
+
+                <div class="mg-coins-divider"></div>
+
+                <div class="mg-coins-total-box">
+                  <div class="mg-coins-total-left">
+                    <img src="images/xu.png" alt="Xu" class="mg-coin-gold-icon" onerror="this.style.display='none'" />
+                    <span>TỔNG XU THỰC NHẬN:</span>
+                  </div>
+                  <div class="mg-coins-total-val">+${netCoinsEarned} Xu</div>
+                </div>
+              </div>
+
+              <!-- Chỉ giữ lại 1 nút Chơi Lại duy nhất (bỏ nút Quay lại danh sách game theo ảnh 2) -->
+              <div style="display: flex; gap: 14px; margin-top: 14px; justify-content: center;">
+                <button type="button" class="btn-bubble-play" id="btnRestartBubble">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                  </svg>
+                  CHƠI LẠI
+                </button>
+              </div>
+            `;
+          }
+
+          document.getElementById('btnRestartBubble')?.addEventListener('click', startBubbleGame);
+        }
+      }
+
+      if (btnStartBubbleGame) {
+        btnStartBubbleGame.addEventListener('click', startBubbleGame);
+      }
+
+      // Khi người dùng đăng nhập thành công từ màn hình game
+      window.addEventListener('thvp:auth_change', (e) => {
+        const user = e.detail?.user;
+        if (user && gameOverlayMsg && gameOverlayMsg.style.display === 'flex') {
+          const role = (user.role === 'admin' || user.role === 'teacher') ? 'teacher' : 'student';
+          const equippedPet = getEquippedPetId();
+          const totalCoinsGained = earnedCoinsFromWords + earnedCoinsFromCombos;
+          const penaltyPerHeart = (equippedPet === 'pet7') ? 2 : 5;
+          const totalPenaltyCoins = heartsLostCount * penaltyPerHeart;
+          let netCoinsEarned = Math.max(0, totalCoinsGained - totalPenaltyCoins);
+
+          if (equippedPet) {
+            let multiplier = 1.0;
+            if (equippedPet === 'pet2') multiplier += 0.05;
+            else if (equippedPet === 'pet3') multiplier += 0.02;
+            else if (equippedPet === 'pet4') multiplier += 0.10;
+            else if (equippedPet === 'pet6') multiplier += 0.10;
+            else if (equippedPet === 'pet9') multiplier += 0.07;
+            else if (equippedPet === 'pet10') multiplier += 0.15;
+
+            if (multiplier > 1.0) {
+              netCoinsEarned = Math.round(netCoinsEarned * multiplier);
+            }
+          }
+
+          if (netCoinsEarned > 0) {
+            const petData = getUserPetStorage(role);
+            petData.coins = (petData.coins || 0) + netCoinsEarned;
+            saveUserPetStorage(role, petData);
+          }
+
+          // Cập nhật lại giao diện Game Over sang định dạng có bảng sao kê Xu của tài khoản
+          gameOverlayMsg.innerHTML = `
+            <div class="mg-intro-icon-circle gameover">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <h3 style="margin: 0; font-size: 1.55rem; font-weight: 900; color: #f87171;">HẾT LƯỢT CHƠI! TRÒ CHƠI KẾT THÚC</h3>
+            <p style="margin: 0; font-size: 1rem; color: #cbd5e1;">
+              Thời gian sống sót: <strong style="color: #38bdf8;">${formatGameTime(gameElapsedSeconds)}</strong> &bull; Số từ đã gõ: <strong style="color: #38bdf8;">${bubbleWordsCount} từ</strong> &bull; Chuỗi cao nhất: <strong style="color: #fb923c;">Combo x${maxComboStreak}</strong> &bull; Điểm: <strong style="color: #facc15;">${bubbleScore}</strong>
+            </p>
+
+            <div class="mg-coins-summary-card">
+              <div class="mg-coins-row">
+                <div class="mg-coins-row-left">
+                  <span class="mg-coins-dot green"></span>
+                  <span>Xu kiếm được từ gõ từ:</span>
+                </div>
+                <div class="mg-coins-val green">+${earnedCoinsFromWords} Xu</div>
+              </div>
+
+              <div class="mg-coins-row">
+                <div class="mg-coins-row-left">
+                  <span class="mg-coins-dot blue"></span>
+                  <span>Xu thưởng chuỗi Combo:</span>
+                </div>
+                <div class="mg-coins-val blue">+${earnedCoinsFromCombos} Xu</div>
+              </div>
+
+              <div class="mg-coins-row">
+                <div class="mg-coins-row-left">
+                  <span class="mg-coins-dot red"></span>
+                  <span>Khấu trừ do lỡ ${heartsLostCount} từ (${penaltyPerHeart} Xu/tim):</span>
+                </div>
+                <div class="mg-coins-val red">-${totalPenaltyCoins} Xu</div>
+              </div>
+
+              <div class="mg-coins-divider"></div>
+
+              <div class="mg-coins-total-box">
+                <div class="mg-coins-total-left">
+                  <img src="images/xu.png" alt="Xu" class="mg-coin-gold-icon" onerror="this.style.display='none'" />
+                  <span>TỔNG XU THỰC NHẬN:</span>
+                </div>
+                <div class="mg-coins-total-val">+${netCoinsEarned} Xu</div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 14px; margin-top: 14px; justify-content: center;">
+              <button type="button" class="btn-bubble-play" id="btnRestartBubble">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                </svg>
+                CHƠI LẠI
+              </button>
+            </div>
+          `;
+
+          document.getElementById('btnRestartBubble')?.addEventListener('click', startBubbleGame);
+
+          if (window.THVP_AUTH && typeof window.THVP_AUTH.showToast === 'function') {
+            window.THVP_AUTH.showToast(`Đã tích lũy +${netCoinsEarned} Xu vào tài khoản ${user.fullname || user.username}!`, 'success');
+          }
+        }
+      });
+
+      // Xử lý sự kiện gõ phím toàn cục khi đang ở trong Game Arena
+      window.addEventListener('keydown', (e) => {
+        // Nếu cửa sổ Đăng nhập / Đăng ký đang hiển thị hoặc người dùng đang gõ trong form, không chặn phím
+        const authModal = document.getElementById('thvpAuthModal');
+        if (authModal && authModal.classList.contains('active')) {
+          if (e.key === 'Escape') {
+            if (window.THVP_AUTH && typeof window.THVP_AUTH.hideModal === 'function') {
+              window.THVP_AUTH.hideModal();
+            }
+          }
+          return;
+        }
+
+        if (document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+          return;
+        }
+
+        if (!gameArenaModal || gameArenaModal.style.display !== 'flex') return;
+
+        // Thoát khỏi Arena bằng phím Escape -> quay về trang danh sách thẻ game
+        if (e.key === 'Escape') {
+          closeArena();
+          return;
+        }
+
+        // Bỏ qua nếu đang bấm tổ hợp phím hệ thống
+        if (e.ctrlKey || e.altKey || e.metaKey) return;
+
+        if (e.key.length === 1 || e.key === 'Backspace' || e.key === 'Space') {
+          e.preventDefault();
+        }
+
+        const key = e.key.toLowerCase();
+        if (!/^[a-z]$/.test(key)) return;
+        if (!gamePlayArea) return;
+
+        // 1. Nếu đang có từ bị nhắm mục tiêu (Target Lock)
+        if (activeTargetWordEl && activeTargetWordEl.parentElement) {
+          const expectedChar = activeTargetWordText[activeTargetTypedIndex].toLowerCase();
+          if (key === expectedChar) {
+            activeTargetTypedIndex++;
+            activeTargetWordEl.innerHTML = renderBubbleWordChars(activeTargetWordText, activeTargetTypedIndex);
+            playKeySound('click');
+
+            if (activeTargetTypedIndex >= activeTargetWordText.length) {
+              handleWordSuccess(activeTargetWordEl, activeTargetWordText);
+            }
+          } else {
+            playKeySound('click');
+          }
+          return;
+        }
+
+        // 2. Chưa có từ nào bị khóa -> Tìm từ đang rơi có chữ cái đầu tiên khớp với phím vừa bấm
+        const bubbles = Array.from(gamePlayArea.querySelectorAll('.game-word-bubble:not(.popping)'));
+        if (bubbles.length === 0) return;
+
+        // Ưu tiên từ ở vị trí thấp nhất (gần chạm đáy nhất)
+        bubbles.sort((a, b) => {
+          const topA = parseFloat(window.getComputedStyle(a).top) || 0;
+          const topB = parseFloat(window.getComputedStyle(b).top) || 0;
+          return topB - topA;
+        });
+
+        const matchedBubble = bubbles.find(b => {
+          const w = (b.dataset.word || '').toLowerCase();
+          return w.startsWith(key);
+        });
+
+        if (matchedBubble) {
+          activeTargetWordEl = matchedBubble;
+          activeTargetWordText = matchedBubble.dataset.word.toLowerCase();
+          activeTargetTypedIndex = 1;
+          matchedBubble.classList.add('targeted');
+          matchedBubble.innerHTML = renderBubbleWordChars(activeTargetWordText, 1);
+          playKeySound('click');
+          if (activeTargetWordText.length === 1) {
+            handleWordSuccess(matchedBubble, activeTargetWordText);
+          }
+        } else {
+          playKeySound('click');
+        }
+      });
+
+      // INIT
+      maxGameLives = getMaxGameLives();
+      updateLivesDisplay(bubbleLives, maxGameLives);
+      window.addEventListener('thvp:auth_change', () => {
+        maxGameLives = getMaxGameLives();
+        updateLivesDisplay(bubbleLives, maxGameLives);
+      });
+    })();
+  </script>
+  <script src="auth.js"></script>
+</body>
+</html>

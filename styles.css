@@ -3542,7 +3542,7 @@ img {
   inset: 0;
   background: rgba(15, 23, 42, 0.65);
   backdrop-filter: blur(6px);
-  z-index: 99999;
+  z-index: 10000000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4194,7 +4194,7 @@ img {
   font-size: 0.86rem;
   font-weight: 600;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  z-index: 100000;
+  z-index: 10000010;
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
