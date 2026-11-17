@@ -400,22 +400,45 @@ PHONG CÁCH TƯ VẤN:
   }
 
   // 5. TỰ ĐỘNG CHÈN HTML CHATBOX VÀO BODY
+  function isChatbotAllowedOnCurrentPage() {
+    const path = window.location.pathname.toLowerCase();
+    const filename = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
+
+    // Danh sách các trang tuyệt đối KHÔNG hiển thị Chatbot (Game, tiện ích gõ phím, test phím, diễn đàn, thi thử)
+    const blockedPages = [
+      'h.html',
+      'mini-game-go-phim.html',
+      'luyen-go-phim.html',
+      'kiem-tra-ban-phim.html',
+      'tim-hieu-ban-phim.html',
+      'tra-cuu-phim-tat.html',
+      'xem-de-bai.html',
+      'on-luyen-thi-thu.html',
+      'dien-dan.html'
+    ];
+
+    if (blockedPages.includes(filename)) {
+      return false;
+    }
+    return true;
+  }
+
   function injectChatbotDOM() {
+    if (!isChatbotAllowedOnCurrentPage()) return;
     if (document.getElementById('lmsChatbotRoot')) return;
 
     const chatbotHTML = `
       <div id="lmsChatbotRoot">
-        <!-- Nút Chatbot nổi ở góc dưới bên phải -->
+        <!-- Nút Chatbot nổi ở góc dưới bên phải (Thiết kế tinh gọn, thanh lịch) -->
         <button type="button" class="lms-chatbot-btn" id="lmsChatbotToggleBtn" aria-label="Mở cửa sổ tư vấn AI">
           <div class="lms-chatbot-avatar">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
             <span class="lms-chatbot-online-dot"></span>
           </div>
           <div class="lms-chatbot-btn-text">
-            <span class="lms-chatbot-btn-title">Trợ Lý AI Tư Vấn LMS ✨</span>
-            <span class="lms-chatbot-btn-sub">Gemini AI • Tư vấn khóa học & tính năng</span>
+            <span class="lms-chatbot-btn-title">Trợ Lý AI LMS ✨</span>
           </div>
           <span class="lms-chatbot-badge">1</span>
         </button>
