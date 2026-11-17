@@ -685,6 +685,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
           chatboxWindow.classList.add('open');
           chatboxWindow.setAttribute('aria-hidden', 'false');
           if (badge) badge.style.display = 'none';
+          if (toggleBtn) toggleBtn.classList.add('is-hidden');
         }
       }
     } catch (e) {
@@ -726,32 +727,59 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
     }
     refreshSyncInfo();
 
-    // Mở / đóng cửa sổ chat (có lưu trạng thái vào sessionStorage để giữ khi chuyển trang)
+    // Mở / đóng cửa sổ chat với hiệu ứng cuộn nút vào / ra mượt mà
+    function openChatbox() {
+      if (!chatboxWindow) return;
+      chatboxWindow.classList.add('open');
+      chatboxWindow.setAttribute('aria-hidden', 'false');
+      if (toggleBtn) toggleBtn.classList.add('is-hidden');
+      if (badge) badge.style.display = 'none';
+      sessionStorage.setItem(STORAGE_CHAT_IS_OPEN_KEY, 'true');
+      const input = document.getElementById('lmsChatInput');
+      if (input) setTimeout(() => input.focus(), 320);
+    }
+
+    function closeChatbox() {
+      if (!chatboxWindow) return;
+      chatboxWindow.classList.remove('open');
+      chatboxWindow.setAttribute('aria-hidden', 'true');
+      if (toggleBtn) toggleBtn.classList.remove('is-hidden');
+      sessionStorage.setItem(STORAGE_CHAT_IS_OPEN_KEY, 'false');
+    }
+
     if (toggleBtn && chatboxWindow) {
-      toggleBtn.addEventListener('click', () => {
+      toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         const isOpen = chatboxWindow.classList.contains('open');
         if (!isOpen) {
-          chatboxWindow.classList.add('open');
-          chatboxWindow.setAttribute('aria-hidden', 'false');
-          if (badge) badge.style.display = 'none';
-          sessionStorage.setItem(STORAGE_CHAT_IS_OPEN_KEY, 'true');
-          const input = document.getElementById('lmsChatInput');
-          if (input) setTimeout(() => input.focus(), 300);
+          openChatbox();
         } else {
-          chatboxWindow.classList.remove('open');
-          chatboxWindow.setAttribute('aria-hidden', 'true');
-          sessionStorage.setItem(STORAGE_CHAT_IS_OPEN_KEY, 'false');
+          closeChatbox();
         }
       });
     }
 
     if (closeBtn && chatboxWindow) {
-      closeBtn.addEventListener('click', () => {
-        chatboxWindow.classList.remove('open');
-        chatboxWindow.setAttribute('aria-hidden', 'true');
-        sessionStorage.setItem(STORAGE_CHAT_IS_OPEN_KEY, 'false');
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeChatbox();
       });
     }
+
+    // Bấm ra ngoài vùng trống hoặc nhấn Escape để đóng cửa sổ chatbot và cuộn nút trở ra
+    document.addEventListener('click', (e) => {
+      if (!chatboxWindow || !chatboxWindow.classList.contains('open')) return;
+      if (chatboxWindow.contains(e.target) || (toggleBtn && toggleBtn.contains(e.target))) {
+        return;
+      }
+      closeChatbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && chatboxWindow && chatboxWindow.classList.contains('open')) {
+        closeChatbox();
+      }
+    });
 
     // Mở / đóng bảng cài đặt
     if (settingsBtn && settingsPanel) {
