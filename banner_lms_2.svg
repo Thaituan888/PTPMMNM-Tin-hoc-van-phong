@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4c0519"/>
+      <stop offset="40%" stop-color="#9f1239"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="btnGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <radialGradient id="glow2" cx="80%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#ea580c" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow2" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="380" rx="16" fill="url(#bg2)"/>
+  <rect width="1200" height="380" rx="16" fill="url(#glow2)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="1080" cy="190" r="160" fill="#fbbf24" opacity="0.08"/>
+  <circle cx="950" cy="60" r="100" fill="#f43f5e" opacity="0.15"/>
+  <circle cx="820" cy="320" r="120" fill="#ea580c" opacity="0.15"/>
+
+  <!-- Content -->
+  <g transform="translate(60, 45)">
+    <!-- Tag Pill -->
+    <rect x="0" y="0" width="310" height="30" rx="15" fill="#ffffff" fill-opacity="0.2" stroke="#fecdd3" stroke-width="1"/>
+    <text x="155" y="20" fill="#fff1f2" font-family="'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" text-anchor="middle" letter-spacing="1">CHƯƠNG TRÌNH KHUYẾN HỌC ĐẶC BIỆT</text>
+
+    <!-- Main Title -->
+    <text x="0" y="78" fill="#ffffff" font-family="'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="800">ƯU ĐÃI GIẢM 20% HỌC PHÍ KHÓA HỌC</text>
+
+    <!-- Subtitle -->
+    <text x="0" y="116" fill="#ffe4e6" font-family="'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="500">
+      Đồng hành cùng Học sinh - Sinh viên &amp; Nhóm đăng ký từ 2 người trên toàn quốc
+    </text>
+
+    <!-- Badges Row -->
+    <g transform="translate(0, 142)">
+      <rect x="0" y="0" width="220" height="34" rx="8" fill="#ffffff" fill-opacity="0.15"/>
+      <circle cx="18" cy="17" r="5" fill="#fbbf24"/>
+      <text x="32" y="22" fill="#ffffff" font-family="'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600">Tặng tài khoản LMS học 24/7</text>
+
+      <rect x="232" y="0" width="240" height="34" rx="8" fill="#ffffff" fill-opacity="0.15"/>
+      <circle cx="250" cy="17" r="5" fill="#fbbf24"/>
+      <text x="264" y="22" fill="#ffffff" font-family="'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600">Trọn bộ giáo trình &amp; đề thi thử</text>
+    </g>
+
+    <!-- Condition line -->
+    <text x="0" y="212" fill="#fecdd3" font-family="'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="400">
+      Áp dụng cho mọi hình thức học: Trực tiếp tại trung tâm hoặc Trực tuyến qua Zoom
+    </text>
+
+    <!-- CTA Button -->
+    <g transform="translate(0, 238)" filter="url(#shadow2)">
+      <rect x="0" y="0" width="230" height="46" rx="23" fill="url(#btnGrad2)"/>
+      <text x="115" y="28" fill="#78350f" font-family="'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="800" text-anchor="middle">NHẬN ƯU ĐÃI NGAY &#8594;</text>
+    </g>
+  </g>
+
+  <!-- Big 20% Badge Graphic on Right -->
+  <g transform="translate(850, 45)" filter="url(#shadow2)">
+    <!-- Shield/Badge Base -->
+    <rect x="30" y="15" width="240" height="240" rx="28" fill="#ffffff" fill-opacity="0.12" stroke="#fbbf24" stroke-width="2"/>
+    <rect x="45" y="30" width="210" height="210" rx="20" fill="#881337" fill-opacity="0.8"/>
+    
+    <!-- Big Percent -->
+    <text x="150" y="115" fill="#fde047" font-family="'Segoe UI', Roboto, sans-serif" font-size="70" font-weight="900" text-anchor="middle">-20%</text>
+    <text x="150" y="150" fill="#ffffff" font-family="'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="800" text-anchor="middle" letter-spacing="2">HỌC PHÍ</text>
+    <rect x="75" y="165" width="150" height="3" fill="#fbbf24" rx="1.5"/>
+    <text x="150" y="195" fill="#fecdd3" font-family="'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" text-anchor="middle">HỌC SINH - SINH VIÊN</text>
+    <text x="150" y="215" fill="#fef08a" font-family="'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500" text-anchor="middle">Số lượng ưu đãi có hạn</text>
+  </g>
+</svg>
