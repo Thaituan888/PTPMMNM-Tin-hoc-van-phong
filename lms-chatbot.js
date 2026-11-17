@@ -446,9 +446,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
         <!-- Nút Chatbot nổi ở góc dưới bên phải (Thiết kế tinh gọn, thanh lịch) -->
         <button type="button" class="lms-chatbot-btn" id="lmsChatbotToggleBtn" aria-label="Mở cửa sổ tư vấn AI">
           <div class="lms-chatbot-avatar">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
+            <img src="images/chatbot-avatar.jpg" alt="Trợ Lý Học Tập AI" class="lms-avatar-img">
             <span class="lms-chatbot-online-dot"></span>
           </div>
           <div class="lms-chatbot-btn-text">
@@ -463,12 +461,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
           <div class="lms-chatbox-header">
             <div class="lms-chatbox-user-info">
               <div class="lms-chatbox-header-avatar">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2">
-                  <path d="M12 2a8 8 0 0 0-8 8v4a8 8 0 0 0 16 0v-4a8 8 0 0 0-8-8z"></path>
-                  <circle cx="9" cy="11" r="1.5" fill="#0284c7"></circle>
-                  <circle cx="15" cy="11" r="1.5" fill="#0284c7"></circle>
-                  <path d="M10 16h4"></path>
-                </svg>
+                <img src="images/chatbot-avatar.jpg" alt="Trợ Lý Học Tập AI" class="lms-avatar-img">
               </div>
               <div>
                 <div class="lms-chatbox-header-title">
@@ -626,7 +619,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
     body.innerHTML = `
       <div class="lms-msg-row bot">
         <div class="lms-msg-avatar">
-          <span>LMS</span>
+          <img src="images/chatbot-avatar.jpg" alt="AI" class="lms-avatar-img">
         </div>
         <div class="lms-msg-bubble">
           ${initialBotContent}
@@ -915,7 +908,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
         if (body) {
           body.innerHTML = `
             <div class="lms-msg-row bot">
-              <div class="lms-msg-avatar"><span>LMS</span></div>
+              <div class="lms-msg-avatar"><img src="images/chatbot-avatar.jpg" alt="AI" class="lms-avatar-img"></div>
               <div class="lms-msg-bubble">
                 Cuộc trò chuyện đã được làm mới thành công ✨<br>
                 Bạn cần tư vấn khóa học nào hoặc muốn tìm hiểu về chức năng gì (Diễn đàn, Luyện gõ phím, Test bàn phím, Thi thử,...)? Hãy hỏi mình nhé!
@@ -1132,7 +1125,7 @@ function renderMessageElement(sender, text, isHTML, timeStr) {
     const content = isHTML ? text : formatMarkdownToHTML(text);
     row.innerHTML = `
       <div class="lms-msg-avatar">
-        <span>LMS</span>
+        <img src="images/chatbot-avatar.jpg" alt="AI" class="lms-avatar-img">
       </div>
       <div class="lms-msg-bubble">
         ${content}
@@ -1180,7 +1173,7 @@ function lmsShowTypingIndicator() {
   typingRow.id = 'lmsTypingRow';
   typingRow.innerHTML = `
     <div class="lms-msg-avatar">
-      <span>LMS</span>
+      <img src="images/chatbot-avatar.jpg" alt="AI" class="lms-avatar-img">
     </div>
     <div class="lms-msg-bubble lms-typing-bubble">
       <div class="lms-typing-dots">
