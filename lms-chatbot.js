@@ -405,6 +405,10 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
   • NẾU CÂU HỎI LIÊN QUAN ĐẾN TIN HỌC / KỸ NĂNG: Lồng ghép khéo léo 1 công cụ tương ứng (ví dụ: hỏi phím tắt -> giới thiệu trang Tra cứu phím tắt; hỏi tốc độ gõ -> giới thiệu Luyện gõ 10 ngón; hỏi hàm Excel -> giới thiệu Khóa Excel nâng cao; hỏi kiến thức thi cử -> giới thiệu trang Ôn luyện thi thử trắc nghiệm).
   • NẾU CÂU HỎI NGOÀI LỀ HOÀN TOÀN (chuyện đời, thời tiết, giải trí, tâm sự, hỏi đùa...): VẪN PHẢI TRẢ LỜI ĐẦY ĐỦ, THÔNG MINH VÀ HỮU ÍCH CÂU HỎI ĐÓ. TUYỆT ĐỐI KHÔNG ÉP BUỘC nhồi nhét web vô duyên! Tùy ngữ cảnh, chỉ cần đối đáp vui vẻ và khép lại bằng lời nhắc nhẹ nhàng.
 - PHẦN 3 (LỜI KẾT MỞ): Luôn kết thúc bằng một câu hỏi lịch sự, quan tâm xem người dùng có cần hỗ trợ gì thêm không (ví dụ: "Bạn có cần mình tư vấn thêm chi tiết gì nữa không nè?", "Nếu bạn có thắc mắc gì về khóa học hay bài tập thì cứ bảo mình nhé!").
+
+3. ĐẢM BẢO CÂU VĂN HOÀN CHỈNH:
+- Luôn hoàn thành trọn vẹn câu chữ và ý tứ, có câu mở đầu, thân bài và lời kết hoàn chỉnh.
+- Tuyệt đối không bao giờ dừng đột ngột hay để câu lửng lơ đứt quãng giữa chừng.
 `;
   }
 
@@ -921,7 +925,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
           model: 'gpt-4o-mini',
           messages: messages,
           temperature: 0.7,
-          max_tokens: 900
+          max_tokens: 2048
         })
       });
 
@@ -981,7 +985,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
       contents: conversationHistory,
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 900
+        maxOutputTokens: 2048
       }
     };
 
