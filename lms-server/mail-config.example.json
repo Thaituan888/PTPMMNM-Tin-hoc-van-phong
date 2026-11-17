@@ -1,0 +1,11 @@
+{
+  "enabled": false,
+  "smtp_host": "",
+  "smtp_port": null,
+  "smtp_encryption": "",
+  "smtp_username": "",
+  "smtp_password": "",
+  "from_email": "",
+  "from_name": "",
+  "base_url": ""
+}

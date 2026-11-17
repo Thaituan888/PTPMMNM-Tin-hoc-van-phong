@@ -1,0 +1,51 @@
+.lms-registration-page { min-height: 100vh; display: flex; flex-direction: column; background: #f8fafc; }
+#lms-registration { flex: 1; width: min(100%, 1100px); margin: 0 auto; padding: 32px 24px 56px; }
+#lms-registration [hidden] { display: none !important; }
+#lms-registration a { color: #0284c7; text-decoration: underline; text-underline-offset: 4px; }
+#lms-registration .lms-back { display: inline-block; margin-bottom: 24px; }
+#lms-registration h1 { font-size: clamp(1.7rem, 4vw, 2.3rem); margin-bottom: 12px; line-height: 1.3; }
+#lms-registration h2 { font-size: 1.2rem; margin-bottom: 20px; }
+#lms-registration .lms-lead { color: #475569; margin-bottom: 28px; }
+#lms-registration .lms-registration-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 24px; align-items: start; }
+#lms-registration .lms-box { padding: 28px; border: 1px solid #bae6fd; border-radius: 20px; background: #fff; min-width: 0; }
+#lms-registration dl { margin: 0; }
+#lms-registration dt { color: #64748b; font-size: 0.85rem; margin-top: 16px; }
+#lms-registration dt:first-child { margin-top: 0; }
+#lms-registration dd { margin: 3px 0 0; color: #075985; font-weight: 600; overflow-wrap: anywhere; }
+#lms-registration .lms-capacity, #lms-registration .lms-note { padding: 14px 16px; border-radius: 12px; background: #f0f9ff; color: #475569; font-size: 0.9rem; margin-top: 20px; }
+#lms-registration .lms-note { margin: 0 0 24px; }
+#lms-registration .lms-field { margin-bottom: 20px; }
+#lms-registration label { display: block; color: #334155; font-weight: 600; margin-bottom: 8px; }
+#lms-registration input { width: 100%; min-height: 48px; border: 1px solid #94a3b8; padding: 11px 12px; border-radius: 10px; font: inherit; color: #1e293b; background: #fff; }
+#lms-registration input[aria-invalid="true"] { border-color: #b91c1c; }
+#lms-registration .lms-field-error { color: #b91c1c; font-size: 0.85rem; margin-top: 6px; }
+#lms-registration .lms-help { color: #64748b; font-size: 0.8rem; margin-top: 6px; }
+#lms-registration .lms-action { padding: 13px 24px; border-radius: 12px; background: #0284c7; color: #fff; font: inherit; font-weight: 700; }
+#lms-registration .lms-action:hover { background: #0369a1; }
+#lms-registration .lms-action:disabled { background: #64748b; cursor: not-allowed; }
+#lms-registration #lms-api-status { margin-bottom: 16px; color: #9a3412; }
+#lms-registration #lms-saved-info { margin-bottom: 24px; }
+#lms-registration #lms-payment { border-top: 1px solid #bae6fd; padding-top: 24px; margin-top: 24px; }
+#lms-registration .lms-payment-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; margin-top: 20px; }
+#lms-registration .lms-copy-field { margin-top: 20px; }
+#lms-registration .lms-hold-timer { font-weight: 700; color: #075985; margin-top: 12px; }
+#lms-registration .lms-qr-panel { align-self: start; text-align: center; }
+#lms-registration #lms-qr-image { width: min(100%, 360px); height: auto; margin: 0 auto; background: white; }
+#lms-registration #lms-qr-error { margin-top: 16px; color: #9a3412; }
+#lms-registration #lms-evidence { border-top: 1px solid #bae6fd; margin-top: 28px; padding-top: 24px; }
+#lms-registration #lms-evidence-status, #lms-registration #lms-evidence-config { margin: 12px 0; color: #9a3412; overflow-wrap: anywhere; }
+#lms-registration #lms-evidence-preview { max-width: 100%; width: auto; max-height: 320px; object-fit: contain; margin-top: 16px; border-radius: 12px; }
+#lms-registration .lms-evidence-history { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; margin-top: 16px; }
+#lms-registration .lms-evidence-item { background: #f0f9ff; padding: 16px; border-radius: 12px; min-width: 0; }
+#lms-registration .lms-evidence-item img { width: 100%; height: 200px; object-fit: contain; background: #fff; margin: 12px 0; }
+#lms-registration #lms-evidence h3 { margin-top: 24px; }
+#lms-registration #lms-saved .lms-action, #lms-registration #lms-confirmation .lms-action { margin-top: 16px; }
+#lms-registration .lms-confirm-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; margin: 24px 0; }
+#lms-registration :focus-visible { outline: 3px solid #0284c7; outline-offset: 4px; }
+@media (max-width: 700px) {
+  #lms-registration { padding: 24px 16px 40px; }
+  #lms-registration .lms-registration-grid, #lms-registration .lms-confirm-grid, #lms-registration .lms-payment-grid { grid-template-columns: 1fr; }
+  #lms-registration .lms-box { padding: 24px 20px; }
+  #lms-registration .lms-action { width: 100%; }
+  #lms-registration .lms-evidence-history { grid-template-columns: 1fr; }
+}

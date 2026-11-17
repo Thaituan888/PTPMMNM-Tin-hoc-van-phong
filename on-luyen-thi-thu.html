@@ -36,6 +36,45 @@
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* ==========================================================================
+       THEME TOKENS: MODERN WATER BLUE & DEEP NAVY (ZERO PURPLE)
+       ========================================================================== */
+    :root {
+      /* Water Blue & Electric Blue Palette */
+      --water-primary: #0284c7;
+      --water-primary-hover: #0369a1;
+      --water-electric: #0ea5e9;
+      --water-cyan: #0ea5e9;
+      --water-cyan-light: #e0f2fe;
+      --water-ice: #f0f9ff;
+      --water-glow: rgba(2, 132, 199, 0.35);
+
+      /* Deep Navy Accents */
+      --navy-deep: #0f172a;
+      --navy-surface: #1e293b;
+      --navy-muted: #334155;
+      --navy-border: rgba(255, 255, 255, 0.2);
+
+      /* Clean Surfaces */
+      --bg-page: #f0f7ff;
+      --bg-card: #ffffff;
+      --border-card: #e2e8f0;
+      --border-card-hover: #7dd3fc;
+
+      /* Glossy Gradients */
+      --gradient-hero: linear-gradient(135deg, #0f172a 0%, #034b75 35%, #0284c7 75%, #0ea5e9 100%);
+      --gradient-water-btn: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      --gradient-water-hover: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+      --gradient-navy-btn: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      --gradient-tab-active: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+
+      /* Elevated Shadows */
+      --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+      --shadow-card-hover: 0 16px 36px -4px rgba(2, 132, 199, 0.18), 0 4px 12px -2px rgba(15, 23, 42, 0.06);
+      --shadow-btn: 0 4px 14px rgba(2, 132, 199, 0.32);
+      --shadow-btn-hover: 0 8px 24px rgba(2, 132, 199, 0.45);
+    }
+
+    /* ==========================================================================
        GLOBAL PAGE RESET & THEME TOKENS
        ========================================================================== */
     body {
@@ -70,6 +109,8 @@
     /* ==========================================================================
        HEADER ROLE CYCLE BUTTON (Thay thế tạm nút Đăng nhập để test 3 giao diện)
        ========================================================================== */
+    
+    /* Role Switcher Bar & Chips */
     .role-switcher-bar {
       display: flex;
       align-items: center;
@@ -77,12 +118,36 @@
       flex-wrap: wrap;
       gap: 12px;
       background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 16px;
       padding: 10px 18px;
       margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
     }
+    .btn-role-chip {
+      background: #f8fafc;
+      color: #334155;
+      border: 1.5px solid #e2e8f0;
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-role-chip:hover {
+      background: #f0f9ff;
+      color: #0284c7;
+      border-color: #bae6fd;
+      transform: translateY(-1px);
+    }
+    .btn-role-chip.active {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.32);
+    }
+
 
     .btn-role-cycle-header {
       display: inline-flex;
@@ -324,8 +389,8 @@
       background: #ffffff;
       padding: 6px 8px;
       border-radius: 18px;
-      box-shadow: 0 8px 24px rgba(3, 105, 161, 0.24);
-      border: 1px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+      border: 1px solid rgba(226, 232, 240, 0.95);
       min-width: 0;
     }
 
@@ -420,11 +485,11 @@
        HERO BANNER
        ========================================================================== */
     .exam-hero {
-      background: linear-gradient(135deg, #0284c7 0%, #0369a1 60%, #075985 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #034b75 35%, #0284c7 75%, #0ea5e9 100%);
       border-radius: 26px;
       padding: clamp(20px, 2.5vw, 28px);
       color: #ffffff;
-      box-shadow: 0 16px 36px rgba(2, 132, 199, 0.22);
+      box-shadow: 0 18px 42px rgba(2, 132, 199, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.2);
       margin-bottom: 26px;
       display: flex;
       flex-wrap: nowrap;
@@ -433,6 +498,7 @@
       justify-content: space-between;
       position: relative;
       overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
     @media (max-width: 980px) {
@@ -628,6 +694,25 @@
       flex-shrink: 0;
     }
 
+    .ep-avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ep-avatar-inner img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .ep-avatar-inner svg,
     .ep-avatar-box svg {
       width: 25px;
       height: 25px;
@@ -642,6 +727,7 @@
       background: #22c55e;
       border: 2px solid #ffffff;
       border-radius: 50%;
+      z-index: 2;
     }
 
     .ep-title {
@@ -717,8 +803,8 @@
       background: #ffffff;
       border-radius: 20px;
       padding: 18px 22px;
-      box-shadow: 0 4px 18px rgba(2, 132, 199, 0.06);
-      border: 1px solid #e0f2fe;
+      box-shadow: 0 6px 24px rgba(2, 132, 199, 0.08);
+      border: 1.5px solid #e0f2fe;
       margin-bottom: 26px;
     }
 
@@ -786,10 +872,10 @@
     }
 
     .ef-pill-btn.active {
-      background: #2563eb;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
       color: #ffffff;
-      border-color: #2563eb;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
     }
 
     .ef-pills-right {
@@ -829,10 +915,10 @@
     }
 
     .ef-filter-chip.active {
-      background: #2563eb;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
       color: #ffffff;
-      border-color: #2563eb;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.32);
     }
 
     /* ==========================================================================
@@ -848,8 +934,8 @@
       background: #ffffff;
       border-radius: 20px;
       overflow: hidden;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+      border: 1.5px solid #e2e8f0;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
       display: flex;
       flex-direction: column;
       transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
@@ -858,8 +944,8 @@
 
     .exam-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 14px 28px rgba(2, 132, 199, 0.12);
-      border-color: #bae6fd;
+      box-shadow: 0 16px 36px -4px rgba(2, 132, 199, 0.18), 0 4px 12px -2px rgba(15, 23, 42, 0.06);
+      border-color: #7dd3fc;
     }
 
     /* Card Top Banner */
@@ -878,7 +964,7 @@
     }
 
     .ec-top-banner.theme-indigo {
-      background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #0f172a 100%);
     }
 
     .ec-top-banner.theme-emerald {
@@ -890,11 +976,11 @@
     }
 
     .ec-top-banner.theme-purple {
-      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
     }
 
     .ec-top-banner.theme-indigo {
-      background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #0f172a 100%);
     }
 
     .ec-top-banner.theme-emerald {
@@ -906,7 +992,7 @@
     }
 
     .ec-top-banner.theme-purple {
-      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
     }
 
     .ec-badges-row {
@@ -1035,9 +1121,9 @@
 
     .btn-ec-practice {
       flex: 1;
-      background: #f0fdfa;
-      color: #0d9488;
-      border: 1.5px solid #99f6e4;
+      background: #f0f9ff;
+      color: #0284c7;
+      border: 1.5px solid #bae6fd;
       padding: 10px 14px;
       border-radius: 12px;
       font-size: 0.85rem;
@@ -1047,22 +1133,22 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      transition: all 0.2s;
-      box-shadow: 0 2px 6px rgba(13, 148, 136, 0.08);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.1);
     }
-
     .btn-ec-practice:hover {
-      background: #0d9488;
+      background: #0284c7;
       color: #ffffff;
-      border-color: #0d9488;
-      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+      border-color: #0284c7;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.32);
+      transform: translateY(-1px);
     }
 
     .btn-ec-exam {
       flex: 1;
-      background: #0284c7;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
       color: #ffffff;
-      border: 1.5px solid #0284c7;
+      border: 1.5px solid transparent;
       padding: 10px 14px;
       border-radius: 12px;
       font-size: 0.85rem;
@@ -1072,22 +1158,20 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      transition: all 0.2s;
-      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.32);
     }
-
     .btn-ec-exam:hover {
-      background: #0369a1;
-      border-color: #0369a1;
+      background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.45);
     }
 
     .btn-ec-pin {
       width: 100%;
-      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
       color: #ffffff;
-      border: none;
+      border: 1px solid rgba(255, 255, 255, 0.18);
       padding: 11px 16px;
       border-radius: 12px;
       font-size: 0.86rem;
@@ -1097,12 +1181,13 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: all 0.2s;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.25);
     }
-
     .btn-ec-pin:hover {
-      opacity: 0.95;
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
       transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35);
     }
 
     .btn-ec-reset {
@@ -1255,9 +1340,9 @@
     }
 
     .lab-subject-pill.word {
-      background: #eff6ff;
-      color: #1d4ed8;
-      border: 1px solid #bfdbfe;
+      background: #e0f2fe;
+      color: #0284c7;
+      border: 1px solid #bae6fd;
     }
 
     .lab-subject-pill.excel {
@@ -1414,7 +1499,7 @@
        ========================================================================== */
     .teacher-control-toolbar {
       background: #ffffff;
-      border: 1px solid #bfdbfe;
+      border: 1px solid #bae6fd;
       border-left: 5px solid #0284c7;
       border-radius: 16px;
       padding: 14px 20px;
@@ -1435,7 +1520,7 @@
     }
 
     .tct-badge {
-      background: #eff6ff;
+      background: #f0f9ff;
       color: #0369a1;
       font-size: 0.72rem;
       font-weight: 800;
@@ -1447,7 +1532,7 @@
     .tct-title {
       font-size: 0.95rem;
       font-weight: 800;
-      color: #1e1b4b;
+      color: #0f172a;
     }
 
     .tct-right {
@@ -1458,7 +1543,7 @@
     }
 
     .btn-tct-primary {
-      background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
       color: #ffffff;
       border: none;
       padding: 9px 18px;
@@ -1501,12 +1586,12 @@
 
     /* Nút quản lý trên thẻ đề thi dành cho Giáo viên */
     .btn-ec-manage-edit {
-      background: #eff6ff;
-      color: #0369a1;
-      border: 1px solid #bae6fd;
-      padding: 9px 12px;
-      border-radius: 10px;
-      font-size: 0.8rem;
+      background: #f0f9ff;
+      color: #0284c7;
+      border: 1.5px solid #bae6fd;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.82rem;
       font-weight: 800;
       cursor: pointer;
       display: inline-flex;
@@ -1514,34 +1599,33 @@
       justify-content: center;
       text-align: center;
       gap: 6px;
-      transition: all 0.2s;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
     .btn-ec-manage-edit:hover {
       background: #0284c7;
       color: #ffffff;
       border-color: #0284c7;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
     }
-
     .btn-ec-manage-del {
       background: #fef2f2;
       color: #dc2626;
-      border: 1px solid #fecaca;
-      padding: 9px 12px;
-      border-radius: 10px;
-      font-size: 0.8rem;
+      border: 1.5px solid #fecaca;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.82rem;
       font-weight: 800;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      transition: all 0.2s;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
     .btn-ec-manage-del:hover {
       background: #dc2626;
       color: #ffffff;
       border-color: #dc2626;
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
     }
 
     /* Nút hành động trên Banner Trang Cá Nhân */
@@ -1605,20 +1689,20 @@
 
     .manage-item-card {
       background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 18px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+      border: 1.5px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 14px;
-      transition: transform 0.2s;
+      transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
     .manage-item-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+      transform: translateY(-3px);
+      border-color: #7dd3fc;
+      box-shadow: 0 12px 28px rgba(2, 132, 199, 0.14);
     }
 
     .mic-header {
@@ -1683,24 +1767,26 @@
        ========================================================================== */
     .profile-card-container {
       background: #ffffff;
-      border-radius: 24px;
+      border-radius: 26px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.1);
-      border: 1px solid #e2e8f0;
+      box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08);
+      border: 1.5px solid #e0f2fe;
       margin-bottom: 26px;
     }
 
     .profile-cover-banner {
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #034b75 35%, #0284c7 75%, #0ea5e9 100%);
       position: relative;
       display: flex;
       flex-direction: column;
       gap: 16px;
-      padding: 22px 28px 26px;
+      padding: 24px 30px 28px;
       box-sizing: border-box;
       border-radius: 24px;
       color: #ffffff;
       overflow: hidden;
+      box-shadow: 0 18px 42px rgba(2, 132, 199, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
     }
 
     /* Hiệu ứng chìm nhẹ nhàng */
@@ -1722,10 +1808,10 @@
     }
 
     .btn-profile-back {
-      background: rgba(255, 255, 255, 0.22);
-      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.18);
+      border: 1.5px solid rgba(255, 255, 255, 0.32);
       color: #ffffff;
-      padding: 6px 16px;
+      padding: 7px 18px;
       border-radius: 999px;
       font-size: 0.82rem;
       font-weight: 700;
@@ -1734,22 +1820,26 @@
       align-items: center;
       gap: 6px;
       backdrop-filter: blur(8px);
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
     .btn-profile-back:hover {
-      background: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.3);
       transform: translateY(-1px);
     }
 
     .profile-cover-community-tag {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #e0f2fe;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 800;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.82rem;
-      font-weight: 800;
-      color: rgba(255, 255, 255, 0.95);
-      letter-spacing: 0.04em;
+      gap: 6px;
+      backdrop-filter: blur(8px);
+      letter-spacing: 0.03em;
     }
 
     .profile-cover-community-tag svg {
@@ -1787,8 +1877,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #2563eb;
+      color: #0284c7;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+      overflow: hidden;
+    }
+
+    .profile-avatar-circle img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
     }
 
     .profile-avatar-circle svg {
@@ -1985,15 +2084,17 @@
     .profile-sub-tabs {
       display: flex;
       gap: 10px;
-      margin-bottom: 22px;
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 12px;
+      margin-bottom: 24px;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 6px 10px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
     }
-
     .profile-sub-tab {
       background: transparent;
       border: none;
-      padding: 10px 18px;
+      padding: 10px 20px;
       font-size: 0.92rem;
       font-weight: 800;
       color: #64748b;
@@ -2001,18 +2102,17 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      border-radius: 10px;
-      transition: all 0.2s;
+      border-radius: 12px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
     .profile-sub-tab:hover {
       color: #0284c7;
       background: #f0f9ff;
     }
-
     .profile-sub-tab.active {
-      color: #0284c7;
-      background: #f0f9ff;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
     }
 
     /* ==========================================================================
@@ -2020,9 +2120,9 @@
        ========================================================================== */
     .teacher-workspace-card {
       background: #ffffff;
-      border-radius: 20px;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      border-radius: 22px;
+      border: 1.5px solid #e0f2fe;
+      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
       margin-bottom: 30px;
       overflow: hidden;
     }
@@ -2031,15 +2131,14 @@
       display: flex;
       background: #f8fafc;
       border-bottom: 1.5px solid #e2e8f0;
-      padding: 6px 14px 0;
+      padding: 6px 16px 0;
       gap: 8px;
     }
-
     .tw-tab-btn {
       background: transparent;
       border: none;
       border-bottom: 3px solid transparent;
-      padding: 12px 20px;
+      padding: 13px 22px;
       font-size: 0.94rem;
       font-weight: 800;
       color: #64748b;
@@ -2047,20 +2146,18 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      border-radius: 10px 10px 0 0;
-      transition: all 0.2s;
+      border-radius: 12px 12px 0 0;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
     .tw-tab-btn:hover {
       color: #0284c7;
-      background: rgba(2, 132, 199, 0.05);
+      background: #f0f9ff;
     }
-
     .tw-tab-btn.active {
       color: #0284c7;
       background: #ffffff;
       border-bottom-color: #0284c7;
-      box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.02);
+      box-shadow: 0 -2px 8px rgba(2, 132, 199, 0.08);
     }
 
     .tw-toolbar-row {
@@ -2137,66 +2234,64 @@
     }
 
     .btn-tw-create-exam {
-      background: #059669;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
       color: #ffffff;
       border: none;
-      border-radius: 10px;
-      padding: 9px 16px;
-      font-size: 0.82rem;
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-size: 0.84rem;
       font-weight: 800;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s;
-      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.32);
     }
-
     .btn-tw-create-exam:hover {
-      background: #047857;
+      background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
       transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.42);
     }
-
     .btn-tw-create-pin-exam {
-      background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
       color: #ffffff;
-      border: none;
-      border-radius: 10px;
-      padding: 9px 16px;
-      font-size: 0.82rem;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-size: 0.84rem;
       font-weight: 800;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.25);
     }
-
     .btn-tw-create-pin-exam:hover {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
       transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35);
     }
-
     .btn-tw-create-lab {
-      background: #059669;
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
       color: #ffffff;
       border: none;
-      border-radius: 10px;
-      padding: 9px 16px;
-      font-size: 0.82rem;
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-size: 0.84rem;
       font-weight: 800;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s;
-      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
     }
-
     .btn-tw-create-lab:hover {
-      background: #047857;
+      background: linear-gradient(135deg, #047857 0%, #065f46 100%);
       transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(5, 150, 105, 0.4);
     }
 
     .tw-content-area {
@@ -2476,13 +2571,13 @@
 
     #modalExamSetup .msh-badge {
       color: #0284c7;
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
     }
 
     /* 3 nút phạm vi ôn luyện đa dạng màu sắc theo ngữ nghĩa */
     .btn-setup-chip.chip-scope-all {
-      border: 1.5px solid #bfdbfe;
+      border: 1.5px solid #bae6fd;
       background: #f0f9ff;
       color: #0369a1;
     }
@@ -2867,21 +2962,59 @@
     /* ==========================================================================
        FULL-SCREEN TAKING EXAM & PRACTICE ROOM
        ========================================================================== */
+    body.in-fullscreen-room,
+    html.in-fullscreen-room {
+      overflow: hidden !important;
+      height: 100% !important;
+      max-height: 100vh !important;
+    }
+
     .fullscreen-taking-room {
       display: none;
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100vh;
       background: #f1f5f9;
       z-index: 99999;
       flex-direction: column;
       overflow-y: auto;
+      overflow-x: hidden;
+      box-sizing: border-box;
     }
 
     .fullscreen-taking-room.active {
+      display: flex !important;
+    }
+
+    .btn-result-finish {
+      width: 100%;
+      height: 48px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
       display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.35);
+      transition: all 0.2s ease;
+      letter-spacing: 0.03em;
+    }
+    .btn-result-finish:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.45);
+      background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+    }
+    .btn-result-finish:active {
+      transform: translateY(0);
     }
 
     .ptr-top-bar {
@@ -3083,9 +3216,9 @@
     }
 
     .ptr-option-item.selected {
-      border-color: #0d9488;
-      background: #f0fdfa;
-      color: #0f766e;
+      border-color: #0284c7;
+      background: #f0f9ff;
+      color: #0369a1;
       font-weight: 700;
     }
 
@@ -3117,7 +3250,7 @@
     }
 
     .ptr-option-item.selected .ptr-opt-letter {
-      background: #0d9488;
+      background: #0284c7;
       color: #ffffff;
     }
 
@@ -3285,9 +3418,9 @@
       gap: 4px;
     }
     .lab-scope-badge.all {
-      background: #eff6ff;
-      color: #1d4ed8;
-      border: 1px solid #bfdbfe;
+      background: #f0f9ff;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
     }
     .lab-scope-badge.student {
       background: #f0fdf4;
@@ -3427,8 +3560,8 @@
       border-color: #bbf7d0;
     }
     .lab-submission-status-card.graded {
-      background: #eff6ff;
-      border-color: #bfdbfe;
+      background: #f0f9ff;
+      border-color: #bae6fd;
     }
     .lssc-header {
       display: flex;
@@ -3440,7 +3573,7 @@
     }
     .lssc-feedback {
       font-size: 0.8rem;
-      color: #1e3a8a;
+      color: #0f172a;
       background: #dbeafe;
       padding: 8px 10px;
       border-radius: 8px;
@@ -3519,7 +3652,7 @@
       transition: all 0.2s;
     }
     .gnomio-navtab.active {
-      background: #eff6ff;
+      background: #f0f9ff;
       color: #0284c7;
       font-weight: 800;
     }
@@ -3527,10 +3660,12 @@
       background: #f8fafc;
       color: #0f172a;
     }
-    .gnomio-layout-grid {
-      display: flex;
-      gap: 24px;
-      align-items: flex-start;
+    .gnomio-layout-grid,
+    .gnomio-main-layout {
+      display: flex !important;
+      gap: 24px !important;
+      align-items: flex-start !important;
+      flex-direction: row !important;
     }
     .gnomio-content-col {
       flex: 1;
@@ -3601,8 +3736,8 @@
       font-weight: 800;
     }
     .btn-gnomio-edit-q {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
       color: #0369a1;
       padding: 5px 10px;
       border-radius: 8px;
@@ -3616,7 +3751,7 @@
       transition: all 0.2s;
     }
     .btn-gnomio-edit-q:hover {
-      background: #7e22ce;
+      background: #0284c7;
       color: #ffffff;
     }
     .gnomio-qbody-box {
@@ -4459,8 +4594,8 @@
         <div class="logo-icon-box" aria-hidden="true">
           <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
             <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
-            <circle cx="13" cy="15.5" r="1.8" fill="#4f46e5" />
-            <circle cx="23" cy="15.5" r="1.8" fill="#4f46e5" />
+            <circle cx="13" cy="15.5" r="1.8" fill="#0284c7" />
+            <circle cx="23" cy="15.5" r="1.8" fill="#0284c7" />
             <path d="M15.5 19.5c1.2 1.2 3.8 1.2 5 0" stroke="#ec4899" stroke-width="2" stroke-linecap="round" />
             <path d="M12 7V4.5M24 7V4.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
             <path d="M11 29.5h14" stroke="#93c5fd" stroke-width="2.4" stroke-linecap="round" />
@@ -4495,7 +4630,7 @@
         </a>
 
         <!-- 3. ÔN LUYỆN & THI THỬ -->
-        <a href="on-luyen-thi-thu.html" style="color: var(--water-primary); font-weight: 800;">
+        <a href="on-luyen-thi-thu.html" class="nav-item-active-water" style="color: #0284c7; font-weight: 800; background: #e0f2fe; padding: 6px 14px; border-radius: 10px; border: 1px solid #bae6fd;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
@@ -4509,7 +4644,8 @@
         <a href="dien-dan.html">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
             stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z" />
+            <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" />
           </svg>
           <span>DIỄN ĐÀN</span>
         </a>
@@ -4545,23 +4681,7 @@
               </div>
             </a>
 
-            <!-- Mini Game gõ phím -->
-            <a href="mini-game-go-phim.html" class="nav-sub-item">
-              <div class="nsi-icon-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="2" y="6" width="20" height="12" rx="6" fill="#e0f2fe" fill-opacity="0.6" />
-                  <line x1="6" y1="12" x2="10" y2="12"></line>
-                  <line x1="8" y1="10" x2="8" y2="14"></line>
-                  <circle cx="15" cy="13" r="1" fill="#0284c7"></circle>
-                  <circle cx="18" cy="11" r="1" fill="#0284c7"></circle>
-                </svg>
-              </div>
-              <div class="nsi-info">
-                <strong>Đấu trường Mini Game</strong>
-                <small>Bong bóng từ rơi, bắn thiên thạch, đua tốc độ</small>
-              </div>
-            </a>
+
 
             <!-- 2. Tra cứu Phím tắt -->
             <a href="tra-cuu-phim-tat.html" class="nav-sub-item">
@@ -4635,28 +4755,7 @@
        ======================================================================== -->
   <main class="subpage-container" id="mainContainer">
 
-    <!-- ROLE SWITCHER BAR (Cho phép người dùng kiểm tra giao diện phân quyền ngay lập tức) -->
-    <div class="role-switcher-bar">
-      <div class="rs-label">
-        <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2.2">
-          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
-        </svg>
-        <span>GIAO DIỆN THEO PHÂN QUYỀN HIỆN TẠI:</span>
-      </div>
-      <div class="rs-buttons-group">
-        <button type="button" class="btn-role-chip active" id="btnRoleGuest" onclick="setSimulatedRole('guest')">
-          Khách Vãng Lai (Chưa đăng nhập)
-        </button>
-        <button type="button" class="btn-role-chip" id="btnRoleStudent" onclick="setSimulatedRole('student')">
-          Học Viên (hocvien01)
-        </button>
-        <button type="button" class="btn-role-chip" id="btnRoleTeacher" onclick="setSimulatedRole('teacher')">
-          Giáo Viên / Giảng Viên (Giangvien)
-        </button>
-      </div>
-    </div>
+
 
     <!-- 1. HERO BANNER CHUNG (Tích hợp thanh chuyển đổi Trắc Nghiệm Online & Bài Tập Thực Hành kế bên Khám phá đề thi) -->
     <section class="exam-hero" id="examHero">
@@ -4730,12 +4829,14 @@
 
       <!-- Right Profile Card Widget (Dynamic) -->
       <div class="eh-profile-card" id="ehProfileCard">
-        <div class="ep-avatar-box">
-          <svg class="icon-svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#0284c7"
-            stroke-width="2.2">
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
+        <div class="ep-avatar-box" id="heroProfileAvatarBox">
+          <div class="ep-avatar-inner" id="heroProfileAvatarInner">
+            <svg class="icon-svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#0284c7"
+              stroke-width="2.2">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </div>
           <span class="ep-status-dot" id="profileStatusDot" style="display: none;"></span>
         </div>
         <div class="ep-title" id="profileName">Chưa đăng nhập</div>
@@ -4880,7 +4981,7 @@
                 <!-- Avatar tròn có chấm check xanh -->
                 <div class="profile-avatar-wrapper">
                   <div class="profile-avatar-circle" id="profileAvatarCircle">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
                       <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
                       <circle cx="12" cy="7" r="4" />
                     </svg>
@@ -4994,6 +5095,8 @@
                   TẠO BÀI THỰC HÀNH MỚI
                 </button>
               </div>
+
+
             </div>
           </div>
 
@@ -5021,6 +5124,7 @@
             <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
             Bài thực hành đã làm (<span id="studentLabsCount">0</span>)
           </button>
+
         </div>
 
         <!-- CÁC KHUNG CHỨA NỘI DUNG DÀNH CHO HỌC VIÊN -->
@@ -5134,8 +5238,8 @@
           <span>SỐ LƯỢNG CÂU HỎI ÔN LUYỆN:</span>
         </div>
         <div class="setup-chips-row" style="display: flex; gap: 8px; flex-wrap: nowrap; justify-content: space-between;">
-          <button type="button" class="btn-setup-chip" onclick="selectPracticeQCount(10, this)" style="flex: 1; padding: 9px 0; justify-content: center;">10 câu</button>
-          <button type="button" class="btn-setup-chip active" onclick="selectPracticeQCount(20, this)" style="flex: 1; padding: 9px 0; justify-content: center;">20 câu</button>
+          <button type="button" class="btn-setup-chip active" onclick="selectPracticeQCount(10, this)" style="flex: 1; padding: 9px 0; justify-content: center;">10 câu</button>
+          <button type="button" class="btn-setup-chip" onclick="selectPracticeQCount(20, this)" style="flex: 1; padding: 9px 0; justify-content: center;">20 câu</button>
           <button type="button" class="btn-setup-chip" onclick="selectPracticeQCount(30, this)" style="flex: 1; padding: 9px 0; justify-content: center;">30 câu</button>
           <button type="button" class="btn-setup-chip" onclick="selectPracticeQCount(40, this)" style="flex: 1; padding: 9px 0; justify-content: center;">40 câu</button>
           <button type="button" class="btn-setup-chip" onclick="selectPracticeQCount(50, this)" style="flex: 1; padding: 9px 0; justify-content: center;">50 câu</button>
@@ -5144,7 +5248,7 @@
 
         <div class="setup-custom-row">
           <span style="font-size: 0.88rem; font-weight: 700; color: #475569;">Tự nhập số câu:</span>
-          <input type="number" class="setup-custom-input" id="inputPracticeCustomQ" value="20" min="1"
+          <input type="number" class="setup-custom-input" id="inputPracticeCustomQ" value="10" min="1"
             oninput="handlePracticeCustomInput(this.value)" />
           <span style="font-size: 0.86rem; color: #64748b;" id="lblPracticeMaxQText">câu (tối đa 191 câu)</span>
         </div>
@@ -5200,8 +5304,8 @@
           <span>1. THỜI GIAN LÀM BÀI THI (PHÚT):</span>
         </div>
         <div class="setup-chips-row" style="display: flex; gap: 8px; flex-wrap: nowrap; justify-content: space-between;">
-          <button type="button" class="btn-setup-chip" onclick="selectExamMinutes(15, this)" style="flex: 1; padding: 9px 0; justify-content: center;">15 phút</button>
-          <button type="button" class="btn-setup-chip active" onclick="selectExamMinutes(30, this)" style="flex: 1; padding: 9px 0; justify-content: center;">30 phút</button>
+          <button type="button" class="btn-setup-chip active" onclick="selectExamMinutes(15, this)" style="flex: 1; padding: 9px 0; justify-content: center;">15 phút</button>
+          <button type="button" class="btn-setup-chip" onclick="selectExamMinutes(30, this)" style="flex: 1; padding: 9px 0; justify-content: center;">30 phút</button>
           <button type="button" class="btn-setup-chip" onclick="selectExamMinutes(45, this)" style="flex: 1; padding: 9px 0; justify-content: center;">45 phút</button>
           <button type="button" class="btn-setup-chip" onclick="selectExamMinutes(60, this)" style="flex: 1; padding: 9px 0; justify-content: center;">60 phút</button>
           <button type="button" class="btn-setup-chip" onclick="selectExamMinutes(90, this)" style="flex: 1; padding: 9px 0; justify-content: center;">90 phút</button>
@@ -5209,7 +5313,7 @@
 
         <div class="setup-custom-row">
           <span style="font-size: 0.88rem; font-weight: 700; color: #475569;">Tự nhập thời gian:</span>
-          <input type="number" class="setup-custom-input" id="inputExamCustomMinutes" value="30" min="5" max="180"
+          <input type="number" class="setup-custom-input" id="inputExamCustomMinutes" value="15" min="5" max="180"
             oninput="handleExamCustomMinutes(this.value)" />
           <span style="font-size: 0.86rem; color: #64748b;">phút (tối đa 180 phút)</span>
         </div>
@@ -5221,8 +5325,8 @@
           <span>2. SỐ LƯỢNG CÂU HỎI ĐỀ THI:</span>
         </div>
         <div class="setup-chips-row" style="display: flex; gap: 8px; flex-wrap: nowrap; justify-content: space-between;">
-          <button type="button" class="btn-setup-chip dark" onclick="selectExamQCount(10, this)" style="flex: 1; padding: 9px 0; justify-content: center;">10 câu</button>
-          <button type="button" class="btn-setup-chip dark active" onclick="selectExamQCount(20, this)" style="flex: 1; padding: 9px 0; justify-content: center;">20 câu</button>
+          <button type="button" class="btn-setup-chip dark active" onclick="selectExamQCount(10, this)" style="flex: 1; padding: 9px 0; justify-content: center;">10 câu</button>
+          <button type="button" class="btn-setup-chip dark" onclick="selectExamQCount(20, this)" style="flex: 1; padding: 9px 0; justify-content: center;">20 câu</button>
           <button type="button" class="btn-setup-chip dark" onclick="selectExamQCount(30, this)" style="flex: 1; padding: 9px 0; justify-content: center;">30 câu</button>
           <button type="button" class="btn-setup-chip dark" onclick="selectExamQCount(40, this)" style="flex: 1; padding: 9px 0; justify-content: center;">40 câu</button>
           <button type="button" class="btn-setup-chip dark" onclick="selectExamQCount(50, this)" style="flex: 1; padding: 9px 0; justify-content: center;">50 câu</button>
@@ -5231,7 +5335,7 @@
 
         <div class="setup-custom-row">
           <span style="font-size: 0.88rem; font-weight: 700; color: #475569;">Tự nhập số câu:</span>
-          <input type="number" class="setup-custom-input" id="inputExamCustomQ" value="20" min="5"
+          <input type="number" class="setup-custom-input" id="inputExamCustomQ" value="10" min="5"
             oninput="handleExamCustomQ(this.value)" />
           <span style="font-size: 0.86rem; color: #64748b;" id="lblExamMaxQText">câu (tối đa 191 câu)</span>
         </div>
@@ -5261,7 +5365,7 @@
 
       <!-- Header Icon & Badge (Ảnh 3) -->
       <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 14px;">
-        <div style="width: 52px; height: 52px; border-radius: 14px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15);">
+        <div style="width: 52px; height: 52px; border-radius: 14px; background: #f0f9ff; color: #0284c7; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15);">
           <svg class="icon-svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34c-1.21-.69-2-2-2-3.66V4h16v7c0 1.66-.79 2.97-2 3.66V17c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2.34c-.8.46-1.74.66-2.5.66s-1.7-.2-2.5-.66z"/></svg>
         </div>
         <span style="display: inline-block; background: #e0f2fe; color: #0284c7; font-size: 0.8rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.03em;">CỔNG THI THỬ TRỰC TUYẾN</span>
@@ -5286,7 +5390,7 @@
         </div>
       </div>
 
-      <button type="button" class="btn-start-action" id="btnConfirmPin" style="width: 100%; height: 46px; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: #ffffff; border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);">XÁC NHẬN VÀO THI</button>
+      <button type="button" class="btn-start-action" id="btnConfirmPin" style="width: 100%; height: 46px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);">XÁC NHẬN VÀO THI</button>
     </div>
   </div>
 
@@ -5315,10 +5419,10 @@
           </div>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <button type="button" class="btn-export-excel" onclick="exportLabGradebookToCsv()" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; background: #10b981; color: #ffffff; border: none; border-radius: 10px; font-weight: 700; font-size: 0.88rem; cursor: pointer; box-shadow: 0 2px 6px rgba(16,185,129,0.25);">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="btn-export-excel" onclick="exportLabGradebookToExcel()" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; background: #10b981; color: #ffffff; border: none; border-radius: 10px; font-weight: 700; font-size: 0.88rem; cursor: pointer; box-shadow: 0 2px 6px rgba(16,185,129,0.25);" title="Xuất bảng điểm dạng bảng tính Microsoft Excel (.xlsx) chuẩn OpenXML">
             <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            XUẤT BẢNG ĐIỂM (.CSV)
+            XUẤT BẢNG ĐIỂM (.XLSX)
           </button>
         </div>
       </div>
@@ -5404,7 +5508,7 @@
             <polyline points="7 10 12 15 17 10" />
             <line x1="12" y1="15" x2="12" y2="3" />
           </svg>
-          XUẤT BẢNG ĐIỂM EXCEL (.CSV)
+          XUẤT BẢNG ĐIỂM (.XLSX)
         </button>
       </div>
 
@@ -5447,7 +5551,7 @@
       </button>
 
       <div style="font-size: 1.25rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9;">
-        <div style="width: 36px; height: 36px; border-radius: 10px; background: #e0e7ff; color: #4338ca; display: flex; align-items: center; justify-content: center;">
+        <div style="width: 36px; height: 36px; border-radius: 10px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center;">
           <svg class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10M6 14h6"/></svg>
         </div>
         <div>
@@ -5571,11 +5675,13 @@
             <div class="form-group-block">
               <label class="form-label-title">DẠNG TÀI LIỆU <span class="req-star" id="starCfgDocType" style="color: #ef4444; font-weight: 800; margin-left: 2px;">*</span></label>
               <select class="form-control-select" id="cfgDocTypeSelect">
-                <option value="baitap">Ôn tập theo bài</option>
+                <option value="baitap" selected>Ôn tập theo bài</option>
                 <option value="chuong">Ôn tập theo chương</option>
                 <option value="giuaky">Đề thi thử giữa kỳ</option>
                 <option value="cuoiky">Đề thi thử cuối kỳ</option>
                 <option value="tonghop">Đề thi thử tổng hợp</option>
+                <option value="thithu">Đề thi thử</option>
+                <option value="khac">Dạng tài liệu khác</option>
               </select>
             </div>
 
@@ -5632,7 +5738,7 @@
           <button type="button" class="btn-cancel-modal" id="btnCancelExamConfig" style="flex: 0 0 auto; height: 44px; padding: 0 24px; border-radius: 12px; font-weight: 700; border: 1.5px solid #cbd5e1; background: #f8fafc; color: #475569; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;">
             ĐÓNG
           </button>
-          <button type="submit" class="btn-submit-modal" id="btnSaveExamConfig" style="flex: 0 0 auto; height: 44px; padding: 0 28px; border-radius: 12px; font-weight: 800; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25); cursor: pointer;">
+          <button type="button" class="btn-submit-modal" id="btnSaveExamConfig" onclick="saveStudioMetadataConfig()" style="flex: 0 0 auto; height: 44px; padding: 0 28px; border-radius: 12px; font-weight: 800; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25); cursor: pointer;">
             <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
             <span>LƯU THIẾT LẬP</span>
           </button>
@@ -5943,7 +6049,7 @@
             <div class="lab-drop-sub">Nhận file Word, Excel, PPT, PDF, ZIP, RAR, 7Z, Hình ảnh</div>
             <input type="file" id="actualLabFileInput" accept=".docx,.doc,.xlsx,.xls,.pptx,.ppt,.pdf,.zip,.rar,.7z,.png,.jpg,.jpeg" style="display: none;" onchange="onActualLabFileChosen(this)" />
           </div>
-          <div id="chosenFileInfoBox" style="display: none; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 10px 14px; font-size: 0.82rem; color: #1e40af; font-weight: 700; margin-top: 10px;">
+          <div id="chosenFileInfoBox" style="display: none; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 10px 14px; font-size: 0.82rem; color: #075985; font-weight: 700; margin-top: 10px;">
             Đã chọn: <span id="chosenFileNameText"></span> (<span id="chosenFileSizeText"></span>)
           </div>
         </div>
@@ -5987,42 +6093,88 @@
     </div>
   </div>
 
+  <!-- MODAL: KẾT QUẢ PHẦN ÔN LUYỆN (CHO CẢ KHÁCH VÀ HỌC VIÊN) -->
+  <div class="exam-modal-overlay" id="modalPracticeResult" style="z-index: 9999999;">
+    <div class="exam-modal-box" style="max-width: 480px; width: 92%; text-align: center; padding: 34px 28px; border-radius: 22px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.22); background: #ffffff;">
+      <div style="width: 72px; height: 72px; margin: 0 auto 16px; border-radius: 50%; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(5, 150, 105, 0.2); border: 2.5px solid #a7f3d0;">
+        <svg class="icon-svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10M6 14h6"/></svg>
+      </div>
+
+      <h2 style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin-bottom: 5px; letter-spacing: -0.01em;">KẾT QUẢ PHẦN ÔN LUYỆN</h2>
+      <p style="font-size: 0.86rem; color: #64748b; margin-bottom: 18px; font-weight: 500;" id="prModalTitle">Đề ôn luyện</p>
+
+      <!-- Lưới Thống Kê Chi Tiết 2 Cột -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px;">
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 16px; text-align: left;">
+          <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Số câu đúng</div>
+          <div style="font-size: 1.25rem; font-weight: 800; color: #059669; margin-top: 4px;" id="prModalCorrectCount">0 / 0 câu</div>
+        </div>
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 16px; text-align: left;">
+          <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Tỷ lệ chính xác</div>
+          <div style="font-size: 1.25rem; font-weight: 800; color: #0284c7; margin-top: 4px;" id="prModalAccuracy">0%</div>
+        </div>
+      </div>
+
+      <!-- Ghi Chú Hướng Dẫn -->
+      <div id="prModalNotice" style="font-size: 0.83rem; color: #475569; line-height: 1.6; background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #0284c7; border-radius: 12px; padding: 12px 16px; margin-bottom: 22px; text-align: justify;">
+        Bạn đang ôn luyện với tư cách Khách.
+      </div>
+
+      <!-- 2 Nút Hành Động Theo Yêu Cầu -->
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <button type="button" id="btnPrModalLogin" onclick="handlePracticeResultLogin()"
+          style="width: 100%; height: 48px; font-size: 0.92rem; font-weight: 800; color: #ffffff; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border: none; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 16px rgba(2, 132, 199, 0.35); transition: all 0.2s ease;">
+          <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          <span>ĐĂNG NHẬP ĐỂ LƯU TIẾN TRÌNH</span>
+        </button>
+
+        <button type="button" onclick="closePracticeResultModal()"
+          style="width: 100%; height: 44px; font-size: 0.9rem; font-weight: 700; color: #475569; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease;">
+          <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <span>THOÁT</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: KẾT QUẢ BÀI THI TRẮC NGHIỆM HIỆN ĐẠI (THAY THẾ ALERT "TRANG NÀY CHO BIẾT") -->
   <div class="exam-modal-overlay" id="modalExamResult" style="z-index: 9999999;">
-    <div class="exam-modal-box" style="max-width: 480px; text-align: center; padding: 32px 26px;">
-      <div style="width: 68px; height: 68px; margin: 0 auto 16px; border-radius: 50%; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(5, 150, 105, 0.2);">
-        <svg class="icon-svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"/><path d="M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"/><path d="M18 14.66V17c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2.34"/><path d="M6 2v7a6 6 0 0 0 12 0V2Z"/></svg>
+    <div class="exam-modal-box" style="max-width: 480px; width: 92%; text-align: center; padding: 34px 28px; border-radius: 22px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.22); background: #ffffff;">
+      <div id="erModalBadge" style="width: 72px; height: 72px; margin: 0 auto 16px; border-radius: 50%; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(5, 150, 105, 0.2); border: 2.5px solid #a7f3d0;">
+        <svg class="icon-svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"/><path d="M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"/><path d="M18 14.66V17c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2.34"/><path d="M6 2v7a6 6 0 0 0 12 0V2Z"/></svg>
       </div>
 
-      <h2 style="font-size: 1.3rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;" id="erModalTitle">KẾT QUẢ BÀI THI</h2>
-      <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 18px;" id="erModalSubtitle">Đã hoàn thành và nộp bài thi thành công</p>
+      <h2 style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin-bottom: 5px; letter-spacing: -0.01em;" id="erModalTitle">KẾT QUẢ BÀI THI THỬ TRỰC TUYẾN</h2>
+      <p style="font-size: 0.86rem; color: #64748b; margin-bottom: 18px; font-weight: 500;" id="erModalSubtitle">Đã hoàn thành và nộp bài thi thành công</p>
 
       <!-- Khung Điểm Số Nổi Bật -->
-      <div style="background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%); border: 1.5px solid #bfdbfe; border-radius: 16px; padding: 18px; margin-bottom: 18px;">
-        <div style="font-size: 0.8rem; font-weight: 700; color: #0369a1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">ĐIỂM ĐÁNH GIÁ</div>
-        <div style="font-size: 2.8rem; font-weight: 900; color: #1e3a8a; line-height: 1;" id="erModalScore">10.0</div>
-        <div style="font-size: 0.85rem; color: #15803d; font-weight: 700; margin-top: 6px;" id="erModalScoreText">Xuất sắc!</div>
+      <div style="background: linear-gradient(135deg, #f0f9ff 0%, #f0fdf4 100%); border: 1.5px solid #bae6fd; border-radius: 18px; padding: 18px 16px; margin-bottom: 18px; box-shadow: 0 2px 10px rgba(2, 132, 199, 0.05);">
+        <div style="font-size: 0.8rem; font-weight: 800; color: #0369a1; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">ĐIỂM ĐÁNH GIÁ</div>
+        <div style="font-size: 3.2rem; font-weight: 900; color: #0f172a; line-height: 1;" id="erModalScore">10.0</div>
+        <div style="font-size: 0.92rem; color: #15803d; font-weight: 700; margin-top: 8px;" id="erModalScoreText">Xuất sắc!</div>
       </div>
 
-      <!-- Lưới Thống Kê Chi Tiết -->
+      <!-- Lưới Thống Kê Chi Tiết 2 Cột -->
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px;">
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: left;">
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 14px; text-align: left;">
           <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Số câu đúng</div>
-          <div style="font-size: 1.15rem; font-weight: 800; color: #059669; margin-top: 2px;" id="erModalCorrectCount">0 / 0 câu</div>
+          <div style="font-size: 1.2rem; font-weight: 800; color: #059669; margin-top: 2px;" id="erModalCorrectCount">0 / 0 câu</div>
         </div>
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: left;">
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 14px; text-align: left;">
           <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Tỷ lệ chính xác</div>
-          <div style="font-size: 1.15rem; font-weight: 800; color: #0284c7; margin-top: 2px;" id="erModalAccuracy">0%</div>
+          <div style="font-size: 1.2rem; font-weight: 800; color: #0284c7; margin-top: 2px;" id="erModalAccuracy">0%</div>
         </div>
       </div>
 
       <!-- Ghi Chú Phân Loại -->
-      <div id="erModalNotice" style="font-size: 0.82rem; color: #475569; line-height: 1.5; background: #f1f5f9; border-radius: 10px; padding: 10px 14px; margin-bottom: 22px; text-align: justify;">
-        Kết quả bài thi đã được ghi nhận.
+      <div id="erModalNotice" style="font-size: 0.82rem; color: #475569; line-height: 1.55; background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #0284c7; border-radius: 12px; padding: 12px 14px; margin-bottom: 22px; text-align: justify;">
+        Lưu ý: Chế độ thi thử hiển thị đánh giá điểm số ngay sau khi nộp bài và không lưu tiến trình. Bạn có thể xem lại và rèn luyện các câu hỏi làm sai ở mục Ôn Luyện.
       </div>
 
-      <button type="button" class="btn-primary-action" onclick="closeExamResultModal()" style="width: 100%; height: 46px; font-size: 0.92rem; border-radius: 12px; justify-content: center;">
-        HOÀN TẤT &amp; QUAY VỀ
+      <!-- Nút Hoàn tất hiện đại, nổi bật -->
+      <button type="button" class="btn-result-finish" onclick="closeExamResultModal()">
+        <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>HOÀN TẤT &amp; QUAY VỀ</span>
       </button>
     </div>
   </div>
@@ -6175,7 +6327,7 @@
               <button type="button" class="btn-cancel-modal" id="btnCancelPinExamModal" style="flex: 0 0 auto; height: 44px; padding: 0 22px; border-radius: 12px; font-weight: 700; border: 1.5px solid #cbd5e1; background: #f8fafc; color: #475569; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;">
                 HỦY BỎ
               </button>
-              <button type="submit" class="btn-submit-modal" style="flex: 0 0 auto; height: 44px; padding: 0 26px; border-radius: 12px; font-weight: 800; background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%); color: #ffffff; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25); cursor: pointer;">
+              <button type="submit" class="btn-submit-modal" style="flex: 0 0 auto; height: 44px; padding: 0 26px; border-radius: 12px; font-weight: 800; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25); cursor: pointer;">
                 <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 <span id="btnSubmitPinExamText">XÁC NHẬN PHÁT HÀNH KỲ THI</span>
               </button>
@@ -6274,12 +6426,12 @@
     <div class="ptr-top-bar">
       <div style="display: flex; align-items: center; gap: 14px;">
         <span class="ptr-qbadge" id="fsPracQBadge">Câu 1 / 10</span>
-        <div class="ptr-title-pill">
-          <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0284c7"
-            stroke-width="2.2">
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+        <div class="ptr-title-pill" style="display: inline-flex; align-items: center; gap: 8px; background: #f0f9ff; border: 1.5px solid #bae6fd; padding: 6px 14px; border-radius: 999px;">
+          <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+            <path d="M8 7h8M8 11h8M8 15h5"/>
           </svg>
-          <span id="fsPracTitle">Trắc Nghiệm Ứng Dụng CNTT</span>
+          <span id="fsPracTitle" style="font-weight: 700; color: #0369a1; font-size: 0.9rem;">Trắc Nghiệm Ứng Dụng CNTT</span>
         </div>
       </div>
 
@@ -6301,9 +6453,41 @@
       <div class="ptr-progress-fill" id="fsPracProgressFill" style="width: 10%;"></div>
     </div>
 
-    <!-- Main Card Body -->
-    <div class="ptr-main-body">
-      <div class="ptr-card">
+    <!-- Main Body Layout: 3 Cột Tận Dụng Toàn Diện Màn Hình (Trái: Mục Lục Số Câu, Giữa: Khung Câu Hỏi, Phải: Giải Thích Chi Tiết) -->
+    <div class="ptr-main-body" style="flex: 1; display: flex; align-items: flex-start; justify-content: center; gap: 24px; padding: 24px 20px; box-sizing: border-box; max-width: 1540px; margin: 0 auto; width: 100%; overflow-y: auto;">
+      
+      <!-- CỘT TRÁI: DANH SÁCH SỐ CÂU HỎI -->
+      <aside class="ptr-side-panel ptr-nav-panel" style="width: 250px; flex-shrink: 0; background: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; padding: 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.03); position: sticky; top: 0;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1.5px solid #f1f5f9;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span style="font-weight: 800; font-size: 0.88rem; color: #0f172a;">DANH SÁCH CÂU</span>
+          </div>
+          <span id="fsPracNavSummary" style="font-size: 0.78rem; font-weight: 700; color: #0284c7; background: #f0f9ff; padding: 2px 8px; border-radius: 6px;">1 / 10</span>
+        </div>
+
+        <div id="fsPracNavGrid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: calc(100vh - 280px); overflow-y: auto; padding-right: 2px;">
+          <!-- Rendered by JS -->
+        </div>
+
+        <div style="margin-top: 14px; padding-top: 10px; border-top: 1px solid #f1f5f9; display: flex; flex-direction: column; gap: 6px; font-size: 0.74rem; color: #64748b;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 10px; height: 10px; border-radius: 3px; background: #0284c7;"></span>
+            <span>Đang làm</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 10px; height: 10px; border-radius: 3px; background: #10b981;"></span>
+            <span>Trả lời đúng</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 10px; height: 10px; border-radius: 3px; background: #ef4444;"></span>
+            <span>Trả lời sai</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CỘT GIỮA: KHUNG CÂU HỎI CHÍNH -->
+      <main class="ptr-card" style="flex: 1; max-width: 780px; min-width: 0; margin-bottom: 0;">
         <div class="ptr-watermark">TIN HỌC VĂN PHÒNG</div>
 
         <div class="ptr-card-top">
@@ -6329,12 +6513,20 @@
         <div class="ptr-options-grid" id="fsPracOptionsGrid">
           <!-- Rendered by JS -->
         </div>
+      </main>
 
-        <div id="fsPracExplainBox"
-          style="display: none; margin-top: 20px; background: #f0fdf4; border-left: 4px solid #10b981; padding: 14px 18px; border-radius: 0 12px 12px 0; font-size: 0.9rem; color: #166534; line-height: 1.6;">
-          <!-- Explain rendered by JS -->
+      <!-- CỘT PHẢI: BẢNG GIẢI THÍCH CHI TIẾT & ĐÁP ÁN -->
+      <aside class="ptr-side-panel ptr-explain-panel" style="width: 330px; flex-shrink: 0; background: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; padding: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.03); position: sticky; top: 0;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1.5px solid #f1f5f9;">
+          <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span style="font-weight: 800; font-size: 0.88rem; color: #0f172a;">GIẢI THÍCH &amp; ĐÁP ÁN</span>
         </div>
-      </div>
+
+        <div id="fsPracExplainBox">
+          <!-- Rendered by JS -->
+        </div>
+      </aside>
+
     </div>
 
     <!-- Bottom Action Bar -->
@@ -6366,10 +6558,6 @@
           onclick="closeFullscreenExam()">
           ← Rời phòng thi
         </button>
-        <div class="ptr-title-pill" style="background: #eff6ff; color: #0284c7; border: 1px solid #bfdbfe;">
-          <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
-          <span id="fsExamTitle">BÀI TẬP TRẮC NGHIỆM ĐÁNH GIÁ NĂNG LỰC</span>
-        </div>
       </div>
 
       <div style="display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 1.25rem; font-weight: 800; color: #0f172a; background: #fef2f2; border: 1px solid #fecaca; padding: 6px 14px; border-radius: 10px;">
@@ -6385,16 +6573,7 @@
       </div>
     </div>
 
-    <!-- Anti-cheating banner (Chỉ hiện khi đề thi có mã PIN kích hoạt) -->
-    <div id="antiCheatingBannerBox" style="display: none; padding: 12px 24px 0; max-width: 1320px; margin: 0 auto; width: 100%; box-sizing: border-box;">
-      <div class="anti-cheating-alert-banner">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <svg class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span>CHẾ ĐỘ GIÁM SÁT CHỐNG GIAN LẬN: Bắt buộc toàn màn hình &amp; không rời khỏi tab thi.</span>
-        </div>
-        <span id="antiCheatingViolationCountText" style="background: #ffffff; color: #dc2626; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem;">Vi phạm: 0/3</span>
-      </div>
-    </div>
+
 
     <!-- Main Gnomio Wrapper -->
     <div class="gnomio-quiz-wrapper">
@@ -6475,6 +6654,112 @@
   </div>
 
   <!-- ========================================================================
+       FULL-SCREEN OFFICIAL EXAM ROOM (PHÒNG THI CHÍNH THỨC CÓ MÃ PIN - TÁCH BIỆT HOÀN TOÀN)
+       ======================================================================== -->
+  <div class="fullscreen-taking-room" id="fullscreenOfficialExamRoom">
+    <!-- Top Header Bar (Đã bỏ ảnh 2 pill tên bài, đã bỏ khung đỏ cảnh báo) -->
+    <div class="ptr-top-bar" style="background: #ffffff; border-bottom: 1.5px solid #e2e8f0; padding: 12px 24px;">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <button type="button"
+          style="background: #fef2f2; border: 1.5px solid #fecaca; font-size: 0.82rem; font-weight: 800; color: #dc2626; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 10px; transition: all 0.2s;"
+          onclick="confirmLeaveOfficialExam()">
+          ← Rời phòng thi
+        </button>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #ffffff; padding: 5px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; letter-spacing: 0.05em; display: flex; align-items: center; gap: 5px;">
+            <svg class="icon-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            KỲ THI CHÍNH THỨC
+          </span>
+          <span id="fsOfficialCandidateBadge" style="font-size: 0.88rem; font-weight: 700; color: #334155;">Thí sinh: ...</span>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 1.3rem; font-weight: 800; color: #0f172a; background: #f8fafc; border: 1.5px solid #cbd5e1; padding: 6px 18px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+        <svg class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="fsOfficialTimer">45:00</span>
+      </div>
+
+      <div>
+        <button type="button" class="btn-start-action"
+          style="padding: 10px 22px; font-size: 0.88rem; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #047857 100%); border-radius: 10px; cursor: pointer; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3); border: none; color: #ffffff;"
+          onclick="confirmSubmitOfficialExam()">
+          NỘP BÀI THI CHÍNH THỨC
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Official Exam Wrapper (KHÔNG CÓ KHUNG ĐỎ CẢNH BÁO, GIÁM SÁT NGẦM) -->
+    <div class="gnomio-quiz-wrapper">
+      <div class="gnomio-quiz-header">
+        <div class="gnomio-breadcrumb">
+          <span style="color: #64748b;">Lớp học trực tuyến</span>
+          <span>/</span>
+          <span style="color: #64748b;">HỆ THỐNG THI TRỰC TUYẾN CHÍNH THỨC</span>
+          <span>/</span>
+          <span style="color: #0f172a; font-weight: 700;" id="fsOfficialExamBreadcrumbTitle">Đề thi</span>
+          <span>/</span>
+          <span style="color: #059669; font-weight: 700;">Đang làm bài (Giám sát)</span>
+        </div>
+
+        <div class="gnomio-quiz-title-row" style="margin-top: 10px;">
+          <div class="gnomio-quiz-title">
+            <svg class="icon-svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.3"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span id="fsOfficialHeaderTitle">KỲ THI CHÍNH THỨC CÓ MÃ PIN</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gnomio-layout-grid gnomio-main-layout" style="display: flex; gap: 24px; align-items: flex-start;">
+        <!-- Cột trái: Danh sách câu hỏi -->
+        <div class="gnomio-content-col" style="flex: 1; min-width: 0;">
+          <div id="fsOfficialQuestionsContainer">
+            <!-- Questions rendered by JS -->
+          </div>
+
+          <!-- Bottom Navigation Row -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; margin-bottom: 30px;">
+            <button type="button" class="btn-ptr-prev" id="btnOfficialPrev" onclick="navOfficialPage(-1)">
+              ← Trang trước
+            </button>
+            <button type="button" class="btn-start-action" id="btnOfficialNext" style="width: auto; padding: 10px 26px; background: #0f172a;" onclick="navOfficialPage(1)">
+              Trang sau →
+            </button>
+          </div>
+        </div>
+
+        <!-- Cột phải: Bảng điều hướng câu hỏi nằm cố định bên phải ở trên -->
+        <div class="gnomio-sidebar-col" style="width: 280px; flex-shrink: 0; position: sticky; top: 20px;">
+          <div class="gnomio-nav-card" style="border: 1px solid #cbd5e1; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.04);">
+            <div class="gnomio-nav-header" style="border-bottom: 1px solid #e2e8f0; padding-bottom: 12px;">
+              <span style="font-weight: 800; color: #0f172a;">Danh sách câu hỏi</span>
+              <span id="fsOfficialProgressCountText" style="font-size: 0.82rem; font-weight: 700; color: #059669; background: #ecfdf5; padding: 2px 8px; border-radius: 6px;">0/40</span>
+            </div>
+
+            <div class="gnomio-nav-grid" id="fsOfficialNavGrid" style="margin-top: 14px;">
+              <!-- Number buttons rendered by JS -->
+            </div>
+
+            <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid #f1f5f9; display: flex; flex-direction: column; gap: 8px; font-size: 0.78rem; color: #64748b;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="width: 12px; height: 12px; border-radius: 3px; background: #10b981; display: inline-block;"></span>
+                <span>Câu đã trả lời</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="width: 12px; height: 12px; border-radius: 3px; background: #ffffff; border: 1.5px solid #cbd5e1; display: inline-block;"></span>
+                <span>Câu chưa trả lời</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="width: 12px; height: 12px; border-radius: 3px; background: #fef2f2; border: 1.5px solid #f87171; display: inline-block;"></span>
+                <span>Câu đã cắm cờ xem lại</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
        3. SITE FOOTER
        ======================================================================== -->
   <footer class="site-footer simple-footer">
@@ -6546,7 +6831,7 @@
 
       // Tự động làm sạch toàn bộ dữ liệu bài test theo yêu cầu: reset lại toàn bộ danh sách bài thi và bài thực hành
       try {
-        if (localStorage.getItem('thvp_clean_reset_v8') !== 'done') {
+        if (localStorage.getItem('thvp_clean_reset_v9') !== 'done') {
           localStorage.setItem('thvp_custom_exams', JSON.stringify([]));
           localStorage.setItem('thvp_labs', JSON.stringify([]));
           localStorage.setItem('thvp_submissions_list', JSON.stringify([]));
@@ -6558,13 +6843,13 @@
           const keysToRemove = [];
           for (let i = 0; i < localStorage.length; i++) {
             const k = localStorage.key(i);
-            if (k && (k.startsWith('thvp_completed_set_') || k.startsWith('thvp_wrong_set_') || k.startsWith('thvp_lab_submissions_'))) {
+            if (k && (k.startsWith('thvp_completed_set_') || k.startsWith('thvp_wrong_set_') || k.startsWith('thvp_lab_submissions_') || k.startsWith('thvp_active_exam_') || k.startsWith('thvp_result_'))) {
               keysToRemove.push(k);
             }
           }
           keysToRemove.forEach(k => localStorage.removeItem(k));
 
-          localStorage.setItem('thvp_clean_reset_v8', 'done');
+          localStorage.setItem('thvp_clean_reset_v9', 'done');
         }
       } catch (e) {}
 
@@ -6578,7 +6863,7 @@
         const keysToRemove = [];
         for (let i = 0; i < localStorage.length; i++) {
           const k = localStorage.key(i);
-          if (k && (k.startsWith('thvp_completed_set_') || k.startsWith('thvp_wrong_set_') || k.startsWith('thvp_lab_submissions_'))) {
+          if (k && (k.startsWith('thvp_completed_set_') || k.startsWith('thvp_wrong_set_') || k.startsWith('thvp_lab_submissions_') || k.startsWith('thvp_active_exam_') || k.startsWith('thvp_result_'))) {
             keysToRemove.push(k);
           }
         }
@@ -6618,6 +6903,11 @@
 
       // KHO BÀI TẬP THỰC HÀNH MẪU (BẮT ĐẦU TRỐNG THEO YÊU CẦU GIÁO VIÊN TỰ TẠO)
       const DEFAULT_LABS = [];
+
+            function isLabSubmissionGraded(sub) {
+        if (!sub) return false;
+        return sub.score !== null && sub.score !== undefined && sub.score !== '' && sub.score !== 'Chưa chấm';
+      }
 
       function getLabs() {
         try {
@@ -6707,19 +6997,56 @@
         }, 2400);
       }
 
+      function resolveAppAvatar(u) {
+        if (!u) return '';
+        if (window.THVP_AUTH && typeof window.THVP_AUTH.resolveUserAvatar === 'function') {
+          return window.THVP_AUTH.resolveUserAvatar(u.username, u.role, u.avatar);
+        }
+        if (typeof window.resolveUserAvatar === 'function') {
+          return window.resolveUserAvatar(u.username, u.role, u.avatar);
+        }
+        if (u.avatar && u.avatar.length > 5) return u.avatar;
+        try {
+          const saved = JSON.parse(localStorage.getItem('thvp_forum_custom_avatars') || '{}');
+          if (u.username && saved[String(u.username).toLowerCase()]) {
+            return saved[String(u.username).toLowerCase()];
+          }
+        } catch (e) {}
+        const r = String(u.role || '').toLowerCase();
+        const un = String(u.username || '').toLowerCase();
+        if (r === 'admin' || r === 'teacher' || un === 'giangvien') {
+          return 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80';
+        }
+        return 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&h=120&q=80';
+      }
+
       function getEffectiveUser() {
         const storedUser = readStoredAuthUser();
         if (simulatedRole === 'teacher') {
-          return { name: 'Giáo viên', username: 'Giangvien', role: 'teacher', email: 'giangvien@gmail.com' };
+          const isRealTeacher = storedUser && (storedUser.role === 'admin' || storedUser.role === 'teacher');
+          return {
+            name: 'Giáo viên',
+            username: (isRealTeacher && storedUser.username) ? storedUser.username : 'Giangvien',
+            role: 'teacher',
+            email: (isRealTeacher && storedUser.email) ? storedUser.email : 'giangvien@gmail.com',
+            avatar: (isRealTeacher && storedUser.avatar) ? storedUser.avatar : ''
+          };
         }
         if (simulatedRole === 'student') {
-          const stName = (storedUser && storedUser.role !== 'admin' && storedUser.fullname) ? storedUser.fullname : 'Nguyễn Thái Tuấn';
-          return { name: stName, username: (storedUser && storedUser.username) || 'hocvien01', role: 'student', email: (storedUser && storedUser.email) || 'hocvien01@gmail.com' };
+          const isRealStudent = storedUser && storedUser.role !== 'admin' && storedUser.role !== 'teacher';
+          const stName = (isRealStudent && storedUser.fullname) ? storedUser.fullname : 'Nguyễn Thái Tuấn';
+          return {
+            name: stName,
+            username: (isRealStudent && storedUser.username) || 'hocvien01',
+            role: 'student',
+            email: (isRealStudent && storedUser.email) || 'hocvien01@gmail.com',
+            avatar: (isRealStudent && storedUser.avatar) ? storedUser.avatar : ''
+          };
         }
         return null;
       }
 
-      window.setSimulatedRole = function (roleKey) {
+      window.setSimulatedRole = function (roleKey, shouldSwitchTab = false) {
         simulatedRole = ROLE_ORDER.includes(roleKey) ? roleKey : 'guest';
         try {
           sessionStorage.setItem('thvp_test_role', simulatedRole);
@@ -6731,18 +7058,17 @@
         if (simulatedRole === 'teacher') document.getElementById('btnRoleTeacher')?.classList.add('active');
 
         applyRoleBasedUI();
-      window.setupDynamicRequiredStars?.();
-      window.setupDynamicRequiredStars?.();
+        window.setupDynamicRequiredStars?.();
         renderExamCards();
         renderLabs();
 
-        // Khi người dùng bấm chuyển vai trò -> Chuyển trực tiếp đến đúng trang phù hợp
-        if (simulatedRole === 'teacher') {
-          switchMainTab('profile');
-        } else if (simulatedRole === 'student') {
-          switchMainTab('profile');
-        } else {
-          switchMainTab('online');
+        // Chỉ tự chuyển tab khi được yêu cầu tường minh (ví dụ: Khách vừa đăng nhập tại trang)
+        if (shouldSwitchTab) {
+          if (simulatedRole === 'guest') {
+            switchMainTab('online');
+          } else {
+            switchMainTab('profile');
+          }
         }
       };
 
@@ -6771,6 +7097,39 @@
         const pSubText = document.getElementById('profileSubText');
         const btnHeroText = document.getElementById('btnHeroProfileText');
         const btnHero = document.getElementById('btnHeroProfile');
+
+        const heroAvatarInner = document.getElementById('heroProfileAvatarInner') || document.querySelector('#ehProfileCard .ep-avatar-box');
+        const pAvatarCircle = document.getElementById('profileAvatarCircle');
+        const defaultHeroSvg = `
+          <svg class="icon-svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        `;
+        const defaultProfileSvg = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        `;
+
+        const currentAvatar = user ? resolveAppAvatar(user) : '';
+
+        if (heroAvatarInner) {
+          if (currentAvatar) {
+            heroAvatarInner.innerHTML = `<img src="${currentAvatar}" alt="${user.name || 'Avatar'}" />`;
+          } else {
+            heroAvatarInner.innerHTML = defaultHeroSvg;
+          }
+        }
+
+        if (pAvatarCircle) {
+          if (currentAvatar) {
+            pAvatarCircle.innerHTML = `<img src="${currentAvatar}" alt="${user.name || 'Avatar'}" />`;
+          } else {
+            pAvatarCircle.innerHTML = defaultProfileSvg;
+          }
+        }
 
         const pNameText = document.getElementById('pNameText');
         const pLevelText = document.getElementById('pLevelText');
@@ -6834,8 +7193,10 @@
           const teacherLabsCount = document.getElementById('teacherLabsCount');
           if (teacherLabsCount) teacherLabsCount.textContent = String(labs.length);
 
-          // Kích hoạt tab Đề thi giáo viên mặc định
-          switchTeacherSubTab('exams');
+          // Giữ nguyên tab giáo viên đang chọn (không bị tự động nhảy khi thao tác)
+          const activeTeacherBtn = document.querySelector('#teacherWorkspaceCard .tw-tab-btn.active');
+          const currentTabKey = (activeTeacherBtn && activeTeacherBtn.dataset.ttab) ? activeTeacherBtn.dataset.ttab : 'exams';
+          switchTeacherSubTab(currentTabKey);
         } else if (isStudent) {
           if (pStatusDot) pStatusDot.style.display = 'block';
           if (pName) pName.textContent = user.name;
@@ -6944,6 +7305,9 @@
 
       // 3. TIẾN ĐỘ TÍCH LŨY CÂU HỎI & LỊCH SỬ THAM GIA ĐỀ THI HỌC VIÊN
       function getStudentAttemptedExamIds() {
+        const user = getEffectiveUser();
+        // KHÁCH: KHÔNG CÓ HỒ SƠ LỊCH SỬ BÀI THI
+        if (!user || user.role === 'guest') return new Set();
         const set = new Set();
         try {
           const raw = localStorage.getItem('thvp_student_attempted_exams');
@@ -6973,6 +7337,9 @@
 
       function markExamAsAttempted(examId) {
         if (!examId) return;
+        const user = getEffectiveUser();
+        // KHÁCH: TUYỆT ĐỐI KHÔNG GHI NHẬN VÀO HỒ SƠ
+        if (!user || user.role === 'guest') return;
         const set = getStudentAttemptedExamIds();
         set.add(examId);
         try {
@@ -6983,6 +7350,9 @@
       window.markExamAsAttempted = markExamAsAttempted;
 
       function getCompletedQuestionsSet(examId) {
+        const user = getEffectiveUser();
+        // KHÁCH: KHÔNG LƯU TIẾN TRÌNH CÂU ĐÃ HỌC
+        if (!user || user.role === 'guest') return [];
         try {
           const raw = localStorage.getItem(`thvp_completed_set_${examId}`);
           return raw ? JSON.parse(raw) : [];
@@ -6992,6 +7362,9 @@
       }
 
       function getExamWrongSet(examId) {
+        const user = getEffectiveUser();
+        // KHÁCH: KHÔNG LƯU TIẾN TRÌNH CÂU SAI
+        if (!user || user.role === 'guest') return [];
         try {
           const raw = localStorage.getItem(`thvp_wrong_set_${examId}`);
           return raw ? JSON.parse(raw) : [];
@@ -7002,7 +7375,8 @@
 
       function addCompletedQuestions(examId, questionIdsArray) {
         const user = getEffectiveUser();
-        if (!user) return 0;
+        // KHÁCH: KHÔNG LƯU TIẾN TRÌNH ÔN LUYỆN
+        if (!user || user.role === 'guest') return 0;
         markExamAsAttempted(examId);
         const set = new Set(getCompletedQuestionsSet(examId));
         questionIdsArray.forEach(id => set.add(id));
@@ -7013,6 +7387,11 @@
 
       function recordPracticeAnswer(examId, q, selectedOptIdx) {
         if (!examId || !q) return;
+        const user = getEffectiveUser();
+        // KHÁCH: KHÔNG LƯU TIẾN TRÌNH ÔN LUYỆN (SỐ CÂU ĐÃ HỌC, CÂU SAI, CÂU CHƯA HỌC)
+        // CHỈ HỌC VIÊN VÀ GIÁO VIÊN MỚI LƯU TIẾN TRÌNH ÔN LUYỆN
+        if (!user || user.role === 'guest') return;
+
         const qId = q.id || q.q;
 
         // 1. Ghi nhận câu đã làm vào completed set
@@ -7078,7 +7457,7 @@
             MÃ PIN: ${item.pin || 'LMS'}
           </span>
         ` : (item.accessScope === 'lms_student' ? `
-          <span class="ec-type-badge badge-lms" style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;">
+          <span class="ec-type-badge badge-lms" style="background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd;">
             <svg class="icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
             HỌC VIÊN LMS: ${item.accessCode || 'LỚP'}
           </span>
@@ -7092,12 +7471,21 @@
           </button>
         ` : '';
 
-        const actionHtml = item.isLocked ? `
-          <button type="button" class="btn-ec-pin" onclick="openPinModal('${item.id}', '${(item.title || '').replace(/'/g, "\'")}', '${item.pin || ''}')">
+        const isOfficialLocked = item.isLocked && isOfficialExamCompletedByCurrentUser(item.id);
+
+        const actionHtml = item.isLocked ? (
+          isOfficialLocked ? `
+          <button type="button" class="btn-ec-pin" disabled style="background: #f1f5f9; color: #64748b; border: 1.5px solid #cbd5e1; cursor: not-allowed; box-shadow: none; font-weight: 700; width: 100%; justify-content: center;">
+            <svg class="icon-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            ĐÃ HOÀN THÀNH (BẠN ĐÃ THI 1 LẦN - ĐÃ KHÓA)
+          </button>
+          ` : `
+          <button type="button" class="btn-ec-pin" onclick="openPinModal('${item.id}', '${(item.title || '').replace(/'/g, "\\'")}', '${item.pin || ''}')">
             <svg class="icon-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             NHẬP MÃ PIN 4 SỐ ĐỂ VÀO THI
           </button>
-        ` : `
+          `
+        ) : `
           <button type="button" class="btn-ec-practice" onclick="openPracticeSetupModal('${item.id}')">
             <svg class="icon-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10M6 14h6"/></svg>
             Ôn Luyện
@@ -7314,10 +7702,20 @@
         document.getElementById('lblPracticeMaxQText').textContent = `câu (tối đa ${total} câu)`;
 
         practiceSelectedScope = 'all';
-        practiceSelectedCount = Math.min(20, total);
-        document.getElementById('inputPracticeCustomQ').value = practiceSelectedCount;
+        practiceSelectedCount = Math.min(10, total);
+        const inpPracticeQ = document.getElementById('inputPracticeCustomQ');
+        if (inpPracticeQ) inpPracticeQ.value = practiceSelectedCount;
         const countTxt = document.getElementById('lblPracticeSelectedCountText');
         if (countTxt) countTxt.textContent = `${practiceSelectedCount} / ${total} CÂU`;
+
+        // Đồng bộ chip 10 câu active
+        const practiceChipsContainer = document.querySelector('#modalPracticeSetup .setup-chips-row');
+        if (practiceChipsContainer) {
+          practiceChipsContainer.querySelectorAll('.btn-setup-chip').forEach(btn => {
+            const is10 = btn.textContent.trim().startsWith('10');
+            btn.classList.toggle('active', is10);
+          });
+        }
 
         selectPracticeScope('all');
         document.getElementById('modalPracticeSetup').classList.add('active');
@@ -7421,25 +7819,45 @@
       let examSelectedCount = 20;
 
       window.openExamSetupModal = function (examId) {
-        const exam = getAllExams().find(e => e.id === examId);
-        if (!exam) return;
+        const all = getAllExams();
+        const exam = all.find(e => String(e.id) === String(examId)) || all[0];
+        if (!exam) {
+          alert('Không tìm thấy dữ liệu đề thi này!');
+          return;
+        }
         currentExamSetupExam = exam;
-        const total = exam.totalPoolCount || exam.questions.length;
+        const qList = exam.questions || [];
+        const total = exam.totalPoolCount || qList.length;
 
-        document.getElementById('setupExamTitle').textContent = exam.title;
-        document.getElementById('setupExamPoolSubtitle').textContent = 'Đề thi thử trực tuyến có tính giờ và chấm điểm tự động';
+        const titleEl = document.getElementById('setupExamTitle');
+        if (titleEl) titleEl.textContent = exam.title || 'Đề thi trắc nghiệm';
+        const subEl = document.getElementById('setupExamPoolSubtitle');
+        if (subEl) subEl.textContent = 'Đề thi thử trực tuyến có tính giờ và chấm điểm tự động';
         const btnExamAllChip = document.getElementById('btnChipExamAll');
         if (btnExamAllChip) btnExamAllChip.textContent = 'Tất cả';
-        document.getElementById('lblExamMaxQText').textContent = `câu (tối đa ${total} câu)`;
+        const maxQEl = document.getElementById('lblExamMaxQText');
+        if (maxQEl) maxQEl.textContent = `câu (tối đa ${total} câu)`;
 
-        examSelectedMinutes = 30;
-        examSelectedCount = Math.min(20, total);
-        document.getElementById('inputExamCustomMinutes').value = examSelectedMinutes;
-        const minTxt = document.getElementById('lblExamSelectedMinutesText');
-        if (minTxt) minTxt.textContent = `${examSelectedMinutes} PHÚT`;
-        document.getElementById('inputExamCustomQ').value = examSelectedCount;
-        const qTxt = document.getElementById('lblExamSelectedQCountText');
-        if (qTxt) qTxt.textContent = `${examSelectedCount} CÂU`;
+        examSelectedMinutes = 15;
+        examSelectedCount = Math.min(10, total > 0 ? total : 10);
+        const inpExamMin = document.getElementById('inputExamCustomMinutes');
+        if (inpExamMin) inpExamMin.value = examSelectedMinutes;
+
+        const inpExamQ = document.getElementById('inputExamCustomQ');
+        if (inpExamQ) inpExamQ.value = examSelectedCount;
+
+        // Đồng bộ chip hàng thời gian (15 phút active) và chip hàng câu hỏi (10 câu active)
+        const examChipRows = document.querySelectorAll('#modalExamSetup .setup-chips-row');
+        if (examChipRows.length >= 2) {
+          examChipRows[0].querySelectorAll('.btn-setup-chip').forEach(btn => {
+            const is15 = btn.textContent.trim().startsWith('15');
+            btn.classList.toggle('active', is15);
+          });
+          examChipRows[1].querySelectorAll('.btn-setup-chip').forEach(btn => {
+            const is10 = btn.textContent.trim().startsWith('10');
+            btn.classList.toggle('active', is10);
+          });
+        }
 
         const user = getEffectiveUser();
         const candidateInput = document.getElementById('inputExamCandidateName');
@@ -7447,7 +7865,8 @@
           candidateInput.value = user ? user.name : '';
         }
 
-        document.getElementById('modalExamSetup').classList.add('active');
+        const modalSetup = document.getElementById('modalExamSetup');
+        if (modalSetup) modalSetup.classList.add('active');
       };
 
       document.getElementById('btnCloseExamSetup')?.addEventListener('click', () => {
@@ -7505,12 +7924,14 @@
         const candidateName = user ? user.name : 'Thí sinh tự do';
 
         document.getElementById('modalExamSetup').classList.remove('active');
-        const questionsToTake = currentExamSetupExam.questions.slice(0, examSelectedCount);
+        const qList = currentExamSetupExam.questions || [];
+        const questionsToTake = qList.slice(0, examSelectedCount);
         launchFullscreenExamRoom(
           currentExamSetupExam,
           questionsToTake,
           examSelectedMinutes,
-          candidateName
+          candidateName,
+          { isOfficialPin: false, isMockExam: true }
         );
       });
 
@@ -7520,23 +7941,83 @@
       function launchFullscreenPracticeRoom(exam, questions) {
         fsPracticeActive = { exam, questions, index: 0, answers: {}, score: 0 };
         document.getElementById('fsPracTitle').textContent = exam.title;
+        document.body.classList.add('in-fullscreen-room');
+        document.documentElement.classList.add('in-fullscreen-room');
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
         document.getElementById('fullscreenPracticeRoom').classList.add('active');
         renderFsPracticeQuestion();
       }
 
       window.closeFullscreenPractice = function () {
         if (fsPracticeActive.exam) {
-          const answeredIds = [];
-          Object.keys(fsPracticeActive.answers).forEach(idx => {
-            const q = fsPracticeActive.questions[idx];
-            if (q && q.id) answeredIds.push(q.id);
-          });
-          if (answeredIds.length > 0) {
-            addCompletedQuestions(fsPracticeActive.exam.id, answeredIds);
+          const user = getEffectiveUser();
+          if (user && (user.role === 'student' || user.role === 'teacher')) {
+            const answeredIds = [];
+            Object.keys(fsPracticeActive.answers).forEach(idx => {
+              const q = fsPracticeActive.questions[idx];
+              if (q && q.id) answeredIds.push(q.id);
+            });
+            if (answeredIds.length > 0) {
+              addCompletedQuestions(fsPracticeActive.exam.id, answeredIds);
+            }
           }
         }
+        document.body.classList.remove('in-fullscreen-room');
+        document.documentElement.classList.remove('in-fullscreen-room');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
         document.getElementById('fullscreenPracticeRoom').classList.remove('active');
         renderExamCards();
+      };
+
+      function renderFsPracticeNav() {
+        const container = document.getElementById('fsPracNavGrid');
+        const summaryEl = document.getElementById('fsPracNavSummary');
+        if (!container || !fsPracticeActive.questions) return;
+        const total = fsPracticeActive.questions.length;
+        if (summaryEl) summaryEl.textContent = `${fsPracticeActive.index + 1} / ${total}`;
+
+        container.innerHTML = fsPracticeActive.questions.map((q, idx) => {
+          const isCurrent = idx === fsPracticeActive.index;
+          const ans = fsPracticeActive.answers[idx];
+          let bg = '#f8fafc';
+          let color = '#475569';
+          let border = '1px solid #cbd5e1';
+
+          if (ans !== undefined) {
+            if (ans === q.correct) {
+              bg = '#10b981';
+              color = '#ffffff';
+              border = '1px solid #059669';
+            } else {
+              bg = '#ef4444';
+              color = '#ffffff';
+              border = '1px solid #dc2626';
+            }
+          }
+
+          if (isCurrent) {
+            border = '2.5px solid #0284c7';
+            if (ans === undefined) {
+              bg = '#e0f2fe';
+              color = '#0369a1';
+            }
+          }
+
+          return `
+            <button type="button" onclick="jumpToPracticeQuestion(${idx})" style="height: 38px; border-radius: 10px; font-weight: 800; font-size: 0.82rem; background: ${bg}; color: ${color}; border: ${border}; cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; justify-content: center;" title="Câu ${idx + 1}">
+              ${idx + 1}
+            </button>
+          `;
+        }).join('');
+      }
+
+      window.jumpToPracticeQuestion = function (idx) {
+        if (idx >= 0 && idx < fsPracticeActive.questions.length) {
+          fsPracticeActive.index = idx;
+          renderFsPracticeQuestion();
+        }
       };
 
       function renderFsPracticeQuestion() {
@@ -7568,12 +8049,37 @@
           `;
         }).join('');
 
-        if (answeredIdx !== undefined) {
-          explainBox.style.display = 'block';
-          explainBox.innerHTML = `<strong>Giải thích chi tiết:</strong> ${q.explain || 'Kiến thức chuẩn của chương trình đào tạo Tin học văn phòng.'}`;
-        } else {
-          explainBox.style.display = 'none';
+        if (explainBox) {
+          if (answeredIdx !== undefined) {
+            const correctLetter = String.fromCharCode(65 + q.correct);
+            const correctText = q.options[q.correct] || '';
+            const isRight = answeredIdx === q.correct;
+            explainBox.innerHTML = `
+              <div style="background: ${isRight ? '#ecfdf5' : '#fef2f2'}; border: 1.5px solid ${isRight ? '#a7f3d0' : '#fecaca'}; border-radius: 12px; padding: 12px 14px; margin-bottom: 12px;">
+                <div style="font-size: 0.76rem; font-weight: 800; color: ${isRight ? '#059669' : '#dc2626'}; text-transform: uppercase; margin-bottom: 4px;">
+                  ${isRight ? 'ĐÁP ÁN CHÍNH XÁC' : 'ĐÁP ÁN ĐÚNG'}
+                </div>
+                <div style="font-size: 0.92rem; font-weight: 800; color: #0f172a;">
+                  ${correctLetter}. ${correctText}
+                </div>
+              </div>
+              <div style="font-size: 0.86rem; line-height: 1.6; color: #334155; background: #f8fafc; border-radius: 12px; padding: 14px; border: 1px solid #e2e8f0;">
+                <strong style="color: #0f172a; display: block; margin-bottom: 6px;">Lời giải chi tiết:</strong>
+                ${q.explain || 'Kiến thức chuẩn của chương trình đào tạo Tin học văn phòng.'}
+              </div>
+            `;
+          } else {
+            explainBox.innerHTML = `
+              <div style="text-align: center; padding: 28px 10px; color: #94a3b8;">
+                <svg class="icon-svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.8" style="margin-bottom: 10px;"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <div style="font-size: 0.84rem; font-weight: 700; color: #64748b; margin-bottom: 4px;">Chưa chọn đáp án</div>
+                <div style="font-size: 0.78rem; color: #94a3b8; line-height: 1.5;">Chọn một đáp án hoặc bấm "Xem đáp án" bên dưới để xem lời giải chi tiết.</div>
+              </div>
+            `;
+          }
         }
+
+        renderFsPracticeNav();
 
         const btnCheck = document.getElementById('btnFsPracCheck');
         if (btnCheck) {
@@ -7612,16 +8118,608 @@
         renderFsPracticeQuestion();
       };
 
+      window.showPracticeResultModal = function () {
+        const modal = document.getElementById('modalPracticeResult');
+        if (!modal) return;
+
+        let correctCount = 0;
+        const total = fsPracticeActive.questions ? fsPracticeActive.questions.length : 0;
+        if (fsPracticeActive.questions) {
+          fsPracticeActive.questions.forEach((q, idx) => {
+            if (fsPracticeActive.answers[idx] === q.correct) {
+              correctCount++;
+            }
+          });
+        }
+        const pct = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+
+        const titleEl = document.getElementById('prModalTitle');
+        if (titleEl) titleEl.textContent = fsPracticeActive.exam ? fsPracticeActive.exam.title : 'BÀI ÔN LUYỆN TRẮC NGHIỆM';
+        const corEl = document.getElementById('prModalCorrectCount');
+        if (corEl) corEl.textContent = `${correctCount} / ${total} câu`;
+        const accEl = document.getElementById('prModalAccuracy');
+        if (accEl) accEl.textContent = `${pct}%`;
+
+        const user = getEffectiveUser();
+        const isGuest = !user || user.role === 'guest';
+        const noticeEl = document.getElementById('prModalNotice');
+        const btnLogin = document.getElementById('btnPrModalLogin');
+
+        if (isGuest) {
+          if (noticeEl) {
+            noticeEl.innerHTML = '<strong>Lưu ý:</strong> Bạn vừa hoàn thành ôn luyện với tư cách <strong>Khách vãng lai</strong>. Tiến trình bài làm và các câu trả lời sai không được lưu vào hệ thống. Hãy đăng nhập ngay để lưu lại tiến trình và theo dõi lộ trình ôn luyện!';
+          }
+          if (btnLogin) btnLogin.style.display = 'flex';
+        } else {
+          if (noticeEl) {
+            noticeEl.innerHTML = '<strong>Tuyệt vời!</strong> Tiến trình ôn luyện và các câu hỏi làm sai đã được đồng bộ tự động vào hồ sơ học tập của bạn.';
+          }
+          if (btnLogin) btnLogin.style.display = 'none';
+        }
+
+        // Đóng phòng làm bài ôn luyện và hiện modal kết quả
+        closeFullscreenPractice();
+        modal.classList.add('active');
+        document.body.classList.add('in-fullscreen-room');
+        document.documentElement.classList.add('in-fullscreen-room');
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+      };
+
+      window.handlePracticeResultLogin = function () {
+        const modal = document.getElementById('modalPracticeResult');
+        if (modal) modal.classList.remove('active');
+        document.body.classList.remove('in-fullscreen-room');
+        document.documentElement.classList.remove('in-fullscreen-room');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+
+        // Mở cửa sổ đăng nhập học viên (thvpAuthModal)
+        if (window.THVP_AUTH && typeof window.THVP_AUTH.showModal === 'function') {
+          window.THVP_AUTH.showModal('login');
+        } else {
+          const authBtn = document.getElementById('headerAuthBtn') || document.querySelector('.btn-login');
+          if (authBtn) {
+            authBtn.click();
+          } else {
+            const authModal = document.getElementById('thvpAuthModal');
+            if (authModal) authModal.classList.add('active');
+          }
+        }
+      };
+
+      window.closePracticeResultModal = function () {
+        const modal = document.getElementById('modalPracticeResult');
+        if (modal) modal.classList.remove('active');
+        document.body.classList.remove('in-fullscreen-room');
+        document.documentElement.classList.remove('in-fullscreen-room');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+      };
+
       window.checkOrNextPractice = function () {
         if (fsPracticeActive.index < fsPracticeActive.questions.length - 1) {
           navPractice(1);
         } else {
-          alert(`Hoàn thành phần ôn luyện! Điểm tích lũy của bạn: ${fsPracticeActive.score} điểm.`);
-          closeFullscreenPractice();
+          showPracticeResultModal();
         }
       };
 
-      // 8. GIAO DIỆN PHÒNG THI GNOMIO MODERN 2.0 (#fullscreenExamRoom)
+      // ========================================================================
+      // 8A. QUẢN LÝ BÀI THI CHÍNH THỨC CÓ MÃ PIN (CHỈ THI 1 LẦN DUY NHẤT & CHỐNG GIAN LẬN NGẦM)
+      // ========================================================================
+      function getOfficialExamLockedRecords() {
+        try {
+          const raw = localStorage.getItem('thvp_official_locked_exams');
+          return raw ? JSON.parse(raw) : {};
+        } catch (e) {
+          return {};
+        }
+      }
+
+      function getCurrentUserExamTakerKey() {
+        const user = getEffectiveUser();
+        if (user && user.role !== 'guest') {
+          return user.username || user.email || user.name;
+        }
+        let guestToken = localStorage.getItem('thvp_guest_exam_token');
+        if (!guestToken) {
+          guestToken = 'guest_' + Math.random().toString(36).substring(2, 9);
+          localStorage.setItem('thvp_guest_exam_token', guestToken);
+        }
+        return guestToken;
+      }
+
+      function isOfficialExamCompletedByCurrentUser(examId) {
+        if (!examId) return false;
+        const userKey = getCurrentUserExamTakerKey();
+        const records = getOfficialExamLockedRecords();
+        if (records[examId] && Array.isArray(records[examId]) && records[examId].includes(userKey)) {
+          return true;
+        }
+        try {
+          const subs = getSubmissions();
+          const user = getEffectiveUser();
+          const hasSub = subs.some(s => s.targetExamId === examId && (s.username === userKey || (user && s.name === user.name)));
+          return hasSub;
+        } catch (e) {
+          return false;
+        }
+      }
+      window.isOfficialExamCompletedByCurrentUser = isOfficialExamCompletedByCurrentUser;
+
+      function lockOfficialExamForCurrentUser(examId) {
+        if (!examId) return;
+        const userKey = getCurrentUserExamTakerKey();
+        const records = getOfficialExamLockedRecords();
+        if (!records[examId]) records[examId] = [];
+        if (!records[examId].includes(userKey)) {
+          records[examId].push(userKey);
+        }
+        try {
+          localStorage.setItem('thvp_official_locked_exams', JSON.stringify(records));
+        } catch (e) {}
+      }
+      window.lockOfficialExamForCurrentUser = lockOfficialExamForCurrentUser;
+
+      let fsOfficialActive = {
+        exam: null,
+        questions: [],
+        page: 0,
+        answers: {},
+        flags: {},
+        candidate: '',
+        timerInterval: null,
+        secondsLeft: 0,
+        violationCount: 0,
+        isSubmitted: false,
+        antiCheatHandlers: []
+      };
+
+      const OFFICIAL_PAGE_SIZE = 5;
+
+      function launchFullscreenOfficialExamRoom(exam, questions, minutes, candidate) {
+        let examQuestions = [...questions].sort(() => 0.5 - Math.random());
+
+        fsOfficialActive = {
+          exam,
+          questions: examQuestions,
+          page: 0,
+          answers: {},
+          flags: {},
+          candidate: candidate || 'Thí sinh',
+          timerInterval: null,
+          secondsLeft: minutes * 60,
+          violationCount: 0,
+          isSubmitted: false,
+          antiCheatHandlers: []
+        };
+
+        const candBadge = document.getElementById('fsOfficialCandidateBadge');
+        if (candBadge) candBadge.textContent = `Thí sinh: ${fsOfficialActive.candidate}`;
+        const headTitle = document.getElementById('fsOfficialHeaderTitle');
+        if (headTitle) headTitle.textContent = exam.title;
+        const breadTitle = document.getElementById('fsOfficialExamBreadcrumbTitle');
+        if (breadTitle) breadTitle.textContent = exam.title;
+
+        const room = document.getElementById('fullscreenOfficialExamRoom');
+        if (room) {
+          room.style.display = 'flex';
+          room.classList.add('active');
+        }
+
+        // Khóa cuộn trang web bên ngoài: ẩn hoàn toàn thanh cuộn bên ngoài
+        document.body.classList.add('in-fullscreen-room');
+        document.documentElement.classList.add('in-fullscreen-room');
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+
+        // Tự động yêu cầu toàn màn hình khi thi chính thức
+        try {
+          if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().catch(() => {});
+          }
+        } catch (e) {}
+
+        // KÍCH HOẠT CƠ CHẾ CHỐNG GIAN LẬN CHẠY NGẦM (KHÔNG HIỂN THỊ LÊN MÀN HÌNH, VI PHẠM 3 LẦN TỰ NỘP)
+        setupOfficialAntiCheat();
+
+        // Đồng hồ đếm ngược
+        const updateTimerDisplay = () => {
+          const m = String(Math.floor(fsOfficialActive.secondsLeft / 60)).padStart(2, '0');
+          const s = String(fsOfficialActive.secondsLeft % 60).padStart(2, '0');
+          const timerEl = document.getElementById('fsOfficialTimer');
+          if (timerEl) {
+            timerEl.textContent = `${m}:${s}`;
+            if (fsOfficialActive.secondsLeft <= 300) {
+              timerEl.style.color = '#dc2626';
+              timerEl.style.borderColor = '#fca5a5';
+              timerEl.style.background = '#fef2f2';
+            }
+          }
+        };
+        updateTimerDisplay();
+
+        clearInterval(fsOfficialActive.timerInterval);
+        fsOfficialActive.timerInterval = setInterval(() => {
+          fsOfficialActive.secondsLeft--;
+          updateTimerDisplay();
+
+          if (fsOfficialActive.secondsLeft <= 0) {
+            clearInterval(fsOfficialActive.timerInterval);
+            alert('Hết giờ làm bài thi chính thức! Hệ thống tự động thu bài và lưu kết quả.');
+            submitOfficialExamFinal(false);
+          }
+        }, 1000);
+
+        renderOfficialExamRoom();
+      }
+      window.launchFullscreenOfficialExamRoom = launchFullscreenOfficialExamRoom;
+
+      function setupOfficialAntiCheat() {
+        cleanupOfficialAntiCheat();
+
+        const handleViolation = (reason) => {
+          if (!fsOfficialActive || fsOfficialActive.isSubmitted) return;
+          fsOfficialActive.violationCount++;
+
+          // Khi đủ 3 lần vi phạm bất kỳ: TỰ ĐỘNG THU BÀI & KHÓA BÀI THI NGAY LẬP TỨC
+          if (fsOfficialActive.violationCount >= 3) {
+            cleanupOfficialAntiCheat();
+            autoSubmitOfficialExamCheating();
+          }
+        };
+
+        // 1. Chuyển tab hoặc ẩn cửa sổ trình duyệt
+        const onVisibilityChange = () => {
+          if (document.hidden) {
+            handleViolation('Chuyển tab hoặc ẩn trình duyệt');
+          }
+        };
+
+        // 2. Mất focus cửa sổ (click ra ngoài hoặc mở app khác)
+        const onWindowBlur = () => {
+          handleViolation('Mất tiêu điểm màn hình thi');
+        };
+
+        // 3. Thoát chế độ toàn màn hình
+        const onFullscreenChange = () => {
+          if (!document.fullscreenElement) {
+            handleViolation('Thoát toàn màn hình');
+          }
+        };
+
+        // 4. Chụp màn hình (PrintScreen) và phím tắt can thiệp
+        const onKeyDown = (e) => {
+          if (e.key === 'PrintScreen' || e.keyCode === 44) {
+            e.preventDefault();
+            handleViolation('Chụp màn hình đề thi');
+            return;
+          }
+          if ((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === 'S' || e.key === 's')) {
+            e.preventDefault();
+            handleViolation('Mở công cụ chụp ảnh màn hình');
+            return;
+          }
+          if ((e.ctrlKey || e.metaKey) && ['c', 'x', 'v', 'u', 'p', 's'].includes(e.key.toLowerCase())) {
+            e.preventDefault();
+            handleViolation('Thao tác phím tắt sao chép hoặc in ấn');
+            return;
+          }
+          if (e.key === 'F12' || ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].includes(e.key.toLowerCase()))) {
+            e.preventDefault();
+            handleViolation('Mở công cụ DevTools');
+            return;
+          }
+        };
+
+        // 5. Chặn chuột phải
+        const onContextMenu = (e) => {
+          e.preventDefault();
+          handleViolation('Click chuột phải trong lúc làm bài');
+        };
+
+        // 6. Chặn copy / cut
+        const onCopyCut = (e) => {
+          e.preventDefault();
+          handleViolation('Sao chép nội dung đề thi');
+        };
+
+        document.addEventListener('visibilitychange', onVisibilityChange);
+        window.addEventListener('blur', onWindowBlur);
+        document.addEventListener('fullscreenchange', onFullscreenChange);
+        document.addEventListener('keydown', onKeyDown, true);
+        document.addEventListener('contextmenu', onContextMenu, true);
+        document.addEventListener('copy', onCopyCut, true);
+        document.addEventListener('cut', onCopyCut, true);
+
+        fsOfficialActive.antiCheatHandlers = [
+          { target: document, event: 'visibilitychange', fn: onVisibilityChange },
+          { target: window, event: 'blur', fn: onWindowBlur },
+          { target: document, event: 'fullscreenchange', fn: onFullscreenChange },
+          { target: document, event: 'keydown', fn: onKeyDown, options: true },
+          { target: document, event: 'contextmenu', fn: onContextMenu, options: true },
+          { target: document, event: 'copy', fn: onCopyCut, options: true },
+          { target: document, event: 'cut', fn: onCopyCut, options: true }
+        ];
+      }
+
+      function cleanupOfficialAntiCheat() {
+        if (fsOfficialActive && fsOfficialActive.antiCheatHandlers) {
+          fsOfficialActive.antiCheatHandlers.forEach(h => {
+            try {
+              h.target.removeEventListener(h.event, h.fn, h.options);
+            } catch (e) {}
+          });
+          fsOfficialActive.antiCheatHandlers = [];
+        }
+      }
+
+      function renderOfficialExamRoom() {
+        renderOfficialNavGrid();
+        renderOfficialQuestions();
+      }
+
+      function renderOfficialNavGrid() {
+        const container = document.getElementById('fsOfficialNavGrid');
+        if (!container || !fsOfficialActive) return;
+        const answeredCount = Object.keys(fsOfficialActive.answers).length;
+        const progTxt = document.getElementById('fsOfficialProgressCountText');
+        if (progTxt) progTxt.textContent = `${answeredCount}/${fsOfficialActive.questions.length}`;
+
+        const currentPage = typeof fsOfficialActive.page === 'number' ? fsOfficialActive.page : 0;
+        const startIdx = currentPage * OFFICIAL_PAGE_SIZE;
+        const endIdx = startIdx + OFFICIAL_PAGE_SIZE;
+
+        container.innerHTML = fsOfficialActive.questions.map((q, idx) => {
+          let cellClass = 'gnomio-nav-cell';
+          if (idx >= startIdx && idx < endIdx) cellClass += ' active';
+          if (fsOfficialActive.answers[idx] !== undefined) cellClass += ' answered';
+          if (fsOfficialActive.flags[idx]) cellClass += ' flagged';
+
+          return `
+            <button type="button" class="${cellClass}" onclick="goToOfficialExamQ(${idx})" title="Chuyển đến câu ${idx + 1}">
+              ${idx + 1}
+            </button>
+          `;
+        }).join('');
+      }
+
+      function renderOfficialQuestions() {
+        const container = document.getElementById('fsOfficialQuestionsContainer');
+        if (!container || !fsOfficialActive) return;
+
+        const totalQ = fsOfficialActive.questions.length;
+        const totalPages = Math.max(1, Math.ceil(totalQ / OFFICIAL_PAGE_SIZE));
+        const currentPage = typeof fsOfficialActive.page === 'number' ? fsOfficialActive.page : 0;
+
+        const startIdx = currentPage * OFFICIAL_PAGE_SIZE;
+        const endIdx = Math.min(startIdx + OFFICIAL_PAGE_SIZE, totalQ);
+        const pageQuestions = fsOfficialActive.questions.slice(startIdx, endIdx);
+        const letters = ['a', 'b', 'c', 'd'];
+
+        container.innerHTML = pageQuestions.map((q, localIdx) => {
+          const globalIdx = startIdx + localIdx;
+          const hasAnswered = fsOfficialActive.answers[globalIdx] !== undefined;
+          const isFlagged = Boolean(fsOfficialActive.flags[globalIdx]);
+          const answeredOptIdx = fsOfficialActive.answers[globalIdx];
+
+          const optionsHtml = (q.options || []).map((opt, optIdx) => {
+            const letter = letters[optIdx] || String.fromCharCode(97 + optIdx);
+            const isSelected = answeredOptIdx === optIdx;
+            return `
+              <div class="gnomio-opt-item ${isSelected ? 'selected' : ''}" onclick="selectOfficialExamOption(${globalIdx}, ${optIdx})">
+                <div class="gnomio-opt-radio"></div>
+                <div class="gnomio-opt-content">
+                  <span class="gnomio-opt-label">${letter}.</span>
+                  <span>${opt}</span>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          return `
+            <div class="gnomio-question-card" id="official_qcard_${globalIdx}">
+              <div class="gnomio-qinfo-box">
+                <div class="gnomio-qnum">Câu hỏi ${globalIdx + 1}</div>
+                <div class="gnomio-qstatus">${hasAnswered ? 'Đã trả lời' : 'Chưa trả lời'}</div>
+                <button type="button" class="btn-gnomio-flag ${isFlagged ? 'flagged' : ''}" onclick="toggleOfficialFlag(${globalIdx})">
+                  <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                  <span>${isFlagged ? 'Gỡ cờ' : 'Đặt cờ'}</span>
+                </button>
+              </div>
+
+              <div class="gnomio-qbody-box">
+                <div class="gnomio-qtext">${q.q}</div>
+                <div class="gnomio-options-group">
+                  ${optionsHtml}
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        const btnPrev = document.getElementById('btnOfficialPrev');
+        const btnNext = document.getElementById('btnOfficialNext');
+        if (btnPrev) {
+          btnPrev.style.visibility = currentPage > 0 ? 'visible' : 'hidden';
+        }
+        if (btnNext) {
+          if (currentPage < totalPages - 1) {
+            btnNext.textContent = 'Trang sau →';
+            btnNext.style.background = '#0f172a';
+          } else {
+            btnNext.textContent = 'Nộp bài thi chính thức';
+            btnNext.style.background = '#059669';
+          }
+        }
+      }
+
+      window.selectOfficialExamOption = function (qIdx, optIdx) {
+        if (!fsOfficialActive) return;
+        fsOfficialActive.answers[qIdx] = optIdx;
+        renderOfficialNavGrid();
+        renderOfficialQuestions();
+      };
+
+      window.toggleOfficialFlag = function (qIdx) {
+        if (!fsOfficialActive) return;
+        fsOfficialActive.flags[qIdx] = !fsOfficialActive.flags[qIdx];
+        renderOfficialNavGrid();
+        renderOfficialQuestions();
+      };
+
+      window.navOfficialPage = function (delta) {
+        if (!fsOfficialActive) return;
+        const totalQ = fsOfficialActive.questions.length;
+        const totalPages = Math.max(1, Math.ceil(totalQ / OFFICIAL_PAGE_SIZE));
+        const currentPage = typeof fsOfficialActive.page === 'number' ? fsOfficialActive.page : 0;
+        const targetPage = currentPage + delta;
+
+        if (delta > 0 && targetPage >= totalPages) {
+          confirmSubmitOfficialExam();
+          return;
+        }
+
+        if (targetPage >= 0 && targetPage < totalPages) {
+          fsOfficialActive.page = targetPage;
+          renderOfficialNavGrid();
+          renderOfficialQuestions();
+          const room = document.getElementById('fullscreenOfficialExamRoom');
+          if (room) room.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      };
+
+      window.goToOfficialExamQ = function (idx) {
+        if (!fsOfficialActive) return;
+        const targetPage = Math.floor(idx / OFFICIAL_PAGE_SIZE);
+        if (fsOfficialActive.page !== targetPage) {
+          fsOfficialActive.page = targetPage;
+          renderOfficialNavGrid();
+          renderOfficialQuestions();
+        }
+        setTimeout(() => {
+          const el = document.getElementById(`official_qcard_${idx}`);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            el.style.boxShadow = '0 0 0 3px rgba(5, 150, 105, 0.4)';
+            setTimeout(() => { el.style.boxShadow = ''; }, 1200);
+          }
+        }, 50);
+      };
+
+      function submitOfficialExamFinal(isAutoCheating = false) {
+        if (!fsOfficialActive || fsOfficialActive.isSubmitted) return;
+        fsOfficialActive.isSubmitted = true;
+        clearInterval(fsOfficialActive.timerInterval);
+        cleanupOfficialAntiCheat();
+
+        if (document.fullscreenElement) {
+          document.exitFullscreen().catch(() => {});
+        }
+
+        const exam = fsOfficialActive.exam;
+        const questions = fsOfficialActive.questions || [];
+        const total = questions.length;
+        let correctCount = 0;
+        const answeredIds = [];
+
+        questions.forEach((q, idx) => {
+          const ans = fsOfficialActive.answers[idx];
+          if (ans !== undefined) {
+            answeredIds.push(q.id);
+            if (ans === q.correct) {
+              correctCount++;
+            } else {
+              saveWrongQuestionToVault(q);
+            }
+          }
+        });
+
+        const score = total > 0 ? ((correctCount / total) * 10).toFixed(1) : '0.0';
+        const user = getEffectiveUser();
+        const role = user ? (user.role === 'teacher' ? 'Giáo viên' : 'Học viên') : 'Thí sinh mã PIN';
+
+        // 1. LƯU KẾT QUẢ VÀO BẢNG ĐIỂM GIÁO VIÊN (thvp_submissions_list)
+        const subs = getSubmissions();
+        subs.unshift({
+          id: 'sub_official_' + Date.now(),
+          targetExamId: exam.id,
+          name: fsOfficialActive.candidate || (user ? user.name : 'Thí sinh'),
+          username: getCurrentUserExamTakerKey(),
+          role: role,
+          type: 'exam',
+          title: `[Chính Thức] ${exam.title} (${total} câu)`,
+          submittedAt: new Date().toLocaleString('vi-VN'),
+          fileName: `KetQua_${exam.id}.exam`,
+          fileSize: `${correctCount}/${total} câu đúng`,
+          score: score,
+          feedback: isAutoCheating
+            ? `BỊ HỆ THỐNG TỰ ĐỘNG THU BÀI do phát hiện 3 lần vi phạm quy chế thi. Đúng ${correctCount}/${total} câu (${score} điểm).`
+            : `Hoàn thành bài thi chính thức. Đúng ${correctCount}/${total} câu (${score} điểm).`
+        });
+        saveSubmissions(subs);
+
+        // 2. GHI NHẬN TIẾN ĐỘ & HỒ SƠ
+        if (answeredIds.length > 0) {
+          addCompletedQuestions(exam.id, answeredIds);
+        }
+        markExamAsAttempted(exam.id);
+
+        // 3. KHÓA BÀI THI NÀY LẠI CHO TÀI KHOẢN NÀY (CHỈ THI 1 LẦN DUY NHẤT)
+        lockOfficialExamForCurrentUser(exam.id);
+
+        // Đóng phòng thi chính thức
+        const room = document.getElementById('fullscreenOfficialExamRoom');
+        if (room) {
+          room.classList.remove('active');
+          room.style.display = 'none';
+        }
+        document.body.classList.remove('in-fullscreen-room');
+        document.documentElement.classList.remove('in-fullscreen-room');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+
+        renderExamCards();
+        if (typeof renderStudentProfileHistory === 'function') {
+          renderStudentProfileHistory();
+        }
+
+        // 4. MỞ MODAL KẾT QUẢ
+        openExamResultModal({
+          isOfficial: true,
+          score: score,
+          correctCount: correctCount,
+          total: total,
+          candidateName: fsOfficialActive.candidate || (user ? user.name : 'Thí sinh'),
+          isCheatingCaught: isAutoCheating
+        });
+      }
+
+      function autoSubmitOfficialExamCheating() {
+        alert('Hệ thống đã tự động thu bài và khóa bài thi do phát hiện 3 lần vi phạm quy chế thi. Bạn không thể thi tiếp bài này.');
+        submitOfficialExamFinal(true);
+      }
+
+      window.confirmSubmitOfficialExam = function () {
+        const answered = Object.keys(fsOfficialActive.answers).length;
+        const total = fsOfficialActive.questions.length;
+        if (!confirm(`Bạn đã hoàn thành ${answered}/${total} câu hỏi.\nBạn có chắc chắn muốn nộp bài thi chính thức không?\n(LƯU Ý: Mỗi tài khoản chỉ được làm 1 lần duy nhất, sau khi nộp sẽ khóa bài thi và không thể làm lại!)`)) {
+          return;
+        }
+        submitOfficialExamFinal(false);
+      };
+
+      window.confirmLeaveOfficialExam = function () {
+        if (!confirm('CẢNH BÁO: Đây là bài thi chính thức chỉ làm 1 lần duy nhất!\nNếu bạn rời phòng thi lúc này, hệ thống sẽ tự động thu bài với số câu đã làm và bạn KHÔNG THỂ thi lại.\nBạn có chắc chắn muốn nộp và rời phòng thi không?')) {
+          return;
+        }
+        submitOfficialExamFinal(false);
+      };
+
+      // ========================================================================
+      // 8B. GIAO DIỆN PHÒNG THI THỬ MIỄN PHÍ TỰ DO (#fullscreenExamRoom)
+      // ========================================================================
       let fsExamActive = {
         exam: null,
         questions: [],
@@ -7635,8 +8733,9 @@
         isAntiCheatActive: false
       };
 
-      function launchFullscreenExamRoom(exam, questions, minutes, candidate) {
-        const isLockedExam = exam.isLocked || Boolean(exam.pin);
+      function launchFullscreenExamRoom(exam, questions, minutes, candidate, options = {}) {
+        const isOfficialPin = Boolean(options.isOfficialPin || (options.fromPin && exam && (exam.isLocked || Boolean(exam.pin))));
+        const isLockedExam = isOfficialPin;
         let examQuestions = [...questions];
 
         // Shuffle questions and options if locked exam
@@ -7655,17 +8754,28 @@
           timerInterval: null,
           secondsLeft: minutes * 60,
           violationCount: 0,
-          isAntiCheatActive: Boolean(isLockedExam)
+          isAntiCheatActive: Boolean(isLockedExam),
+          isOfficialPinExam: isOfficialPin,
+          isMockExam: !isOfficialPin
         };
 
-        document.getElementById('fsExamTitle').textContent = exam.title;
-        document.getElementById('gnomioHeaderTitle').textContent = exam.title;
-        document.getElementById('gnomioExamBreadcrumbTitle').textContent = exam.title;
+        const fsTitleEl = document.getElementById('fsExamTitle');
+        if (fsTitleEl) fsTitleEl.textContent = exam.title;
+        const headTitleEl = document.getElementById('gnomioHeaderTitle');
+        if (headTitleEl) headTitleEl.textContent = exam.title;
+        const breadTitleEl = document.getElementById('gnomioExamBreadcrumbTitle');
+        if (breadTitleEl) breadTitleEl.textContent = exam.title;
         const examRoom = document.getElementById('fullscreenExamRoom');
         if (examRoom) {
           examRoom.style.display = 'flex';
           examRoom.classList.add('active');
         }
+
+        // KHÓA CUỘN TRANG NGOÀI: ẨN HOÀN TOÀN THANH CUỘN CỦA GIAO DIỆN BÊN NGOÀI
+        document.body.classList.add('in-fullscreen-room');
+        document.documentElement.classList.add('in-fullscreen-room');
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
 
         // Anti-cheating banner
         const acBanner = document.getElementById('antiCheatingBannerBox');
@@ -7941,7 +9051,10 @@
           room.classList.remove('active');
           room.style.display = '';
         }
+        document.body.classList.remove('in-fullscreen-room');
+        document.documentElement.classList.remove('in-fullscreen-room');
         document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
         if (document.fullscreenElement) {
           document.exitFullscreen().catch(() => {});
         }
@@ -7953,7 +9066,11 @@
         let correctCount = 0;
         const total = fsExamActive.questions.length;
         const answeredIds = [];
-        const isOfficialExam = fsExamActive.exam && (fsExamActive.exam.isLocked || Boolean(fsExamActive.exam.pin));
+        
+        // CHẾ ĐỘ THI THỬ (CHO CẢ KHÁCH, HỌC VIÊN, GIÁO VIÊN):
+        // Chỉ kỳ thi chính thức nhập mã PIN (isOfficialPinExam) mới lưu hồ sơ/bảng điểm.
+        // Còn chế độ THI THỬ: tính điểm số thật để hiển thị, nhưng KHÔNG LƯU GÌ HẾT khi bấm hoàn tất.
+        const isOfficialExam = Boolean(fsExamActive.isOfficialPinExam);
 
         fsExamActive.questions.forEach((q, idx) => {
           const ans = fsExamActive.answers[idx];
@@ -7962,7 +9079,7 @@
             if (ans === q.correct) {
               correctCount++;
             } else {
-              // Thi thử KHÔNG lưu vào tủ câu sai; chỉ kỳ thi chính thức mới lưu nếu có
+              // Thi thử (dù là khách, học viên hay giáo viên) TUYỆT ĐỐI KHÔNG lưu vào tủ câu sai
               if (isOfficialExam) {
                 saveWrongQuestionToVault(q);
               }
@@ -7974,7 +9091,7 @@
         const user = getEffectiveUser();
 
         // CHỈ LƯU VÀO SUBMISSIONS & HỒ SƠ NẾU LÀ PHÒNG THI CHÍNH THỨC CÓ MÃ PIN
-        // THI THỬ TỰ DO SẼ CHỈ CHO COI KẾT QUẢ VÀ KHÔNG LƯU TIẾN TRÌNH THEO ĐÚNG YÊU CẦU
+        // THI THỬ (DÙ LÀ KHÁCH, HỌC VIÊN HAY GIÁO VIÊN): KHÔNG LƯU TIẾN TRÌNH, KHÔNG LƯU SUBMISSIONS, KHÔNG LƯU ATTEMPTED EXAMS!
         if (isOfficialExam) {
           if (answeredIds.length > 0) {
             addCompletedQuestions(fsExamActive.exam.id, answeredIds);
@@ -8003,13 +9120,18 @@
           room.classList.remove('active');
           room.style.display = '';
         }
+        document.body.classList.remove('in-fullscreen-room');
+        document.documentElement.classList.remove('in-fullscreen-room');
         document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+
         if (document.fullscreenElement) {
           document.exitFullscreen().catch(() => {});
         }
         renderExamCards();
 
-        // Mở Modal Kết Quả Bài Thi hiện đại thay thế hoàn toàn cho alert() "Trang này cho biết"
+        // Mở Modal Kết Quả Bài Thi hiện đại:
+        // Hiển thị thông số thật và khi đóng sẽ không lưu gì nếu là thi thử
         openExamResultModal({
           isOfficial: isOfficialExam,
           score: score,
@@ -8029,6 +9151,7 @@
         const correctEl = document.getElementById('erModalCorrectCount');
         const accEl = document.getElementById('erModalAccuracy');
         const noticeEl = document.getElementById('erModalNotice');
+        const badgeEl = document.getElementById('erModalBadge');
 
         const scoreNum = parseFloat(res.score || 0);
         if (titleEl) {
@@ -8039,13 +9162,30 @@
           textEl.textContent = scoreNum >= 8.5 ? 'Xuất sắc! Làm rất tốt!' : (scoreNum >= 7.0 ? 'Khá giỏi! Cố gắng phát huy!' : (scoreNum >= 5.0 ? 'Đạt yêu cầu! Cần ôn luyện thêm!' : 'Chưa đạt! Hãy ôn luyện lại các câu sai!'));
           textEl.style.color = scoreNum >= 5.0 ? '#15803d' : '#dc2626';
         }
+        if (badgeEl) {
+          if (scoreNum >= 5.0) {
+            badgeEl.style.background = '#ecfdf5';
+            badgeEl.style.color = '#059669';
+            badgeEl.style.border = '2.5px solid #a7f3d0';
+            badgeEl.style.boxShadow = '0 4px 16px rgba(5, 150, 105, 0.2)';
+          } else {
+            badgeEl.style.background = '#fef2f2';
+            badgeEl.style.color = '#ef4444';
+            badgeEl.style.border = '2.5px solid #fecaca';
+            badgeEl.style.boxShadow = '0 4px 16px rgba(239, 68, 68, 0.2)';
+          }
+        }
         if (correctEl) correctEl.textContent = `${res.correctCount} / ${res.total} câu`;
         const pct = res.total > 0 ? Math.round((res.correctCount / res.total) * 100) : 0;
         if (accEl) accEl.textContent = `${pct}%`;
 
         if (noticeEl) {
           if (res.isOfficial) {
-            noticeEl.innerHTML = `<strong>Thí sinh:</strong> ${res.candidateName}<br/>Hệ thống đã ghi nhận kết quả và lưu vào bảng điểm của Giáo viên thành công.`;
+            if (res.isCheatingCaught) {
+              noticeEl.innerHTML = `<span style="color: #dc2626; font-weight: 700;">Hệ thống đã tự động thu bài và khóa bài thi do phát hiện 3 lần vi phạm quy chế thi. Bạn không thể thi tiếp bài này.</span><br/><strong>Thí sinh:</strong> ${res.candidateName}`;
+            } else {
+              noticeEl.innerHTML = `<strong>Thí sinh:</strong> ${res.candidateName}<br/>Hệ thống đã ghi nhận kết quả và lưu vào bảng điểm của Giáo viên thành công. Bài thi này đã được khóa lại cho tài khoản của bạn (mỗi tài khoản chỉ được làm 1 lần duy nhất).`;
+            }
           } else {
             noticeEl.innerHTML = `<strong>Lưu ý:</strong> Chế độ thi thử hiển thị đánh giá điểm số ngay sau khi nộp bài và không lưu tiến trình. Bạn có thể xem lại và rèn luyện các câu hỏi làm sai ở mục Ôn Luyện.`;
           }
@@ -8057,6 +9197,14 @@
       window.closeExamResultModal = function () {
         const modal = document.getElementById('modalExamResult');
         if (modal) modal.classList.remove('active');
+        document.body.classList.remove('in-fullscreen-room');
+        document.documentElement.classList.remove('in-fullscreen-room');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        renderExamCards();
+        if (typeof renderStudentProfileHistory === 'function') {
+          renderStudentProfileHistory();
+        }
       };
 
       // Toast thông báo hiện đại thay thế hoàn toàn cho alert() mặc định của trình duyệt
@@ -8132,6 +9280,9 @@
 
       function saveWrongQuestionToVault(qObj) {
         if (!qObj) return;
+        const user = getEffectiveUser();
+        // KHÁCH: KHÔNG LƯU VÀO TỦ CÂU SAI
+        if (!user || user.role === 'guest') return;
         const list = getWrongQuestions();
         if (!list.some(item => item.q === qObj.q)) {
           list.push(qObj);
@@ -8224,6 +9375,10 @@
       let currentTargetPinExam = null;
 
       window.openPinModal = function (examId, title, correctPin) {
+        if (isOfficialExamCompletedByCurrentUser(examId)) {
+          alert('Bài thi này bạn đã tham gia và nộp bài rồi! Mỗi tài khoản chỉ được thi 1 lần duy nhất và bài thi hiện đã bị khóa.');
+          return;
+        }
         const allExams = getAllExams();
         const exam = allExams.find(e => e.id === examId) || { id: examId, title, pin: correctPin, questions: [] };
         currentTargetPinExam = { examId, title, correctPin, exam };
@@ -8390,7 +9545,7 @@
         }
 
         const durationMinutes = exam.duration || 45;
-        launchFullscreenExamRoom(exam, selectedQ, durationMinutes, candidateName);
+        launchFullscreenOfficialExamRoom(exam, selectedQ, durationMinutes, candidateName);
       });
 
       // 11. BÀI TẬP THỰC HÀNH (WORD, EXCEL, PPT) & BẢNG ĐIỂM GIÁO VIÊN
@@ -8512,11 +9667,11 @@
           } else {
             // Học viên hoặc Giáo viên khi ở catalog bên ngoài: giao diện đồng nhất như học viên
             if (studentSub) {
-              const isGraded = studentSub.score !== 'Chưa chấm' && studentSub.score !== undefined && studentSub.score !== '';
+              const isGraded = isLabSubmissionGraded(studentSub);
               if (isGraded) {
                 personalStatusPillHtml = '';
                 actionBtnHtml = `
-                  <button type="button" class="btn-submit-lab" onclick="openStudentLabSubPage('${lab.id}')" style="background: #059669;">
+                  <button type="button" class="btn-submit-lab" onclick="openStudentLabSubPage('${lab.id}')" style="background: #059669;" title="Xem điểm số và lời phê nhận xét từ Giáo viên">
                     <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
                     Xem Điểm &amp; Lời Nhận Xét
                   </button>
@@ -8524,9 +9679,9 @@
               } else {
                 personalStatusPillHtml = '';
                 actionBtnHtml = `
-                  <button type="button" class="btn-submit-lab" onclick="openStudentLabSubPage('${lab.id}')" style="background: #d97706;">
+                  <button type="button" class="btn-submit-lab" onclick="openStudentLabSubPage('${lab.id}')" style="background: #d97706;" title="Xem lại bài đã nộp hoặc nộp lại tệp mới">
                     <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                    Xem Bài Đã Nộp
+                    Xem Bài &amp; Nộp Lại
                   </button>
                 `;
               }
@@ -9227,7 +10382,7 @@
           const evalBox = document.getElementById('slvEvaluationBox');
 
           if (mySub) {
-            const isGraded = mySub.score !== 'Chưa chấm' && mySub.score !== undefined && mySub.score !== '';
+            const isGraded = isLabSubmissionGraded(mySub);
             
             // Khóa chức năng nộp bài nếu bài này đã được giáo viên chấm điểm (theo ảnh 3)
             if (isGraded) {
@@ -9289,8 +10444,8 @@
                     </div>
                     <div style="font-size: 0.8rem; color: #166534; font-weight: 700;">Điểm số chính thức của bài thực hành</div>
                   </div>
-                  <div class="lssc-feedback" style="margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: #eff6ff; border: 1px solid #bfdbfe; font-size: 0.85rem; line-height: 1.55; color: #1e3a8a;">
-                    <div style="font-weight: 800; color: #1d4ed8; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                  <div class="lssc-feedback" style="margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: #f0f9ff; border: 1px solid #bae6fd; font-size: 0.85rem; line-height: 1.55; color: #0f172a;">
+                    <div style="font-weight: 800; color: #0369a1; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
                       <svg class="icon-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
                       Lời phê của Giáo viên:
                     </div>
@@ -9753,7 +10908,7 @@
               </td>
               <td style="padding: 14px 16px;">
                 ${hasFile ? `
-                  <button type="button" onclick="viewOrDownloadSubmittedFile('${sub.id}')" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; border-radius: 8px; font-size: 0.82rem; font-weight: 700; cursor: pointer;">
+                  <button type="button" onclick="viewOrDownloadSubmittedFile('${sub.id}')" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd; border-radius: 8px; font-size: 0.82rem; font-weight: 700; cursor: pointer;">
                     <svg class="icon-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     ${sub.fileName || 'Tệp bài nộp'}
                   </button>
@@ -9877,7 +11032,7 @@
             container.style.padding = '40px 20px';
             container.innerHTML = `
               <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 32px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
-                <div style="width: 56px; height: 56px; border-radius: 14px; background: #eff6ff; color: #2563eb; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                <div style="width: 56px; height: 56px; border-radius: 14px; background: #f0f9ff; color: #0284c7; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
                   <svg class="icon-svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                 </div>
                 <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">${fileName}</h3>
@@ -9949,6 +11104,150 @@
         }
       };
 
+            // Hàm tạo và tải file Microsoft Excel (.xlsx) chuẩn OpenXML bằng JSZip có tự động giãn cách độ rộng cột
+      function createAndDownloadXlsx(filename, sheetName, rows) {
+        if (typeof JSZip === 'undefined') {
+          alert('Thư viện JSZip chưa tải xong, vui lòng thử lại sau giây lát!');
+          return;
+        }
+        const zip = new JSZip();
+        const colNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"];
+
+        // 1. Tự động tính toán giãn cách độ rộng cột tối ưu cho từng cột
+        const defaultMinWidths = [8, 25, 16, 22, 22, 38];
+        const numCols = rows && rows[0] ? rows[0].length : 7;
+        const colsXmlList = [];
+
+        for (let c = 0; c < numCols; c++) {
+          let maxLen = 0;
+          rows.forEach(r => {
+            const val = r[c] != null ? String(r[c]) : '';
+            if (val.length > maxLen) maxLen = val.length;
+          });
+          const minW = defaultMinWidths[c] || 15;
+          const autoW = Math.max(minW, Math.min(65, Math.ceil(maxLen * 1.35) + 4));
+          const colIndex = c + 1;
+          colsXmlList.push(`<col min="${colIndex}" max="${colIndex}" width="${autoW}" customWidth="1"/>`);
+        }
+
+        // 2. Tạo nội dung các dòng dữ liệu với chiều cao dòng thoáng đãng
+        const sheetRowsXml = rows.map((row, rIdx) => {
+          const rowNum = rIdx + 1;
+          const isHeader = rIdx === 0;
+          const rowHeight = isHeader ? '28' : '22';
+          const cellsXml = row.map((val, cIdx) => {
+            const colLetter = colNames[cIdx] || 'A';
+            const cellRef = colLetter + rowNum;
+            if (typeof val === 'number') {
+              return `<c r="${cellRef}"><v>${val}</v></c>`;
+            }
+            const strVal = String(val == null ? '' : val)
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&apos;');
+            return `<c r="${cellRef}" t="inlineStr"><is><t>${strVal}</t></is></c>`;
+          }).join('');
+          return `<row r="${rowNum}" ht="${rowHeight}" customHeight="1">${cellsXml}</row>`;
+        }).join('');
+
+        const sheetXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+    <cols>
+        ${colsXmlList.join('')}
+    </cols>
+    <sheetData>
+        ${sheetRowsXml}
+    </sheetData>
+</worksheet>`;
+
+        const contentTypesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+    <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+    <Default Extension="xml" ContentType="application/xml"/>
+    <Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+    <Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+</Types>`;
+
+        const relsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+    <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
+</Relationships>`;
+
+        const wbRelsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+    <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
+</Relationships>`;
+
+        const safeSheetName = (sheetName || 'Bang_Diem').replace(/[^a-zA-Z0-9_]/g, '_').substring(0, 31);
+        const workbookXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+    <sheets>
+        <sheet name="${safeSheetName}" sheetId="1" r:id="rId1"/>
+    </sheets>
+</workbook>`;
+
+        zip.file('[Content_Types].xml', contentTypesXml);
+        zip.file('_rels/.rels', relsXml);
+        zip.file('xl/_rels/workbook.xml.rels', wbRelsXml);
+        zip.file('xl/workbook.xml', workbookXml);
+        zip.file('xl/worksheets/sheet1.xml', sheetXml);
+
+        zip.generateAsync({ type: 'blob', mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+          .then(function (blob) {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename.endsWith('.xlsx') ? filename : filename + '.xlsx';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+          })
+          .catch(function (err) {
+            console.error('Lỗi xuất XLSX:', err);
+            alert('Không thể tạo file Excel XLSX!');
+          });
+      }
+
+      // Xuất bảng điểm bài thực hành dạng Microsoft Excel chuẩn (.xlsx)
+      window.exportLabGradebookToExcel = function () {
+        if (!currentGradingLabId) return;
+        const subs = getLabSubmissions(currentGradingLabId);
+        const labs = getLabs();
+        const lab = labs.find(l => l.id === currentGradingLabId) || { title: 'Bai_Thuc_Hanh' };
+
+        if (!subs || subs.length === 0) {
+          alert('Chưa có bài nộp nào để xuất bảng điểm!');
+          return;
+        }
+
+        const headers = ['STT', 'Họ và Tên', 'Tài Khoản', 'Thời Gian Nộp', 'Điểm Số (Thang 10)', 'Lời Phê Nhận Xét'];
+        const rows = [headers];
+
+        subs.forEach((s, idx) => {
+          const studentName = s.studentName || s.name || '';
+          const username = s.studentUsername || '';
+          const submitTime = s.submittedAt || s.date || '';
+          const score = (s.score !== null && s.score !== undefined && s.score !== '') ? s.score : 'Chưa chấm';
+          const feedback = s.feedback || '';
+
+          rows.push([
+            idx + 1,
+            studentName,
+            username,
+            submitTime,
+            score,
+            feedback
+          ]);
+        });
+
+        const safeTitle = (lab.title || 'Bai_Thuc_Hanh').replace(/[^a-zA-Z0-9À-ɏẠ-ỹ]/g, '_');
+        createAndDownloadXlsx(`Bang_Diem_${safeTitle}.xlsx`, 'Bang_Diem', rows);
+      };
+
+      // Xuất bảng điểm dạng CSV chuẩn UTF-8
       window.exportLabGradebookToCsv = function () {
         if (!currentGradingLabId) return;
         const subs = getLabSubmissions(currentGradingLabId);
@@ -9960,26 +11259,27 @@
           return;
         }
 
-        const headers = ['STT', 'Ho_va_Ten', 'Tai_Khoan', 'Thoi_Gian_Nop', 'Tep_Dinh_Kem', 'Diem_So', 'Loi_Phe'];
+        const headers = ['STT', 'Họ và Tên', 'Tài Khoản', 'Thời Gian Nộp', 'Điểm Số (Thang 10)', 'Lời Phê Nhận Xét'];
         const rows = subs.map((s, idx) => [
           idx + 1,
           `"${(s.studentName || s.name || '').replace(/"/g, '""')}"`,
           `"${(s.studentUsername || '').replace(/"/g, '""')}"`,
           `"${s.submittedAt || s.date || ''}"`,
-          `"${(s.fileName || '').replace(/"/g, '""')}"`,
           s.score !== null && s.score !== undefined ? s.score : '',
           `"${(s.feedback || '').replace(/"/g, '""')}"`
         ]);
 
-        const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+        const csvContent = '\uFEFFsep=,\r\n' + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `Bang_Diem_${lab.title.replace(/[^a-zA-Z0-9]/g, '_')}.csv`;
+        const safeTitle = (lab.title || 'Bai_Thuc_Hanh').replace(/[^a-zA-Z0-9À-ɏẠ-ỹ]/g, '_');
+        link.download = `Bang_Diem_${safeTitle}.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        URL.revokeObjectURL(url);
       };
 
       function renderGradebookTable() {
@@ -10141,30 +11441,21 @@
 
       document.getElementById('btnExportExcel')?.addEventListener('click', () => {
         const subs = getSubmissions();
-        let csvContent = '\uFEFFSTT,Họ và Tên,Phân Loại,Bài Thi / Thực Hành,Thời Gian Nộp,Tệp Đính Kèm,Điểm Số,Lời Phê Nhận Xét\n';
+        const headers = ['STT', 'Họ và Tên', 'Phân Loại', 'Bài Thi / Thực Hành', 'Thời Gian Nộp', 'Tệp Đính Kèm', 'Điểm Số', 'Lời Phê Nhận Xét'];
+        const rows = [headers];
         subs.forEach((s, idx) => {
-          const row = [
+          rows.push([
             idx + 1,
-            `"${(s.name || '').replace(/"/g, '""')}"`,
-            `"${(s.role || '').replace(/"/g, '""')}"`,
-            `"${(s.title || '').replace(/"/g, '""')}"`,
-            `"${(s.submittedAt || '').replace(/"/g, '""')}"`,
-            `"${(s.fileName || '').replace(/"/g, '""')}"`,
-            `"${(s.score || '').replace(/"/g, '""')}"`,
-            `"${(s.feedback || '').replace(/"/g, '""')}"`
-          ];
-          csvContent += row.join(',') + '\n';
+            s.name || '',
+            s.role || '',
+            s.title || '',
+            s.submittedAt || '',
+            s.fileName || '',
+            s.score || '',
+            s.feedback || ''
+          ]);
         });
-
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `Bang_Diem_Tin_Hoc_${Date.now()}.csv`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        createAndDownloadXlsx(`Bang_Diem_Tong_Hop_${Date.now()}.xlsx`, 'Bang_Diem', rows);
       });
 
       // ========================================================================
@@ -10444,9 +11735,21 @@
       window.handleStudioMetadataConfigClick = function () { window.openStudioMetadataConfig(); };
       window.openStudioMetadataConfig = function () {
         if (!currentStudioExam) return;
-        document.getElementById('cfgTitleInput').value = currentStudioExam.title || '';
-        document.getElementById('cfgDocTypeSelect').value = currentStudioExam.docType || currentStudioExam.type || 'baitap';
-        document.getElementById('cfgDescInput').value = currentStudioExam.desc || '';
+        const titleInput = document.getElementById('cfgTitleInput');
+        if (titleInput) titleInput.value = currentStudioExam.title || '';
+
+        const selectEl = document.getElementById('cfgDocTypeSelect');
+        if (selectEl) {
+          const targetType = currentStudioExam.docType || currentStudioExam.type || 'baitap';
+          selectEl.value = targetType;
+          // Nếu giá trị hiện tại không khớp bất kỳ option nào, tự động chọn option đầu tiên thay vì để trống
+          if (!selectEl.value && selectEl.options.length > 0) {
+            selectEl.selectedIndex = 0;
+          }
+        }
+
+        const descInput = document.getElementById('cfgDescInput');
+        if (descInput) descInput.value = currentStudioExam.desc || '';
 
         currentConfigCoverUrl = currentStudioExam.coverUrl || '';
         if (currentConfigCoverUrl) {
@@ -10469,7 +11772,6 @@
 
         document.getElementById('modalExamConfig')?.classList.add('active');
         window.setupDynamicRequiredStars?.();
-        window.setupDynamicRequiredStars?.();
       };
 
       document.getElementById('btnCloseExamConfig')?.addEventListener('click', () => {
@@ -10483,20 +11785,17 @@
       // XỬ LÝ NÚT "LƯU THIẾT LẬP" KHI SỬA TRONG STUDIO (MODAL 2)
       window.saveStudioMetadataConfig = function () {
         if (!currentStudioExam) return;
-        const title = document.getElementById('cfgTitleInput').value.trim();
-        const docType = document.getElementById('cfgDocTypeSelect').value;
-        const desc = document.getElementById('cfgDescInput').value.trim();
+        const titleEl = document.getElementById('cfgTitleInput');
+        const docTypeEl = document.getElementById('cfgDocTypeSelect');
+        const descEl = document.getElementById('cfgDescInput');
+
+        const title = titleEl ? titleEl.value.trim() : '';
+        const docType = (docTypeEl && docTypeEl.value) ? docTypeEl.value : 'baitap';
+        const desc = descEl ? descEl.value.trim() : '';
 
         if (!title) {
-          document.getElementById('cfgTitleInput')?.focus();
-          return;
-        }
-        if (!docType) {
-          document.getElementById('cfgDocTypeSelect')?.focus();
-          return;
-        }
-        if (!desc) {
-          document.getElementById('cfgDescInput')?.focus();
+          alert('Vui lòng nhập Tên đề ôn luyện / thi thử!');
+          titleEl?.focus();
           return;
         }
 
@@ -10506,7 +11805,8 @@
           giuaky: 'ĐỀ THI GIỮA KỲ',
           cuoiky: 'ĐỀ THI CUỐI KỲ',
           tonghop: 'ĐỀ THI TỔNG HỢP',
-          thithu: 'ĐỀ THI THỬ'
+          thithu: 'ĐỀ THI THỬ',
+          khac: 'BỘ ĐỀ'
         };
 
         // Cập nhật thông tin vào đối tượng đang soạn
@@ -10516,11 +11816,30 @@
         currentStudioExam.desc = desc;
         currentStudioExam.coverUrl = currentConfigCoverUrl;
 
-        // Cập nhật ngay lên thanh tiêu đề của Studio
-        document.getElementById('studioExamTitleText').textContent = title;
-        document.getElementById('studioDocTypeBadge').textContent = docTypeNames[docType] || 'BỘ ĐỀ';
+        // Lưu ngay vào localStorage nếu đề thi này đã tồn tại trong danh sách
+        try {
+          const raw = localStorage.getItem('thvp_custom_exams');
+          let customList = raw ? JSON.parse(raw) : [];
+          const existingIdx = customList.findIndex(e => e.id === currentStudioExam.id);
+          if (existingIdx !== -1) {
+            customList[existingIdx].title = title;
+            customList[existingIdx].docType = docType;
+            customList[existingIdx].type = docType;
+            customList[existingIdx].desc = desc;
+            customList[existingIdx].coverUrl = currentConfigCoverUrl;
+            localStorage.setItem('thvp_custom_exams', JSON.stringify(customList));
+            renderExamCards?.();
+            renderTeacherProfileExams?.();
+          }
+        } catch (e) {}
 
-        // Đóng modal 2
+        // Cập nhật ngay lên thanh tiêu đề của Studio
+        const studioTitleEl = document.getElementById('studioExamTitleText');
+        if (studioTitleEl) studioTitleEl.textContent = title;
+        const studioDocTypeEl = document.getElementById('studioDocTypeBadge');
+        if (studioDocTypeEl) studioDocTypeEl.textContent = docTypeNames[docType] || 'BỘ ĐỀ';
+
+        // Đóng modal cấu hình
         document.getElementById('modalExamConfig')?.classList.remove('active');
       };
 
@@ -10555,8 +11874,8 @@
         if (scopeBadge) {
           if (currentStudioExam.accessScope === 'lms_student') {
             scopeBadge.textContent = `MÃ LMS: ${currentStudioExam.accessCode || 'HỌC VIÊN'}`;
-            scopeBadge.style.background = '#eff6ff';
-            scopeBadge.style.color = '#1d4ed8';
+            scopeBadge.style.background = '#f0f9ff';
+            scopeBadge.style.color = '#0369a1';
           } else {
             scopeBadge.textContent = 'CÔNG KHAI';
             scopeBadge.style.background = '#dcfce7';
@@ -10629,7 +11948,7 @@
 
           const expText = q.explanation || q.explain || '';
           const explainHtml = expText ? `
-            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 8px 12px; font-size: 0.78rem; color: #1e40af; margin-top: 8px;">
+            <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 8px 12px; font-size: 0.78rem; color: #075985; margin-top: 8px;">
               <strong>Giải thích:</strong> ${expText}
             </div>
           ` : '';
@@ -10638,7 +11957,7 @@
             <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.02);">
               <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px;">
                 <div style="font-size: 0.88rem; font-weight: 800; color: #0f172a; line-height: 1.45;">
-                  <span style="color: #4f46e5; margin-right: 4px;">Câu ${idx + 1}:</span> ${q.q}
+                  <span style="color: #0284c7; margin-right: 4px;">Câu ${idx + 1}:</span> ${q.q}
                 </div>
                 <div style="display: flex; gap: 6px; flex-shrink: 0;">
                   <button type="button" class="btn-lab-tool" onclick="editStudioQuestion(${idx})" title="Chỉnh sửa câu hỏi này" style="padding: 4px 8px; font-size: 0.75rem;">
@@ -10906,6 +12225,7 @@
       };
 
       window.deleteLabItem = function (labId) {
+        if (!confirm('Bạn có chắc chắn muốn xóa bài thực hành này?')) return;
         let list = getLabs();
         list = list.filter(l => l.id !== labId);
         saveLabs(list);
@@ -10921,17 +12241,22 @@
         renderLabs();
         renderTeacherProfileLabs();
         renderStudentProfileLabs?.();
-        applyRoleBasedUI();
+
+        const countBadge = document.getElementById('teacherLabsCount');
+        if (countBadge) countBadge.textContent = String(list.length);
       };
 
       window.deleteCustomExam = function (examId) {
+        if (!confirm('Bạn có chắc chắn muốn xóa đề thi này?')) return;
         let list = getCustomExams();
         list = list.filter(e => e.id !== examId);
         localStorage.setItem('thvp_custom_exams', JSON.stringify(list));
         renderExamCards();
         renderTeacherProfileExams();
         renderStudentProfileLabs?.();
-        applyRoleBasedUI();
+
+        const countBadge = document.getElementById('teacherExamsCount');
+        if (countBadge) countBadge.textContent = String(list.length);
       };
 
       // ========================================================================
@@ -11499,7 +12824,7 @@
                   <svg class="icon-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                   Sửa Đề Bài
                 </button>
-                <button type="button" class="btn-ec-manage-edit" onclick="openLabGradingPage('${lab.id}')" style="background: #eff6ff; color: #0284c7; border-color: #bfdbfe; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                <button type="button" class="btn-ec-manage-edit" onclick="openLabGradingPage('${lab.id}')" style="background: #f0f9ff; color: #0284c7; border-color: #bae6fd; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
                   <svg class="icon-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 12h6M9 16h6"/></svg>
                   Chấm Bài (${pendingLabCount})
                 </button>
@@ -11527,7 +12852,7 @@
         if (attemptedExams.length === 0) {
           container.innerHTML = `
             <div class="profile-empty-state">
-              <div class="pes-icon-box" style="background: #eff6ff; color: #0284c7;">
+              <div class="pes-icon-box" style="background: #f0f9ff; color: #0284c7;">
                 <svg class="icon-svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </div>
               <h3 class="pes-title">Chưa có lượt ôn / thi trắc nghiệm nào</h3>
@@ -11608,12 +12933,12 @@
         if (submittedLabCards.length === 0) {
           container.innerHTML = `
             <div class="profile-empty-state">
-              <div class="pes-icon-box" style="background: #fdf4ff; color: #c026d3;">
+              <div class="pes-icon-box" style="background: #e0f2fe; color: #0284c7;">
                 <svg class="icon-svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
               </div>
               <h3 class="pes-title">Chưa làm bài thực hành nào</h3>
               <p class="pes-desc">Bạn chưa làm bài thực hành Word, Excel, PowerPoint hay bài thực hành khác... . Hãy mở mục Thực Hành để xem đề, làm  và nộp bài nhé!</p>
-              <button type="button" class="btn-create-exam" onclick="switchMainTab('lab')" style="background: #c026d3;">
+              <button type="button" class="btn-create-exam" onclick="switchMainTab('lab')" style="background: #0284c7;">
                 XEM BÀI TẬP THỰC HÀNH →
               </button>
             </div>
@@ -11646,14 +12971,14 @@
               `;
 
               const actionBtnHtml = isGraded ? `
-                <button type="button" class="btn-submit-lab" onclick="openStudentLabSubPage('${lab.id}')" style="background: #059669;">
+                <button type="button" class="btn-submit-lab" onclick="openStudentLabSubPage('${lab.id}')" style="background: #059669;" title="Xem điểm số và lời phê nhận xét từ Giáo viên">
                   <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
                   Xem Điểm &amp; Lời Nhận Xét
                 </button>
               ` : `
-                <button type="button" class="btn-submit-lab" onclick="openStudentLabSubPage('${lab.id}')" style="background: #d97706;">
+                <button type="button" class="btn-submit-lab" onclick="openStudentLabSubPage('${lab.id}')" style="background: #d97706;" title="Xem lại bài đã nộp hoặc nộp lại tệp mới">
                   <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                  Xem Bài Đã Nộp
+                  Xem Bài &amp; Nộp Lại
                 </button>
               `;
 
@@ -11799,15 +13124,39 @@
         });
       });
 
+      // Cờ phân biệt lần đầu mở trang (từ trang chủ sang / F5) hay khách vừa đăng nhập tại trang
+      let isInitialAuthResolved = false;
+
       // Khi người dùng đăng nhập / đăng ký hoặc bấm nút Đăng xuất trên Header -> Tự động đồng bộ giao diện Học viên / Giáo viên / Khách
       window.addEventListener('thvp:auth_change', function (e) {
+        const wasWaitingLogin = window._waitingForModalLogin === true;
         window._waitingForModalLogin = false;
+        const prevRole = simulatedRole;
         const authUser = e.detail && e.detail.user;
-        if (authUser) {
-          const targetRole = (authUser.role === 'admin' || authUser.role === 'teacher') ? 'teacher' : 'student';
-          window.setSimulatedRole(targetRole);
-        } else {
-          window.setSimulatedRole('guest');
+        const targetRole = authUser ? ((authUser.role === 'admin' || authUser.role === 'teacher') ? 'teacher' : 'student') : 'guest';
+
+        // Cập nhật phân quyền & giao diện (không ép chuyển tab)
+        window.setSimulatedRole(targetRole, false);
+
+        if (!isInitialAuthResolved) {
+          // Lần đầu tải trang (từ Trang chủ sang hoặc F5): LUÔN ở giao diện chính Thư viện đề thi (Ảnh 3 & Ảnh 4)
+          isInitialAuthResolved = true;
+          switchMainTab('online');
+        } else if (wasWaitingLogin || (prevRole === 'guest' && targetRole !== 'guest')) {
+          // Chỉ DUY NHẤT trường hợp người dùng đang là Khách trên trang này vừa Đăng nhập thành công -> Mới tự động vào Hồ sơ
+          switchMainTab('profile');
+        } else if (targetRole === 'guest') {
+          // Khi đăng xuất -> Quay lại giao diện Trắc nghiệm Online
+          switchMainTab('online');
+        }
+      });
+
+      // Khi bấm nút điều hướng "ÔN LUYỆN & THI THỬ" trên Header -> Luôn đưa về giao diện chính (Ảnh 3 & 4)
+      document.querySelector('header a[href="on-luyen-thi-thu.html"]')?.addEventListener('click', function (e) {
+        if (!document.getElementById('viewOnlineExam')?.classList.contains('active')) {
+          e.preventDefault();
+          switchMainTab('online');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       });
 
@@ -12301,7 +13650,7 @@
 
             <textarea class="form-control-input" id="studioQuestionsTextInput" rows="12" placeholder="Dán danh sách câu hỏi theo cú pháp chuẩn:&#10;Câu 1: Phím tắt lưu văn bản trong Microsoft Word là gì?&#10;A. Ctrl + C&#10;B. Ctrl + S&#10;C. Ctrl + V&#10;D. Ctrl + P&#10;Đáp án: B&#10;Giải thích: Dùng tổ hợp Ctrl + S để lưu tài liệu nhanh chóng." style="font-family: monospace; font-size: 0.8rem; resize: vertical; line-height: 1.45;"></textarea>
 
-            <button type="button" class="btn-submit-modal" onclick="parseAndAppendStudioText()" style="width: 100%; margin-top: 10px; background: #4f46e5; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+            <button type="button" class="btn-submit-modal" onclick="parseAndAppendStudioText()" style="width: 100%; margin-top: 10px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
               <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               <span>Chuyển Đổi &amp; Nạp Vào Kho Câu Hỏi</span>
             </button>
@@ -12366,7 +13715,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0;">
           <div style="display: flex; align-items: center; gap: 10px;">
             <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0;">DANH SÁCH CÂU HỎI TRONG BỘ ĐỀ</h3>
-            <span class="badge-count-pill" id="studioTotalQBadge" style="background: #e0e7ff; color: #4338ca; font-weight: 800; padding: 4px 10px; border-radius: 999px; font-size: 0.8rem;">0 câu hỏi</span>
+            <span class="badge-count-pill" id="studioTotalQBadge" style="background: #e0f2fe; color: #0284c7; font-weight: 800; padding: 4px 10px; border-radius: 999px; font-size: 0.8rem;">0 câu hỏi</span>
           </div>
           <button type="button" class="btn-lab-tool danger" onclick="clearAllStudioQuestions()" style="padding: 6px 12px;">
             <svg class="icon-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>

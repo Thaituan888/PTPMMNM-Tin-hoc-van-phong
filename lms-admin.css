@@ -1,0 +1,81 @@
+.lms-admin-page { min-height: 100vh; display: flex; flex-direction: column; background: #f8fafc; }
+.lms-admin-page main { flex: 1; width: min(100%,1240px); padding: 32px 24px 56px; margin: 0 auto; }
+.lms-account { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding: 14px 18px; margin: 0 0 24px; border: 1px solid #bae6fd; border-radius: 14px; background: #fff; color: #334155; font-size: 0.9rem; }
+.lms-account a { color: #0284c7; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.lms-account button { border: 1px solid #bae6fd; border-radius: 10px; padding: 8px 12px; color: #075985; font: inherit; font-weight: 600; }
+.lms-account :focus-visible { outline: 3px solid #0284c7; outline-offset: 3px; }
+.lms-account button:disabled { opacity: 0.6; cursor: wait; }
+[data-lms-account]:empty, [data-lms-account][hidden], .site-header [data-lms-account-link][hidden] { display: none !important; }
+.site-header .lms-account-menu { position: relative; flex-shrink: 0; color: #075985; }
+.site-header .lms-account-menu summary { cursor: pointer; list-style: none; border: 1px solid #bae6fd; border-radius: 24px; padding: 12px 18px; background: #fff; font-weight: 700; max-width: 210px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.site-header .lms-account-menu summary::-webkit-details-marker { display: none; }
+.site-header .lms-account-menu summary::after { content: ' ▾'; }
+.site-header .lms-account-panel { position: absolute; right: 0; top: calc(100% + 10px); width: min(260px,calc(100vw - 32px)); padding: 10px; background: #fff; border: 1px solid #bae6fd; border-radius: 14px; box-shadow: 0 8px 24px #07598526; z-index: 1200; display: grid; gap: 4px; }
+.site-header .lms-account-panel a, .site-header .lms-account-panel button { display: block; width: 100%; text-align: left; padding: 12px; color: #075985; border-radius: 8px; font: inherit; font-weight: 600; white-space: normal; }
+.site-header .lms-account-panel span { padding: 8px 12px; color: #64748b; font-size: .85rem; }
+.site-header .lms-account-panel a:hover, .site-header .lms-account-panel button:hover { background: #e0f2fe; }
+.site-header .lms-account-menu :focus-visible { outline: 3px solid #0284c7; outline-offset: 2px; }
+@media(max-width:700px) { .site-header .lms-account-menu summary { max-width: min(160px,42vw); font-size: .8rem; padding: 10px 12px; } }
+.lms-admin-page [hidden] { display: none !important; }
+.lms-admin-page .lms-admin-back { display: inline-block; color: #0284c7; margin-bottom: 24px; }
+.lms-admin-page h1 { font-size: clamp(1.6rem,4vw,2.3rem); line-height: 1.3; margin-bottom: 12px; }
+.lms-admin-page h2 { font-size: 1.3rem; margin-bottom: 16px; }
+.lms-admin-page h3 { margin: 24px 0 12px; }
+.lms-admin-page .lms-admin-box { padding: 28px; border: 1px solid #bae6fd; border-radius: 20px; background: #fff; margin-top: 24px; }
+.lms-admin-page #lms-admin-login { max-width: 620px; }
+.lms-admin-page .lms-admin-intro { color: #475569; margin-bottom: 24px; }
+.lms-admin-page .lms-admin-field { margin-bottom: 20px; }
+.lms-admin-page label { display: block; color: #334155; font-weight: 600; margin-bottom: 8px; }
+.lms-admin-page input, .lms-admin-page select { width: 100%; border: 1px solid #94a3b8; border-radius: 10px; min-height: 46px; padding: 10px 12px; background: white; color: #334155; font: inherit; }
+.lms-admin-page .lms-admin-action { padding: 12px 20px; border-radius: 10px; background: #0284c7; color: #fff; font: inherit; font-weight: 700; }
+.lms-admin-page .lms-admin-action:disabled { background: #64748b; cursor: default; }
+.lms-admin-page :focus-visible { outline: 3px solid #0284c7; outline-offset: 3px; }
+.lms-admin-page .lms-admin-message { color: #9a3412; margin: 16px 0; overflow-wrap: anywhere; }
+.lms-admin-page #lms-admin-filters { display: grid; grid-template-columns: 1fr 1fr auto; align-items: end; gap: 16px; margin: 24px 0; }
+.lms-admin-page .lms-admin-table-wrap { overflow-x: auto; }
+.lms-admin-page table { width: 100%; border-collapse: collapse; background: #fff; text-align: left; }
+.lms-admin-page th, .lms-admin-page td { padding: 14px 12px; border-bottom: 1px solid #e2e8f0; vertical-align: top; color: #334155; }
+.lms-admin-page th { background: #e0f2fe; color: #075985; font-size: 0.85rem; }
+.lms-admin-page td { font-size: 0.88rem; overflow-wrap: anywhere; }
+.lms-admin-page td strong { display: block; color: #075985; margin-bottom: 4px; }
+.lms-admin-page .lms-admin-pagination { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.lms-admin-page dl { display: grid; grid-template-columns: minmax(130px,1fr) minmax(0,2fr); gap: 10px 20px; }
+.lms-admin-page dt { color: #64748b; }
+.lms-admin-page dd { margin: 0; color: #075985; font-weight: 600; overflow-wrap: anywhere; }
+.lms-admin-page .lms-admin-gallery { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+.lms-admin-page .lms-admin-gallery article { padding: 16px; background: #f0f9ff; border-radius: 12px; color: #475569; }
+.lms-admin-page .lms-admin-gallery img { width: 100%; height: 260px; object-fit: contain; background: #fff; margin: 12px 0; }
+.lms-admin-page #lms-admin-detail { scroll-margin-top: 110px; }
+.lms-admin-page textarea { width: 100%; padding: 12px; border: 1px solid #94a3b8; border-radius: 10px; font: inherit; resize: vertical; color: #334155; }
+.lms-admin-page .lms-review-buttons { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
+.lms-admin-page .lms-review-danger { background: #b91c1c; }
+.lms-admin-page #lms-review-form { padding: 20px; margin-top: 20px; border: 1px solid #bae6fd; border-radius: 14px; background: #f0f9ff; }
+.lms-admin-page #lms-review-snapshot { margin: 12px 0 24px; font-weight: 600; color: #075985; overflow-wrap: anywhere; }
+.lms-admin-page .lms-review-check { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 24px; }
+.lms-admin-page .lms-review-check input { width: 22px; min-width: 22px; min-height: 22px; margin-top: 3px; }
+.lms-admin-page #lms-review-history article { padding: 16px; margin-bottom: 16px; border-left: 3px solid #0284c7; background: #f0f9ff; overflow-wrap: anywhere; }
+.lms-admin-page #lms-review-history p + p { margin-top: 8px; }
+.lms-admin-page #lms-mail { scroll-margin-top: 110px; }
+.lms-admin-page #lms-mail-form { max-width: 640px; margin-top: 24px; }
+.lms-admin-page #lms-mail-issues { margin: 12px 0 20px; padding-left: 22px; color: #9a3412; overflow-wrap: anywhere; }
+.lms-admin-page #lms-mail-note { margin-bottom: 16px; color: #475569; }
+.lms-admin-page #lms-student-login { max-width: 680px; }
+.lms-admin-page #lms-access-history p { margin: 12px 0; color: #475569; overflow-wrap: anywhere; }
+@media(max-width:700px) {
+  :is(.lms-page,.lms-detail-page,.lms-registration-page,.lms-admin-page) .header-inner { padding-inline: 12px; gap: 10px; }
+  :is(.lms-page,.lms-detail-page,.lms-registration-page,.lms-admin-page) .brand-logo { min-width: 0; flex-shrink: 1; gap: 8px; }
+  :is(.lms-page,.lms-detail-page,.lms-registration-page,.lms-admin-page) .brand-text { min-width: 0; }
+  :is(.lms-page,.lms-detail-page,.lms-registration-page,.lms-admin-page) .brand-title { font-size: 0.8rem; }
+  :is(.lms-page,.lms-detail-page,.lms-registration-page,.lms-admin-page) .brand-subtitle { font-size: 0.6rem; }
+  :is(.lms-page,.lms-detail-page,.lms-registration-page,.lms-admin-page) .logo-icon-box { width: 34px; height: 34px; flex-shrink: 0; }
+  :is(.lms-page,.lms-detail-page,.lms-registration-page,.lms-admin-page) .btn-login { padding: 10px 14px; font-size: 0.7rem; }
+  .lms-admin-page main { padding: 24px 16px 40px; }
+  .lms-admin-page .lms-admin-box { padding: 24px 16px; }
+  .lms-admin-page #lms-admin-filters { grid-template-columns: 1fr; }
+  .lms-admin-page table, .lms-admin-page tbody, .lms-admin-page tr, .lms-admin-page td { display: block; width: 100%; }
+  .lms-admin-page thead { display: none; }
+  .lms-admin-page tr { border: 1px solid #bae6fd; border-radius: 14px; margin-bottom: 16px; overflow: hidden; }
+  .lms-admin-page td::before { content: attr(data-label); display: block; font-weight: 700; color: #64748b; font-size: 0.78rem; margin-bottom: 4px; }
+  .lms-admin-page dl, .lms-admin-page .lms-admin-gallery { grid-template-columns: 1fr; }
+  .lms-admin-page dd { margin-bottom: 12px; }
+}

@@ -326,24 +326,29 @@ img {
   line-height: 1.35;
 }
 
-.btn-login {
+.btn-login,
+.site-header .btn-login {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 11px 28px;
   border-radius: 999px;
-  background: var(--water-primary);
-  color: #ffffff;
+  background: #0284c7 !important;
+  color: #ffffff !important;
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.03em;
   box-shadow: 0 8px 18px rgba(2, 132, 199, 0.24);
   transition: transform 0.2s ease, background 0.2s ease;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.btn-login:hover {
-  background: var(--water-hover);
+.btn-login:hover,
+.site-header .btn-login:hover {
+  background: #0369a1 !important;
+  color: #ffffff !important;
   transform: translateY(-1px);
 }
 
@@ -512,8 +517,6 @@ img {
 .btn-secondary-hero:hover {
   background: #e0f2fe;
   border-color: #0284c7;
-  transform: translateY(-2px);
-}
   transform: translateY(-2px);
 }
 
@@ -4180,6 +4183,113 @@ img {
   border-color: #fecaca;
   color: #ef4444;
   transform: translateY(-1px);
+}
+
+/* Header User Dropdown Panel (Đồng bộ Menu Tài khoản LMS) */
+.header-user-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.header-user-avatar-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: transparent;
+  border: none;
+  padding: 2px 6px;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.header-user-avatar-btn:hover .header-avatar-ring {
+  border-color: #0284c7;
+  transform: scale(1.04);
+}
+
+.header-user-dropdown-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: min(250px, calc(100vw - 32px));
+  padding: 10px 8px;
+  background: #ffffff;
+  border: 1px solid #bae6fd;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px -5px rgba(7, 89, 133, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  animation: dropdownFadeIn 0.15s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-user-header {
+  padding: 8px 12px 10px;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 4px;
+}
+
+.dropdown-user-header span {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #64748b;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-user-dropdown-panel a,
+.header-user-dropdown-panel button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  color: #075985;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+
+.header-user-dropdown-panel a:hover,
+.header-user-dropdown-panel button:hover {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.header-user-dropdown-panel .dropdown-logout-btn {
+  color: #dc2626;
+  border-top: 1px solid #f8fafc;
+  margin-top: 2px;
+}
+
+.header-user-dropdown-panel .dropdown-logout-btn:hover {
+  background: #fef2f2;
+  color: #b91c1c;
 }
 
 /* Toast Notification */

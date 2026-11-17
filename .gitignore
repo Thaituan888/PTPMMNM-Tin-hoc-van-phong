@@ -1,0 +1,7 @@
+# Real SMTP configuration belongs outside webroot; also prevent accidental Git staging.
+mail-config.json
+**/mail-config.json
+mail-outbox.key
+**/mail-outbox.key
+scratch/
+

@@ -1061,9 +1061,10 @@
         </a>
 
         <!-- 4. DIỄN ĐÀN -->
-        <a href="index.html#cong-dong">
+        <a href="dien-dan.html">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z" />
+            <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" />
           </svg>
           <span>DIỄN ĐÀN</span>
         </a>
@@ -1195,8 +1196,8 @@
     <div class="game-filter-bar">
       <div class="gfb-left">
         <button type="button" class="gfb-pill active" data-filter="all">Tất cả trò chơi (3)</button>
-        <button type="button" class="gfb-pill" data-filter="active">Đang mở (1)</button>
-        <button type="button" class="gfb-pill" data-filter="upcoming">Sắp ra mắt (2)</button>
+        <button type="button" class="gfb-pill" data-filter="active">Đang mở (2)</button>
+        <button type="button" class="gfb-pill" data-filter="upcoming">Sắp ra mắt (1)</button>
       </div>
       <div class="gfb-info-text">
         <span>Chọn trò chơi để bắt đầu rèn luyện</span>
@@ -1268,58 +1269,61 @@
         </div>
       </article>
 
-      <!-- THẺ 2: TRÒ CHƠI MỚI (CHỜ LÊN Ý TƯỞNG) -->
-      <article class="game-card" data-category="upcoming all">
+      <!-- THẺ 2: BLAZE & KIRA: TYPING DEFENDER (ĐANG MỞ - CHƠI ĐƯỢC NGAY) -->
+      <article class="game-card" data-category="active all">
         <div class="gc-banner theme-space">
           <div class="gc-banner-top">
-            <span class="gc-status-pill coming">
+            <span class="gc-status-pill live">
               <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
                 <circle cx="12" cy="12" r="10"></circle>
               </svg>
-              SẮP RA MẮT
+              ĐANG MỞ
             </span>
-            <span class="gc-mode-pill">ĐANG LÊN Ý TƯỞNG</span>
+            <span class="gc-mode-pill">1 NGƯỜI CHƠI • BẮN QUÁI QUA MÀN</span>
           </div>
 
           <div class="gc-banner-art">
             <div class="gc-banner-art-icon">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
               </svg>
             </div>
             <div class="gc-banner-art-text">
-              <span class="gc-banner-genre">ĐẤU TRƯỜNG MỚI</span>
-              <span class="gc-banner-callout">COMING SOON</span>
+              <span class="gc-banner-genre">BẮN QUÁI QUA MÀN</span>
+              <span class="gc-banner-callout">TYPING DEFENDER</span>
             </div>
           </div>
         </div>
 
         <div class="gc-body">
           <div>
-            <h2 class="gc-title">Trò Chơi Mới #2</h2>
+            <h2 class="gc-title">Blaze &amp; Kira: Typing Defender</h2>
             <p class="gc-desc">
-              Mini game luyện gõ phím tiếp theo đang trong giai đoạn lên ý tưởng và hoàn thiện kịch bản thử thách. Sẽ sớm ra mắt học viên!
+              Điều khiển xạ thủ Blaze, đặc vụ Kira và anh hùng Gia Phúc chiến đấu bắn quái qua màn viễn tưởng! Gõ chuẩn xác ký tự mục tiêu, kích hoạt kỹ năng F1-F4 và nâng cấp trợ thủ Mecha, Drone, Medic.
             </p>
 
             <div class="gc-meta-box">
               <div class="gc-meta-row">
                 <span class="gc-meta-lbl">Thể loại:</span>
-                <span class="gc-meta-val">Đang cập nhật</span>
+                <span class="gc-meta-val highlight">Bắn quái qua màn &amp; Gõ phím</span>
               </div>
               <div class="gc-meta-row">
                 <span class="gc-meta-lbl">Độ khó:</span>
-                <span class="gc-meta-val">Đang thiết kế</span>
+                <span class="gc-meta-val">3 cấp độ chơi</span>
               </div>
               <div class="gc-meta-row">
-                <span class="gc-meta-lbl">Số mạng:</span>
-                <span class="gc-meta-val">Đang thiết kế</span>
+                <span class="gc-meta-lbl">Trợ thủ:</span>
+                <span class="gc-meta-val">Mecha, Drone &amp; Robot Quân Y</span>
               </div>
             </div>
           </div>
 
-          <button type="button" class="btn-game-launch btn-disabled" disabled>
-            <span>ĐANG PHÁT TRIỂN</span>
-          </button>
+          <a href="h.html" class="btn-game-launch" id="btnLaunchTypingDefender" style="text-decoration: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>VÀO CHƠI NGAY</span>
+          </a>
         </div>
       </article>
 
@@ -2430,6 +2434,7 @@
       // INIT
       maxGameLives = getMaxGameLives();
       updateLivesDisplay(bubbleLives, maxGameLives);
+
       window.addEventListener('thvp:auth_change', () => {
         maxGameLives = getMaxGameLives();
         updateLivesDisplay(bubbleLives, maxGameLives);

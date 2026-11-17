@@ -540,7 +540,7 @@
             <div class="mini-profile-sub">Chưa đăng nhập tài khoản</div>
             <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Đăng nhập để đăng bài hỏi bài tập, thả cảm xúc và thảo luận cùng lớp.</p>
             <button type="button" class="btn-view-wall" onclick="window.THVP_AUTH && window.THVP_AUTH.showModal('login')">
-              👉 ĐĂNG NHẬP NGAY
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>ĐĂNG NHẬP NGAY
             </button>
           </div>
         `;
@@ -567,9 +567,11 @@
         leftProfileEl.innerHTML = `
           <div class="mini-profile-cover"></div>
           <div class="mini-profile-body">
-            <div class="mini-profile-avatar-wrap" onclick="window.THVP_FORUM.openAvatarModal()" title="Bấm để đổi ảnh đại diện 📷">
+            <div class="mini-profile-avatar-wrap" onclick="window.THVP_FORUM.openAvatarModal()" title="Bấm để đổi ảnh đại diện">
               <img src="${avatar}" class="mini-profile-avatar" alt="${escapeHtml(user.fullname || user.username)}" />
-              <span class="mini-avatar-camera-badge" title="Đổi ảnh đại diện">📷</span>
+              <span class="mini-avatar-camera-badge" title="Đổi ảnh đại diện">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </span>
             </div>
             <div class="mini-profile-name" onclick="window.THVP_FORUM.openProfileWall('${escapeJsAttr(user.username)}')">
               ${escapeHtml(user.fullname || user.username)}
@@ -587,7 +589,7 @@
               </div>
             </div>
             <button type="button" class="btn-view-wall" onclick="window.THVP_FORUM.openProfileWall('${escapeJsAttr(user.username)}')">
-              👤 Xem Trang Cá Nhân
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Xem Trang Cá Nhân
             </button>
           </div>
         `;
@@ -628,10 +630,11 @@
     if (!state.posts || state.posts.length === 0) {
       feedList.innerHTML = `
         <div class="post-card" style="text-align: center; padding: 40px 20px;">
-          <div style="font-size: 40px; margin-bottom: 12px;">📂</div>
+          <div style="margin-bottom: 12px;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+          </div>
           <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">Chưa có bài viết nào trong mục này!</h3>
-          <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 16px;">Hãy là người đầu tiên đặt câu hỏi hoặc chia sẻ thủ thuật tin học bổ ích.</p>
-          <button type="button" class="btn-submit-post" onclick="window.THVP_FORUM.openComposer()">+ ĐĂNG BÀI NGAY</button>
+          <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 0;">Hãy là người đầu tiên đặt câu hỏi hoặc chia sẻ thủ thuật tin học bổ ích.</p>
         </div>
       `;
       return;
@@ -645,7 +648,7 @@
     if (state.hasMore) {
       html += `<button type="button" class="btn-load-more" onclick="window.THVP_FORUM.loadMorePosts()">Xem thêm bài viết cũ hơn...</button>`;
     } else {
-      html += `<div class="feed-end-notice">✨ Bạn đã xem hết tất cả các bài viết mới nhất trên Dòng thời gian!</div>`;
+      html += `<div class="feed-end-notice"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 6px;"><polyline points="20 6 9 17 4 12"/></svg>Bạn đã xem hết tất cả các bài viết mới nhất trên Dòng thời gian!</div>`;
     }
 
     feedList.innerHTML = html;
@@ -765,11 +768,11 @@
     const isAuthor = state.currentUser && String(state.currentUser.username || '').trim().toLowerCase() === String(post.author_username || '').trim().toLowerCase();
     const isTeacherDelete = canDelete && !isAuthor && isTeacherAccount(state.currentUser.role, state.currentUser.username);
     const menuBtnHtml = canDelete
-      ? `<button type="button" class="post-menu-btn${isTeacherDelete ? ' post-delete-teacher' : ''}" onclick="window.THVP_FORUM.deletePost(${post.id})" title="${isTeacherDelete ? 'Xóa bài viết của học viên (Quyền Giáo viên)' : 'Xóa bài viết'}">${isTeacherDelete ? '🗑️ Xóa bài' : '🗑️'}</button>`
+      ? `<button type="button" class="post-menu-btn${isTeacherDelete ? ' post-delete-teacher' : ''}" onclick="window.THVP_FORUM.deletePost(${post.id})" title="${isTeacherDelete ? 'Xóa bài viết của học viên (Quyền Giáo viên)' : 'Xóa bài viết'}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: ${isTeacherDelete ? '4px' : '0'};"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>${isTeacherDelete ? 'Xóa bài' : ''}</button>`
       : '';
 
     // Thẻ Pinned
-    const pinnedHtml = post.is_pinned ? `<div class="pinned-badge-strip">📌 BÀI GHIM TỪ GIẢNG VIÊN</div>` : '';
+    const pinnedHtml = post.is_pinned ? `<div class="pinned-badge-strip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px; margin-right: 5px;"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a1 1 0 0 0 0-2H8a1 1 0 0 0 0 2h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"/></svg>BÀI GHIM TỪ GIẢNG VIÊN</div>` : '';
 
     return `
       <article class="post-card ${post.is_pinned ? 'pinned' : ''}" id="post-${post.id}" data-id="${post.id}">
@@ -807,7 +810,7 @@
         <div class="post-stats-row">
           ${reactionIconsHtml}
           <div class="comment-count-txt" onclick="window.THVP_FORUM.toggleComments(${post.id})">
-            💬 <span id="cmt-count-${post.id}">${post.comment_count || 0}</span> bình luận
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span id="cmt-count-${post.id}">${post.comment_count || 0}</span> bình luận
           </div>
         </div>
 
@@ -837,7 +840,10 @@
           </button>
 
           <button type="button" class="btn-toolbar-action" onclick="window.THVP_FORUM.toggleComments(${post.id})">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+              <path d="M8 12h.01M12 12h.01M16 12h.01" />
+            </svg>
             <span class="action-label">Bình luận</span>
           </button>
 
@@ -862,7 +868,7 @@
     if (!state.currentUser) {
       return `
         <div class="comment-guest-lock">
-          🔒 Vui lòng <a onclick="window.THVP_AUTH && window.THVP_AUTH.showModal('login')">đăng nhập</a> để bình luận và gửi ảnh giải đáp bài tập.
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Vui lòng <a onclick="window.THVP_AUTH && window.THVP_AUTH.showModal('login')">đăng nhập</a> để bình luận và gửi ảnh giải đáp bài tập.
         </div>
       `;
     }
@@ -883,7 +889,7 @@
           <div class="comment-tools-row">
             <div class="comment-left-tools">
               <label class="btn-cmt-tool" title="Đính kèm ảnh chụp màn hình công thức">
-                📷
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                 <input type="file" accept="image/*" style="display: none;" onchange="window.THVP_FORUM.handleCommentImageSelect(event, ${postId})" />
               </label>
               <button type="button" class="btn-cmt-tool" title="Chèn nhanh @Giangvien" onclick="window.THVP_FORUM.insertMentionInComment(${postId}, '@Giangvien')">
@@ -891,7 +897,7 @@
               </button>
             </div>
             <button type="button" class="btn-send-comment" onclick="window.THVP_FORUM.submitComment(${postId})" title="Gửi bình luận">
-              ➤
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
             </button>
           </div>
         </div>

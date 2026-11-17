@@ -1,0 +1,10 @@
+PHPMailer 7.2.0
+Official release: https://github.com/PHPMailer/PHPMailer/releases/tag/v7.2.0
+Source: https://raw.githubusercontent.com/PHPMailer/PHPMailer/v7.2.0/
+License: LGPL-2.1 (see LICENSE)
+Vendored upstream files, unchanged:
+src/PHPMailer.php SHA256 007a9d0e5445162c4ae15374605c8287f129432bdb545322d7075ef81c4660d4
+src/SMTP.php SHA256 4d46dda61291216905257a63086842a41c39c958828417820c42baf8219c1240
+src/Exception.php SHA256 22ab858ae438d98f58f41f38ad2191d1b0d59570aebea0463a7948cfae1021b7
+LICENSE SHA256 a1a33180d02960ab1c5de36cf20b1a2f0fe9888d83826ad263da5db52f1b183b
+composer.json SHA256 71e6f62a54ee2a8cc1d95fec49fb966792bd83074315a85016b9238d40a7376e

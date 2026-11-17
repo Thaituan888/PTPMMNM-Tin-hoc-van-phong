@@ -1,0 +1,50 @@
+[
+  {
+    "code": "CB-01",
+    "course_key": "co-ban",
+    "course_name": "Tin học cơ bản",
+    "teacher": "Tống Hoàng Thiên",
+    "days": "Thứ 2, thứ 4",
+    "time": "19:00–21:00"
+  },
+  {
+    "code": "CB-02",
+    "course_key": "co-ban",
+    "course_name": "Tin học cơ bản",
+    "teacher": "Nguyễn Thái Tuấn",
+    "days": "Thứ 3, thứ 5",
+    "time": "19:00–21:00"
+  },
+  {
+    "code": "CB-03",
+    "course_key": "co-ban",
+    "course_name": "Tin học cơ bản",
+    "teacher": "Trần Anh Khoa",
+    "days": "Thứ 6, chủ nhật",
+    "time": "19:00–21:00"
+  },
+  {
+    "code": "NC-01",
+    "course_key": "nang-cao",
+    "course_name": "Tin học nâng cao",
+    "teacher": "Tống Hoàng Thiên",
+    "days": "Thứ 3, thứ 5",
+    "time": "19:00–21:00"
+  },
+  {
+    "code": "NC-02",
+    "course_key": "nang-cao",
+    "course_name": "Tin học nâng cao",
+    "teacher": "Nguyễn Thái Tuấn",
+    "days": "Thứ 6, chủ nhật",
+    "time": "19:00–21:00"
+  },
+  {
+    "code": "NC-03",
+    "course_key": "nang-cao",
+    "course_name": "Tin học nâng cao",
+    "teacher": "Trần Anh Khoa",
+    "days": "Thứ 2, thứ 4",
+    "time": "19:00–21:00"
+  }
+]

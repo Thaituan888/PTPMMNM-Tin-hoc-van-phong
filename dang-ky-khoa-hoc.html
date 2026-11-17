@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Đăng ký khóa học | Tin Học Văn Phòng</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="dang-ky-khoa-hoc.css" />
+  <script src="lms-data.js" defer></script>
+  <script src="lms-api-client.js" defer></script>
+  <script src="vendor/nayuki/qrcodegen.js" defer></script>
+  <script src="lms-qr.js" defer></script>
+  <script src="lms-payment.js" defer></script>
+  <script src="lms-evidence.js" defer></script>
+  <script src="dang-ky-khoa-hoc.js" defer></script>
+  <link rel="stylesheet" href="lms-admin.css" />
+  <link rel="stylesheet" href="lms-chatbot.css" />
+  <script src="auth.js" defer></script>
+  <script src="lms-account.js" defer></script>
+</head>
+<body class="lms-registration-page">
+<header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon-box" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <rect x="5" y="7" width="26" height="19" rx="5" fill="#ffffff" />
+            <circle cx="13" cy="15.5" r="1.8" fill="#4f46e5" />
+            <circle cx="23" cy="15.5" r="1.8" fill="#4f46e5" />
+            <path d="M15.5 19.5c1.2 1.2 3.8 1.2 5 0" stroke="#ec4899" stroke-width="2" stroke-linecap="round" />
+            <path d="M12 7V4.5M24 7V4.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M11 29.5h14" stroke="#93c5fd" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">TIN HỌC VĂN PHÒNG</span>
+          <span class="brand-subtitle">Đào tạo Tin học Trực tuyến</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <!-- 1. KHÓA HỌC LMS -->
+        <a href="khoa-hoc-lms.html" aria-current="page">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+          <span>KHÓA HỌC LMS</span>
+        </a>
+
+        <!-- 2. LỘ TRÌNH HỌC TẬP -->
+        <a href="lo-trinh-hoc-tap.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="6" cy="19" r="3" />
+            <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" />
+            <circle cx="18" cy="5" r="3" />
+          </svg>
+          <span>LỘ TRÌNH HỌC TẬP</span>
+        </a>
+
+        <!-- 3. ÔN LUYỆN & THI THỬ -->
+        <a href="on-luyen-thi-thu.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+            <path d="m9 14 2 2 4-4" />
+          </svg>
+          <span>ÔN LUYỆN &amp; THI THỬ</span>
+        </a>
+
+        <!-- 4. DIỄN ĐÀN -->
+        <a href="dien-dan.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>DIỄN ĐÀN</span>
+        </a>
+
+        <!-- 5. CÔNG CỤ & TIỆN ÍCH (Bấm để mở / Bấm ra ngoài để đóng) -->
+        <div class="nav-dropdown-wrap" id="nav-tools-dropdown">
+          <button type="button" class="nav-link-dropdown nav-dropdown-trigger" id="btn-tools-dropdown">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+            <span>CÔNG CỤ &amp; TIỆN ÍCH</span>
+            <svg class="nav-dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="nav-dropdown-content">
+            <!-- 1. Luyện gõ phím 10 ngón -->
+            <a href="luyen-go-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8" stroke-width="2.2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>1. Luyện gõ phím 10 ngón</strong>
+                <small>Luyện gõ tiếng Việt Telex &amp; kiểm tra WPM</small>
+              </div>
+            </a>
+
+            <!-- 2. Tra cứu Phím tắt -->
+            <a href="tra-cuu-phim-tat.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="#d97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>2. Tra cứu Phím tắt</strong>
+                <small>Phím tắt thông dụng Word, Excel, PPT</small>
+              </div>
+            </a>
+
+            <!-- 3. Kiểm tra Bàn phím Online -->
+            <a href="kiem-tra-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3" fill="#e0f2fe" fill-opacity="0.6" />
+                  <circle cx="7" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="12" cy="9" r="1" fill="#0284c7" />
+                  <circle cx="17" cy="9" r="1" fill="#0284c7" />
+                  <line x1="6" y1="14" x2="18" y2="14" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>3. Kiểm tra Bàn phím Online</strong>
+                <small>Phát hiện kẹt/liệt phím, đo NKRO &amp; Switch cơ</small>
+              </div>
+            </a>
+
+            <!-- 4. Giới thiệu Bàn phím Máy tính -->
+            <a href="tim-hieu-ban-phim.html" class="nav-sub-item">
+              <div class="nsi-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="#e0f2fe"
+                    fill-opacity="0.6" />
+                  <path d="M6 6h10M6 10h10M6 14h6" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="nsi-info">
+                <strong>4. Giới thiệu Bàn phím Máy tính</strong>
+                <small>Cấu tạo 100% Full-size, các hàng phím &amp; gờ nổi F/J</small>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 6. CỬA HÀNG -->
+        <a href="index.html#cua-hang">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span>CỬA HÀNG</span>
+        </a>
+      </nav>
+
+      <a href="#" class="btn-login">ĐĂNG NHẬP</a>
+    </div>
+  </header>
+
+<main id="lms-registration">
+    <div class="lms-account" data-lms-account aria-live="polite"></div>
+  <p id="lms-api-status" role="status" aria-live="polite">Đang kết nối dịch vụ đăng ký…</p>
+  <section id="lms-invalid-class" class="lms-box" role="status" hidden>
+    <h1>Không tìm thấy lớp học</h1>
+    <p>Mã lớp còn thiếu hoặc không hợp lệ. Vui lòng quay lại để chọn lớp phù hợp.</p>
+    <a class="lms-back" href="khoa-hoc-lms.html">Quay lại chọn lớp</a>
+  </section>
+  <noscript><p>Vui lòng bật JavaScript để xem thông tin lớp và nhập thông tin đăng ký. <a href="khoa-hoc-lms.html">Quay về LMS</a></p></noscript>
+  <div id="lms-valid-class" hidden>
+    <aside id="lms-existing-record" class="lms-note" hidden>
+      <p>Trình duyệt này có hồ sơ trước đó cho lớp này. Anh/chị có thể nhập thông tin đăng ký mới bên dưới hoặc mở lại hồ sơ cũ.</p>
+      <button id="lms-resume-record" type="button" class="lms-action">Xem hồ sơ đã có</button>
+    </aside>
+    <a id="lms-back-course" class="lms-back" href="khoa-hoc-lms.html">← Quay lại chọn lớp</a>
+    <div id="lms-entry">
+      <h1>Đăng ký khóa học</h1>
+      <p class="lms-lead">Xem lại lớp đã chọn và điền thông tin để tiếp tục.</p>
+      <div class="lms-registration-grid">
+        <section class="lms-box" aria-labelledby="lms-class-title">
+          <h2 id="lms-class-title">Lớp bạn đã chọn</h2>
+          <dl id="lms-class-info"></dl>
+          <p id="lms-capacity" class="lms-capacity"></p>
+        </section>
+        <section class="lms-box" aria-labelledby="lms-form-title">
+          <h2 id="lms-form-title">Thông tin người học</h2>
+          <p class="lms-note" id="lms-email-note">Vui lòng kiểm tra chính xác email. Thông tin đăng nhập sẽ được gửi sau khi hồ sơ và thanh toán được duyệt.</p>
+          <form id="lms-learner-form" novalidate>
+            <div class="lms-field">
+              <label for="lms-name">Họ và tên (bắt buộc)</label>
+              <input id="lms-name" type="text" autocomplete="name" required aria-describedby="lms-name-error" />
+              <p id="lms-name-error" class="lms-field-error" aria-live="polite"></p>
+            </div>
+            <div class="lms-field">
+              <label for="lms-phone">Số điện thoại (bắt buộc)</label>
+              <input id="lms-phone" type="tel" inputmode="tel" autocomplete="tel" required aria-describedby="lms-phone-help lms-phone-error" />
+              <p id="lms-phone-help" class="lms-help">Số Việt Nam, ví dụ: 0901234567 hoặc +84 901 234 567.</p>
+              <p id="lms-phone-error" class="lms-field-error" aria-live="polite"></p>
+            </div>
+            <div class="lms-field">
+              <label for="lms-email">Email nhận thông tin đăng nhập (bắt buộc)</label>
+              <input id="lms-email" type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" required aria-describedby="lms-email-note lms-email-error" />
+              <p id="lms-email-error" class="lms-field-error" aria-live="polite"></p>
+            </div>
+            <button type="submit" class="lms-action">Tiếp tục</button>
+          </form>
+        </section>
+      </div>
+    </div>
+    <section id="lms-confirmation" class="lms-box" aria-labelledby="lms-confirm-title" hidden>
+      <h1 id="lms-confirm-title" tabindex="-1">Xác nhận thông tin</h1>
+      <p class="lms-lead">Vui lòng kiểm tra lại thông tin bên dưới. Hồ sơ chưa được gửi.</p>
+      <div class="lms-confirm-grid">
+        <section aria-labelledby="lms-confirm-class-title">
+          <h2 id="lms-confirm-class-title">Thông tin lớp học</h2>
+          <dl id="lms-confirm-class"></dl>
+        </section>
+        <section aria-labelledby="lms-confirm-learner-title">
+          <h2 id="lms-confirm-learner-title">Thông tin người học</h2>
+          <dl id="lms-confirm-learner"></dl>
+        </section>
+      </div>
+      <button id="lms-edit" type="button" class="lms-action">Chỉnh sửa thông tin</button>
+      <button id="lms-create" type="button" class="lms-action">Tạo hồ sơ đăng ký</button>
+    </section>
+    <section id="lms-saved" class="lms-box" hidden aria-labelledby="lms-saved-title">
+      <h1 id="lms-saved-title" tabindex="-1">Hồ sơ đăng ký</h1>
+      <p id="lms-restored-notice" class="lms-note" role="status" hidden>Đây là hồ sơ đã được tạo trước đó, không phải biểu mẫu đăng ký mới.</p>
+      <a id="lms-start-new" class="lms-back" href="khoa-hoc-lms.html">Mở biểu mẫu đăng ký mới cho lớp này</a>
+      <p>Hồ sơ đã được lưu. Vui lòng theo dõi trạng thái bên dưới để biết bước tiếp theo.</p>
+      <p id="lms-public-reason" class="lms-note" role="status" hidden></p>
+      <dl id="lms-saved-info"></dl>
+      <section id="lms-payment" aria-labelledby="lms-payment-title" hidden>
+        <h2 id="lms-payment-title">Thông tin chuyển khoản</h2>
+        <p id="lms-payment-message" role="status" aria-live="polite"></p>
+        <p id="lms-countdown" class="lms-hold-timer" role="timer" aria-live="off"></p>
+        <div id="lms-payment-details" class="lms-payment-grid" hidden>
+          <div>
+            <dl id="lms-bank-info"></dl>
+            <div class="lms-copy-field">
+              <label for="lms-account">Số tài khoản</label>
+              <input id="lms-account" type="text" readonly />
+              <button id="lms-account-copy" type="button" class="lms-action">Sao chép số tài khoản</button>
+            </div>
+            <div class="lms-copy-field">
+              <label for="lms-amount">Số tiền (VND)</label>
+              <input id="lms-amount" type="text" readonly />
+              <button id="lms-amount-copy" type="button" class="lms-action">Sao chép số tiền</button>
+            </div>
+            <div class="lms-copy-field">
+              <label for="lms-transfer">Nội dung chuyển khoản</label>
+              <input id="lms-transfer" type="text" readonly />
+              <button id="lms-copy" type="button" class="lms-action">Sao chép nội dung</button>
+            </div>
+            <p id="lms-copy-status" role="status"></p>
+          </div>
+          <div class="lms-qr-panel">
+            <img id="lms-qr-image" alt="QR chuyển khoản cho hồ sơ đang hiển thị" width="360" height="360" hidden />
+            <button id="lms-qr-download" type="button" class="lms-action" hidden>Tải QR dạng PNG</button>
+            <p id="lms-qr-error" role="status"></p>
+          </div>
+        </div>
+        <button id="lms-qr-retry" type="button" class="lms-action" hidden>Thử tạo QR lại</button>
+      </section>
+      <section id="lms-evidence" aria-labelledby="lms-evidence-title" hidden>
+        <h2 id="lms-evidence-title">Minh chứng chuyển khoản</h2>
+        <p>Sau khi chuyển khoản, vui lòng tải ảnh giao dịch thành công để giáo viên đối chiếu.</p>
+        <p id="lms-evidence-note" class="lms-note"></p>
+        <p id="lms-evidence-config" role="status"></p>
+        <label for="lms-evidence-file">Chọn ảnh JPG/PNG, tối đa 5 MB</label>
+        <input id="lms-evidence-file" type="file" accept="image/jpeg,image/png,.jpg,.jpeg,.png" aria-describedby="lms-evidence-config lms-evidence-status" />
+        <img id="lms-evidence-preview" alt="Xem trước ảnh minh chứng đã chọn" hidden />
+        <button id="lms-evidence-send" type="button" class="lms-action" disabled>Gửi minh chứng</button>
+        <p id="lms-evidence-status" role="status" aria-live="polite"></p>
+        <h3>Ảnh đã gửi</h3>
+        <p id="lms-evidence-empty">Chưa có ảnh minh chứng đã lưu.</p>
+        <div id="lms-evidence-history" class="lms-evidence-history"></div>
+        <button id="lms-evidence-refresh" type="button" class="lms-action">Tải lại danh sách ảnh</button>
+      </section>
+      <p class="lms-note">Giữ quyền truy cập trong trình duyệt này để tiếp tục hồ sơ. Đừng xóa cookie của website.</p>
+      <button id="lms-new-request" type="button" class="lms-action" hidden>Nhập thông tin đăng ký mới</button>
+    </section>
+  </div>
+</main>
+<footer class="site-footer simple-footer">
+    <div class="footer-copyright">
+      © 2026 TRUNG TÂM TIN HỌC VĂN PHÒNG • BẢN QUYỀN THUỘC VỀ NHÓM 2
+    </div>
+  </footer>
+<script>
+    // Dropdown toggle for tools
+    (function () {
+      const toolsDropdown = document.getElementById('nav-tools-dropdown');
+      const btnTools = document.getElementById('btn-tools-dropdown');
+      const toolsContent = toolsDropdown ? toolsDropdown.querySelector('.nav-dropdown-content') : null;
+
+      if (toolsDropdown && btnTools) {
+        btnTools.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toolsDropdown.classList.toggle('open');
+        });
+
+        if (toolsContent) {
+          toolsContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        }
+
+        document.addEventListener('click', () => {
+          toolsDropdown.classList.remove('open');
+        });
+      }
+    })();
+  </script>
+  <script src="lms-chatbot.js"></script>
+</body>
+</html>

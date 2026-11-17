@@ -18,6 +18,8 @@
     href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="auth-modal.css" />
+  <link rel="stylesheet" href="lms-chatbot.css" />
 </head>
 
 <body>
@@ -77,7 +79,8 @@
         <!-- 4. DIỄN ĐÀN -->
         <a href="dien-dan.html">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z" />
+            <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" />
           </svg>
           <span>DIỄN ĐÀN</span>
         </a>
@@ -166,7 +169,7 @@
         </a>
       </nav>
 
-      <a href="#dang-nhap" class="btn-login">ĐĂNG NHẬP</a>
+      <a href="#dang-nhap" class="btn-login" id="headerAuthBtn" onclick="if(window.THVP_AUTH){window.THVP_AUTH.showModal('login');return false;}">ĐĂNG NHẬP</a>
     </div>
   </header>
 
@@ -204,7 +207,7 @@
         </p>
 
         <div class="hero-actions">
-          <a href="#khoa-hoc" class="btn-primary-hero">
+          <a href="khoa-hoc-lms.html" class="btn-primary-hero">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
               stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10" />
@@ -1096,7 +1099,7 @@
               </div>
             </div>
 
-            <a href="#khoa-hoc" class="btn-white-pill">XEM LỘ TRÌNH CHI TIẾT</a>
+            <a href="lo-trinh-hoc-tap.html" class="btn-white-pill">XEM LỘ TRÌNH CHI TIẾT</a>
           </div>
 
           <div class="roadmap-glass-grid">
@@ -1627,24 +1630,24 @@
         <div class="footer-col col-purple">
           <h4>HỌC TẬP</h4>
           <ul class="footer-links">
-            <li><a href="#go-phim">Luyện gõ phím 10 ngón</a></li>
-            <li><a href="#luyen-thi">Luyện thi trắc nghiệm</a></li>
-            <li><a href="khoa-hoc-lms.html">Khóa học LMS</a></li>
-            <li><a href="dien-dan.html">Diễn đàn Cộng đồng</a></li>
-            <li><a href="#tieng-anh">Học Tiếng Anh</a></li>
-            <li><a href="#blog">Blog Tin Học</a></li>
+            <li><a href="khoa-hoc-lms.html">Khóa học Tin học LMS</a></li>
+            <li><a href="lo-trinh-hoc-tap.html">Lộ trình học tập</a></li>
+            <li><a href="on-luyen-thi-thu.html">Ôn luyện &amp; Thi thử</a></li>
+            <li><a href="gioi-thieu-khoa-hoc.html">Giới thiệu Khóa học</a></li>
+            <li><a href="dang-ky-khoa-hoc.html">Đăng ký Khóa học</a></li>
+            <li><a href="lop-hoc-cua-toi.html">Lớp học của tôi</a></li>
           </ul>
         </div>
 
         <div class="footer-col col-indigo">
           <h4>TÍNH NĂNG</h4>
           <ul class="footer-links">
-            <li><a href="#tien-ich">Trung tâm Tiện ích</a></li>
-            <li><a href="#test-phim">Test Bàn Phím</a></li>
-            <li><a href="#test-chuot">Test Chuột Online</a></li>
-            <li><a href="#phim-tat">Tra cứu Phím tắt</a></li>
-            <li><a href="#cua-hang">Cửa hàng tài nguyên</a></li>
-            <li><a href="#lien-he">Liên hệ hỗ trợ</a></li>
+            <li><a href="luyen-go-phim.html">Luyện gõ phím 10 ngón</a></li>
+            <li><a href="kiem-tra-ban-phim.html">Test Bàn Phím Online</a></li>
+            <li><a href="tra-cuu-phim-tat.html">Tra cứu Phím tắt</a></li>
+            <li><a href="tim-hieu-ban-phim.html">Tìm hiểu Bàn phím Máy tính</a></li>
+            <li><a href="mini-game-go-phim.html">Mini Game gõ phím</a></li>
+            <li><a href="dien-dan.html">Diễn đàn Cộng đồng</a></li>
           </ul>
         </div>
 
@@ -1826,6 +1829,7 @@
     })();
   </script>
   <script src="auth.js"></script>
+  <script src="lms-chatbot.js"></script>
 </body>
 
 </html>

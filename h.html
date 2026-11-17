@@ -1,0 +1,5043 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blaze & Kira: Typing Defender</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@600;700;800&family=Press+Start+2P&family=VT323&display=swap');
+
+    :root {
+      --bg-panel: #12151f;
+      --bg-panel-hi: #1e2436;
+      --border-outer: #090b10;
+      --border-mid: #3a4466;
+      --border-hi: #00f5d4;
+      --accent-gold: #ffbe0b;
+      --accent-red: #e63946;
+      --accent-cyan: #00f5d4;
+      --accent-purple: #c77dff;
+      --accent-green: #38b000;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #090b10;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      color: var(--text-main);
+    }
+
+    /* =========================================================================
+       1. KHUNG GAME FULL MÀN HÌNH & CANVAS BỐI CẢNH PIXEL-ART ĐA BIẾN THỂ
+       ========================================================================= */
+    .game-screen {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #090b10;
+    }
+
+    .game-screen.fever {
+      animation: feverPulse 1.4s infinite alternate;
+    }
+    @keyframes feverPulse {
+      0% { filter: saturate(1.1) brightness(1); }
+      100% { filter: saturate(1.42) brightness(1.07); }
+    }
+
+    .game-screen.shake-sm {
+      animation: shakeSm 0.16s ease-out;
+    }
+    .game-screen.shake-lg {
+      animation: shakeLg 0.38s cubic-bezier(.36,.07,.19,.97);
+    }
+    @keyframes shakeSm {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(-4px, 3px); }
+      50% { transform: translate(4px, -3px); }
+      75% { transform: translate(-3px, -2px); }
+    }
+    @keyframes shakeLg {
+      0%, 100% { transform: translate(0, 0); }
+      15% { transform: translate(-12px, 8px); }
+      30% { transform: translate(11px, -9px); }
+      45% { transform: translate(-9px, -6px); }
+      60% { transform: translate(8px, 6px); }
+      75% { transform: translate(-5px, 3px); }
+    }
+
+    /* Canvas Bối Cảnh Pixel-Art (Độ phân giải nội bộ Pixel, phóng nét căng) */
+    #bg-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    #fx-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 25;
+      pointer-events: none;
+    }
+
+    .screen-flash {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 88;
+      opacity: 0;
+      transition: opacity 0.22s ease-out;
+    }
+
+    .scanlines {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.12) 50%);
+      background-size: 100% 4px;
+      z-index: 90;
+      pointer-events: none;
+    }
+
+    /* =========================================================================
+       2. GIAO DIỆN TRONG TRẬN SIÊU GỌN (KHÔNG RƯỜM RÀ)
+       ========================================================================= */
+    .hud {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      right: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    .hud-left, .hud-right {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pixel-panel {
+      background: rgba(18, 21, 31, 0.9);
+      border: 2.5px solid var(--border-mid);
+      box-shadow: 0 0 0 2px var(--border-outer), 0 4px 0 rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+    }
+
+    .combat-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 7px 14px;
+    }
+
+    .hp-column {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 190px;
+    }
+
+    .hp-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9.5px;
+    }
+    .hp-numbers { color: #4ade80; }
+    .hp-numbers.warn { color: #ffbe0b; }
+    .hp-numbers.crit { color: #ff4d6d; animation: blinkCrit 0.5s infinite alternate; }
+    @keyframes blinkCrit { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+
+    .hp-track {
+      position: relative;
+      width: 100%;
+      height: 13px;
+      background: #090b10;
+      border: 2px solid #475569;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .hp-trail {
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 100%;
+      background: #ffffff;
+      transition: width 0.5s ease-out;
+    }
+    .hp-fill {
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 100%;
+      background: linear-gradient(180deg, #80ed99 0%, #38b000 55%, #2b9348 100%);
+      transition: width 0.16s ease-out, background 0.25s;
+    }
+    .hp-fill.warn {
+      background: linear-gradient(180deg, #fff3b0 0%, #ffbe0b 55%, #fb8500 100%);
+    }
+    .hp-fill.crit {
+      background: linear-gradient(180deg, #ff758f 0%, #e63946 55%, #9b001a 100%);
+    }
+
+    .shield-track {
+      display: none;
+      position: relative;
+      width: 100%;
+      height: 5px;
+      background: #090b10;
+      border: 1px solid #00b4d8;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .shield-track.active { display: block; }
+    .shield-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #00b4d8, #00f5d4);
+      box-shadow: 0 0 8px #00f5d4;
+      transition: width 0.2s ease-out;
+    }
+
+    .coin-main-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 14px;
+      color: var(--accent-gold);
+      padding-left: 12px;
+      border-left: 2px solid #2b3554;
+      transition: transform 0.14s, color 0.14s;
+    }
+    .coin-main-box.pulse {
+      transform: scale(1.22);
+      color: #ffffff;
+    }
+    .score-hud-box {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      padding-left: 12px;
+      border-left: 2px solid #2b3554;
+      line-height: 1.25;
+    }
+    .score-hud-label {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--text-muted);
+    }
+    .score-hud-val {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 12.5px;
+      color: #ffffff;
+    }
+
+    .combo-badge {
+      display: none;
+      background: #1e2436;
+      border: 2px solid var(--accent-gold);
+      color: var(--accent-gold);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      padding: 5px 8px;
+      border-radius: 4px;
+      transition: transform 0.12s;
+    }
+    .combo-badge.visible { display: inline-block; }
+    .combo-badge.pop {
+      transform: scale(1.22);
+      background: var(--accent-cyan);
+      color: #090b10;
+      border-color: #ffffff;
+    }
+
+    .arcade-btn {
+      background: var(--bg-panel-hi);
+      color: var(--text-main);
+      border: 2.5px solid var(--border-mid);
+      box-shadow: 0 0 0 2px var(--border-outer), 0 4px 0 #090b10;
+      padding: 8px 14px;
+      border-radius: 5px;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: transform 0.1s, border-color 0.15s, background 0.15s;
+    }
+    .arcade-btn:hover {
+      background: #2b3554;
+      border-color: var(--accent-cyan);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+    .arcade-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 0 0 2px var(--border-outer), 0 1px 0 #090b10;
+    }
+    .arcade-btn.primary {
+      background: var(--accent-red);
+      border-color: #ff7582;
+      color: #ffffff;
+    }
+    .arcade-btn.primary:hover {
+      background: #c9184a;
+      border-color: var(--accent-gold);
+    }
+    .arcade-btn.gold {
+      background: #5c3d00;
+      border-color: var(--accent-gold);
+      color: #fff3b0;
+    }
+    .arcade-btn.gold:hover {
+      background: #8f5b00;
+      color: #ffffff;
+    }
+    .arcade-btn.icon-only {
+      padding: 8px 11px;
+    }
+
+    .btn-icon { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+
+    /* =========================================================================
+       3. THANH 4 Ô ĐỒ ĐỘNG GỌN GÀNG (Ô VUÔNG ICON PIXEL 56x56)
+       ========================================================================= */
+    .item-dock {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 35;
+    }
+
+    .item-slot {
+      position: relative;
+      width: 56px;
+      height: 56px;
+      background: rgba(18, 21, 31, 0.94);
+      border: 2.5px solid #475569;
+      box-shadow: 0 0 0 2px #090b10, 0 4px 0 #090b10;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.14s;
+    }
+    .item-slot:hover {
+      border-color: var(--accent-gold);
+      transform: translateY(-3px);
+    }
+    .item-slot.empty-slot {
+      background: rgba(14, 17, 26, 0.55);
+      border: 2px dashed #334155;
+      box-shadow: none;
+      cursor: default;
+    }
+    .item-slot.empty-slot:hover {
+      border-color: #475569;
+      transform: none;
+    }
+    .item-slot canvas {
+      width: 44px;
+      height: 44px;
+      image-rendering: pixelated;
+    }
+    .slot-key-tag {
+      position: absolute;
+      top: -6px;
+      left: -5px;
+      font-family: 'VT323', monospace;
+      font-size: 14px;
+      color: var(--accent-gold);
+      background: #090b10;
+      padding: 0 4px;
+      border-radius: 3px;
+      border: 1px solid #475569;
+      line-height: 1.1;
+    }
+    .slot-qty-tag {
+      position: absolute;
+      bottom: -5px;
+      right: -5px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      color: #090b10;
+      background: var(--accent-cyan);
+      padding: 2px 4px;
+      border-radius: 3px;
+      border: 1.5px solid #090b10;
+    }
+
+    .stage-toast {
+      position: absolute;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: rgba(18, 21, 31, 0.94);
+      border: 2.5px solid var(--accent-cyan);
+      box-shadow: 0 0 0 2px #090b10, 0 0 20px rgba(0, 245, 212, 0.4);
+      padding: 7px 18px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 11px;
+      color: var(--accent-gold);
+      z-index: 40;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .stage-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* =========================================================================
+       4. NHÂN VẬT CHÍNH, 3 TRỢ THỦ RIGGED ĐỘNG & QUÁI VẬT SẠCH SẼ
+       ========================================================================= */
+    .hero-wrap {
+      position: absolute;
+      bottom: 72px;
+      left: 68px;
+      width: 176px;
+      height: 176px;
+      z-index: 18;
+      pointer-events: none;
+      filter: drop-shadow(0 6px 0px rgba(0,0,0,0.65));
+    }
+
+    .hero-wrap.aura-active::before {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 26px;
+      width: 124px;
+      height: 28px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(255, 190, 11, 0.75) 0%, rgba(247, 37, 133, 0.4) 60%, transparent 100%);
+      box-shadow: 0 0 24px #ffbe0b;
+      animation: auraPulse 0.45s infinite alternate;
+    }
+    @keyframes auraPulse {
+      0% { transform: scaleX(0.92) scaleY(0.85); opacity: 0.75; }
+      100% { transform: scaleX(1.1) scaleY(1.15); opacity: 1; }
+    }
+
+    .hero-wrap.shielded::after {
+      content: '';
+      position: absolute;
+      inset: 14px;
+      border-radius: 50%;
+      border: 3px solid #00f5d4;
+      background: radial-gradient(circle, rgba(0, 245, 212, 0.08) 40%, rgba(0, 180, 216, 0.32) 100%);
+      box-shadow: 0 0 20px #00f5d4, inset 0 0 14px #00f5d4;
+      animation: shieldPulse 1.1s infinite alternate;
+    }
+    @keyframes shieldPulse {
+      0% { transform: scale(0.96); opacity: 0.8; }
+      100% { transform: scale(1.04); opacity: 1; }
+    }
+
+    .hero-canvas {
+      width: 176px;
+      height: 176px;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    .companion-unit {
+      position: absolute;
+      width: 116px;
+      height: 116px;
+      z-index: 19;
+      pointer-events: none;
+      display: none;
+      filter: drop-shadow(0 5px 0 rgba(0,0,0,0.65));
+    }
+    .companion-unit.active { display: block; }
+    .companion-unit canvas {
+      width: 116px;
+      height: 116px;
+      image-rendering: pixelated;
+    }
+
+    .plasma-bolt {
+      position: absolute;
+      width: 30px;
+      height: 10px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #ff9e00 0%, #fff3b0 60%, #ffffff 100%);
+      border: 2px solid #12151f;
+      box-shadow: 0 0 16px #00f5d4, 0 0 8px #ffbe0b;
+      z-index: 19;
+      pointer-events: none;
+      transform-origin: center center;
+    }
+    .plasma-bolt.kira-bolt {
+      background: linear-gradient(90deg, #7209b7 0%, #f72585 55%, #ffffff 100%);
+      box-shadow: 0 0 16px #f72585, 0 0 8px #c77dff;
+    }
+    .plasma-bolt.giaphuc-bolt {
+      background: linear-gradient(90deg, #ff5400 0%, #ffbe0b 55%, #ffffff 100%);
+      box-shadow: 0 0 18px #ff7b00, 0 0 8px #00f5d4;
+    }
+    .plasma-bolt.promax-bolt {
+      width: 36px;
+      height: 12px;
+      background: linear-gradient(90deg, #f72585 0%, #ffbe0b 45%, #00f5d4 80%, #ffffff 100%);
+      box-shadow: 0 0 22px #00f5d4, 0 0 12px #ffbe0b;
+    }
+    .plasma-bolt.drone-bolt {
+      width: 26px;
+      height: 8px;
+      background: linear-gradient(90deg, #0077b6 0%, #00f5d4 65%, #ffffff 100%);
+      box-shadow: 0 0 14px #00f5d4;
+    }
+    .plasma-bolt.mecha-shell {
+      width: 36px;
+      height: 14px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #e63946 0%, #ffbe0b 65%, #ffffff 100%);
+      border: 2px solid #090b10;
+      box-shadow: 0 0 20px #ffbe0b, 0 0 10px #e63946;
+    }
+
+    .grenade-proj {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      image-rendering: pixelated;
+      z-index: 24;
+      pointer-events: none;
+    }
+
+    .enemy {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 16;
+      pointer-events: none;
+    }
+    .enemy.chilled .enemy-canvas {
+      filter: hue-rotate(155deg) brightness(1.25) drop-shadow(0 0 10px #00f5d4);
+    }
+    .enemy.hit-flash .enemy-canvas {
+      filter: brightness(2.6) contrast(1.5) drop-shadow(0 0 12px #ffffff);
+    }
+
+    .enemy-canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      filter: drop-shadow(0 5px 0px rgba(0,0,0,0.65));
+      transition: filter 0.06s;
+    }
+
+    .enemy-badge {
+      display: flex;
+      align-items: center;
+      background: #12151f;
+      color: #fff;
+      font-family: 'VT323', monospace;
+      font-size: 29px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      padding: 1px 11px;
+      border: 3px solid #64748b;
+      box-shadow: 0 0 0 2px #090b10, 0 4px 0 rgba(0,0,0,0.75);
+      border-radius: 4px;
+      margin-bottom: -6px;
+      transition: transform 0.12s, border-color 0.12s, background 0.12s;
+      z-index: 20;
+      white-space: nowrap;
+    }
+    .enemy.boss-tier .enemy-badge {
+      border-color: #e63946;
+      background: #2b0510;
+      font-size: 32px;
+      box-shadow: 0 0 0 2px #090b10, 0 0 14px rgba(230, 57, 70, 0.7);
+    }
+    .enemy-badge .typed { color: #00f5d4; }
+    .enemy-badge .next-char { color: #ffbe0b; text-decoration: underline; }
+    .enemy-badge .rest-char { color: #f8fafc; }
+
+    .enemy.locked .enemy-badge {
+      background: #4c0519;
+      border-color: #ffbe0b;
+      transform: scale(1.16);
+      box-shadow: 0 0 0 2px #090b10, 0 0 16px rgba(255, 190, 11, 0.8);
+    }
+
+    .enemy.final-boss .enemy-canvas {
+      filter: drop-shadow(0 0 18px rgba(230, 57, 70, 0.85)) drop-shadow(0 6px 0 rgba(0,0,0,0.85));
+    }
+    .enemy.final-boss .enemy-badge {
+      border-color: #ffbe0b;
+      background: linear-gradient(180deg, #4c0519 0%, #1e0512 100%);
+      font-size: 36px;
+      padding: 2px 14px;
+      box-shadow: 0 0 0 2px #090b10, 0 0 22px rgba(255, 190, 11, 0.75);
+    }
+
+    .wave-pill {
+      background: rgba(15, 20, 32, 0.9);
+      border: 2px solid #334155;
+      box-shadow: 0 0 0 2px #090b10, 0 3px 0 #090b10;
+      padding: 6px 11px;
+      border-radius: 5px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      color: var(--accent-cyan);
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+    .wave-pill.boss-alert {
+      border-color: var(--accent-red);
+      color: var(--accent-gold);
+      background: #2b0510;
+    }
+
+    .boss-hud-bar {
+      position: absolute;
+      top: 74px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(480px, 86vw);
+      background: rgba(20, 8, 16, 0.94);
+      border: 3px solid var(--accent-red);
+      box-shadow: 0 0 0 2px #090b10, 0 0 24px rgba(230, 57, 70, 0.55);
+      border-radius: 6px;
+      padding: 8px 12px;
+      z-index: 42;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      pointer-events: none;
+    }
+    .boss-hud-bar.active {
+      display: flex;
+    }
+    .boss-hud-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      color: var(--accent-gold);
+      text-shadow: 2px 2px 0 #000;
+    }
+    .boss-hp-track {
+      width: 100%;
+      height: 14px;
+      background: #090b10;
+      border: 2px solid #4c0519;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .boss-hp-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #e63946 0%, #ff9e00 60%, #ffbe0b 100%);
+      transition: width 0.22s ease-out;
+    }
+
+    .menu-card.victory-card {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 0 3px #090b10, 0 0 42px rgba(255, 190, 11, 0.45);
+    }
+
+    .explosion {
+      position: absolute;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffffff 0%, #ffbe0b 45%, #e63946 80%, transparent 100%);
+      box-shadow: 0 0 24px #ffbe0b;
+      z-index: 22;
+      animation: popOut 0.28s ease-out forwards;
+      pointer-events: none;
+    }
+    .explosion.mega {
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffffff 0%, #00f5d4 35%, #ffbe0b 68%, transparent 100%);
+      box-shadow: 0 0 70px #00f5d4;
+      animation: popOut 0.48s ease-out forwards;
+    }
+
+    .float-score {
+      position: absolute;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 13px;
+      color: var(--accent-gold);
+      text-shadow: 2px 2px 0 #090b10, 0 0 10px rgba(255, 190, 11, 0.6);
+      z-index: 26;
+      pointer-events: none;
+      animation: floatUp 0.75s ease-out forwards;
+    }
+    .float-score.cyan { color: var(--accent-cyan); font-size: 13px; }
+    .float-score.dmg { color: #ff4d6d; font-size: 15px; }
+
+    /* =========================================================================
+       5. MENU PHÂN TẦNG GỌN GÀNG
+       ========================================================================= */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(9, 11, 16, 0.78);
+      z-index: 100;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .overlay.active { display: flex; }
+
+    .menu-card {
+      background: var(--bg-panel);
+      border: 4px solid var(--border-mid);
+      box-shadow: 0 0 0 4px var(--border-outer), 0 20px 50px rgba(0, 0, 0, 0.85);
+      border-radius: 8px;
+      padding: 26px 32px;
+      width: 100%;
+      max-width: 720px;
+      text-align: center;
+      position: relative;
+    }
+
+    .title-logo {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 26px;
+      color: var(--accent-gold);
+      text-shadow: 4px 4px 0 var(--accent-red);
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .home-showcase {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+    .home-hero-box {
+      background: #181e30;
+      border: 3px solid #2b3554;
+      border-radius: 8px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: left;
+    }
+    .home-hero-box:hover { border-color: var(--accent-cyan); }
+    .home-hero-box.active {
+      background: #1d2942;
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 18px rgba(255, 190, 11, 0.28);
+    }
+    .home-hero-box canvas {
+      width: 68px;
+      height: 68px;
+      image-rendering: pixelated;
+    }
+
+    .home-btn-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 340px;
+      margin: 0 auto;
+    }
+    .home-btn-stack .arcade-btn {
+      padding: 13px 20px;
+      font-size: 14px;
+    }
+
+    .level-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .level-card {
+      background: var(--bg-panel-hi);
+      border: 3px solid var(--border-mid);
+      box-shadow: 0 0 0 2px var(--border-outer), 0 6px 0 #090b10;
+      border-radius: 6px;
+      padding: 16px 12px;
+      cursor: pointer;
+      transition: transform 0.14s, border-color 0.14s, box-shadow 0.14s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .level-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 0 2px var(--border-outer), 0 10px 0 #090b10, 0 0 20px rgba(255, 190, 11, 0.28);
+    }
+    .level-tag {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      padding: 4px 8px;
+      border-radius: 3px;
+    }
+    .level-card.easy .level-tag { background: #143625; color: #4ade80; border: 2px solid #4ade80; }
+    .level-card.medium .level-tag { background: #132f4c; color: #38bdf8; border: 2px solid #38bdf8; }
+    .level-card.hard .level-tag { background: #4c0519; color: #fb7185; border: 2px solid #fb7185; }
+    .level-title { font-family: 'Press Start 2P', monospace; font-size: 17px; color: #ffffff; }
+    .level-desc { font-size: 12px; color: #cbd5e1; line-height: 1.45; }
+    .level-desc b { color: var(--accent-gold); }
+
+    .menu-footer {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* --- MODAL CỬA HÀNG & HƯỚNG DẪN --- */
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(9, 11, 16, 0.88);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+    .modal-backdrop.active { display: flex; }
+
+    .modal-box {
+      background: var(--bg-panel);
+      border: 4px solid var(--accent-cyan);
+      box-shadow: 0 0 0 4px var(--border-outer), 0 24px 60px rgba(0, 0, 0, 0.9);
+      border-radius: 8px;
+      padding: 18px 22px;
+      width: 100%;
+      max-width: 860px;
+      color: var(--text-main);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #2b3554;
+    }
+
+    .modal-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 14px;
+      color: var(--accent-gold);
+    }
+
+    .shop-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .shop-tab-btn {
+      flex: 1;
+      background: #181c29;
+      color: var(--text-muted);
+      border: 2.5px solid #2b3554;
+      padding: 9px 14px;
+      border-radius: 6px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .shop-tab-btn.active {
+      background: #1d3557;
+      border-color: var(--accent-cyan);
+      color: #ffffff;
+    }
+
+    .shop-loadout-preview {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #0d1018;
+      border: 2px solid #2b3554;
+      border-radius: 6px;
+      padding: 6px 12px;
+      margin-bottom: 12px;
+      gap: 8px;
+    }
+    .shop-loadout-slots {
+      display: flex;
+      gap: 8px;
+      flex: 1;
+      justify-content: flex-end;
+    }
+    .shop-mini-slot {
+      background: #181c29;
+      border: 2px solid #3a4466;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .shop-mini-slot.empty {
+      border-style: dashed;
+      color: #64748b;
+      min-width: 68px;
+      min-height: 26px;
+      justify-content: center;
+    }
+    .shop-mini-unequip {
+      background: #4c0519;
+      color: #fda4af;
+      border: 1px solid #e63946;
+      border-radius: 3px;
+      padding: 0 4px;
+      font-size: 10px;
+      cursor: pointer;
+    }
+
+    .shop-grid-8 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+      margin-bottom: 12px;
+    }
+
+    .shop-item-card {
+      background: var(--bg-panel-hi);
+      border: 2px solid #2b3554;
+      border-radius: 6px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+    }
+    .shop-item-canvas {
+      width: 48px;
+      height: 48px;
+      image-rendering: pixelated;
+      background: #12151f;
+      border: 2px solid #3a4466;
+      border-radius: 5px;
+      flex-shrink: 0;
+    }
+    .shop-item-info { flex: 1; }
+    .shop-item-title {
+      font-weight: 800;
+      font-size: 12.5px;
+      color: var(--accent-gold);
+      margin-bottom: 2px;
+    }
+    .shop-item-desc {
+      font-size: 11px;
+      color: #cbd5e1;
+      line-height: 1.3;
+    }
+
+    .companion-grid {
+      display: none;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .companion-card {
+      background: var(--bg-panel-hi);
+      border: 2.5px solid #2b3554;
+      border-radius: 6px;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+    }
+    .companion-card.owned {
+      border-color: var(--accent-cyan);
+      background: #162238;
+    }
+    .companion-card canvas {
+      width: 76px;
+      height: 76px;
+      image-rendering: pixelated;
+      background: #12151f;
+      border: 2px solid #3a4466;
+      border-radius: 6px;
+    }
+    .comp-stat-box {
+      width: 100%;
+      background: #0d1018;
+      border: 1.5px solid #2b3554;
+      border-radius: 5px;
+      padding: 6px 8px;
+      font-size: 11px;
+      color: #e2e8f0;
+      line-height: 1.45;
+      text-align: left;
+    }
+    .comp-stat-box b { color: var(--accent-cyan); }
+    .comp-perk-tag {
+      font-size: 10.5px;
+      color: #ffbe0b;
+      background: rgba(255, 190, 11, 0.1);
+      border: 1px solid rgba(255, 190, 11, 0.35);
+      border-radius: 4px;
+      padding: 4px 6px;
+      width: 100%;
+      line-height: 1.3;
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+    .guide-panel {
+      background: var(--bg-panel-hi);
+      border: 2px solid #2b3554;
+      border-radius: 6px;
+      padding: 10px 12px;
+    }
+    .guide-panel h4 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9.5px;
+      color: var(--accent-cyan);
+      margin-bottom: 6px;
+    }
+    .guide-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 12px;
+      color: #cbd5e1;
+      line-height: 1.38;
+    }
+    .guide-list b { color: var(--accent-gold); }
+
+    .monster-guide-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .monster-guide-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--bg-panel-hi);
+      border: 2px solid #2b3554;
+      border-radius: 6px;
+      padding: 5px 7px;
+      text-align: left;
+    }
+    .monster-mini-canvas {
+      width: 38px;
+      height: 38px;
+      image-rendering: pixelated;
+      flex-shrink: 0;
+      background: #12151f;
+      border: 2px solid #3a4466;
+      border-radius: 4px;
+    }
+    .monster-guide-text {
+      font-size: 10.5px;
+      color: #cbd5e1;
+      line-height: 1.25;
+    }
+    .monster-guide-text b {
+      color: var(--accent-gold);
+      display: block;
+    }
+
+    @keyframes popOut { 0% { transform: scale(0.4); opacity: 1; } 100% { transform: scale(2.1); opacity: 0; } }
+    @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(0.95); } 40% { transform: translateY(-28px) scale(1.08); } 100% { opacity: 0; transform: translateY(-68px) scale(0.95); } }
+
+    /* =========================================================================
+       THANH THÔNG TIN VAI TRÒ & BANNER KẾT QUẢ THEO PHÂN QUYỀN
+       ========================================================================= */
+    .user-role-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      transition: all 0.25s ease;
+    }
+    .user-role-bar.guest {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1.5px solid rgba(248, 113, 113, 0.5);
+      color: #fca5a5;
+    }
+    .user-role-bar.student {
+      background: rgba(2, 132, 199, 0.15);
+      border: 1.5px solid rgba(56, 189, 248, 0.5);
+      color: #7dd3fc;
+    }
+    .user-role-bar.teacher {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1.5px solid rgba(52, 211, 153, 0.5);
+      color: #6ee7b7;
+    }
+    .btn-role-login {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 999px;
+      padding: 3px 12px;
+      font-size: 11px;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+      transition: all 0.2s ease;
+    }
+    .btn-role-login:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.6);
+    }
+    .result-role-banner {
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .result-role-banner.guest {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1.5px dashed #f87171;
+    }
+    .result-role-banner.guest .rrb-title {
+      font-weight: 800;
+      color: #fca5a5;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .result-role-banner.guest .rrb-desc {
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+    .result-role-banner.logged {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1.5px solid #10b981;
+    }
+    .result-role-banner.logged .rrb-title {
+      font-weight: 800;
+      color: #6ee7b7;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .result-role-banner.logged .rrb-desc {
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+
+  </style>
+  <link rel="stylesheet" href="auth-modal.css">
+</head>
+<body>
+
+  <div class="game-screen" id="game-screen">
+    <div class="screen-flash" id="screen-flash"></div>
+    <div class="scanlines"></div>
+
+    <!-- Canvas Bối Cảnh Pixel-Art (5 Thế Giới x 3 Dạng Địa Hình = 15 Biến Thể Pixel-Art) -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Canvas Hiệu ứng Hạt -->
+    <canvas id="fx-canvas"></canvas>
+
+    <div class="stage-toast" id="stage-toast">PHẾ TÍCH ĐÊM TÍM • KHU A: CỔNG ĐÁ CỔ</div>
+
+    <!-- =====================================================================
+         THANH HUD TỐI GIẢN TRONG TRẬN
+         ===================================================================== -->
+    <div class="hud">
+      <div class="hud-left">
+        <div class="combat-bar pixel-panel">
+          <div class="hp-column">
+            <div class="hp-header-row">
+              <span style="color:#fff;" id="hudHeroName">GIA PHÚC</span>
+              <span class="hp-numbers" id="hpTextVal">100 / 100</span>
+            </div>
+            <div class="hp-track">
+              <div class="hp-trail" id="hpTrailBar"></div>
+              <div class="hp-fill" id="hpFillBar"></div>
+            </div>
+            <div class="shield-track" id="shieldTrack">
+              <div class="shield-fill" id="shieldFillBar"></div>
+            </div>
+          </div>
+
+          <div class="coin-main-box" id="coinMainBox">
+            <svg width="16" height="16" viewBox="0 0 12 12"><rect x="3" y="0" width="6" height="12" fill="#090b10"/><rect x="1" y="2" width="10" height="8" fill="#090b10"/><rect x="3" y="1" width="6" height="10" fill="#ffbe0b"/><rect x="2" y="2" width="8" height="8" fill="#ffbe0b"/><rect x="4" y="2" width="2" height="2" fill="#ffffff"/><rect x="5" y="3" width="2" height="6" fill="#fff3b0"/></svg>
+            <span id="coinHudVal">0</span>
+          </div>
+
+          <div class="score-hud-box">
+            <span class="score-hud-label">ĐIỂM</span>
+            <span class="score-hud-val" id="scoreHudVal">000000</span>
+          </div>
+        </div>
+
+        <div class="wave-pill" id="wavePill">TIẾN TRÌNH: 0 / 25</div>
+        <div class="combo-badge" id="comboVal">x2</div>
+      </div>
+
+      <div class="hud-right">
+        <button class="arcade-btn icon-only" onclick="togglePause()" title="Tạm dừng & Cài đặt (Phím ESC)">
+          <svg class="btn-icon" viewBox="0 0 16 16"><path d="M3 2h4v12H3V2zm6 0h4v12H9V2z"/></svg>
+        </button>
+        <a href="mini-game-go-phim.html" class="arcade-btn icon-only" title="Thoát về Mini Game" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Thanh Máu Trùm Cuối -->
+    <div class="boss-hud-bar" id="bossHudBar">
+      <div class="boss-hud-title">
+        <span>☠ CHÚA TỂ TITAN HỦY DIỆT</span>
+        <span id="bossHudPhase">PHA 1 / 3</span>
+      </div>
+      <div class="boss-hp-track">
+        <div class="boss-hp-fill" id="bossHpFill"></div>
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         THANH 4 Ô ĐỒ ĐỘNG NHỎ GỌN (F1 - F4)
+         ===================================================================== -->
+    <div class="item-dock" id="item-dock">
+      <div class="item-slot" id="dock-slot-0" onclick="useLoadoutSlot(0)"></div>
+      <div class="item-slot" id="dock-slot-1" onclick="useLoadoutSlot(1)"></div>
+      <div class="item-slot" id="dock-slot-2" onclick="useLoadoutSlot(2)"></div>
+      <div class="item-slot" id="dock-slot-3" onclick="useLoadoutSlot(3)"></div>
+    </div>
+
+    <!-- 3 Đơn vị Trợ Thủ Rigged -->
+    <div class="companion-unit" id="comp-drone" style="left: 36px; bottom: 224px;">
+      <canvas id="canvas-comp-drone" width="80" height="80"></canvas>
+    </div>
+    <div class="companion-unit" id="comp-mecha" style="left: 196px; bottom: 72px;">
+      <canvas id="canvas-comp-mecha" width="80" height="80"></canvas>
+    </div>
+    <div class="companion-unit" id="comp-medic" style="left: 6px; bottom: 138px;">
+      <canvas id="canvas-comp-medic" width="80" height="80"></canvas>
+    </div>
+
+    <!-- Nhân vật chính (Blaze hoặc Kira) -->
+    <div class="hero-wrap" id="hero-wrap">
+      <canvas id="hero-canvas" class="hero-canvas" width="80" height="80"></canvas>
+    </div>
+
+    <!-- Vùng chứa Quái Vật & Đạn -->
+    <div id="world-container"></div>
+
+    <!-- =====================================================================
+         1A. MÀN HÌNH TRANG CHỦ GỌN GÀNG
+         ===================================================================== -->
+    <div class="overlay active" id="menu-overlay">
+      <div class="menu-card" style="max-width: 720px;">
+        <div class="title-logo">TYPING DEFENDER</div>
+        <div class="subtitle">Chọn chiến binh của bạn (Blaze • Kira • Gia Phúc) và bắt đầu chiến dịch</div>
+
+        <div id="homeHighScoreBadge" style="display:none; font-family:'Press Start 2P',monospace; font-size:11px; color:var(--accent-cyan); margin-bottom:14px;">
+          KỶ LỤC CAO NHẤT: <span id="homeHighScoreVal">000000</span>
+        </div>
+
+        <div class="home-showcase" style="gap: 14px; flex-wrap: wrap;">
+          <div class="home-hero-box" id="pick-blaze" onclick="selectHero('blaze')">
+            <canvas id="preview-blaze" width="80" height="80"></canvas>
+            <div>
+              <div style="font-family:'Press Start 2P',monospace; font-size:11.5px; color:#fff; margin-bottom:4px;">BLAZE</div>
+              <div style="font-size:11.5px; color:var(--accent-cyan); font-weight:700;">Súng Trường Plasma</div>
+            </div>
+          </div>
+
+          <div class="home-hero-box" id="pick-kira" onclick="selectHero('kira')">
+            <canvas id="preview-kira" width="80" height="80"></canvas>
+            <div>
+              <div style="font-family:'Press Start 2P',monospace; font-size:11.5px; color:#fff; margin-bottom:4px;">KIRA</div>
+              <div style="font-size:11.5px; color:var(--accent-purple); font-weight:700;">Súng Xung Kích Cyber</div>
+            </div>
+          </div>
+
+          <div class="home-hero-box active" id="pick-giaphuc" onclick="selectHero('giaphuc')">
+            <canvas id="preview-giaphuc" width="80" height="80"></canvas>
+            <div>
+              <div style="font-family:'Press Start 2P',monospace; font-size:11.5px; color:var(--accent-gold); margin-bottom:4px;">GIA PHÚC</div>
+              <div style="font-size:11.5px; color:#ff9e00; font-weight:700;">Pháo Điện Từ Hoàng Kim</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="home-btn-stack">
+          <button class="arcade-btn primary" onclick="openModeSelect()">
+            BẮT ĐẦU CHƠI
+          </button>
+          <button class="arcade-btn gold" onclick="openShop()">
+            CỬA HÀNG & TRỢ THỦ
+          </button>
+          <button class="arcade-btn" onclick="openGuide()">
+            HƯỚNG DẪN CHIẾN ĐẤU
+          </button>
+          <a href="mini-game-go-phim.html" class="arcade-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center; color:#94a3b8; border-color:#3a4466;">
+            ← TRỞ VỀ MINIGAME
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         1B. BẢNG CHỌN CẤP ĐỘ & BỐI CẢNH (MỖI BỐI CẢNH CÓ 3 DẠNG BIẾN THỂ)
+         ===================================================================== -->
+    <div class="overlay" id="mode-overlay">
+      <div class="menu-card">
+        <div class="title-logo" style="font-size: 20px;">CHỌN CẤP ĐỘ XUẤT TRẬN</div>
+        <div class="subtitle">Nhấp vào cấp độ bạn muốn chinh phục</div>
+
+        <div class="level-grid">
+          <div class="level-card easy" onclick="startGame('easy')">
+            <span class="level-tag">CẤP ĐỘ 1</span>
+            <div class="level-title">DỄ</div>
+            <div class="level-desc">
+              Toàn bàn phím (A-Z, 0-9)<br>
+              • Quái nhỏ: <b>1 ký tự</b> • Vừa/Bay: <b>1–2</b><br>
+              • Chiến dịch: <b>25 quái + Trùm Cuối (3 Pha)</b>
+            </div>
+          </div>
+
+          <div class="level-card medium" onclick="startGame('medium')">
+            <span class="level-tag">CẤP ĐỘ 2</span>
+            <div class="level-title">VỪA</div>
+            <div class="level-desc">
+              Toàn bàn phím (A-Z, 0-9)<br>
+              • Quái nhỏ: <b>1–2</b> • Vừa/Bay: <b>2–3</b><br>
+              • Chiến dịch: <b>35 quái + Trùm Cuối (4 Pha)</b>
+            </div>
+          </div>
+
+          <div class="level-card hard" onclick="startGame('hard')">
+            <span class="level-tag">CẤP ĐỘ 3</span>
+            <div class="level-title">KHÓ</div>
+            <div class="level-desc">
+              Gõ từ Tiếng Anh (2–7 ký tự)<br>
+              • Chiến dịch: <b>45 quái + Trùm Cuối (4 Pha)</b><br>
+              • Thưởng thêm <b>+1 Xu</b> mỗi quái!
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-footer">
+          <button class="arcade-btn" onclick="cycleStagePreGame()" id="stageOptionBtn">
+            Bối cảnh: TỰ ĐỘNG (LUÂN PHIÊN)
+          </button>
+          <button class="arcade-btn" onclick="backToHome()">
+            Quay lại
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. MÀN HÌNH TẠM DỪNG -->
+    <div class="overlay" id="pause-overlay">
+      <div class="menu-card" style="max-width: 480px;">
+        <div class="title-logo" style="font-size: 24px; color: var(--accent-cyan); font-family: 'Be Vietnam Pro', sans-serif; font-weight: 900; letter-spacing: 2px;">TẠM DỪNG</div>
+        <div class="subtitle">Cài đặt & Tiếp tế chiến dịch</div>
+        <div class="home-btn-stack">
+          <button class="arcade-btn primary" onclick="togglePause()">Tiếp tục chiến đấu</button>
+          <button class="arcade-btn" onclick="openGuide()">Xem hướng dẫn</button>
+          <button class="arcade-btn" onclick="toggleSound()"><span id="pauseSoundLabel">Âm thanh: BẬT</span></button>
+          <button class="arcade-btn" onclick="startGame(currentMode)">Chơi lại màn này</button>
+          <button class="arcade-btn" onclick="showMenu()">Về Màn Hình Chính</button>
+          <a href="mini-game-go-phim.html" class="arcade-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center; color:#94a3b8; border-color:#3a4466;">Thoát Về Mini Game</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. MÀN HÌNH GAME OVER (THUA) -->
+    <div class="overlay" id="gameover-overlay">
+      <div class="menu-card" style="max-width: 580px;">
+        <div class="title-logo" style="font-size: 28px; color: var(--accent-red); text-shadow: 3px 3px 0 #000; font-family: 'Be Vietnam Pro', sans-serif; font-weight: 900; letter-spacing: 2px;">THẤT BẠI!</div>
+        <div class="subtitle" id="gameover-subtitle" style="display: none;"></div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 22px; background:#0d1018; padding:14px; border-radius:6px; border:2px solid #2b3554;">
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 5px;">ĐIỂM TRẬN NÀY</div>
+            <div id="final-score" style="font-family: 'Press Start 2P', monospace; font-size: 22px; color: #ffffff;">000000</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 5px;">KỶ LỤC CAO NHẤT</div>
+            <div id="final-highscore" style="font-family: 'Press Start 2P', monospace; font-size: 22px; color: var(--accent-purple);">000000</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 5px;">XU TÍCH LŨY</div>
+            <div id="final-coins" style="font-family: 'Press Start 2P', monospace; font-size: 20px; color: var(--accent-gold);">0 XU</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 5px;">QUÁI ĐÃ HẠ</div>
+            <div id="final-kills" style="font-family: 'Press Start 2P', monospace; font-size: 20px; color: var(--accent-cyan);">0</div>
+          </div>
+        </div>
+        <div class="menu-footer" id="gameover-footer-btns">
+          <button class="arcade-btn primary" onclick="startGame(currentMode)">Chơi lại</button>
+          <button class="arcade-btn gold" onclick="openShop()">Cửa hàng (Nâng Cấp)</button>
+          <button class="arcade-btn" onclick="showMenu()">Trang Chủ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3B. MÀN HÌNH CHIẾN THẮNG (ĂN MỪNG HẠ TRÙM CUỐI) -->
+    <div class="overlay" id="victory-overlay">
+      <div class="menu-card victory-card" style="max-width: 600px;">
+        <div style="font-family:'Press Start 2P',monospace; font-size:11px; color:var(--accent-cyan); margin-bottom:8px; letter-spacing:1px;">★ CHIẾN DỊCH HOÀN TẤT ★</div>
+        <div class="title-logo" style="font-size: 28px; color: var(--accent-gold); text-shadow: 3px 3px 0 #000; font-family: 'Be Vietnam Pro', sans-serif; font-weight: 900; letter-spacing: 2px;">CHIẾN THẮNG!</div>
+        <div class="subtitle" id="victory-subtitle" style="display: none;"></div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 22px; background:#0d1018; padding:14px; border-radius:6px; border:2px solid var(--accent-gold);">
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 5px;">TỔNG ĐIỂM</div>
+            <div id="victory-score" style="font-family: 'Press Start 2P', monospace; font-size: 22px; color: #ffffff;">000000</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 5px;">KỶ LỤC CAO NHẤT</div>
+            <div id="victory-highscore" style="font-family: 'Press Start 2P', monospace; font-size: 22px; color: var(--accent-purple);">000000</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 5px;">THƯỞNG & XU TÍCH LŨY</div>
+            <div id="victory-coins" style="font-family: 'Press Start 2P', monospace; font-size: 18px; color: var(--accent-gold);">0 XU</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 5px;">QUÁI ĐÃ HẠ</div>
+            <div id="victory-kills" style="font-family: 'Press Start 2P', monospace; font-size: 20px; color: var(--accent-cyan);">0</div>
+          </div>
+        </div>
+        <div class="menu-footer" id="victory-footer-btns">
+          <button class="arcade-btn primary" onclick="startGame(currentMode)">Chơi lại màn này</button>
+          <button class="arcade-btn gold" onclick="openShop()">Cửa hàng (Nâng Cấp)</button>
+          <button class="arcade-btn" onclick="showMenu()">Trang Chủ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. MODAL CỬA HÀNG 2 TAB -->
+    <div class="modal-backdrop" id="shop-modal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div class="modal-title">TRUNG TÂM TIẾP TẾ & TRỢ THỦ</div>
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="font-family: 'Press Start 2P', monospace; font-size: 13px; color: var(--accent-gold);">
+              <span id="shopCoinVal">0</span> XU
+            </div>
+            <button class="arcade-btn" onclick="closeShop()">Đóng</button>
+          </div>
+        </div>
+
+        <div class="shop-tabs">
+          <button class="shop-tab-btn active" id="tab-btn-items" onclick="switchShopTab('items')">
+            1. VẬT PHẨM CHIẾN THUẬT
+          </button>
+          <button class="shop-tab-btn" id="tab-btn-comps" onclick="switchShopTab('comps')">
+            2. TRỢ THỦ CHIẾN ĐẤU
+          </button>
+        </div>
+
+        <div class="shop-loadout-preview" id="shop-loadout-bar">
+          <span style="font-size: 12px; font-weight: 800; color: var(--accent-cyan);">Ô ĐỒ:</span>
+          <div class="shop-loadout-slots" id="shop-loadout-slots"></div>
+        </div>
+
+        <div class="shop-grid-8" id="shop-items-grid"></div>
+        <div class="companion-grid" id="shop-comps-grid"></div>
+      </div>
+    </div>
+
+    <!-- 5. MODAL HƯỚNG DẪN -->
+    <div class="modal-backdrop" id="guide-modal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div class="modal-title">HƯỚNG DẪN CHIẾN ĐẤU & QUÁI VẬT</div>
+          <button class="arcade-btn" onclick="closeGuide()">Đóng</button>
+        </div>
+
+        <div class="guide-grid">
+          <div class="guide-panel">
+            <h4>1. CÁCH CHƠI & 4 Ô ĐỒ ĐỘNG</h4>
+            <ul class="guide-list">
+              <li>• Gõ phím theo ký tự trên đầu quái để bắn. Nhấn <b>Backspace</b> để đổi mục tiêu.</li>
+              <li>• <b>4 Ô Đồ (`F1–F4`)</b>: Mua đồ trong Cửa hàng sẽ tự gắn vào ô trống. Khi dùng hết (`SL = 0`), ô tự trống lại!</li>
+            </ul>
+          </div>
+
+          <div class="guide-panel">
+            <h4>2. BỐI CẢNH ĐA DẠNG & TRỢ THỦ</h4>
+            <ul class="guide-list">
+              <li>• Mỗi Bối Cảnh có <b>3 Khu Vực (Dạng A, B, C)</b> với công trình Pixel-Art khác nhau thay đổi liên tục khi bạn tiến quân.</li>
+              <li>• <b>Chiến Xa Pháo</b>, <b>Chiến Cơ Drone</b> & <b>Robot Quân Y</b> tự động khai hỏa hỗ trợ.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="monster-guide-list">
+          <div class="monster-guide-item">
+            <canvas class="monster-mini-canvas" id="guide-icon-frost" width="80" height="80"></canvas>
+            <div class="monster-guide-text"><b>BỌ BĂNG MINI</b>Nhỏ • -8 HP • 1 Xu</div>
+          </div>
+          <div class="monster-guide-item">
+            <canvas class="monster-mini-canvas" id="guide-icon-hopper" width="80" height="80"></canvas>
+            <div class="monster-guide-text"><b>QUÁI NHẢY ĐỎ</b>Nhỏ • -10 HP • 1 Xu</div>
+          </div>
+          <div class="monster-guide-item">
+            <canvas class="monster-mini-canvas" id="guide-icon-spore" width="80" height="80"></canvas>
+            <div class="monster-guide-text"><b>BÀO TỬ NỔ</b>Nhỏ • -12 HP • 1 Xu</div>
+          </div>
+          <div class="monster-guide-item">
+            <canvas class="monster-mini-canvas" id="guide-icon-gremlin" width="80" height="80"></canvas>
+            <div class="monster-guide-text"><b>QUÁI MÀO TÍM</b>Vừa • -16 HP • 2 Xu</div>
+          </div>
+          <div class="monster-guide-item">
+            <canvas class="monster-mini-canvas" id="guide-icon-crawler" width="80" height="80"></canvas>
+            <div class="monster-guide-text"><b>QUÁI CÀNG CUA</b>Vừa • -18 HP • 2 Xu</div>
+          </div>
+          <div class="monster-guide-item">
+            <canvas class="monster-mini-canvas" id="guide-icon-bat" width="80" height="80"></canvas>
+            <div class="monster-guide-text"><b>DƠI QUỶ BAY</b>Bổ nhào • -15 HP • 3 Xu</div>
+          </div>
+          <div class="monster-guide-item">
+            <canvas class="monster-mini-canvas" id="guide-icon-eye_flyer" width="80" height="80"></canvas>
+            <div class="monster-guide-text"><b>NHÃN CẦU BAY</b>Bổ nhào • -20 HP • 3 Xu</div>
+          </div>
+          <div class="monster-guide-item">
+            <canvas class="monster-mini-canvas" id="guide-icon-titan" width="80" height="80"></canvas>
+            <div class="monster-guide-text"><b>TITAN HẮC ÁM</b>Khổng lồ • -38 HP • 8 Xu</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. HỆ THỐNG BỐI CẢNH PIXEL-ART ĐA BIẾN THỂ (5 BỐI CẢNH × 3 DẠNG = 15 KHU VỰC)
+    //    Vẽ trên độ phân giải nội bộ Pixel-Art (480x270) đồng bộ 100% với nhân vật!
+    // =========================================================================
+    const bgCanvas = document.getElementById('bg-canvas');
+    const bgCtx = bgCanvas.getContext('2d');
+    const BG_W = 480;
+    const BG_H = 270;
+    bgCanvas.width = BG_W;
+    bgCanvas.height = BG_H;
+    bgCtx.imageSmoothingEnabled = false;
+
+    const STAGES = [
+      {
+        id: 0,
+        name: 'PHẾ TÍCH ĐÊM TÍM',
+        variants: ['KHU A: CỔNG ĐÁ CỔ', 'KHU B: THÁP CHUÔNG SỤP ĐỔ', 'KHU C: ĐIỆN THỜ HƯ KHÔNG'],
+        skyPalettes: [
+          ['#0e0720', '#1d1038', '#381b5c', '#7a2866'],
+          ['#160824', '#2c1140', '#541b5e', '#a82860'],
+          ['#090517', '#160d33', '#2b195c', '#5e2bff']
+        ],
+        farCol: ['#160c29', '#21113b', '#120a26'],
+        midBase: '#1b1130',
+        midHi: '#3c2463',
+        accent: ['#00f5d4', '#ffbe0b', '#c77dff'],
+        groundTop: ['#00f5d4', '#ffbe0b', '#c77dff'],
+        groundMid: '#281840',
+        groundDark: '#130b21'
+      },
+      {
+        id: 1,
+        name: 'RỪNG ĐỘC ĐOM ĐÓM',
+        variants: ['KHU A: ĐẦM LẦY NẤM KHỔNG LỒ', 'KHU B: HANG TINH THỂ ĐỘC', 'KHU C: NGHĨA ĐỊA XƯƠNG CỔ'],
+        skyPalettes: [
+          ['#061412', '#0d2922', '#194535', '#3c8056'],
+          ['#08111c', '#0f2430', '#164245', '#2b8a78'],
+          ['#0f1408', '#1c290f', '#2f4719', '#618c2b']
+        ],
+        farCol: ['#0a1f19', '#0d2129', '#141f0b'],
+        midBase: '#0d261d',
+        midHi: '#1f4d3a',
+        accent: ['#8ac926', '#00f5d4', '#ffbe0b'],
+        groundTop: ['#8ac926', '#00f5d4', '#b5e48c'],
+        groundMid: '#18331e',
+        groundDark: '#0a170d'
+      },
+      {
+        id: 2,
+        name: 'HỎA NGỤC DUNG NHAM',
+        variants: ['KHU A: SƯỜN NÚI LỬA PHUN TRÀO', 'KHU B: PHÁO ĐÀI SẮT HẮC ÁM', 'KHU C: ĐỀN ĐẦU LÂU LỬA'],
+        skyPalettes: [
+          ['#1a0408', '#3d0b14', '#75171e', '#d94e0f'],
+          ['#14070c', '#2e0f18', '#591822', '#b5381a'],
+          ['#1f0802', '#471206', '#8a240b', '#ff7b00']
+        ],
+        farCol: ['#24060b', '#1c0910', '#290a04'],
+        midBase: '#2b090e',
+        midHi: '#54151d',
+        accent: ['#ffbe0b', '#ff5400', '#e63946'],
+        groundTop: ['#ff9e00', '#e63946', '#ffbe0b'],
+        groundMid: '#360b0e',
+        groundDark: '#170406'
+      },
+      {
+        id: 3,
+        name: 'THÀNH PHỐ CYBER',
+        variants: ['KHU A: ĐẠI LỘ HOLOGRAM', 'KHU B: LÒ PHẢN ỨNG PLASMA', 'KHU C: CẦU VƯỢT TÀU ĐIỆN TỪ'],
+        skyPalettes: [
+          ['#050a1a', '#0c1838', '#1c2b59', '#b5179e'],
+          ['#040d1a', '#092238', '#124059', '#00b4d8'],
+          ['#0d061f', '#1c103b', '#381d66', '#f72585']
+        ],
+        farCol: ['#081126', '#071829', '#120b29'],
+        midBase: '#0d1830',
+        midHi: '#1f3461',
+        accent: ['#f72585', '#00f5d4', '#ffbe0b'],
+        groundTop: ['#f72585', '#00f5d4', '#4cc9f0'],
+        groundMid: '#111f3d',
+        groundDark: '#060c1a'
+      },
+      {
+        id: 4,
+        name: 'ĐỀN CỔ BĂNG GIÁ',
+        variants: ['KHU A: ĐỈNH TUYẾT CỰC QUANG', 'KHU B: CUNG ĐIỆN PHA LÊ BĂNG', 'KHU C: XÁC CHIẾN GIÁP CỔ ĐẠI'],
+        skyPalettes: [
+          ['#051221', '#0b2640', '#194a6e', '#72efdd'],
+          ['#091029', '#142454', '#26468a', '#90e0ef'],
+          ['#061721', '#0e3345', '#1d5e75', '#caf0f8']
+        ],
+        farCol: ['#0c263b', '#122247', '#0e2c3b'],
+        midBase: '#133652',
+        midHi: '#27628c',
+        accent: ['#90e0ef', '#00f5d4', '#ffbe0b'],
+        groundTop: ['#90e0ef', '#caf0f8', '#00f5d4'],
+        groundMid: '#163d57',
+        groundDark: '#091b29'
+      }
+    ];
+
+    let stageMode = 'auto';
+    let activeStageIdx = 0;
+    let activeVariantIdx = 0; // 0, 1, 2 (3 dạng khác nhau cho mỗi bối cảnh!)
+    let bgScrollX = 0;
+
+    function pxRect(x, y, w, h, col) {
+      bgCtx.fillStyle = col;
+      bgCtx.fillRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(h));
+    }
+
+    function pxOutlinedBox(x, y, w, h, fillCol, hiCol, outCol = '#090b10') {
+      pxRect(x - 1, y - 1, w + 2, h + 2, outCol);
+      pxRect(x, y, w, h, fillCol);
+      if (hiCol) pxRect(x, y, w, 2, hiCol);
+    }
+
+    // Vẽ bầu trời Pixel-Art có dải Dithering 2x2 chuẩn Retro
+    function drawPixelSky(pal, groundTopY) {
+      const bandH = Math.floor(groundTopY / 4);
+      for (let b = 0; b < 4; b++) {
+        const y0 = b * bandH;
+        const y1 = (b === 3) ? groundTopY : (b + 1) * bandH;
+        pxRect(0, y0, BG_W, y1 - y0, pal[b]);
+
+        // Dải dithering caro 2x2 giữa 2 tầng màu
+        if (b < 3) {
+          const nextCol = pal[b + 1];
+          const ditherStart = y1 - 8;
+          for (let dy = 0; dy < 8; dy += 2) {
+            for (let dx = (dy % 4 === 0 ? 0 : 2); dx < BG_W; dx += 4) {
+              pxRect(dx, ditherStart + dy, 2, 2, nextCol);
+            }
+          }
+        }
+      }
+    }
+
+    // Vẽ Trăng / Mặt Trời Synthwave / Cực Quang / Sao Pixel tùy theo Bối cảnh & Biến thể
+    function drawCelestialLayer(st, vIdx, scroll) {
+      const acc = st.accent[vIdx];
+      // Sao pixel lấp lánh trên bầu trời
+      for (let i = 0; i < 22; i++) {
+        const sx = ((i * 73 + 19) - Math.floor(scroll * 0.03)) % BG_W;
+        const px = sx < 0 ? sx + BG_W : sx;
+        const py = 10 + ((i * 29) % 75);
+        pxRect(px, py, (i % 3 === 0) ? 2 : 1, (i % 3 === 0) ? 2 : 1, (i % 4 === 0) ? acc : '#ffffff');
+      }
+
+      const moonX = 360 - Math.floor(scroll * 0.02) % 80;
+      const moonY = 36;
+
+      if (st.id === 0) {
+        // Phế Tích: Trăng lưỡi liềm (Khu A), Trăng máu (Khu B), Lõi Hư Không xoáy (Khu C)
+        pxRect(moonX - 14, moonY - 14, 28, 28, acc);
+        pxRect(moonX - 16, moonY - 10, 32, 20, acc);
+        pxRect(moonX - 10, moonY - 16, 20, 32, acc);
+        if (vIdx === 0) {
+          pxRect(moonX - 4, moonY - 12, 18, 22, st.skyPalettes[vIdx][1]);
+        } else if (vIdx === 2) {
+          pxRect(moonX - 6, moonY - 6, 12, 12, '#090517');
+          pxRect(moonX - 2, moonY - 2, 4, 4, '#ffffff');
+        }
+      } else if (st.id === 2) {
+        // Hỏa Ngục: Mặt trời dung nham & cột tro bụi
+        pxRect(moonX - 18, moonY - 12, 36, 24, '#ff5400');
+        pxRect(moonX - 14, moonY - 16, 28, 32, '#ffbe0b');
+        pxRect(moonX - 8, moonY - 8, 16, 16, '#ffffff');
+      } else if (st.id === 3) {
+        // Thành phố Cyber: Mặt trời Synthwave cắt vạch ngang
+        for (let r = 0; r < 28; r += 4) {
+          const w = 36 - Math.abs(14 - r);
+          pxRect(moonX - w / 2, moonY - 12 + r, w, 2.5, r < 14 ? '#ffbe0b' : '#f72585');
+        }
+      } else if (st.id === 4) {
+        // Đền Băng: Dải Cực Quang Pixel uốn lượn
+        for (let x = 0; x < BG_W; x += 6) {
+          const ay = 26 + Math.floor(Math.sin((x + scroll * 0.1) * 0.04) * 10);
+          pxRect(x, ay, 5, 10, acc);
+          pxRect(x, ay + 3, 5, 4, '#ffffff');
+        }
+      }
+    }
+
+    // Vẽ Tầng Xa (Far Parallax Mountains / Skyline / Cavern Pillars)
+    function drawFarLayer(st, vIdx, scroll, groundTopY) {
+      const col = st.farCol[vIdx];
+      const hi = st.accent[vIdx];
+      const step = 96;
+      const offset = Math.floor(scroll * 0.18) % step;
+
+      for (let i = -1; i <= Math.ceil(BG_W / step) + 1; i++) {
+        const bx = i * step - offset;
+        const seed = ((i + Math.floor(scroll * 0.18 / step)) * 37) & 7;
+
+        if (st.id === 3) {
+          // Thành phố Cyber: Tòa nhà chọc trời phía xa có cửa sổ Pixel
+          const bh = 65 + (seed * 9);
+          const by = groundTopY - bh;
+          pxOutlinedBox(bx + 6, by, 38, bh, col, '#1e293b');
+          pxOutlinedBox(bx + 50, by + 18, 34, bh - 18, col, '#1e293b');
+          for (let wy = by + 8; wy < groundTopY - 12; wy += 8) {
+            pxRect(bx + 12, wy, 6, 3, (wy + seed) % 16 === 0 ? hi : '#1d3557');
+            pxRect(bx + 24, wy, 6, 3, '#1d3557');
+            if (wy > by + 24) pxRect(bx + 58, wy, 14, 2, hi);
+          }
+        } else if (st.id === 1 && vIdx === 1) {
+          // Rừng Độc Khu B (Hang Tinh Thể): Nhũ đá trên trần & cột đá
+          const ch = 40 + (seed * 6);
+          for (let s = 0; s < 5; s++) {
+            pxRect(bx + s * 6, 0, 24 - s * 4, ch - s * 6, col);
+          }
+          pxOutlinedBox(bx + 42, groundTopY - 85, 22, 85, col, null);
+        } else {
+          // Dãy núi / Đồi cổ đại / Núi lửa / Đỉnh băng bậc thang Pixel
+          const peakH = 58 + (seed * 7);
+          for (let lv = 0; lv < peakH; lv += 4) {
+            const w = (peakH - lv) * 1.6;
+            const py = groundTopY - peakH + lv;
+            pxRect(bx + 48 - w / 2, py, w, 4, col);
+            if (st.id === 4 && lv < 22) {
+              // Chóp tuyết trắng trên đỉnh núi băng
+              pxRect(bx + 48 - w / 2, py, w * 0.55, 4, '#caf0f8');
+            }
+          }
+          // Nếu là Hỏa Ngục Khu A: Miệng núi lửa phun sáng
+          if (st.id === 2 && vIdx === 0 && seed % 2 === 0) {
+            pxRect(bx + 40, groundTopY - peakH, 16, 6, '#ffbe0b');
+            pxRect(bx + 44, groundTopY - peakH + 6, 6, peakH - 6, '#ff5400');
+          }
+        }
+      }
+    }
+
+    // Vẽ Tầng Trung Cảnh (15 Dạng Công Trình Pixel-Art Riêng Biệt cho 5 Bối Cảnh × 3 Khu Vực!)
+    function drawMidLayer(st, vIdx, scroll, groundTopY, timestamp) {
+      const base = st.midBase;
+      const hi = st.midHi;
+      const acc = st.accent[vIdx];
+      const span = 120;
+      const offset = Math.floor(scroll * 0.45) % span;
+      const baseTileIdx = Math.floor(scroll * 0.45 / span);
+      const pulse = Math.sin(timestamp * 0.006) > 0;
+
+      for (let i = -1; i <= Math.ceil(BG_W / span) + 1; i++) {
+        const x = i * span - offset;
+        const propType = Math.abs(baseTileIdx + i) % 3;
+
+        if (st.id === 0) {
+          // === BỐI CẢNH 1: PHẾ TÍCH ĐÊM TÍM (3 KHU VỰC) ===
+          if (vIdx === 0) {
+            // Khu A: Cổng Đá Cổ & Trụ Đá Rune
+            if (propType === 0) {
+              pxOutlinedBox(x + 14, groundTopY - 64, 14, 64, base, hi);
+              pxOutlinedBox(x + 56, groundTopY - 64, 14, 64, base, hi);
+              pxOutlinedBox(x + 8, groundTopY - 74, 68, 12, hi, acc);
+              pxRect(x + 19, groundTopY - 48, 4, 24, acc);
+              pxRect(x + 61, groundTopY - 48, 4, 24, acc);
+            } else if (propType === 1) {
+              pxOutlinedBox(x + 28, groundTopY - 42, 16, 42, base, hi);
+              pxRect(x + 34, groundTopY - 52, 4, 10, acc);
+            } else {
+              pxOutlinedBox(x + 18, groundTopY - 30, 44, 30, base, hi);
+              pxRect(x + 26, groundTopY - 22, 28, 6, acc);
+            }
+          } else if (vIdx === 1) {
+            // Khu B: Tháp Chuông Sụp Đổ & Cầu Vòm Đá
+            if (propType === 0) {
+              pxOutlinedBox(x + 20, groundTopY - 82, 36, 82, base, hi);
+              pxOutlinedBox(x + 28, groundTopY - 68, 20, 20, '#090b10', acc);
+              pxRect(x + 36, groundTopY - 62, 4, 10, acc);
+            } else {
+              pxOutlinedBox(x + 4, groundTopY - 38, 86, 12, base, hi);
+              pxOutlinedBox(x + 12, groundTopY - 26, 14, 26, base, null);
+              pxOutlinedBox(x + 64, groundTopY - 26, 14, 26, base, null);
+            }
+          } else {
+            // Khu C: Điện Thờ Hư Không & Pha Lê Bay Lơ Lửng
+            const hoverY = groundTopY - 58 + (pulse ? -3 : 2);
+            pxOutlinedBox(x + 28, hoverY, 18, 28, acc, '#ffffff');
+            pxOutlinedBox(x + 20, groundTopY - 16, 34, 16, base, hi);
+            if (propType === 0) {
+              pxOutlinedBox(x + 70, groundTopY - 70, 24, 70, base, hi);
+              pxRect(x + 76, groundTopY - 58, 12, 6, '#e63946');
+            }
+          }
+        } else if (st.id === 1) {
+          // === BỐI CẢNH 2: RỪNG ĐỘC ĐOM ĐÓM (3 KHU VỰC) ===
+          if (vIdx === 0) {
+            // Khu A: Đầm Lầy Nấm Khổng Lồ Phát Quang
+            const mh = propType === 0 ? 58 : 42;
+            pxOutlinedBox(x + 34, groundTopY - mh, 12, mh, '#1b4332', null);
+            pxOutlinedBox(x + 14, groundTopY - mh - 14, 52, 16, acc, '#d9ed92');
+            pxRect(x + 22, groundTopY - mh - 10, 6, 6, '#ffffff');
+            pxRect(x + 48, groundTopY - mh - 8, 8, 5, '#ffbe0b');
+          } else if (vIdx === 1) {
+            // Khu B: Hang Tinh Thể Độc Mọc Chéo
+            pxOutlinedBox(x + 22, groundTopY - 54, 14, 54, acc, '#ffffff');
+            pxOutlinedBox(x + 38, groundTopY - 38, 12, 38, '#00b4d8', '#caf0f8');
+            pxOutlinedBox(x + 10, groundTopY - 28, 12, 28, '#52b788', null);
+          } else {
+            // Khu C: Nghĩa Địa Xương Khổng Lồ & Cột Totem
+            if (propType === 0) {
+              for (let r = 0; r < 3; r++) {
+                pxOutlinedBox(x + 12 + r * 22, groundTopY - 48 + r * 4, 8, 48 - r * 4, '#cbd5e1', '#ffffff');
+              }
+            } else {
+              pxOutlinedBox(x + 28, groundTopY - 66, 22, 66, base, hi);
+              pxRect(x + 32, groundTopY - 54, 5, 5, '#ffbe0b');
+              pxRect(x + 41, groundTopY - 54, 5, 5, '#ffbe0b');
+              pxRect(x + 33, groundTopY - 36, 12, 6, acc);
+            }
+          }
+        } else if (st.id === 2) {
+          // === BỐI CẢNH 3: HỎA NGỤC DUNG NHAM (3 KHU VỰC) ===
+          if (vIdx === 0) {
+            // Khu A: Trụ Đá Nứt Mạch Lửa & Vòi Phun Dung Nham
+            pxOutlinedBox(x + 24, groundTopY - 56, 28, 56, base, hi);
+            pxRect(x + 34, groundTopY - 48, 6, 40, '#ffbe0b');
+            if (propType === 0) {
+              pxOutlinedBox(x + 70, groundTopY - 32, 22, 32, base, '#ff5400');
+            }
+          } else if (vIdx === 1) {
+            // Khu B: Pháo Đài Sắt Hắc Ám & Lò Rèn Dung Nham
+            pxOutlinedBox(x + 10, groundTopY - 72, 54, 72, '#1e293b', '#475569');
+            pxRect(x + 26, groundTopY - 52, 22, 52, '#ff5400');
+            pxRect(x + 32, groundTopY - 52, 10, 52, '#ffbe0b');
+            // Dây xích sắt treo trên cao
+            for (let cy = 0; cy < groundTopY - 72; cy += 8) {
+              pxOutlinedBox(x + 34, cy, 6, 6, '#64748b', null);
+            }
+          } else {
+            // Khu C: Đền Đầu Lâu Lửa & Vạc Lửa
+            pxOutlinedBox(x + 18, groundTopY - 58, 42, 44, base, hi);
+            pxOutlinedBox(x + 24, groundTopY - 14, 30, 14, base, null);
+            pxRect(x + 25, groundTopY - 42, 10, 8, '#ffbe0b');
+            pxRect(x + 43, groundTopY - 42, 10, 8, '#ffbe0b');
+            pxRect(x + 30, groundTopY - 24, 18, 8, '#e63946');
+          }
+        } else if (st.id === 3) {
+          // === BỐI CẢNH 4: THÀNH PHỐ CYBERPUNK (3 KHU VỰC) ===
+          if (vIdx === 0) {
+            // Khu A: Đại Lộ Biển Hiệu Neon Hologram
+            pxOutlinedBox(x + 14, groundTopY - 76, 48, 76, base, hi);
+            pxOutlinedBox(x + 8, groundTopY - 64, 60, 18, '#120a2a', acc);
+            pxRect(x + 14, groundTopY - 58, 22, 3, '#ffffff');
+            pxRect(x + 14, groundTopY - 52, 36, 3, acc);
+            pxOutlinedBox(x + 76, groundTopY - 46, 6, 46, '#334155', '#00f5d4');
+          } else if (vIdx === 1) {
+            // Khu B: Khu Lò Phản Ứng Năng Lượng Plasma
+            pxOutlinedBox(x + 20, groundTopY - 70, 36, 70, '#1e293b', '#475569');
+            pxRect(x + 28, groundTopY - 58, 20, 44, '#00b4d8');
+            pxRect(x + 33, groundTopY - 58, 10, 44, pulse ? '#ffffff' : '#00f5d4');
+            pxOutlinedBox(x + 56, groundTopY - 36, 44, 8, '#334155', acc);
+          } else {
+            // Khu C: Cầu Vượt Tàu Điện Từ Cao Tốc (Monorail)
+            pxOutlinedBox(x, groundTopY - 54, span, 10, '#1e293b', '#f72585');
+            pxOutlinedBox(x + 36, groundTopY - 44, 16, 44, '#0f172a', '#334155');
+            // Đoàn tàu điện từ chạy vút qua trên cầu
+            const trainX = BG_W - ((Math.floor(timestamp * 0.28) % (BG_W + 220)) - 110);
+            pxOutlinedBox(trainX, groundTopY - 66, 84, 12, '#e2e8f0', '#00f5d4');
+            pxRect(trainX + 8, groundTopY - 62, 68, 4, '#00f5d4');
+          }
+        } else if (st.id === 4) {
+          // === BỐI CẢNH 5: ĐỀN CỔ BĂNG GIÁ (3 KHU VỰC) ===
+          if (vIdx === 0) {
+            // Khu A: Rừng Thông Tuyết & Trụ Đá Băng
+            for (let t = 0; t < 3; t++) {
+              const tw = 38 - t * 8;
+              pxOutlinedBox(x + 36 - tw / 2, groundTopY - 24 - t * 14, tw, 14, '#1b4332', '#caf0f8');
+            }
+            pxOutlinedBox(x + 32, groundTopY - 12, 8, 12, '#3d2616', null);
+          } else if (vIdx === 1) {
+            // Khu B: Cung Điện Pha Lê Băng
+            pxOutlinedBox(x + 18, groundTopY - 74, 18, 74, '#00b4d8', '#ffffff');
+            pxOutlinedBox(x + 40, groundTopY - 54, 16, 54, '#48cae4', '#ffffff');
+            pxRect(x + 24, groundTopY - 64, 4, 48, '#ffffff');
+          } else {
+            // Khu C: Xác Chiến Giáp Khổng Lồ Đóng Băng
+            if (propType === 0) {
+              pxOutlinedBox(x + 14, groundTopY - 52, 52, 52, '#334155', '#caf0f8');
+              pxRect(x + 26, groundTopY - 36, 28, 8, pulse ? '#00f5d4' : '#0077b6');
+              pxOutlinedBox(x + 6, groundTopY - 24, 24, 24, '#90e0ef', '#ffffff');
+            } else {
+              pxOutlinedBox(x + 24, groundTopY - 40, 32, 40, '#48cae4', '#ffffff');
+            }
+          }
+        }
+      }
+    }
+
+    // Vẽ Mặt Đất Gạch Pixel-Art (Ground Tileset) khớp hoàn hảo với chân nhân vật
+    function drawPixelGround(st, vIdx, scroll, groundTopY) {
+      const groundH = BG_H - groundTopY;
+      const topCol = st.groundTop[vIdx];
+
+      // Viền đen + Lớp bề mặt phát sáng + Nền đất
+      pxRect(0, groundTopY - 2, BG_W, 2, '#090b10');
+      pxRect(0, groundTopY, BG_W, 4, topCol);
+      pxRect(0, groundTopY + 4, BG_W, 12, st.groundMid);
+      pxRect(0, groundTopY + 16, BG_W, groundH - 16, st.groundDark);
+
+      // Các viên gạch mặt đất Pixel cuộn 1:1 theo bước chạy
+      const tileW = 32;
+      const offset = Math.floor(scroll) % tileW;
+      for (let x = -offset; x < BG_W; x += tileW) {
+        pxRect(x, groundTopY, 2, 16, '#090b10');
+        pxRect(x + 4, groundTopY + 6, 10, 3, topCol);
+        pxOutlinedBox(x + 3, groundTopY + 18, tileW - 6, 12, st.groundMid, null, '#090b10');
+        pxOutlinedBox(x + 11, groundTopY + 32, tileW - 6, 10, st.groundMid, null, '#090b10');
+      }
+    }
+
+    function renderPixelBackground(dt, timestamp) {
+      if (gameState === 'PLAYING') {
+        const isEmpActive = timestamp < empSlowUntil;
+        bgScrollX += (isEmpActive ? 35 : 92) * dt;
+      } else {
+        bgScrollX += 24 * dt;
+      }
+
+      const st = STAGES[activeStageIdx];
+      const vIdx = activeVariantIdx % 3;
+      // Mặt đất ở độ cao 84px trên màn hình thật -> tương ứng trên BG_H=270
+      const groundTopY = BG_H - Math.round((84 / Math.max(400, window.innerHeight)) * BG_H);
+
+      drawPixelSky(st.skyPalettes[vIdx], groundTopY);
+      drawCelestialLayer(st, vIdx, bgScrollX);
+      drawFarLayer(st, vIdx, bgScrollX, groundTopY);
+      drawMidLayer(st, vIdx, bgScrollX, groundTopY, timestamp);
+      drawPixelGround(st, vIdx, bgScrollX, groundTopY);
+    }
+
+    // =========================================================================
+    // 2. DỮ LIỆU SPRITE SHEET ATLAS (2 CHIẾN BINH + 9 QUÁI + 3 TRỢ THỦ RIGGED)
+    // =========================================================================
+    const ATLAS_DATA = {
+      blaze: {
+        src: "assets/blaze_gunner.png",
+        frames: [[3,3],[87,3],[171,3],[255,3],[339,3],[3,87],[87,87],[171,87],[255,87],[339,87],[3,171],[87,171],[171,171],[255,171],[339,171],[3,255],[87,255],[171,255],[255,255],[339,255],[3,339],[87,339],[171,339],[255,339]],
+        tags: { idle: [0, 3], run: [4, 11], shoot: [12, 14], shoot_up: [15, 17], shoot_down: [18, 20], hurt: [21, 23] }
+      },
+      kira: {
+        src: "assets/kira_agent.png",
+        frames: [[3,3],[87,3],[171,3],[87,3],[255,3],[339,3],[3,87],[87,87],[171,87],[255,87],[339,87],[3,171],[87,171],[171,171],[255,171],[339,171],[3,255],[87,255],[171,255],[255,255],[339,255],[3,339],[87,339],[171,339]],
+        tags: { idle: [0, 3], run: [4, 11], shoot: [12, 14], shoot_up: [15, 17], shoot_down: [18, 20], hurt: [21, 23] }
+      },
+      giaphuc: {
+        src: "assets/giaphuc_hero.png",
+        frames: [[3,3],[87,3],[171,3],[87,3],[255,3],[339,3],[3,87],[87,87],[171,87],[255,87],[339,87],[3,171],[87,171],[171,171],[255,171],[339,171],[3,255],[87,255],[171,255],[255,255],[339,255],[3,339],[87,339],[171,339]],
+        tags: { idle: [0, 3], run: [4, 11], shoot: [12, 14], shoot_up: [15, 17], shoot_down: [18, 20], hurt: [21, 23] }
+      },
+      comp_mecha: {
+        src: "assets/comp_mecha.png",
+        frames: [[3,3],[87,3],[171,3],[255,3],[3,87],[87,87],[171,87],[255,87],[3,171],[87,171],[171,171],[87,171]],
+        tags: { move: [0, 5], shoot: [6, 8], idle: [9, 11] }
+      },
+      comp_drone: {
+        src: "assets/comp_drone.png",
+        frames: [[3,3],[87,3],[171,3],[255,3],[171,3],[87,3],[3,87],[87,87],[171,87],[255,87],[3,171],[255,87]],
+        tags: { move: [0, 5], shoot: [6, 8], idle: [9, 11] }
+      },
+      comp_medic: {
+        src: "assets/comp_medic.png",
+        frames: [[3,3],[87,3],[171,3],[255,3],[171,3],[87,3],[3,87],[87,87],[171,87],[255,87],[3,171],[255,87]],
+        tags: { move: [0, 5], shoot: [6, 8], idle: [9, 11] }
+      },
+      bat: {
+        src: "assets/monster_bat.png",
+        frames: [[3,3],[87,3],[171,3],[255,3],[171,3],[87,3],[3,87],[87,87],[171,87],[255,87],[3,171],[87,171]],
+        tags: { move: [0, 5], attack: [6, 8], hurt: [9, 11] }
+      },
+      eye_flyer: {
+        src: "assets/monster_eye_flyer.png",
+        frames: [[3,3],[87,3],[171,3],[255,3],[171,3],[87,3],[3,87],[87,87],[171,87],[255,87],[3,171],[87,171]],
+        tags: { move: [0, 5], attack: [6, 8], hurt: [9, 11] }
+      },
+      hopper: {
+        src: "assets/monster_hopper.png",
+        frames: [[3,3],[87,3],[171,3],[87,3],[255,3],[339,3],[3,87],[87,87],[171,87],[255,87],[339,87],[3,171],[87,171],[171,171],[255,171],[339,171],[3,255],[87,255]],
+        tags: { idle: [0, 3], move: [4, 11], attack: [12, 14], hurt: [15, 17] }
+      },
+      frost: {
+        src: "assets/monster_frost.png",
+        frames: [[3,3],[87,3],[171,3],[87,3],[255,3],[339,3],[3,87],[87,87],[171,87],[255,87],[339,87],[3,171],[87,171],[171,171],[255,171],[339,171],[3,255],[87,255]],
+        tags: { idle: [0, 3], move: [4, 11], attack: [12, 14], hurt: [15, 17] }
+      },
+      spore: {
+        src: "assets/monster_spore.png",
+        frames: [[3,3],[87,3],[171,3],[87,3],[255,3],[339,3],[3,87],[87,87],[171,87],[255,87],[339,87],[3,171],[87,171],[171,171],[255,171],[339,171],[3,255],[87,255]],
+        tags: { idle: [0, 3], move: [4, 11], attack: [12, 14], hurt: [15, 17] }
+      },
+      gremlin: {
+        src: "assets/monster_gremlin.png",
+        frames: [[3,3],[87,3],[171,3],[87,3],[255,3],[339,3],[3,87],[87,87],[171,87],[255,87],[339,87],[3,171],[87,171],[171,171],[255,171],[339,171],[3,255],[87,255]],
+        tags: { idle: [0, 3], move: [4, 11], attack: [12, 14], hurt: [15, 17] }
+      },
+      crawler: {
+        src: "assets/monster_crawler.png",
+        frames: [[3,3],[87,3],[171,3],[87,3],[255,3],[339,3],[3,87],[87,87],[171,87],[255,87],[339,87],[3,171],[87,171],[171,171],[255,171],[339,171],[3,255],[87,255]],
+        tags: { idle: [0, 3], move: [4, 11], attack: [12, 14], hurt: [15, 17] }
+      },
+      brute: {
+        src: "assets/monster_brute.png",
+        frames: [[3,3],[87,3],[171,3],[87,3],[255,3],[339,3],[3,87],[87,87],[171,87],[255,87],[339,87],[3,171],[87,171],[171,171],[255,171],[339,171],[3,255],[87,255]],
+        tags: { idle: [0, 3], move: [4, 11], attack: [12, 14], hurt: [15, 17] }
+      },
+      titan: {
+        src: "assets/monster_titan.png",
+        frames: [[3,3],[87,3],[171,3],[87,3],[255,3],[339,3],[3,87],[87,87],[171,87],[255,87],[339,87],[3,171],[87,171],[171,171],[255,171],[339,171],[3,255],[87,255]],
+        tags: { idle: [0, 3], move: [4, 11], attack: [12, 14], hurt: [15, 17] }
+      }
+    };
+
+    const IMAGES = {};
+    const itemsSheetImg = new Image();
+    itemsSheetImg.src = "assets/items_sheet.png";
+    itemsSheetImg.onload = () => {
+      renderLoadoutDock();
+      renderShopContent();
+    };
+
+    let loadedImages = 0;
+    const totalImages = Object.keys(ATLAS_DATA).length;
+
+    for (const [key, cfg] of Object.entries(ATLAS_DATA)) {
+      const img = new Image();
+      img.src = cfg.src;
+      img.onload = () => {
+        loadedImages++;
+        if (loadedImages === totalImages) {
+          drawAtlasFrame(heroCtx, selectedHero, 'idle', 0, false);
+          renderHeroPreviews();
+          renderGuideMonsterIcons();
+          renderShopContent();
+        }
+      };
+      IMAGES[key] = img;
+    }
+
+    function drawAtlasFrame(ctx, key, clipName, frameOffset, flipX = false) {
+      const img = IMAGES[key];
+      const cfg = ATLAS_DATA[key];
+      if (!img || !img.complete || !cfg) return;
+      const range = cfg.tags[clipName] || cfg.tags.move || [0, 0];
+      const count = range[1] - range[0] + 1;
+      const idx = range[0] + (frameOffset % count);
+      const [sx, sy] = cfg.frames[idx] || cfg.frames[0];
+
+      ctx.clearRect(0, 0, 80, 80);
+      ctx.save();
+      if (flipX) {
+        ctx.translate(80, 0);
+        ctx.scale(-1, 1);
+      }
+      ctx.drawImage(img, sx, sy, 80, 80, 0, 0, 80, 80);
+      ctx.restore();
+    }
+
+    function renderHeroPreviews() {
+      const cb = document.getElementById('preview-blaze');
+      const ck = document.getElementById('preview-kira');
+      const cg = document.getElementById('preview-giaphuc');
+      if (cb) drawAtlasFrame(cb.getContext('2d'), 'blaze', 'idle', 0, false);
+      if (ck) drawAtlasFrame(ck.getContext('2d'), 'kira', 'idle', 0, false);
+      if (cg) drawAtlasFrame(cg.getContext('2d'), 'giaphuc', 'idle', 0, false);
+    }
+
+    function renderGuideMonsterIcons() {
+      ['frost', 'hopper', 'spore', 'gremlin', 'crawler', 'bat', 'eye_flyer', 'titan'].forEach(type => {
+        const c = document.getElementById('guide-icon-' + type);
+        if (c) drawAtlasFrame(c.getContext('2d'), type, 'move', 0, true);
+      });
+    }
+
+    // =========================================================================
+    // 3. BỘ TỔNG HỢP ÂM THANH ARCADE ĐA TẦNG
+    // =========================================================================
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+    let soundEnabled = true;
+    let noiseBuffer = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new AudioContext();
+        const bufferSize = audioCtx.sampleRate * 0.6;
+        noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+      }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    window.addEventListener('pointerdown', initAudio, { passive: true });
+
+    function toggleSound() {
+      initAudio();
+      soundEnabled = !soundEnabled;
+      const txt = soundEnabled ? 'Âm thanh: BẬT' : 'Âm thanh: TẮT';
+      const pLbl = document.getElementById('pauseSoundLabel');
+      if (pLbl) pLbl.textContent = txt;
+      if (soundEnabled) SFX.uiClick();
+    }
+
+    const SFX = {
+      uiClick() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(720, t);
+        osc.frequency.exponentialRampToValueAtTime(1180, t + 0.045);
+        g.gain.setValueAtTime(0.08, t);
+        g.gain.exponentialRampToValueAtTime(0.005, t + 0.045);
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.start(t); osc.stop(t + 0.045);
+      },
+
+      shoot(heroKey, clipName) {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        const basePitch = clipName === 'shoot_up' ? 880 : (clipName === 'shoot_down' ? 560 : 700);
+
+        if (heroKey === 'kira') {
+          const osc1 = audioCtx.createOscillator();
+          const osc2 = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc1.type = 'sawtooth';
+          osc2.type = 'triangle';
+          osc1.frequency.setValueAtTime(basePitch * 1.35, t);
+          osc1.frequency.exponentialRampToValueAtTime(140, t + 0.11);
+          osc2.frequency.setValueAtTime(basePitch * 2.0, t);
+          osc2.frequency.exponentialRampToValueAtTime(220, t + 0.09);
+          g.gain.setValueAtTime(0.14, t);
+          g.gain.exponentialRampToValueAtTime(0.008, t + 0.11);
+          osc1.connect(g); osc2.connect(g); g.connect(audioCtx.destination);
+          osc1.start(t); osc2.start(t);
+          osc1.stop(t + 0.11); osc2.stop(t + 0.11);
+        } else {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(basePitch, t);
+          osc.frequency.exponentialRampToValueAtTime(95, t + 0.1);
+          g.gain.setValueAtTime(0.13, t);
+          g.gain.exponentialRampToValueAtTime(0.008, t + 0.1);
+          osc.connect(g); g.connect(audioCtx.destination);
+          osc.start(t); osc.stop(t + 0.1);
+        }
+
+        if (noiseBuffer) {
+          const n = audioCtx.createBufferSource();
+          n.buffer = noiseBuffer;
+          const filter = audioCtx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.value = 1800;
+          const ng = audioCtx.createGain();
+          ng.gain.setValueAtTime(0.1, t);
+          ng.gain.exponentialRampToValueAtTime(0.005, t + 0.04);
+          n.connect(filter); filter.connect(ng); ng.connect(audioCtx.destination);
+          n.start(t); n.stop(t + 0.04);
+        }
+      },
+
+      cannonFire() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(280, t);
+        osc.frequency.exponentialRampToValueAtTime(55, t + 0.16);
+        g.gain.setValueAtTime(0.18, t);
+        g.gain.exponentialRampToValueAtTime(0.008, t + 0.16);
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.start(t); osc.stop(t + 0.16);
+      },
+
+      armorHit() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(340, t);
+        osc.frequency.exponentialRampToValueAtTime(120, t + 0.07);
+        g.gain.setValueAtTime(0.14, t);
+        g.gain.exponentialRampToValueAtTime(0.01, t + 0.07);
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.start(t); osc.stop(t + 0.07);
+      },
+
+      kill() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(190, t);
+        osc.frequency.exponentialRampToValueAtTime(38, t + 0.18);
+        g.gain.setValueAtTime(0.18, t);
+        g.gain.exponentialRampToValueAtTime(0.008, t + 0.18);
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.start(t); osc.stop(t + 0.18);
+
+        if (noiseBuffer) {
+          const n = audioCtx.createBufferSource();
+          n.buffer = noiseBuffer;
+          const filter = audioCtx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(950, t);
+          filter.frequency.exponentialRampToValueAtTime(180, t + 0.16);
+          const ng = audioCtx.createGain();
+          ng.gain.setValueAtTime(0.18, t);
+          ng.gain.exponentialRampToValueAtTime(0.008, t + 0.16);
+          n.connect(filter); filter.connect(ng); ng.connect(audioCtx.destination);
+          n.start(t); n.stop(t + 0.16);
+        }
+      },
+
+      coin() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(987.77, t);
+        osc.frequency.setValueAtTime(1318.51, t + 0.055);
+        g.gain.setValueAtTime(0.11, t);
+        g.gain.exponentialRampToValueAtTime(0.005, t + 0.22);
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.start(t); osc.stop(t + 0.22);
+      },
+
+      grenadeThrow() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(380, t);
+        osc.frequency.exponentialRampToValueAtTime(860, t + 0.25);
+        g.gain.setValueAtTime(0.1, t);
+        g.gain.exponentialRampToValueAtTime(0.008, t + 0.25);
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.start(t); osc.stop(t + 0.25);
+      },
+
+      grenadeBoom() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(150, t);
+        osc.frequency.exponentialRampToValueAtTime(22, t + 0.52);
+        g.gain.setValueAtTime(0.32, t);
+        g.gain.exponentialRampToValueAtTime(0.008, t + 0.52);
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.start(t); osc.stop(t + 0.52);
+
+        if (noiseBuffer) {
+          const n = audioCtx.createBufferSource();
+          n.buffer = noiseBuffer;
+          const filter = audioCtx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(1400, t);
+          filter.frequency.exponentialRampToValueAtTime(90, t + 0.5);
+          const ng = audioCtx.createGain();
+          ng.gain.setValueAtTime(0.34, t);
+          ng.gain.exponentialRampToValueAtTime(0.008, t + 0.5);
+          n.connect(filter); filter.connect(ng); ng.connect(audioCtx.destination);
+          n.start(t); n.stop(t + 0.5);
+        }
+      },
+
+      heal() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, t + i * 0.055);
+          g.gain.setValueAtTime(0.11, t + i * 0.055);
+          g.gain.exponentialRampToValueAtTime(0.006, t + i * 0.055 + 0.16);
+          osc.connect(g); g.connect(audioCtx.destination);
+          osc.start(t + i * 0.055);
+          osc.stop(t + i * 0.055 + 0.16);
+        });
+      },
+
+      freeze() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1600, t);
+        osc.frequency.exponentialRampToValueAtTime(320, t + 0.42);
+        g.gain.setValueAtTime(0.16, t);
+        g.gain.exponentialRampToValueAtTime(0.008, t + 0.42);
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.start(t); osc.stop(t + 0.42);
+      },
+
+      shieldUp() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(280, t);
+        osc.frequency.exponentialRampToValueAtTime(880, t + 0.28);
+        g.gain.setValueAtTime(0.15, t);
+        g.gain.exponentialRampToValueAtTime(0.008, t + 0.28);
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.start(t); osc.stop(t + 0.28);
+      },
+
+      shieldBlock() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(920, t);
+        osc.frequency.exponentialRampToValueAtTime(240, t + 0.24);
+        g.gain.setValueAtTime(0.18, t);
+        g.gain.exponentialRampToValueAtTime(0.008, t + 0.24);
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.start(t); osc.stop(t + 0.24);
+      },
+
+      hurt() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(140, t);
+        osc.frequency.exponentialRampToValueAtTime(28, t + 0.32);
+        g.gain.setValueAtTime(0.24, t);
+        g.gain.exponentialRampToValueAtTime(0.008, t + 0.32);
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.start(t); osc.stop(t + 0.32);
+      },
+
+      error() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(150, t);
+        osc.frequency.setValueAtTime(115, t + 0.05);
+        g.gain.setValueAtTime(0.1, t);
+        g.gain.exponentialRampToValueAtTime(0.008, t + 0.11);
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.start(t); osc.stop(t + 0.11);
+      },
+
+      buy() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        [880, 1174.66, 1567.98].forEach((freq, i) => {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(freq, t + i * 0.045);
+          g.gain.setValueAtTime(0.09, t + i * 0.045);
+          g.gain.exponentialRampToValueAtTime(0.005, t + i * 0.045 + 0.1);
+          osc.connect(g); g.connect(audioCtx.destination);
+          osc.start(t + i * 0.045);
+          osc.stop(t + i * 0.045 + 0.1);
+        });
+      },
+
+      gameOver() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        [392, 349.23, 329.63, 261.63].forEach((freq, i) => {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, t + i * 0.14);
+          g.gain.setValueAtTime(0.14, t + i * 0.14);
+          g.gain.exponentialRampToValueAtTime(0.006, t + i * 0.14 + 0.22);
+          osc.connect(g); g.connect(audioCtx.destination);
+          osc.start(t + i * 0.14);
+          osc.stop(t + i * 0.14 + 0.22);
+        });
+      },
+
+      bossWarning() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        [0, 0.24, 0.48].forEach((offset) => {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(140, t + offset);
+          osc.frequency.linearRampToValueAtTime(280, t + offset + 0.18);
+          g.gain.setValueAtTime(0.16, t + offset);
+          g.gain.exponentialRampToValueAtTime(0.006, t + offset + 0.2);
+          osc.connect(g); g.connect(audioCtx.destination);
+          osc.start(t + offset);
+          osc.stop(t + offset + 0.2);
+        });
+      },
+
+      victory() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
+        const times = [0, 0.1, 0.2, 0.32, 0.48, 0.6];
+        notes.forEach((freq, i) => {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = i === notes.length - 1 ? 'triangle' : 'square';
+          const dur = i === notes.length - 1 ? 0.45 : 0.14;
+          osc.frequency.setValueAtTime(freq, t + times[i]);
+          g.gain.setValueAtTime(0.13, t + times[i]);
+          g.gain.exponentialRampToValueAtTime(0.006, t + times[i] + dur);
+          osc.connect(g); g.connect(audioCtx.destination);
+          osc.start(t + times[i]);
+          osc.stop(t + times[i] + dur);
+        });
+      },
+
+      hugChime() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        [659.25, 880, 1174.66, 1318.5].forEach((freq, i) => {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, t + i * 0.07);
+          g.gain.setValueAtTime(0.12, t + i * 0.07);
+          g.gain.exponentialRampToValueAtTime(0.005, t + i * 0.07 + 0.35);
+          osc.connect(g); g.connect(audioCtx.destination);
+          osc.start(t + i * 0.07);
+          osc.stop(t + i * 0.07 + 0.35);
+        });
+      },
+
+      crySob() {
+        if (!soundEnabled || !audioCtx) return;
+        const t = audioCtx.currentTime;
+        [0, 0.28, 0.56].forEach((offset) => {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(340, t + offset);
+          osc.frequency.exponentialRampToValueAtTime(190, t + offset + 0.22);
+          g.gain.setValueAtTime(0.14, t + offset);
+          g.gain.exponentialRampToValueAtTime(0.006, t + offset + 0.24);
+          osc.connect(g); g.connect(audioCtx.destination);
+          osc.start(t + offset);
+          osc.stop(t + offset + 0.24);
+        });
+      }
+    };
+
+    // =========================================================================
+    // 4. HỆ THỐNG HIỆU ỨNG HẠT CANVAS (XU VĂNG, VỎ ĐẠN, TIA RAILGUN, THỜI TIẾT)
+    // =========================================================================
+    const fxCanvas = document.getElementById('fx-canvas');
+    const fxCtx = fxCanvas.getContext('2d');
+    let fxParticles = [];
+    let fxShockwaves = [];
+    let fxCoins = [];
+    let fxShells = [];
+    let fxBeams = [];
+    let fxWeather = [];
+
+    function resizeFxCanvas() {
+      fxCanvas.width = window.innerWidth;
+      fxCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeFxCanvas);
+    resizeFxCanvas();
+
+    function initWeatherParticles() {
+      fxWeather = [];
+      for (let i = 0; i < 36; i++) {
+        fxWeather.push({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          size: 3 + Math.random() * 3,
+          vx: -20 - Math.random() * 40,
+          vy: -15 - Math.random() * 30,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+    initWeatherParticles();
+
+    function triggerScreenShake(large = false) {
+      const cls = large ? 'shake-lg' : 'shake-sm';
+      gameScreen.classList.remove('shake-sm', 'shake-lg');
+      void gameScreen.offsetWidth;
+      gameScreen.classList.add(cls);
+    }
+
+    function triggerScreenFlash(color = 'rgba(0, 245, 212, 0.32)') {
+      const fl = document.getElementById('screen-flash');
+      fl.style.background = color;
+      fl.style.opacity = '1';
+      setTimeout(() => { fl.style.opacity = '0'; }, 90);
+    }
+
+    function spawnMuzzleAndShell(screenX, screenY, isKira) {
+      fxShockwaves.push({
+        x: screenX,
+        y: screenY,
+        r: 4,
+        maxR: 26,
+        color: isKira ? '#f72585' : '#00f5d4',
+        alpha: 0.95,
+        lineWidth: 3
+      });
+      for (let i = 0; i < 6; i++) {
+        const ang = (Math.random() - 0.5) * 1.1;
+        const spd = 120 + Math.random() * 180;
+        fxParticles.push({
+          x: screenX,
+          y: screenY,
+          vx: Math.cos(ang) * spd,
+          vy: Math.sin(ang) * spd,
+          size: 3 + Math.random() * 3,
+          color: isKira ? (i % 2 ? '#f72585' : '#fff3b0') : (i % 2 ? '#00f5d4' : '#ffbe0b'),
+          life: 0,
+          maxLife: 0.14 + Math.random() * 0.08,
+          gravity: 0
+        });
+      }
+      fxShells.push({
+        x: screenX - 18,
+        y: screenY,
+        vx: -70 - Math.random() * 75,
+        vy: -160 - Math.random() * 90,
+        rot: Math.random() * Math.PI,
+        vRot: (Math.random() - 0.5) * 18,
+        color: isKira ? '#c77dff' : '#ffbe0b',
+        life: 0,
+        maxLife: 0.9
+      });
+    }
+
+    function spawnHitParticles(screenX, screenY, monsterKey, isKill = false) {
+      const palettes = {
+        hopper: ['#ff4d6d', '#ffbe0b', '#ffffff'],
+        frost: ['#00f5d4', '#90e0ef', '#ffffff'],
+        spore: ['#f72585', '#8ac926', '#fff3b0'],
+        gremlin: ['#8ac926', '#c77dff', '#ffbe0b'],
+        crawler: ['#ff7b00', '#ffbe0b', '#e63946'],
+        bat: ['#c77dff', '#f72585', '#ffbe0b'],
+        eye_flyer: ['#ff9e00', '#ffbe0b', '#e63946'],
+        brute: ['#c77dff', '#8ac926', '#ffffff'],
+        titan: ['#e63946', '#ffbe0b', '#ffffff']
+      };
+      const cols = palettes[monsterKey] || ['#ffbe0b', '#00f5d4', '#ffffff'];
+      const count = isKill ? 22 : 8;
+
+      if (isKill) {
+        fxShockwaves.push({
+          x: screenX,
+          y: screenY,
+          r: 8,
+          maxR: 90,
+          color: cols[0],
+          alpha: 1,
+          lineWidth: 4
+        });
+      }
+
+      for (let i = 0; i < count; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        const spd = (isKill ? 90 : 50) + Math.random() * (isKill ? 240 : 120);
+        fxParticles.push({
+          x: screenX,
+          y: screenY,
+          vx: Math.cos(ang) * spd,
+          vy: Math.sin(ang) * spd - (isKill ? 80 : 30),
+          size: isKill ? (4 + Math.random() * 5) : (3 + Math.random() * 3),
+          color: cols[i % cols.length],
+          life: 0,
+          maxLife: isKill ? (0.35 + Math.random() * 0.25) : 0.2,
+          gravity: 520
+        });
+      }
+    }
+
+    function spawnFireworkBurst(screenX, screenY) {
+      const palettes = [
+        ['#ffbe0b', '#fff3b0', '#ff9e00'],
+        ['#00f5d4', '#90e0ef', '#ffffff'],
+        ['#f72585', '#c77dff', '#ffbe0b'],
+        ['#4ade80', '#00f5d4', '#ffbe0b']
+      ];
+      const cols = palettes[Math.floor(Math.random() * palettes.length)];
+      fxShockwaves.push({
+        x: screenX,
+        y: screenY,
+        r: 10,
+        maxR: 130,
+        color: cols[0],
+        alpha: 0.9,
+        lineWidth: 4
+      });
+      for (let i = 0; i < 34; i++) {
+        const ang = (Math.PI * 2 * i) / 34 + (Math.random() * 0.14);
+        const spd = 110 + Math.random() * 210;
+        fxParticles.push({
+          x: screenX,
+          y: screenY,
+          vx: Math.cos(ang) * spd,
+          vy: Math.sin(ang) * spd - 40,
+          size: 4 + Math.random() * 5,
+          color: cols[i % cols.length],
+          life: 0,
+          maxLife: 0.75 + Math.random() * 0.45,
+          gravity: 260
+        });
+      }
+    }
+
+    function spawnHeartParticle(screenX, screenY, big = false) {
+      const cols = ['#f72585', '#ff4d6d', '#ffbe0b', '#ff8fa3'];
+      fxParticles.push({
+        x: screenX + (Math.random() - 0.5) * 44,
+        y: screenY,
+        vx: (Math.random() - 0.5) * 35,
+        vy: -(70 + Math.random() * 65),
+        size: big ? (8 + Math.random() * 4) : (5 + Math.random() * 3),
+        color: cols[Math.floor(Math.random() * cols.length)],
+        life: 0,
+        maxLife: 1.2 + Math.random() * 0.6,
+        gravity: -18,
+        swayAmp: 38,
+        swayFreq: 5,
+        shape: 'heart'
+      });
+    }
+
+    function spawnRainDrop() {
+      fxParticles.push({
+        x: Math.random() * window.innerWidth,
+        y: -15,
+        vx: -45,
+        vy: 560 + Math.random() * 220,
+        size: 10 + Math.random() * 8,
+        color: Math.random() < 0.5 ? '#38bdf8' : '#93c5fd',
+        life: 0,
+        maxLife: 1.5,
+        gravity: 0,
+        shape: 'rain'
+      });
+    }
+
+    function spawnTearSpray(screenX, screenY) {
+      [-1, 1].forEach((dir) => {
+        fxParticles.push({
+          x: screenX + dir * 16,
+          y: screenY,
+          vx: dir * (70 + Math.random() * 75),
+          vy: -(95 + Math.random() * 65),
+          size: 4 + Math.random() * 3,
+          color: Math.random() < 0.5 ? '#38bdf8' : '#e0f2fe',
+          life: 0,
+          maxLife: 0.55 + Math.random() * 0.25,
+          gravity: 540
+        });
+      });
+    }
+
+    function spawnDustPuff(screenX, screenY) {
+      for (let i = 0; i < 3; i++) {
+        fxParticles.push({
+          x: screenX + (Math.random() - 0.5) * 18,
+          y: screenY,
+          vx: -40 - Math.random() * 50,
+          vy: -(25 + Math.random() * 35),
+          size: 4 + Math.random() * 4,
+          color: '#cbd5e1',
+          life: 0,
+          maxLife: 0.32 + Math.random() * 0.14,
+          gravity: 60
+        });
+      }
+    }
+
+    function spawnFlyingCoins(screenX, screenY, amount) {
+      const visualCount = Math.min(8, Math.max(1, amount));
+      for (let i = 0; i < visualCount; i++) {
+        fxCoins.push({
+          x: screenX + (Math.random() - 0.5) * 24,
+          y: screenY + (Math.random() - 0.5) * 20,
+          vx: (Math.random() - 0.5) * 180,
+          vy: -160 - Math.random() * 120,
+          t: 0,
+          delay: i * 0.045,
+          rewardGiven: (i === 0) ? amount : 0
+        });
+      }
+    }
+
+    function updateAndDrawFx(dt) {
+      const W = fxCanvas.width;
+      const H = fxCanvas.height;
+      const groundY = H - 84;
+      fxCtx.clearRect(0, 0, W, H);
+
+      for (const wp of fxWeather) {
+        wp.phase += dt * 3;
+        if (activeStageIdx === 0) {
+          wp.x += wp.vx * 0.4 * dt;
+          wp.y += Math.sin(wp.phase) * 15 * dt;
+          fxCtx.fillStyle = 'rgba(199, 125, 255, 0.55)';
+          fxCtx.fillRect(wp.x, wp.y, wp.size, wp.size);
+        } else if (activeStageIdx === 1) {
+          wp.x += Math.cos(wp.phase) * 28 * dt;
+          wp.y += wp.vy * 0.6 * dt;
+          fxCtx.fillStyle = Math.sin(wp.phase) > 0 ? 'rgba(181, 228, 140, 0.8)' : 'rgba(255, 190, 11, 0.7)';
+          fxCtx.fillRect(wp.x, wp.y, wp.size + 1, wp.size + 1);
+        } else if (activeStageIdx === 2) {
+          wp.x += wp.vx * dt;
+          wp.y += wp.vy * 1.6 * dt;
+          fxCtx.fillStyle = 'rgba(255, 158, 0, 0.8)';
+          fxCtx.fillRect(wp.x, wp.y, wp.size, wp.size);
+        } else if (activeStageIdx === 3) {
+          wp.x -= 140 * dt;
+          wp.y += 420 * dt;
+          fxCtx.fillStyle = 'rgba(0, 245, 212, 0.5)';
+          fxCtx.fillRect(wp.x, wp.y, 2, 12);
+        } else if (activeStageIdx === 4) {
+          wp.x += Math.sin(wp.phase) * 25 * dt - 30 * dt;
+          wp.y += 95 * dt;
+          fxCtx.fillStyle = 'rgba(202, 240, 248, 0.8)';
+          fxCtx.fillRect(wp.x, wp.y, wp.size, wp.size);
+        }
+        if (wp.x < 0) wp.x = W;
+        if (wp.x > W) wp.x = 0;
+        if (wp.y < 0) wp.y = H - 90;
+        if (wp.y > H - 84) wp.y = 10;
+      }
+
+      for (let i = fxBeams.length - 1; i >= 0; i--) {
+        const bm = fxBeams[i];
+        bm.life += dt;
+        if (bm.life >= bm.maxLife) {
+          fxBeams.splice(i, 1);
+          continue;
+        }
+        const alpha = 1 - bm.life / bm.maxLife;
+        fxCtx.save();
+        fxCtx.globalAlpha = alpha;
+        fxCtx.strokeStyle = bm.color;
+        fxCtx.lineWidth = bm.width * alpha;
+        fxCtx.beginPath();
+        fxCtx.moveTo(bm.x1, bm.y1);
+        fxCtx.lineTo(bm.x2, bm.y2);
+        fxCtx.stroke();
+        fxCtx.strokeStyle = '#ffffff';
+        fxCtx.lineWidth = Math.max(2, (bm.width * 0.4) * alpha);
+        fxCtx.beginPath();
+        fxCtx.moveTo(bm.x1, bm.y1);
+        fxCtx.lineTo(bm.x2, bm.y2);
+        fxCtx.stroke();
+        fxCtx.restore();
+      }
+
+      for (let i = fxShockwaves.length - 1; i >= 0; i--) {
+        const sw = fxShockwaves[i];
+        sw.r += (sw.maxR - sw.r) * 12 * dt;
+        sw.alpha -= dt * 3.4;
+        if (sw.alpha <= 0.02) {
+          fxShockwaves.splice(i, 1);
+          continue;
+        }
+        fxCtx.save();
+        fxCtx.strokeStyle = sw.color;
+        fxCtx.globalAlpha = Math.max(0, sw.alpha);
+        fxCtx.lineWidth = sw.lineWidth;
+        fxCtx.beginPath();
+        fxCtx.arc(sw.x, sw.y, sw.r, 0, Math.PI * 2);
+        fxCtx.stroke();
+        fxCtx.restore();
+      }
+
+      for (let i = fxShells.length - 1; i >= 0; i--) {
+        const sh = fxShells[i];
+        sh.life += dt;
+        if (sh.life >= sh.maxLife) {
+          fxShells.splice(i, 1);
+          continue;
+        }
+        sh.vy += 680 * dt;
+        sh.x += sh.vx * dt;
+        sh.y += sh.vy * dt;
+        sh.rot += sh.vRot * dt;
+        if (sh.y >= groundY - 4) {
+          sh.y = groundY - 4;
+          sh.vy = -Math.abs(sh.vy) * 0.45;
+          sh.vx *= 0.7;
+        }
+        fxCtx.save();
+        fxCtx.translate(sh.x, sh.y);
+        fxCtx.rotate(sh.rot);
+        fxCtx.fillStyle = sh.color;
+        fxCtx.fillRect(-4, -2, 8, 4);
+        fxCtx.restore();
+      }
+
+      for (let i = fxParticles.length - 1; i >= 0; i--) {
+        const p = fxParticles[i];
+        p.life += dt;
+        if (p.life >= p.maxLife) {
+          fxParticles.splice(i, 1);
+          continue;
+        }
+        p.vy += p.gravity * dt;
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        if (p.swayAmp) {
+          p.x += Math.sin(p.life * (p.swayFreq || 4)) * p.swayAmp * dt;
+        }
+        if (p.y >= groundY - 3) {
+          if (p.shape === 'rain') {
+            fxParticles.splice(i, 1);
+            continue;
+          }
+          p.y = groundY - 3;
+          p.vy = -Math.abs(p.vy) * 0.4;
+        }
+        fxCtx.fillStyle = p.color;
+        fxCtx.globalAlpha = Math.max(0, 1 - p.life / p.maxLife);
+        if (p.shape === 'heart') {
+          const s = p.size * 0.36;
+          fxCtx.fillRect(p.x - 2 * s, p.y - s, 2 * s, 2 * s);
+          fxCtx.fillRect(p.x + 0.5 * s, p.y - s, 2 * s, 2 * s);
+          fxCtx.fillRect(p.x - 2.5 * s, p.y, 5.5 * s, 1.5 * s);
+          fxCtx.fillRect(p.x - 1.5 * s, p.y + 1.5 * s, 3.5 * s, 1.2 * s);
+          fxCtx.fillRect(p.x - 0.5 * s, p.y + 2.7 * s, 1.5 * s, 1.0 * s);
+        } else if (p.shape === 'rain') {
+          fxCtx.fillRect(p.x, p.y, 2, p.size);
+        } else {
+          fxCtx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+        }
+        fxCtx.globalAlpha = 1;
+      }
+
+      const targetHudX = 250;
+      const targetHudY = 34;
+      for (let i = fxCoins.length - 1; i >= 0; i--) {
+        const c = fxCoins[i];
+        if (c.delay > 0) {
+          c.delay -= dt;
+          continue;
+        }
+        c.t += dt;
+        if (c.t < 0.26) {
+          c.vy += 580 * dt;
+          c.x += c.vx * dt;
+          c.y += c.vy * dt;
+        } else {
+          const dx = targetHudX - c.x;
+          const dy = targetHudY - c.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 24 || c.t > 1.1) {
+            if (c.rewardGiven > 0) {
+              coins += c.rewardGiven;
+              matchCoinsEarned += c.rewardGiven;
+              SFX.coin();
+              const box = document.getElementById('coinMainBox');
+              box.classList.add('pulse');
+              setTimeout(() => box.classList.remove('pulse'), 130);
+              saveProgress();
+              updateHUD();
+            }
+            fxCoins.splice(i, 1);
+            continue;
+          }
+          c.x += dx * 11 * dt;
+          c.y += dy * 11 * dt;
+        }
+
+        const spinW = Math.max(4, Math.abs(Math.cos(c.t * 18)) * 12);
+        fxCtx.fillStyle = '#090b10';
+        fxCtx.fillRect(c.x - spinW / 2 - 2, c.y - 8, spinW + 4, 16);
+        fxCtx.fillStyle = '#ffbe0b';
+        fxCtx.fillRect(c.x - spinW / 2, c.y - 6, spinW, 12);
+        fxCtx.fillStyle = '#ffffff';
+        fxCtx.fillRect(c.x - spinW / 4, c.y - 4, Math.max(2, spinW / 3), 4);
+      }
+    }
+
+    // =========================================================================
+    // 5. DANH MỤC 8 VẬT PHẨM ĐỔ BÓNG PIXEL & 3 TRỢ THỦ CHIẾN ĐẤU RIGGED
+    // =========================================================================
+    const SHOP_ITEMS = [
+      { id: 'syringe',   idx: 0, name: 'ỐNG TIÊM NANO',     price: 18, desc: 'Hồi ngay lập tức +35 HP vào thanh máu.' },
+      { id: 'medkit',    idx: 1, name: 'BÌNH MÁU LỚN',      price: 34, desc: 'Hồi phục mạnh +75 HP cho chiến binh.' },
+      { id: 'grenade',   idx: 2, name: 'LỰU ĐẠN PLASMA',    price: 24, desc: 'Ném vòng cung, nổ quét sạch quái trong 360px.' },
+      { id: 'railgun',   idx: 3, name: 'PHÁO XUYÊN TÁO',    price: 26, desc: 'Bắn tia la-ze đại pháo xuyên thủng toàn bộ quái!' },
+      { id: 'emp',       idx: 4, name: 'BOM BĂNG EMP',      price: 26, desc: 'Đóng băng & làm chậm 65% tốc độ quái trong 6s.' },
+      { id: 'shield',    idx: 5, name: 'KHIÊN QUANG HỌC',   price: 30, desc: 'Tạo lớp giáp năng lượng hấp thụ +45 Sát thương.' },
+      { id: 'overdrive', idx: 6, name: 'LÕI CUỒNG NỘ',      price: 28, desc: 'Trong 8s: Bắn đạn đôi (gõ 1 phím phá 2 ký tự)!' },
+      { id: 'airstrike', idx: 7, name: 'TÊN LỬA HẠT NHÂN',  price: 50, desc: 'Gọi 6 đầu đạn dội từ bầu trời hủy diệt toàn sân!' }
+    ];
+
+    const COMPANION_CATALOG = [
+      {
+        id: 'mecha',
+        atlasKey: 'comp_mecha',
+        name: 'CHIẾN XA PHÁO TỰ HÀNH',
+        costs: [35, 45, 55, 68, 82, 96, 112, 128, 145, 165],
+        getStats(lv) {
+          const eff = Math.max(1, lv);
+          const cd = Math.max(1.58, +(3.20 - (eff - 1) * 0.18).toFixed(2));
+          const kb = 36 + (eff - 1) * 6;
+          const dbl = eff < 7 ? 0 : (eff === 7 ? 15 : (eff === 8 ? 22 : (eff === 9 ? 28 : 35)));
+          return { cd, kb, dbl };
+        },
+        formatStats(lv) {
+          const s = this.getStats(lv);
+          return `Nạp: <b>${s.cd.toFixed(2)}s</b> • Đẩy: <b>${s.kb}px</b>${s.dbl > 0 ? ` • Pháo Kép: <b>${s.dbl}%</b>` : ''}`;
+        },
+        formatMech(lv) {
+          const eff = Math.max(1, lv);
+          const parts = ['Bắn pháo đẩy lùi quái gần nhất'];
+          parts.push(eff >= 5 ? '<span style="color:#ffbe0b;">Nổ lan 110px</span>' : 'Cấp 5: Nổ đẩy lùi lan 110px');
+          parts.push(eff >= 10 ? '<span style="color:#ffbe0b;">35% Pháo Kép (2 ký tự)</span>' : 'Cấp 10: 35% Pháo Kép (2 ký tự)');
+          return parts.join(' • ');
+        }
+      },
+      {
+        id: 'drone',
+        atlasKey: 'comp_drone',
+        name: 'CHIẾN CƠ DRONE VŨ TRANG',
+        costs: [40, 50, 62, 75, 90, 105, 122, 140, 158, 180],
+        getStats(lv) {
+          const eff = Math.max(1, lv);
+          const cd = Math.max(1.59, +(3.30 - (eff - 1) * 0.19).toFixed(2));
+          const dbl = eff * 4;
+          return { cd, dbl };
+        },
+        formatStats(lv) {
+          const s = this.getStats(lv);
+          return `Nạp: <b>${s.cd.toFixed(2)}s</b> • Tia Kép: <b>${s.dbl}%</b>`;
+        },
+        formatMech(lv) {
+          const eff = Math.max(1, lv);
+          const parts = ['Tự động bắn tia gõ ký tự'];
+          parts.push(eff >= 5 ? '<span style="color:#ffbe0b;">Ưu tiên Quái Bay bổ nhào</span>' : 'Cấp 5: Ưu tiên Quái Bay bổ nhào');
+          parts.push(eff >= 10 ? '<span style="color:#ffbe0b;">Kết liễu rớt +1 Xu</span>' : 'Cấp 10: Kết liễu rớt +1 Xu');
+          return parts.join(' • ');
+        }
+      },
+      {
+        id: 'medic',
+        atlasKey: 'comp_medic',
+        name: 'ROBOT QUÂN Y HỘ VỆ',
+        costs: [45, 56, 68, 82, 98, 115, 133, 152, 170, 195],
+        getStats(lv) {
+          const eff = Math.max(1, lv);
+          const cd = Math.max(2.70, +(4.50 - (eff - 1) * 0.20).toFixed(2));
+          const heal = 2 + (eff - 1);
+          const luck = eff * 5;
+          const overShield = eff >= 6 ? 5 : (eff === 5 ? 3 : 0);
+          return { cd, heal, luck, overShield };
+        },
+        formatStats(lv) {
+          const s = this.getStats(lv);
+          return `Hồi: <b>+${s.heal} HP</b> / <b>${s.cd.toFixed(2)}s</b> • May mắn: <b>+${s.luck}% Xu</b>`;
+        },
+        formatMech(lv) {
+          const eff = Math.max(1, lv);
+          const parts = ['Định kỳ hồi máu & tăng tỷ lệ rớt Xu'];
+          parts.push(eff >= 5 ? `<span style="color:#ffbe0b;">Máu đầy nạp +${eff >= 6 ? 5 : 3} Giáp</span>` : 'Cấp 5: Máu đầy nạp +3~5 Giáp');
+          parts.push(eff >= 10 ? '<span style="color:#ffbe0b;">+50% May mắn rớt Xu</span>' : 'Cấp 10: +50% May mắn rớt Xu');
+          return parts.join(' • ');
+        }
+      }
+    ];
+
+    const SAVE_KEY = 'typing_defender_save_v2';
+    let selectedHero = 'giaphuc';
+    let coins = 0;
+    let score = 0;
+    let highScore = 0;
+    let killCount = 0;
+
+    let loadoutSlots = [
+      null,
+      null,
+      null,
+      null
+    ];
+
+    let companions = {
+      mecha: 0,
+      drone: 0,
+      medic: 0
+    };
+
+    function getComboMult() {
+      if (combo >= 25) return 3.5;
+      return Math.min(3.5, 1 + Math.floor(combo / 5) * 0.5);
+    }
+
+    // =========================================================================
+    // HỆ THỐNG 3 PHÂN QUYỀN (KHÁCH, HỌC VIÊN, GIÁO VIÊN) & TÍCH XU TÀI KHOẢN
+    // =========================================================================
+    let matchCoinsEarned = 0; // Số xu kiếm được riêng trong ván hiện tại
+
+    function getAuthUser() {
+      try {
+        const raw = sessionStorage.getItem('thvp_current_user') || localStorage.getItem('thvp_current_user');
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function getAuthRole() {
+      const u = getAuthUser();
+      if (!u) return 'guest';
+      return (u.role === 'admin' || u.role === 'teacher') ? 'teacher' : 'student';
+    }
+
+    function getUserPetStorage(roleKey) {
+      if (roleKey === 'guest') return { coins: 0, owned: ['pet1'], equipped: 'pet1', inventory: [] };
+      const storageKey = 'thvp_pet_system_' + roleKey;
+      let data = null;
+      try {
+        const raw = localStorage.getItem(storageKey);
+        if (raw) data = JSON.parse(raw);
+      } catch (e) {}
+      if (!data) {
+        const initCoins = (roleKey === 'teacher') ? 10000 : 0;
+        data = { coins: initCoins, owned: ['pet1'], equipped: 'pet1', inventory: [] };
+        try { localStorage.setItem(storageKey, JSON.stringify(data)); } catch (e) {}
+      }
+      return data;
+    }
+
+    function saveUserPetStorage(roleKey, data) {
+      if (roleKey === 'guest') return;
+      const storageKey = 'thvp_pet_system_' + roleKey;
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(data));
+      } catch (e) {}
+    }
+
+    function syncCoinsWithAccount() {
+      coins = 0;
+      updateHUD();
+      updateUserRoleUI();
+    }
+
+    function updateUserRoleUI() {
+      const role = getAuthRole();
+      const user = getAuthUser();
+      const roleBar = document.getElementById('homeUserRoleBar');
+      if (!roleBar) return;
+
+      if (role === 'guest') {
+        roleBar.className = 'user-role-bar guest';
+        roleBar.innerHTML = `
+          <span>👤 CHẾ ĐỘ: KHÁCH (CHƠI THỬ • KHÔNG TÍCH XU)</span>
+          <button type="button" class="btn-role-login" onclick="triggerLoginFromGame()">ĐĂNG NHẬP</button>
+        `;
+      } else if (role === 'teacher') {
+        const petData = getUserPetStorage('teacher');
+        roleBar.className = 'user-role-bar teacher';
+        roleBar.innerHTML = `
+          <span>👨‍🏫 GIÁO VIÊN: <b>${user.fullname || user.username}</b></span>
+          <span style="color:#ffbe0b;">💰 <b>${petData.coins}</b> XU</span>
+        `;
+      } else {
+        const petData = getUserPetStorage('student');
+        roleBar.className = 'user-role-bar student';
+        roleBar.innerHTML = `
+          <span>🎓 HỌC VIÊN: <b>${user.fullname || user.username}</b></span>
+          <span style="color:#ffbe0b;">💰 <b>${petData.coins}</b> XU</span>
+        `;
+      }
+    }
+
+    function triggerLoginFromGame() {
+      if (window.THVP_AUTH && typeof window.THVP_AUTH.showModal === 'function') {
+        window.THVP_AUTH.showModal('login');
+      } else {
+        window.location.href = 'index.html#dang-nhap';
+      }
+    }
+
+    function saveProgress() {
+      try {
+        const role = getAuthRole();
+        if (role !== 'guest') {
+          // Lưu dữ liệu vào tài khoản thành viên
+          const petData = getUserPetStorage(role);
+          petData.coins = coins;
+          saveUserPetStorage(role, petData);
+        }
+        localStorage.setItem(SAVE_KEY, JSON.stringify({
+          coins, highScore, companions, loadoutSlots, selectedHero
+        }));
+      } catch (e) {}
+    }
+
+    function loadProgress() {
+      try {
+        localStorage.removeItem('typing_defender_save_v1');
+        const raw = localStorage.getItem(SAVE_KEY);
+        if (raw) {
+          const d = JSON.parse(raw);
+          if (typeof d.highScore === 'number') highScore = d.highScore;
+          if (d.companions) {
+            companions.mecha = Math.min(10, Math.max(0, d.companions.mecha || 0));
+            companions.drone = Math.min(10, Math.max(0, d.companions.drone || 0));
+            companions.medic = Math.min(10, Math.max(0, d.companions.medic || 0));
+          }
+          if (Array.isArray(d.loadoutSlots) && d.loadoutSlots.length === 4) {
+            loadoutSlots = d.loadoutSlots;
+          }
+          if (d.selectedHero && ['blaze', 'kira', 'giaphuc'].includes(d.selectedHero)) {
+            selectedHero = d.selectedHero;
+          }
+        }
+        syncCoinsWithAccount();
+      } catch (e) {}
+    }
+
+    function resetProgress() {
+      SFX.uiClick();
+      localStorage.removeItem(SAVE_KEY);
+      coins = 0;
+      highScore = 0;
+      companions = { mecha: 0, drone: 0, medic: 0 };
+      loadoutSlots = [null, null, null, null];
+      updateCompanionVisibility();
+      renderLoadoutDock();
+      renderShopContent();
+      updateHUD();
+      showToastBanner('ĐÃ ĐẶT LẠI TOÀN BỘ TIẾN TRÌNH & CẤP ĐỘ TRỢ THỦ!');
+    }
+
+    let compStates = {
+      mecha: { clip: 'move', frame: 0, timer: 0, lockUntil: 0, cooldown: 0 },
+      drone: { clip: 'move', frame: 0, timer: 0, lockUntil: 0, cooldown: 0 },
+      medic: { clip: 'move', frame: 0, timer: 0, lockUntil: 0, cooldown: 0 }
+    };
+
+    let currentShopTab = 'items';
+
+    function switchShopTab(tab) {
+      SFX.uiClick();
+      currentShopTab = tab;
+      document.getElementById('tab-btn-items').classList.toggle('active', tab === 'items');
+      document.getElementById('tab-btn-comps').classList.toggle('active', tab === 'comps');
+      document.getElementById('shop-items-grid').style.display = tab === 'items' ? 'grid' : 'none';
+      document.getElementById('shop-loadout-bar').style.display = tab === 'items' ? 'flex' : 'none';
+      document.getElementById('shop-comps-grid').style.display = tab === 'comps' ? 'grid' : 'none';
+      renderShopContent();
+    }
+
+    function renderLoadoutDock() {
+      for (let i = 0; i < 4; i++) {
+        const slotEl = document.getElementById('dock-slot-' + i);
+        if (!slotEl) continue;
+        const slotData = loadoutSlots[i];
+        const keyName = 'F' + (i + 1);
+
+        if (!slotData || slotData.qty <= 0) {
+          loadoutSlots[i] = null;
+          slotEl.className = 'item-slot empty-slot';
+          slotEl.title = `Ô ${keyName} đang trống (Bấm TAB mở Cửa hàng để mua đồ)`;
+          slotEl.innerHTML = `<span class="slot-key-tag">${keyName}</span>`;
+        } else {
+          const itemCfg = SHOP_ITEMS.find(it => it.id === slotData.id);
+          slotEl.className = 'item-slot';
+          slotEl.title = `${itemCfg.name} (${keyName}): ${itemCfg.desc}`;
+          slotEl.innerHTML = `
+            <span class="slot-key-tag">${keyName}</span>
+            <canvas id="dock-canvas-${i}" width="64" height="64"></canvas>
+            <span class="slot-qty-tag">x${slotData.qty}</span>
+          `;
+          if (itemsSheetImg.complete) {
+            const c = document.getElementById('dock-canvas-' + i);
+            if (c) c.getContext('2d').drawImage(itemsSheetImg, itemCfg.idx * 64, 0, 64, 64, 0, 0, 64, 64);
+          }
+        }
+      }
+    }
+
+    function renderShopContent() {
+      document.getElementById('shopCoinVal').textContent = String(coins);
+
+      const slotsWrap = document.getElementById('shop-loadout-slots');
+      if (slotsWrap) {
+        slotsWrap.innerHTML = '';
+        for (let i = 0; i < 4; i++) {
+          const s = loadoutSlots[i];
+          const div = document.createElement('div');
+          if (!s) {
+            div.className = 'shop-mini-slot empty';
+            div.innerHTML = '&nbsp;';
+          } else {
+            const cfg = SHOP_ITEMS.find(it => it.id === s.id);
+            div.className = 'shop-mini-slot';
+            div.innerHTML = `<span>F${i + 1}: ${cfg.name} (x${s.qty})</span><button class="shop-mini-unequip" title="Gỡ khỏi ô này" onclick="clearLoadoutSlot(${i})">X</button>`;
+          }
+          slotsWrap.appendChild(div);
+        }
+      }
+
+      const itemsGrid = document.getElementById('shop-items-grid');
+      if (itemsGrid) {
+        itemsGrid.innerHTML = '';
+        SHOP_ITEMS.forEach(item => {
+          const existingSlot = loadoutSlots.find(s => s && s.id === item.id);
+          const ownedQty = existingSlot ? existingSlot.qty : 0;
+
+          const card = document.createElement('div');
+          card.className = 'shop-item-card';
+          card.innerHTML = `
+            <canvas class="shop-item-canvas" id="shop-item-cv-${item.id}" width="64" height="64"></canvas>
+            <div class="shop-item-info">
+              <div class="shop-item-title">${item.name} ${ownedQty > 0 ? `<span style="color:#00f5d4;">(x${ownedQty})</span>` : ''}</div>
+              <div class="shop-item-desc">${item.desc}</div>
+            </div>
+            <button class="arcade-btn gold" onclick="buyShopItem('${item.id}')">${item.price} Xu</button>
+          `;
+          itemsGrid.appendChild(card);
+
+          if (itemsSheetImg.complete) {
+            const cv = document.getElementById(`shop-item-cv-${item.id}`);
+            if (cv) cv.getContext('2d').drawImage(itemsSheetImg, item.idx * 64, 0, 64, 64, 0, 0, 64, 64);
+          }
+        });
+      }
+
+      const compsGrid = document.getElementById('shop-comps-grid');
+      if (compsGrid) {
+        compsGrid.innerHTML = '';
+        COMPANION_CATALOG.forEach(comp => {
+          const lv = companions[comp.id] || 0;
+          const isMax = lv >= 10;
+          const cost = isMax ? 0 : comp.costs[lv];
+          const curLine = lv === 0
+            ? `Khởi điểm (Cấp 1): ${comp.formatStats(1)}`
+            : `Hiện tại: ${comp.formatStats(lv)}`;
+          const mechLine = `<div style="margin-top:4px; color:#cbd5e1; font-size:10.5px; line-height:1.45;"><b>Cơ chế:</b> ${comp.formatMech(lv)}</div>`;
+          const nextLine = (lv > 0 && !isMax)
+            ? `<div style="margin-top:5px; padding-top:4px; border-top:1px dashed #2e3856; color:#4ade80;">Lên Cấp ${lv + 1}: ${comp.formatStats(lv + 1)}<div style="margin-top:2px; color:#a7f3d0; font-size:10.5px;"><b>Cơ chế Cấp ${lv + 1}:</b> ${comp.formatMech(lv + 1)}</div></div>`
+            : '';
+
+          const card = document.createElement('div');
+          card.className = 'companion-card' + (lv > 0 ? ' owned' : '');
+          card.innerHTML = `
+            <canvas id="shop-comp-cv-${comp.id}" width="80" height="80"></canvas>
+            <div style="font-family:'Press Start 2P',monospace; font-size:10px; color:#ffbe0b;">${comp.name}</div>
+            <div style="font-size:11px; color:#00f5d4; font-weight:800;">
+              ${lv === 0 ? 'Chưa chiêu mộ (0 / 10)' : (isMax ? 'ĐÃ ĐẠT TỐI ĐA • CẤP 10/10' : `Đang hoạt động • Cấp ${lv} / 10`)}
+            </div>
+            <div class="comp-stat-box">${curLine}${mechLine}${nextLine}</div>
+            <button class="arcade-btn ${isMax ? '' : (lv === 0 ? 'gold' : 'primary')}" ${isMax ? 'disabled style="opacity:0.55; cursor:default;"' : `onclick="buyCompanion('${comp.id}')"`}>
+              ${isMax ? 'MAX CẤP 10' : (lv === 0 ? `Chiêu mộ (${cost} Xu)` : `Nâng Cấp ${lv + 1} (${cost} Xu)`)}
+            </button>
+          `;
+          compsGrid.appendChild(card);
+
+          const cv = document.getElementById(`shop-comp-cv-${comp.id}`);
+          if (cv) drawAtlasFrame(cv.getContext('2d'), comp.atlasKey, 'shoot', 0, false);
+        });
+      }
+    }
+
+    function clearLoadoutSlot(slotIdx) {
+      SFX.uiClick();
+      loadoutSlots[slotIdx] = null;
+      saveProgress();
+      renderLoadoutDock();
+      renderShopContent();
+    }
+
+    function buyShopItem(itemId) {
+      initAudio();
+      const itemCfg = SHOP_ITEMS.find(it => it.id === itemId);
+      if (!itemCfg) return;
+
+      if (coins < itemCfg.price) {
+        SFX.error();
+        showToastBanner('KHÔNG ĐỦ XU VÀNG!');
+        return;
+      }
+
+      let targetSlotIdx = loadoutSlots.findIndex(s => s && s.id === itemId);
+      if (targetSlotIdx === -1) {
+        targetSlotIdx = loadoutSlots.findIndex(s => s === null);
+      }
+
+      if (targetSlotIdx === -1) {
+        SFX.error();
+        showToastBanner('4 Ô ĐỒ ĐÃ ĐẦY! HÃY DÙNG BỚT HOẶC BẤM [X] ĐỂ ĐỔI');
+        return;
+      }
+
+      coins -= itemCfg.price;
+      if (loadoutSlots[targetSlotIdx]) {
+        loadoutSlots[targetSlotIdx].qty++;
+      } else {
+        loadoutSlots[targetSlotIdx] = { id: itemId, qty: 1 };
+      }
+
+      SFX.buy();
+      saveProgress();
+      updateHUD();
+      renderLoadoutDock();
+      renderShopContent();
+    }
+
+    function buyCompanion(compId) {
+      initAudio();
+      const compCfg = COMPANION_CATALOG.find(c => c.id === compId);
+      if (!compCfg) return;
+      const lv = companions[compId] || 0;
+      if (lv >= 10) return;
+      const cost = compCfg.costs[lv];
+
+      if (coins < cost) {
+        SFX.error();
+        showToastBanner(`CẦN ${cost} XU ĐỂ NÂNG LÊN CẤP ${lv + 1}!`);
+        return;
+      }
+
+      coins -= cost;
+      companions[compId] = lv + 1;
+      SFX.buy();
+      saveProgress();
+      updateCompanionVisibility();
+      updateHUD();
+      renderShopContent();
+      showToastBanner(`${compCfg.name}: LÊN CẤP ${companions[compId]} / 10!`);
+    }
+
+    function updateCompanionVisibility() {
+      document.getElementById('comp-mecha').classList.toggle('active', companions.mecha > 0);
+      document.getElementById('comp-drone').classList.toggle('active', companions.drone > 0);
+      document.getElementById('comp-medic').classList.toggle('active', companions.medic > 0);
+    }
+
+    function selectHero(heroKey) {
+      if (gameState === 'PLAYING') return;
+      SFX.uiClick();
+      selectedHero = heroKey;
+      document.getElementById('pick-blaze').classList.toggle('active', heroKey === 'blaze');
+      document.getElementById('pick-kira').classList.toggle('active', heroKey === 'kira');
+      document.getElementById('pick-giaphuc').classList.toggle('active', heroKey === 'giaphuc');
+      const nameMap = { blaze: 'BLAZE', kira: 'KIRA', giaphuc: 'GIA PHÚC' };
+      document.getElementById('hudHeroName').textContent = nameMap[heroKey] || 'BLAZE';
+      drawAtlasFrame(heroCtx, selectedHero, 'idle', 0, false);
+      saveProgress();
+    }
+
+    function openModeSelect() {
+      SFX.uiClick();
+      document.getElementById('menu-overlay').classList.remove('active');
+      document.getElementById('mode-overlay').classList.add('active');
+    }
+
+    function backToHome() {
+      SFX.uiClick();
+      document.getElementById('mode-overlay').classList.remove('active');
+      document.getElementById('menu-overlay').classList.add('active');
+    }
+
+    // =========================================================================
+    // 6. SỬ DỤNG VẬT PHẨM TRONG 4 Ô ĐỘNG
+    // =========================================================================
+    let hp = 100;
+    const MAX_HP = 100;
+    let shieldHp = 0;
+    const MAX_SHIELD = 45;
+    let empSlowUntil = 0;
+    let overdriveUntil = 0;
+
+    function useLoadoutSlot(slotIdx) {
+      initAudio();
+      if (gameState !== 'PLAYING') return;
+      const slot = loadoutSlots[slotIdx];
+      if (!slot || slot.qty <= 0) {
+        SFX.error();
+        return;
+      }
+
+      const itemId = slot.id;
+
+      if (itemId === 'syringe') {
+        if (hp >= MAX_HP) { SFX.error(); return; }
+        hp = Math.min(MAX_HP, hp + 35);
+        SFX.heal();
+        triggerScreenFlash('rgba(74, 222, 128, 0.28)');
+        createScorePop(HERO_X + 70, 215, '+35 HP', 'cyan');
+      } else if (itemId === 'medkit') {
+        if (hp >= MAX_HP) { SFX.error(); return; }
+        hp = Math.min(MAX_HP, hp + 75);
+        SFX.heal();
+        triggerScreenFlash('rgba(74, 222, 128, 0.38)');
+        createScorePop(HERO_X + 70, 215, '+75 HP', 'cyan');
+      } else if (itemId === 'grenade') {
+        throwPlasmaGrenade();
+      } else if (itemId === 'railgun') {
+        firePiercingRailgun();
+      } else if (itemId === 'emp') {
+        empSlowUntil = performance.now() + 6000;
+        SFX.freeze();
+        triggerScreenFlash('rgba(0, 245, 212, 0.38)');
+        fxShockwaves.push({
+          x: HERO_X + 90,
+          y: window.innerHeight - 150,
+          r: 20,
+          maxR: window.innerWidth,
+          color: '#00f5d4',
+          alpha: 0.95,
+          lineWidth: 8
+        });
+        showToastBanner('BOM BĂNG EMP: LÀM CHẬM QUÁI 6 GIÂY!');
+      } else if (itemId === 'shield') {
+        shieldHp = MAX_SHIELD;
+        SFX.shieldUp();
+        showToastBanner('KHIÊN QUANG HỌC: +45 GIÁP!');
+      } else if (itemId === 'overdrive') {
+        overdriveUntil = performance.now() + 8000;
+        SFX.shieldUp();
+        triggerScreenFlash('rgba(247, 37, 133, 0.35)');
+        showToastBanner('LÕI CUỒNG NỘ (8 GIÂY): GÕ 1 PHÍM PHÁ 2 KÝ TỰ!');
+      } else if (itemId === 'airstrike') {
+        launchOrbitalAirstrike();
+      }
+
+      slot.qty--;
+      if (slot.qty <= 0) loadoutSlots[slotIdx] = null;
+      saveProgress();
+      renderLoadoutDock();
+      updateHUD();
+    }
+
+    function firePiercingRailgun() {
+      triggerHeroClip('shoot', 320);
+      SFX.grenadeBoom();
+      triggerScreenShake(true);
+      triggerScreenFlash('rgba(0, 245, 212, 0.45)');
+
+      const beamY = window.innerHeight - 155;
+      fxBeams.push({
+        x1: HERO_X + 145,
+        y1: beamY,
+        x2: window.innerWidth,
+        y2: beamY,
+        color: '#00f5d4',
+        width: 28,
+        life: 0,
+        maxLife: 0.42
+      });
+
+      for (let i = enemies.length - 1; i >= 0; i--) {
+        killEnemyReward(enemies[i], i);
+      }
+      updateHUD();
+    }
+
+    function launchOrbitalAirstrike() {
+      SFX.grenadeThrow();
+      const W = gameScreen.offsetWidth;
+      for (let k = 0; k < 6; k++) {
+        setTimeout(() => {
+          if (gameState !== 'PLAYING') return;
+          const strikeX = 220 + (k / 5) * (W - 300);
+          detonateGrenade(strikeX, 95);
+        }, k * 110);
+      }
+    }
+
+    let toastTimer = null;
+
+    function showToastBanner(text) {
+      const toast = document.getElementById('stage-toast');
+      toast.textContent = text;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2100);
+    }
+
+    function applyStageAndVariant(sIdx, vIdx, showBanner = false) {
+      activeStageIdx = ((sIdx % STAGES.length) + STAGES.length) % STAGES.length;
+      activeVariantIdx = ((vIdx % 3) + 3) % 3;
+      const st = STAGES[activeStageIdx];
+      if (showBanner) {
+        showToastBanner(`${st.name} • ${st.variants[activeVariantIdx]}`);
+      }
+    }
+
+    let variantElapsedMs = 0;
+    let stageTurnsInCurrent = 1;
+    let consecutiveVariantCount = 1;
+
+    function pickNextVariantRandomWithCap(prevVar, consecCount) {
+      let nextVar = Math.floor(Math.random() * 3);
+      if (nextVar === prevVar && consecCount >= 2) {
+        const others = [0, 1, 2].filter(v => v !== prevVar);
+        nextVar = others[Math.floor(Math.random() * others.length)];
+        return { nextVar, nextConsec: 1 };
+      }
+      return {
+        nextVar,
+        nextConsec: nextVar === prevVar ? consecCount + 1 : 1
+      };
+    }
+
+    function updateStageVariantTimer(dt) {
+      variantElapsedMs += dt * 1000;
+      while (variantElapsedMs >= 30000) {
+        variantElapsedMs -= 30000;
+        const { nextVar, nextConsec } = pickNextVariantRandomWithCap(activeVariantIdx, consecutiveVariantCount);
+        if (stageMode === 'auto') {
+          stageTurnsInCurrent++;
+          if (stageTurnsInCurrent > 3) {
+            stageTurnsInCurrent = 1;
+            consecutiveVariantCount = 1;
+            applyStageAndVariant((activeStageIdx + 1) % STAGES.length, nextVar, true);
+          } else {
+            consecutiveVariantCount = nextConsec;
+            applyStageAndVariant(activeStageIdx, nextVar, true);
+          }
+        } else {
+          consecutiveVariantCount = nextConsec;
+          applyStageAndVariant(activeStageIdx, nextVar, true);
+        }
+      }
+    }
+
+    function cycleStagePreGame() {
+      SFX.uiClick();
+      const opts = ['auto', 0, 1, 2, 3, 4];
+      const curIdx = opts.indexOf(stageMode);
+      stageMode = opts[(curIdx + 1) % opts.length];
+      const btn = document.getElementById('stageOptionBtn');
+      const previewVar = Math.floor(Math.random() * 3);
+      if (stageMode === 'auto') {
+        btn.textContent = 'Bối cảnh: TỰ ĐỘNG (LUÂN PHIÊN)';
+        applyStageAndVariant(0, previewVar, false);
+      } else {
+        btn.textContent = `Bối cảnh: ${STAGES[stageMode].name}`;
+        applyStageAndVariant(stageMode, previewVar, false);
+      }
+    }
+
+    // =========================================================================
+    // 7. HỆ THỐNG 10 LOẠI QUÁI VẬT ĐA KÍCH CỠ & SÁT THƯƠNG RIÊNG BIỆT
+    // =========================================================================
+    const FULL_KEYBOARD = [
+      'A','S','D','F','G','H','J','K','L',
+      'Q','W','E','R','T','Y','U','I','O','P',
+      'Z','X','C','V','B','N','M',
+      '1','2','3','4','5','6','7','8','9','0'
+    ];
+
+    const EN_WORDS = {
+      short23: [
+        'GO','UP','HI','NO','OK','ON','IN','TO','BY','DO','SO','WE','RUN','BAT','GUN','HIT','ZAP','AIM',
+        'SKY','RED','BOX','FLY','KEY','WIN','JET','FOX','ARC','ASH','BIO','BOT','CRY','CUT','DEN','DRY'
+      ],
+      med34: [
+        'FIRE','WING','JUMP','SHOT','FAST','DARK','FANG','HERO','BOLT','CLAW','WAVE','MOON','RUN','BAT',
+        'ACID','APEX','AURA','BANE','BEAM','BITE','BONE','BURN','CAVE','COLD','CORE','CROW','DASH','DAWN'
+      ],
+      fly45: [
+        'FIRE','WING','JUMP','SHOT','FAST','DARK','FANG','HERO','BOLT','CLAW','BLAZE','LASER','STORM',
+        'POWER','CHOMP','SPORE','NIGHT','FLASH','GUARD','ARMOR','CYBER','DEMON','FLAME','FROST','GHOST'
+      ],
+      tank5: [
+        'BLAZE','LASER','STORM','POWER','CHOMP','SPORE','BRUTE','NIGHT','FLASH','GUARD','ARMOR',
+        'ABYSS','ALPHA','ARROW','BEAST','BLADE','BLAST','BLOOD','CHAOS','CLASH','COBRA','COMET',
+        'CRUSH','CYBER','DEMON','DRIFT','EMBER','FLAME','FORCE','FROST','GHOST','GIANT','HAVOC'
+      ],
+      titan67: [
+        'THUNDER','DEFENSE','MONSTER','PHANTOM','BREAKER','REACTOR','CYBERIA','VORTEX','SHADOW','DRAGON',
+        'TITANIC','BLASTER','COMMAND','PLASMA','OVERDRIVE','SENTINEL','GUARDIAN','DESTROY'
+      ]
+    };
+
+    const MONSTER_TYPES = {
+      frost_mite: {
+        id: 'frost_mite', spriteKey: 'frost', isFlying: false, shootClip: 'shoot_down',
+        muzzleOffset: { x: 150, y: 132 }, speedMult: 1.38, scale: 92, bottomPx: 74,
+        lenByMode: { easy: [1, 1], medium: [1, 2] }, wordPool: 'short23', scoreBase: 20, damage: 8, coinReward: 1
+      },
+      hopper: {
+        id: 'hopper', spriteKey: 'hopper', isFlying: false, shootClip: 'shoot_down',
+        muzzleOffset: { x: 150, y: 132 }, speedMult: 1.28, scale: 104, bottomPx: 74,
+        lenByMode: { easy: [1, 1], medium: [1, 2] }, wordPool: 'short23', scoreBase: 25, damage: 10, coinReward: 1
+      },
+      spore: {
+        id: 'spore', spriteKey: 'spore', isFlying: false, shootClip: 'shoot_down',
+        muzzleOffset: { x: 150, y: 132 }, speedMult: 1.32, scale: 98, bottomPx: 74,
+        lenByMode: { easy: [1, 1], medium: [1, 2] }, wordPool: 'short23', scoreBase: 30, damage: 12, coinReward: 1
+      },
+      gremlin: {
+        id: 'gremlin', spriteKey: 'gremlin', isFlying: false, shootClip: 'shoot',
+        muzzleOffset: { x: 156, y: 156 }, speedMult: 1.0, scale: 134, bottomPx: 74,
+        lenByMode: { easy: [1, 2], medium: [2, 3] }, wordPool: 'med34', scoreBase: 40, damage: 16, coinReward: 2
+      },
+      crawler: {
+        id: 'crawler', spriteKey: 'crawler', isFlying: false, shootClip: 'shoot',
+        muzzleOffset: { x: 156, y: 156 }, speedMult: 0.95, scale: 142, bottomPx: 74,
+        lenByMode: { easy: [1, 2], medium: [2, 3] }, wordPool: 'med34', scoreBase: 45, damage: 18, coinReward: 2
+      },
+      frost_giant: {
+        id: 'frost_giant', spriteKey: 'frost', isFlying: false, shootClip: 'shoot',
+        muzzleOffset: { x: 156, y: 156 }, speedMult: 0.86, scale: 154, bottomPx: 73,
+        lenByMode: { easy: [1, 2], medium: [2, 3] }, wordPool: 'med34', scoreBase: 55, damage: 20, coinReward: 3
+      },
+      bat: {
+        id: 'bat', spriteKey: 'bat', isFlying: true, shootClip: 'shoot_up',
+        muzzleOffset: { x: 148, y: 192 }, speedMult: 1.12, scale: 122, bottomPx: 290,
+        lenByMode: { easy: [1, 2], medium: [2, 3] }, wordPool: 'fly45', scoreBase: 55, damage: 15, coinReward: 3
+      },
+      eye_flyer: {
+        id: 'eye_flyer', spriteKey: 'eye_flyer', isFlying: true, shootClip: 'shoot_up',
+        muzzleOffset: { x: 148, y: 192 }, speedMult: 1.05, scale: 148, bottomPx: 300,
+        lenByMode: { easy: [1, 2], medium: [2, 3] }, wordPool: 'fly45', scoreBase: 65, damage: 20, coinReward: 3
+      },
+      brute: {
+        id: 'brute', spriteKey: 'brute', isFlying: false, shootClip: 'shoot',
+        muzzleOffset: { x: 156, y: 156 }, speedMult: 0.68, scale: 170, bottomPx: 72,
+        lenByMode: { easy: [2, 3], medium: [3, 4] }, wordPool: 'tank5', scoreBase: 100, damage: 28, coinReward: 5
+      },
+      titan: {
+        id: 'titan', spriteKey: 'titan', isFlying: false, isBossTier: true, shootClip: 'shoot',
+        muzzleOffset: { x: 156, y: 156 }, speedMult: 0.54, scale: 208, bottomPx: 70,
+        lenByMode: { easy: [4, 4], medium: [5, 5] }, wordPool: 'titan67', scoreBase: 180, damage: 38, coinReward: 8
+      }
+    };
+
+    function computeMonsterCoinDrop(mCfg, killerSource = 'hero') {
+      let drop = mCfg.coinReward;
+      if (currentMode === 'hard') drop += 1;
+      if (performance.now() < overdriveUntil) drop += 1;
+      if (companions.medic > 0) {
+        const luck = COMPANION_CATALOG[2].getStats(companions.medic).luck / 100;
+        if (Math.random() < luck) drop += 1;
+      }
+      if (killerSource === 'drone' && companions.drone >= 10) {
+        drop += 1;
+      }
+      return drop;
+    }
+
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    let monsterBag = [];
+    let lastSpawnedTypes = [];
+
+    function nextMonsterConfig() {
+      if (spawnedCount > 0 && spawnedCount % 12 === 0) {
+        return MONSTER_TYPES.titan;
+      }
+
+      if (monsterBag.length === 0) {
+        monsterBag = shuffleArray([
+          'frost_mite', 'hopper', 'spore',
+          'gremlin', 'gremlin',
+          'crawler', 'frost_giant',
+          'bat', 'eye_flyer',
+          'brute'
+        ]);
+      }
+
+      const activeHeavy = enemies.filter(e => e.cfg.id === 'brute' || e.cfg.id === 'titan').length;
+      let pickIdx = 0;
+      for (let i = 0; i < monsterBag.length; i++) {
+        const candidate = monsterBag[i];
+        const len = lastSpawnedTypes.length;
+        const sameAsLast = (len >= 1 && lastSpawnedTypes[len - 1] === candidate);
+        const heavyClump = (candidate === 'brute' && (activeHeavy >= 1 || sameAsLast));
+        if (!sameAsLast && !heavyClump) {
+          pickIdx = i;
+          break;
+        }
+      }
+
+      const chosenId = monsterBag.splice(pickIdx, 1)[0];
+      lastSpawnedTypes.push(chosenId);
+      if (lastSpawnedTypes.length > 4) lastSpawnedTypes.shift();
+      return MONSTER_TYPES[chosenId];
+    }
+
+    let charDeck = [];
+    let recentChars = [];
+    let wordDecks = {};
+
+    function drawNextChar(excludeSet) {
+      if (charDeck.length < 8) {
+        charDeck = charDeck.concat(shuffleArray(FULL_KEYBOARD));
+      }
+      let idx = charDeck.findIndex(c => !excludeSet.has(c) && !recentChars.includes(c));
+      if (idx === -1) idx = charDeck.findIndex(c => !excludeSet.has(c));
+      if (idx === -1) idx = 0;
+
+      const ch = charDeck.splice(idx, 1)[0];
+      recentChars.push(ch);
+      if (recentChars.length > 12) recentChars.shift();
+      return ch;
+    }
+
+    function generateMonsterText(mCfg) {
+      const usedFirstChars = new Set(enemies.map(e => e.word[e.typedIndex]));
+
+      if (currentMode === 'hard') {
+        const pKey = mCfg.wordPool;
+        if (!wordDecks[pKey] || wordDecks[pKey].length === 0) {
+          wordDecks[pKey] = shuffleArray(EN_WORDS[pKey]);
+        }
+        let idx = wordDecks[pKey].findIndex(w => !usedFirstChars.has(w[0]));
+        if (idx === -1) idx = 0;
+        return wordDecks[pKey].splice(idx, 1)[0];
+      }
+
+      const range = mCfg.lenByMode[currentMode] || [1, 1];
+      const len = Array.isArray(range)
+        ? (range[0] === range[1] ? range[0] : (Math.random() < 0.55 ? range[0] : range[1]))
+        : range;
+      let res = '';
+      const localExclude = new Set(usedFirstChars);
+      for (let i = 0; i < len; i++) {
+        const ch = drawNextChar(localExclude);
+        res += ch;
+        localExclude.add(ch);
+      }
+      return res;
+    }
+
+    // =========================================================================
+    // 8. TRẠNG THÁI GAME, LỰU ĐẠN, 3 TRỢ THỦ BẮN ĐẠN THẬT & VÒNG LẶP CHÍNH
+    // =========================================================================
+    let gameState = 'MENU';
+    let currentMode = 'easy';
+    let wasPlayingBeforeModal = false;
+
+    const CAMPAIGN_CONFIG = {
+      easy:   { targetKills: 25, bossPhases: 3, bossSpeedMult: 0.42, bossDamage: 35, bonusCoins: 25, bonusScore: 500 },
+      medium: { targetKills: 35, bossPhases: 4, bossSpeedMult: 0.46, bossDamage: 42, bonusCoins: 40, bonusScore: 900 },
+      hard:   { targetKills: 45, bossPhases: 4, bossSpeedMult: 0.48, bossDamage: 48, bonusCoins: 60, bonusScore: 1500 }
+    };
+
+    let combo = 1;
+    let spawnedCount = 0;
+    let regularSpawnedCount = 0;
+    let bossSpawned = false;
+    let bossDefeated = false;
+    let victoryFireworkTimer = 0;
+
+    let enemies = [];
+    let bolts = [];
+    let grenades = [];
+    let lockedEnemy = null;
+
+    let baseEnemySpeed = 115;
+    let nextSpawnDelay = 1600;
+    let lastSpawnTime = 0;
+    let lastFrameTime = performance.now();
+
+    const HERO_X = 68;
+    let heroState = { clip: 'run', frame: 0, timer: 0, lockUntil: 0 };
+
+    const heroCanvas = document.getElementById('hero-canvas');
+    const heroCtx = heroCanvas.getContext('2d');
+    const worldContainer = document.getElementById('world-container');
+    const comboVal = document.getElementById('comboVal');
+    const gameScreen = document.getElementById('game-screen');
+
+    function computeNextSpawnDelay(lastMonsterId) {
+      const baseByMode = currentMode === 'easy' ? 1560 : (currentMode === 'medium' ? 1360 : 1480);
+      const speedUp = Math.min(spawnedCount * 15, 620);
+      let delay = Math.max(780, baseByMode - speedUp);
+
+      if (enemies.length <= 1) delay *= 0.65;
+      else if (enemies.length >= 4) delay *= 1.32;
+
+      if (lastMonsterId === 'brute' || lastMonsterId === 'titan') delay += 380;
+      return Math.round(delay * (0.88 + Math.random() * 0.24));
+    }
+
+    function openShop() {
+      SFX.uiClick();
+      if (gameState === 'PLAYING') {
+        wasPlayingBeforeModal = true;
+        gameState = 'PAUSED';
+      } else {
+        wasPlayingBeforeModal = false;
+      }
+      renderShopContent();
+      document.getElementById('shop-modal').classList.add('active');
+    }
+
+    function closeShop() {
+      SFX.uiClick();
+      document.getElementById('shop-modal').classList.remove('active');
+      if (wasPlayingBeforeModal && gameState === 'PAUSED') {
+        gameState = 'PLAYING';
+        lastFrameTime = performance.now();
+      }
+    }
+
+    function openGuide() {
+      SFX.uiClick();
+      if (gameState === 'PLAYING') {
+        wasPlayingBeforeModal = true;
+        gameState = 'PAUSED';
+      } else {
+        wasPlayingBeforeModal = false;
+      }
+      renderGuideMonsterIcons();
+      document.getElementById('guide-modal').classList.add('active');
+    }
+
+    function closeGuide() {
+      SFX.uiClick();
+      document.getElementById('guide-modal').classList.remove('active');
+      if (wasPlayingBeforeModal && gameState === 'PAUSED') {
+        gameState = 'PLAYING';
+        lastFrameTime = performance.now();
+      }
+    }
+
+    function updateBossBar(bossEnemy) {
+      const bar = document.getElementById('bossHudBar');
+      if (!bar) return;
+      if (!bossEnemy || bossEnemy.bossPhasesLeft <= 0) {
+        bar.classList.remove('active');
+        return;
+      }
+      bar.classList.add('active');
+      const curPhase = bossEnemy.bossMaxPhases - bossEnemy.bossPhasesLeft + 1;
+      document.getElementById('bossHudPhase').textContent = `PHA ${curPhase} / ${bossEnemy.bossMaxPhases}`;
+      const pct = Math.max(0, Math.min(100, (bossEnemy.bossPhasesLeft / bossEnemy.bossMaxPhases) * 100));
+      document.getElementById('bossHpFill').style.width = pct + '%';
+    }
+
+    function generateBossPhaseWord() {
+      if (currentMode === 'hard') {
+        const pKey = 'titan67';
+        if (!wordDecks[pKey] || wordDecks[pKey].length === 0) {
+          wordDecks[pKey] = shuffleArray(EN_WORDS[pKey]);
+        }
+        return wordDecks[pKey].shift();
+      }
+      const len = currentMode === 'easy' ? 4 : 5;
+      let res = '';
+      const localExclude = new Set();
+      for (let i = 0; i < len; i++) {
+        const ch = drawNextChar(localExclude);
+        res += ch;
+        localExclude.add(ch);
+      }
+      return res;
+    }
+
+    function showMenu() {
+      SFX.uiClick();
+      gameState = 'MENU';
+      document.getElementById('gameover-overlay').classList.remove('active');
+      document.getElementById('victory-overlay').classList.remove('active');
+      document.getElementById('pause-overlay').classList.remove('active');
+      document.getElementById('mode-overlay').classList.remove('active');
+      document.getElementById('menu-overlay').classList.add('active');
+      updateBossBar(null);
+    }
+
+    function togglePause() {
+      SFX.uiClick();
+      if (gameState === 'PLAYING') {
+        gameState = 'PAUSED';
+        document.getElementById('pause-overlay').classList.add('active');
+      } else if (gameState === 'PAUSED') {
+        gameState = 'PLAYING';
+        document.getElementById('pause-overlay').classList.remove('active');
+        lastFrameTime = performance.now();
+      }
+    }
+
+    function startGame(mode) {
+      initAudio();
+      SFX.uiClick();
+      currentMode = mode || 'easy';
+      coins = 0;
+      matchCoinsEarned = 0;
+
+      hp = MAX_HP;
+      shieldHp = 0;
+      score = 0;
+      combo = 1;
+      killCount = 0;
+      spawnedCount = 0;
+      regularSpawnedCount = 0;
+      bossSpawned = false;
+      bossDefeated = false;
+      victoryFireworkTimer = 0;
+      enemies = [];
+      bolts = [];
+      grenades = [];
+      fxParticles = [];
+      fxShockwaves = [];
+      fxCoins = [];
+      fxShells = [];
+      fxBeams = [];
+      lockedEnemy = null;
+      monsterBag = [];
+      lastSpawnedTypes = [];
+      charDeck = shuffleArray(FULL_KEYBOARD);
+      empSlowUntil = 0;
+      overdriveUntil = 0;
+
+      compStates = {
+        mecha: { clip: 'move', frame: 0, timer: 0, lockUntil: 0, cooldown: 0 },
+        drone: { clip: 'move', frame: 0, timer: 0, lockUntil: 0, cooldown: 0 },
+        medic: { clip: 'move', frame: 0, timer: 0, lockUntil: 0, cooldown: 0 }
+      };
+
+      variantElapsedMs = 0;
+      stageTurnsInCurrent = 1;
+      consecutiveVariantCount = 1;
+      const initVar = Math.floor(Math.random() * 3);
+      if (stageMode === 'auto') applyStageAndVariant(0, initVar, true);
+      else applyStageAndVariant(Number(stageMode), initVar, true);
+
+      baseEnemySpeed = currentMode === 'easy' ? 130 : (currentMode === 'medium' ? 146 : 138);
+      nextSpawnDelay = 620;
+
+      heroState.clip = 'run';
+      heroState.frame = 0;
+      heroState.lockUntil = 0;
+
+      worldContainer.innerHTML = '';
+      updateCompanionVisibility();
+      renderLoadoutDock();
+      updateHUD();
+      gameScreen.classList.remove('fever');
+
+      document.getElementById('menu-overlay').classList.remove('active');
+      document.getElementById('mode-overlay').classList.remove('active');
+      document.getElementById('gameover-overlay').classList.remove('active');
+      document.getElementById('victory-overlay').classList.remove('active');
+      document.getElementById('pause-overlay').classList.remove('active');
+      updateBossBar(null);
+
+      gameState = 'PLAYING';
+      lastFrameTime = performance.now();
+      lastSpawnTime = performance.now();
+    }
+
+    function updateHUD() {
+      document.getElementById('coinHudVal').textContent = String(coins);
+      document.getElementById('scoreHudVal').textContent = String(score).padStart(6, '0');
+      const cfg = CAMPAIGN_CONFIG[currentMode] || CAMPAIGN_CONFIG.easy;
+      const wavePill = document.getElementById('wavePill');
+      if (wavePill) {
+        if (bossSpawned) {
+          wavePill.textContent = bossDefeated ? 'HOÀN TẤT!' : '⚠ TRÙM CUỐI';
+          wavePill.classList.add('boss-alert');
+        } else {
+          const shownKills = Math.min(killCount, cfg.targetKills);
+          wavePill.textContent = `TIẾN TRÌNH: ${shownKills} / ${cfg.targetKills}`;
+          wavePill.classList.remove('boss-alert');
+        }
+      }
+      const hsBadge = document.getElementById('homeHighScoreBadge');
+      if (hsBadge) {
+        hsBadge.style.display = highScore > 0 ? 'block' : 'none';
+        document.getElementById('homeHighScoreVal').textContent = String(highScore).padStart(6, '0');
+      }
+
+      const pct = Math.max(0, Math.min(100, (hp / MAX_HP) * 100));
+      const fillEl = document.getElementById('hpFillBar');
+      const trailEl = document.getElementById('hpTrailBar');
+      const txtEl = document.getElementById('hpTextVal');
+
+      fillEl.style.width = pct + '%';
+      trailEl.style.width = pct + '%';
+      txtEl.textContent = `${Math.max(0, Math.round(hp))} / ${MAX_HP}`;
+
+      fillEl.classList.toggle('warn', hp <= 50 && hp > 25);
+      fillEl.classList.toggle('crit', hp <= 25);
+      txtEl.classList.toggle('warn', hp <= 50 && hp > 25);
+      txtEl.classList.toggle('crit', hp <= 25);
+
+      const sTrack = document.getElementById('shieldTrack');
+      const sFill = document.getElementById('shieldFillBar');
+      sTrack.classList.toggle('active', shieldHp > 0);
+      sFill.style.width = Math.min(100, (shieldHp / MAX_SHIELD) * 100) + '%';
+      document.getElementById('hero-wrap').classList.toggle('shielded', shieldHp > 0);
+
+      comboVal.textContent = 'x' + combo;
+      comboVal.classList.toggle('visible', combo >= 2);
+
+      document.getElementById('hero-wrap').classList.toggle('aura-active', combo >= 8);
+      if (combo >= 10) gameScreen.classList.add('fever');
+      else gameScreen.classList.remove('fever');
+    }
+
+    function renderEnemyBadge(enemy) {
+      const typedPart = enemy.word.slice(0, enemy.typedIndex);
+      const nextChar = enemy.word.slice(enemy.typedIndex, enemy.typedIndex + 1);
+      const restPart = enemy.word.slice(enemy.typedIndex + 1);
+      enemy.badgeEl.innerHTML =
+        `<span class="typed">${typedPart}</span>` +
+        `<span class="next-char">${nextChar}</span>` +
+        `<span class="rest-char">${restPart}</span>`;
+    }
+
+    function spawnEnemy(forcedCfg = null, extraOffsetX = 0, bossOpts = null) {
+      const mCfg = forcedCfg || nextMonsterConfig();
+      const isFinalBoss = Boolean(bossOpts && bossOpts.isFinalBoss);
+      const word = isFinalBoss ? generateBossPhaseWord() : generateMonsterText(mCfg);
+      spawnedCount++;
+      if (!isFinalBoss) regularSpawnedCount++;
+
+      const el = document.createElement('div');
+      el.className = 'enemy' + (mCfg.isBossTier ? ' boss-tier' : '') + (isFinalBoss ? ' final-boss' : '');
+
+      const startX = (bossOpts && bossOpts.forcedX !== undefined)
+        ? bossOpts.forcedX
+        : (gameScreen.offsetWidth + 40 + extraOffsetX);
+      const skyBase = Math.max(250, Math.min(gameScreen.offsetHeight * 0.48, 360));
+      const baseBottom = mCfg.isFlying ? (skyBase + (Math.random() * 56 - 28)) : mCfg.bottomPx;
+
+      el.style.left = startX + 'px';
+      el.style.bottom = baseBottom + 'px';
+
+      const badgeEl = document.createElement('div');
+      badgeEl.className = 'enemy-badge';
+
+      const scalePx = isFinalBoss ? 252 : mCfg.scale;
+      const canvas = document.createElement('canvas');
+      canvas.width = 80;
+      canvas.height = 80;
+      canvas.className = 'enemy-canvas';
+      canvas.style.width = scalePx + 'px';
+      canvas.style.height = scalePx + 'px';
+
+      el.appendChild(badgeEl);
+      el.appendChild(canvas);
+      worldContainer.appendChild(el);
+
+      const speedMult = isFinalBoss ? bossOpts.bossSpeedMult : mCfg.speedMult;
+      const enemyObj = {
+        id: Math.random(),
+        cfg: mCfg,
+        word: word,
+        typedIndex: 0,
+        el: el,
+        badgeEl: badgeEl,
+        canvas: canvas,
+        ctx: canvas.getContext('2d'),
+        x: startX,
+        baseBottom: baseBottom,
+        bottom: baseBottom,
+        speed: baseEnemySpeed * speedMult * (isFinalBoss ? 1 : (0.94 + Math.random() * 0.12)),
+        clip: 'move',
+        frame: Math.floor(Math.random() * 6),
+        animTimer: 0,
+        hurtUntil: 0,
+        phase: Math.random() * Math.PI * 2,
+        isFinalBoss: isFinalBoss,
+        bossMaxPhases: isFinalBoss ? bossOpts.bossPhases : 1,
+        bossPhasesLeft: isFinalBoss ? bossOpts.bossPhases : 1,
+        bossDamage: isFinalBoss ? bossOpts.bossDamage : mCfg.damage
+      };
+
+      renderEnemyBadge(enemyObj);
+      drawAtlasFrame(enemyObj.ctx, mCfg.spriteKey, 'move', enemyObj.frame, true);
+      enemies.push(enemyObj);
+
+      if (isFinalBoss) {
+        updateBossBar(enemyObj);
+      } else if (mCfg.isBossTier) {
+        showToastBanner('CẢNH BÁO: KHỔNG LỒ TITAN XUẤT HIỆN!');
+      } else {
+        const cfg = CAMPAIGN_CONFIG[currentMode] || CAMPAIGN_CONFIG.easy;
+        if (!forcedCfg && spawnedCount > 0 && spawnedCount % 7 === 0 && killCount < cfg.targetKills - 2) {
+          // Đợt Tập Kích Kép: 1 Quái Bay xuất hiện cùng 1 Quái Đất!
+          const companionThreat = mCfg.isFlying ? MONSTER_TYPES.hopper : MONSTER_TYPES.bat;
+          spawnEnemy(companionThreat, 45);
+        }
+      }
+
+      nextSpawnDelay = computeNextSpawnDelay(mCfg.id);
+    }
+
+    function spawnFinalBoss() {
+      if (bossSpawned) return;
+      bossSpawned = true;
+      const cfg = CAMPAIGN_CONFIG[currentMode] || CAMPAIGN_CONFIG.easy;
+      SFX.bossWarning();
+      triggerScreenShake(true);
+      triggerScreenFlash('rgba(230, 57, 70, 0.55)');
+      showToastBanner('⚠ BÁO ĐỘNG ĐỎ: CHÚA TỂ TITAN XUẤT HIỆN!');
+
+      // Sóng xung kích dọn sạch quái nhỏ còn sót lại để tập trung vào trận chiến Boss
+      for (let i = enemies.length - 1; i >= 0; i--) {
+        const e = enemies[i];
+        if (!e.isFinalBoss) {
+          createExplosion(e.x + 40, e.bottom + 40, false);
+          e.el.remove();
+          enemies.splice(i, 1);
+        }
+      }
+      if (lockedEnemy) {
+        lockedEnemy.el?.classList.remove('locked');
+        lockedEnemy = null;
+      }
+
+      // Sinh Trùm Cuối ngay sát mép phải màn hình để người chơi thấy ngay lập tức
+      const spawnX = Math.max(680, window.innerWidth - 240);
+      spawnEnemy(MONSTER_TYPES.titan, 0, {
+        isFinalBoss: true,
+        bossPhases: cfg.bossPhases,
+        bossSpeedMult: cfg.bossSpeedMult,
+        bossDamage: cfg.bossDamage,
+        forcedX: spawnX
+      });
+      updateHUD();
+    }
+
+    function advanceEnemyProgress(enemy, stepChars, sourceType) {
+      enemy.typedIndex = Math.min(enemy.word.length, enemy.typedIndex + stepChars);
+      const wordDone = enemy.typedIndex >= enemy.word.length;
+
+      if (wordDone && enemy.isFinalBoss && enemy.bossPhasesLeft > 1) {
+        enemy.bossPhasesLeft--;
+        enemy.word = generateBossPhaseWord();
+        enemy.typedIndex = 0;
+        if (lockedEnemy === enemy) {
+          enemy.el.classList.remove('locked');
+          lockedEnemy = null;
+        }
+        renderEnemyBadge(enemy);
+        updateBossBar(enemy);
+        firePlasmaBolt(enemy, false, sourceType, true);
+        return;
+      }
+
+      renderEnemyBadge(enemy);
+      if (wordDone && lockedEnemy === enemy) {
+        enemy.el.classList.remove('locked');
+        lockedEnemy = null;
+      }
+      firePlasmaBolt(enemy, wordDone, sourceType, false);
+    }
+
+    function triggerHeroClip(clipName, durationMs) {
+      heroState.clip = clipName;
+      heroState.frame = 0;
+      heroState.timer = 0;
+      heroState.lockUntil = performance.now() + durationMs;
+    }
+
+    function throwPlasmaGrenade() {
+      triggerHeroClip('shoot_up', 280);
+      SFX.grenadeThrow();
+
+      const gCanvas = document.createElement('canvas');
+      gCanvas.width = 64;
+      gCanvas.height = 64;
+      gCanvas.className = 'grenade-proj';
+      if (itemsSheetImg.complete) {
+        gCanvas.getContext('2d').drawImage(itemsSheetImg, 2 * 64, 0, 64, 64, 0, 0, 64, 64);
+      }
+      worldContainer.appendChild(gCanvas);
+
+      const targetX = enemies.length > 0
+        ? Math.min(gameScreen.offsetWidth * 0.75, Math.max(320, enemies[0].x + 40))
+        : gameScreen.offsetWidth * 0.52;
+
+      grenades.push({
+        el: gCanvas,
+        startX: HERO_X + 120,
+        startY: 150,
+        targetX: targetX,
+        targetY: 95,
+        t: 0,
+        duration: 0.52
+      });
+    }
+
+    function detonateGrenade(gx, gy) {
+      SFX.grenadeBoom();
+      triggerScreenShake(true);
+      triggerScreenFlash('rgba(255, 190, 11, 0.45)');
+      createExplosion(gx, gy, true);
+
+      const screenY = window.innerHeight - gy;
+      fxShockwaves.push({
+        x: gx,
+        y: screenY,
+        r: 15,
+        maxR: 320,
+        color: '#00f5d4',
+        alpha: 1,
+        lineWidth: 7
+      });
+
+      for (let i = enemies.length - 1; i >= 0; i--) {
+        const e = enemies[i];
+        const dist = Math.hypot((e.x + 40) - gx, (e.bottom + 40) - gy);
+        if (dist <= 380) {
+          if (e.isFinalBoss && e.bossPhasesLeft > 1) {
+            e.bossPhasesLeft--;
+            e.word = generateBossPhaseWord();
+            e.typedIndex = 0;
+            e.x += 75;
+            e.hurtUntil = performance.now() + 260;
+            if (lockedEnemy === e) {
+              e.el.classList.remove('locked');
+              lockedEnemy = null;
+            }
+            renderEnemyBadge(e);
+            updateBossBar(e);
+            createScorePop(e.x + 50, e.bottom + 140, 'PHÁ 1 PHA BOSS!', 'cyan');
+          } else {
+            killEnemyReward(e, i);
+          }
+        }
+      }
+      updateHUD();
+    }
+
+    function killEnemyReward(e, idxInArray, killerSource = 'hero') {
+      const ex = e.x + 42;
+      const ey = e.bottom + (e.cfg.scale * 0.42);
+      const screenHitY = window.innerHeight - ey;
+
+      createExplosion(ex, ey, Boolean(e.isFinalBoss));
+      spawnHitParticles(ex, screenHitY, e.cfg.spriteKey, true);
+
+      // Tính Điểm theo công thức: (Điểm gốc + Số ký tự * 15) * Hệ số Combo
+      const gainedPts = Math.round(((e.cfg.scoreBase || 20) + e.word.length * 15) * getComboMult());
+      score += gainedPts;
+      if (score > highScore) {
+        highScore = score;
+        saveProgress();
+      }
+
+      const coinDrop = computeMonsterCoinDrop(e.cfg, killerSource);
+      killCount++;
+
+      spawnFlyingCoins(ex, screenHitY, coinDrop);
+      createScorePop(ex, ey + 34, `+${gainedPts} Đ • +${coinDrop} XU`);
+
+      if (lockedEnemy === e) lockedEnemy = null;
+      e.el.remove();
+      if (idxInArray !== undefined && enemies[idxInArray] === e) {
+        enemies.splice(idxInArray, 1);
+      } else {
+        const found = enemies.indexOf(e);
+        if (found > -1) enemies.splice(found, 1);
+      }
+
+      if (e.isFinalBoss) {
+        e.bossPhasesLeft = 0;
+        updateBossBar(null);
+        victoryGame();
+      }
+    }
+
+    function firePlasmaBolt(targetEnemy, isFinalHit, sourceType = 'hero', isPhaseBreak = false) {
+      const mCfg = targetEnemy.cfg;
+      let startX = HERO_X + 152;
+      let startY = 156;
+      let extraClass = '';
+      let knockbackPx = 16;
+
+      if (sourceType === 'drone') {
+        startX = 118;
+        startY = 268;
+        extraClass = ' drone-bolt';
+        SFX.uiClick();
+      } else if (sourceType === 'mecha') {
+        startX = 285;
+        startY = 132;
+        extraClass = ' mecha-shell';
+        knockbackPx = COMPANION_CATALOG[0].getStats(companions.mecha).kb;
+        SFX.cannonFire();
+        spawnMuzzleAndShell(startX, window.innerHeight - startY, false);
+      } else {
+        let clipToUse = mCfg.shootClip;
+        let muzzle = mCfg.muzzleOffset;
+        if (mCfg.isFlying && targetEnemy.bottom < 165) {
+          clipToUse = 'shoot';
+          muzzle = { x: 156, y: 156 };
+        }
+        startX = HERO_X + muzzle.x;
+        startY = muzzle.y;
+        extraClass = selectedHero === 'kira' ? ' kira-bolt' : (selectedHero === 'giaphuc' ? ' giaphuc-bolt' : '');
+        triggerHeroClip(clipToUse, 240);
+        SFX.shoot(selectedHero, clipToUse);
+        spawnMuzzleAndShell(startX, window.innerHeight - startY, selectedHero === 'kira');
+      }
+
+      const boltEl = document.createElement('div');
+      boltEl.className = 'plasma-bolt' + extraClass;
+      boltEl.style.left = startX + 'px';
+      boltEl.style.bottom = startY + 'px';
+      worldContainer.appendChild(boltEl);
+
+      bolts.push({
+        el: boltEl,
+        x: startX,
+        y: startY,
+        speed: sourceType === 'mecha' ? 1180 : 1380,
+        target: targetEnemy,
+        isFinalHit: isFinalHit,
+        isPhaseBreak: isPhaseBreak,
+        knockbackPx: knockbackPx,
+        sourceType: sourceType
+      });
+    }
+
+    function updateCompanions(dt, timestamp) {
+      const mapping = [
+        { id: 'mecha', atlas: 'comp_mecha', canvasId: 'canvas-comp-mecha' },
+        { id: 'drone', atlas: 'comp_drone', canvasId: 'canvas-comp-drone' },
+        { id: 'medic', atlas: 'comp_medic', canvasId: 'canvas-comp-medic' }
+      ];
+
+      for (const m of mapping) {
+        if (companions[m.id] <= 0) continue;
+        const st = compStates[m.id];
+        if (timestamp > st.lockUntil && st.clip !== 'move') {
+          st.clip = 'move';
+          st.frame = 0;
+        }
+        st.timer += dt * 1000;
+        if (st.timer >= (st.clip === 'shoot' ? 75 : 90)) {
+          st.timer = 0;
+          st.frame++;
+        }
+        const cv = document.getElementById(m.canvasId);
+        if (cv) drawAtlasFrame(cv.getContext('2d'), m.atlas, st.clip, st.frame, false);
+      }
+
+      // 1. Chiến Xa Pháo (Cấp 1-10)
+      if (companions.mecha > 0 && enemies.length > 0) {
+        const mStats = COMPANION_CATALOG[0].getStats(companions.mecha);
+        compStates.mecha.cooldown += dt;
+        if (compStates.mecha.cooldown >= mStats.cd) {
+          let nearest = null;
+          let minX = Infinity;
+          for (const e of enemies) {
+            if (e.typedIndex < e.word.length && e.x < minX) {
+              minX = e.x;
+              nearest = e;
+            }
+          }
+          if (nearest) {
+            compStates.mecha.cooldown = 0;
+            compStates.mecha.clip = 'shoot';
+            compStates.mecha.frame = 0;
+            compStates.mecha.lockUntil = timestamp + 260;
+
+            const step = (mStats.dbl > 0 && Math.random() * 100 < mStats.dbl) ? 2 : 1;
+            advanceEnemyProgress(nearest, step, 'mecha');
+          }
+        }
+      }
+
+      // 2. Chiến Cơ Drone (Cấp 1-10)
+      if (companions.drone > 0 && enemies.length > 0) {
+        const dStats = COMPANION_CATALOG[1].getStats(companions.drone);
+        compStates.drone.cooldown += dt;
+        if (compStates.drone.cooldown >= dStats.cd) {
+          let target = null;
+          // Đột phá Cấp 5+: Ưu tiên bắn Quái Bay đang bổ nhào trước!
+          if (companions.drone >= 5) {
+            let minFlyX = Infinity;
+            for (const e of enemies) {
+              if (e.cfg.isFlying && e.typedIndex < e.word.length && e.x < minFlyX) {
+                minFlyX = e.x;
+                target = e;
+              }
+            }
+          }
+          if (!target) {
+            let minX = Infinity;
+            for (const e of enemies) {
+              if (e.typedIndex < e.word.length && e.x < minX) {
+                minX = e.x;
+                target = e;
+              }
+            }
+          }
+          if (target) {
+            compStates.drone.cooldown = 0;
+            compStates.drone.clip = 'shoot';
+            compStates.drone.frame = 0;
+            compStates.drone.lockUntil = timestamp + 240;
+
+            const step = (Math.random() * 100 < dStats.dbl) ? 2 : 1;
+            advanceEnemyProgress(target, step, 'drone');
+          }
+        }
+      }
+
+      // 3. Robot Quân Y (Cấp 1-10)
+      if (companions.medic > 0) {
+        const medStats = COMPANION_CATALOG[2].getStats(companions.medic);
+        compStates.medic.cooldown += dt;
+        if (compStates.medic.cooldown >= medStats.cd) {
+          compStates.medic.cooldown = 0;
+          let didSupport = false;
+          if (hp < MAX_HP) {
+            hp = Math.min(MAX_HP, hp + medStats.heal);
+            createScorePop(HERO_X + 35, 195, `+${medStats.heal} HP`, 'cyan');
+            didSupport = true;
+          } else if (medStats.overShield > 0 && shieldHp < MAX_SHIELD) {
+            // Đột phá Cấp 5+: Máu đầy sẽ chuyển hóa thành Giáp Khiên!
+            shieldHp = Math.min(MAX_SHIELD, shieldHp + medStats.overShield);
+            createScorePop(HERO_X + 35, 195, `+${medStats.overShield} GIÁP`, 'cyan');
+            didSupport = true;
+          }
+          if (didSupport) {
+            compStates.medic.clip = 'shoot';
+            compStates.medic.frame = 0;
+            compStates.medic.lockUntil = timestamp + 280;
+            fxBeams.push({
+              x1: 75,
+              y1: window.innerHeight - 190,
+              x2: HERO_X + 85,
+              y2: window.innerHeight - 145,
+              color: '#38b000',
+              width: 10,
+              life: 0,
+              maxLife: 0.3
+            });
+            updateHUD();
+          }
+        }
+      }
+    }
+
+    function masterLoop(timestamp) {
+      const dt = Math.min((timestamp - lastFrameTime) / 1000, 0.1);
+      lastFrameTime = timestamp;
+
+      // Luôn vẽ cảnh nền Pixel-Art đa biến thể
+      renderPixelBackground(dt, timestamp);
+
+      if (gameState === 'PLAYING') {
+        updateStageVariantTimer(dt);
+        updateAndDrawFx(dt);
+        updateCompanions(dt, timestamp);
+
+        if (timestamp > heroState.lockUntil && heroState.clip !== 'run') {
+          heroState.clip = 'run';
+          heroState.frame = 0;
+        }
+        heroState.timer += dt * 1000;
+        if (heroState.timer >= (heroState.clip === 'run' ? 80 : 75)) {
+          heroState.timer = 0;
+          heroState.frame++;
+        }
+        drawAtlasFrame(heroCtx, selectedHero, heroState.clip, heroState.frame, false);
+
+        const campaignCfg = CAMPAIGN_CONFIG[currentMode] || CAMPAIGN_CONFIG.easy;
+        if (!bossSpawned) {
+          if (killCount < campaignCfg.targetKills) {
+            if (timestamp - lastSpawnTime >= nextSpawnDelay) {
+              spawnEnemy();
+              lastSpawnTime = timestamp;
+              if (baseEnemySpeed < 225) baseEnemySpeed += 0.68;
+            }
+          } else {
+            // Đã tiêu diệt đủ số lượng quái chỉ tiêu -> Lập tức triệu hồi Trùm Cuối!
+            spawnFinalBoss();
+          }
+        }
+
+        const isEmpActive = timestamp < empSlowUntil;
+        const globalSlowMult = isEmpActive ? 0.35 : 1.0;
+
+        for (let i = enemies.length - 1; i >= 0; i--) {
+          const e = enemies[i];
+          e.el.classList.toggle('chilled', isEmpActive);
+
+          const diveStartX = HERO_X + 340;
+          const hitX = HERO_X + 78;
+
+          const isDivingFlyer = e.cfg.isFlying && e.x < diveStartX;
+          const currentSpeed = (isDivingFlyer ? e.speed * 1.18 : e.speed) * globalSlowMult;
+          e.x -= currentSpeed * dt;
+
+          if (e.cfg.isFlying) {
+            if (e.x < diveStartX) {
+              const diveRatio = Math.min(1, Math.max(0, (diveStartX - e.x) / (diveStartX - hitX)));
+              const diveEase = diveRatio * diveRatio;
+              const hoverY = e.baseBottom + Math.sin(timestamp * 0.006 + e.phase) * 14 * (1 - diveRatio);
+              const targetHitBottom = 88;
+              e.bottom = hoverY + (targetHitBottom - hoverY) * diveEase;
+              e.canvas.style.transform = `rotate(${-Math.round(diveRatio * 20)}deg)`;
+            } else {
+              e.bottom = e.baseBottom + Math.sin(timestamp * 0.006 + e.phase) * 20;
+              e.canvas.style.transform = 'rotate(0deg)';
+            }
+            e.el.style.bottom = e.bottom + 'px';
+          }
+          e.el.style.left = e.x + 'px';
+
+          if (timestamp < e.hurtUntil) {
+            e.clip = 'hurt';
+          } else if (e.x < HERO_X + 210 || (isDivingFlyer && e.x < HERO_X + 260)) {
+            e.clip = 'attack';
+          } else {
+            e.clip = 'move';
+          }
+
+          e.animTimer += dt * 1000;
+          if (e.animTimer >= 90) {
+            e.animTimer = 0;
+            e.frame++;
+            drawAtlasFrame(e.ctx, e.cfg.spriteKey, e.clip, e.frame, true);
+          }
+
+          if (e.x < hitX) {
+            createExplosion(HERO_X + 95, e.bottom + 45, Boolean(e.isFinalBoss));
+            spawnHitParticles(HERO_X + 95, window.innerHeight - (e.bottom + 45), e.cfg.spriteKey, true);
+
+            let dmg = e.isFinalBoss ? e.bossDamage : e.cfg.damage;
+            if (shieldHp > 0) {
+              const absorbed = Math.min(shieldHp, dmg);
+              shieldHp -= absorbed;
+              dmg -= absorbed;
+              SFX.shieldBlock();
+              triggerScreenFlash('rgba(0, 245, 212, 0.35)');
+              createScorePop(HERO_X + 80, 215, `KHIÊN -${absorbed}`, 'cyan');
+            }
+
+            if (dmg > 0) {
+              hp = Math.max(0, hp - dmg);
+              SFX.hurt();
+              triggerScreenShake(true);
+              triggerScreenFlash('rgba(230, 57, 70, 0.45)');
+              combo = 1;
+              triggerHeroClip('hurt', 360);
+              createScorePop(HERO_X + 75, 195, `-${dmg} HP`, 'dmg');
+            }
+
+            updateHUD();
+
+            if (hp <= 0) {
+              if (lockedEnemy === e) lockedEnemy = null;
+              e.el.remove();
+              enemies.splice(i, 1);
+              endGame();
+            } else if (e.isFinalBoss) {
+              e.x = HERO_X + 290;
+              e.hurtUntil = timestamp + 240;
+              e.el.style.left = e.x + 'px';
+            } else {
+              if (lockedEnemy === e) lockedEnemy = null;
+              e.el.remove();
+              enemies.splice(i, 1);
+            }
+          }
+        }
+
+        for (let i = grenades.length - 1; i >= 0; i--) {
+          const g = grenades[i];
+          g.t += dt / g.duration;
+          if (g.t >= 1) {
+            detonateGrenade(g.targetX, g.targetY);
+            g.el.remove();
+            grenades.splice(i, 1);
+          } else {
+            const cx = g.startX + (g.targetX - g.startX) * g.t;
+            const arcLift = Math.sin(g.t * Math.PI) * 165;
+            const cy = g.startY + (g.targetY - g.startY) * g.t + arcLift;
+            g.el.style.left = cx + 'px';
+            g.el.style.bottom = cy + 'px';
+            g.el.style.transform = `rotate(${Math.round(g.t * 540)}deg)`;
+          }
+        }
+
+        for (let i = bolts.length - 1; i >= 0; i--) {
+          const b = bolts[i];
+          if (!b.target || !enemies.includes(b.target)) {
+            b.el.remove();
+            bolts.splice(i, 1);
+            continue;
+          }
+
+          const targetX = b.target.x + 42;
+          const targetY = b.target.bottom + (b.target.cfg.scale * 0.42);
+          const dx = targetX - b.x;
+          const dy = targetY - b.y;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist <= b.speed * dt + 28) {
+            createExplosion(targetX, targetY, false);
+            const screenHitY = window.innerHeight - targetY;
+
+            if (b.isFinalHit) {
+              SFX.kill();
+              triggerScreenShake(Boolean(b.target.isFinalBoss));
+              killEnemyReward(b.target, undefined, b.sourceType || 'hero');
+              updateHUD();
+            } else {
+              SFX.armorHit();
+              spawnHitParticles(targetX, screenHitY, b.target.cfg.spriteKey, Boolean(b.isPhaseBreak));
+              const kb = b.isPhaseBreak ? 68 : (b.knockbackPx || 16);
+              b.target.x += kb;
+              b.target.hurtUntil = timestamp + (b.isPhaseBreak ? 320 : 220);
+              b.target.frame = 0;
+              b.target.el.classList.add('hit-flash');
+              const ref = b.target.el;
+              setTimeout(() => ref.classList.remove('hit-flash'), 80);
+
+              if (b.isPhaseBreak) {
+                SFX.grenadeBoom();
+                triggerScreenShake(true);
+                triggerScreenFlash('rgba(255, 190, 11, 0.35)');
+                createExplosion(targetX, targetY, true);
+                createScorePop(targetX, targetY + 60, 'PHÁ PHA BOSS!', 'cyan');
+              }
+
+              // Đột phá Cấp 5+ của Chiến Xa Pháo: Đẩy lùi lan sang các quái đứng gần (110px)
+              if (b.sourceType === 'mecha' && companions.mecha >= 5) {
+                for (const other of enemies) {
+                  if (other !== b.target && Math.abs(other.x - b.target.x) <= 110) {
+                    other.x += Math.round(kb * 0.6);
+                    other.hurtUntil = timestamp + 160;
+                  }
+                }
+              }
+            }
+
+            b.el.remove();
+            bolts.splice(i, 1);
+          } else {
+            const vx = (dx / dist) * b.speed;
+            const vy = (dy / dist) * b.speed;
+            b.x += vx * dt;
+            b.y += vy * dt;
+            const angleDeg = -Math.atan2(vy, vx) * (180 / Math.PI);
+            b.el.style.left = b.x + 'px';
+            b.el.style.bottom = b.y + 'px';
+            b.el.style.transform = `rotate(${angleDeg}deg)`;
+          }
+        }
+      } else if (gameState === 'VICTORY') {
+        updateAndDrawFx(dt);
+        victoryFireworkTimer -= dt;
+        if (victoryFireworkTimer <= 0) {
+          victoryFireworkTimer = 0.42;
+          const fx = window.innerWidth * (0.15 + Math.random() * 0.7);
+          const fy = window.innerHeight * (0.15 + Math.random() * 0.45);
+          spawnFireworkBurst(fx, fy);
+        }
+      } else if (gameState === 'GAMEOVER') {
+        updateAndDrawFx(dt);
+      }
+
+      requestAnimationFrame(masterLoop);
+    }
+
+    function createExplosion(x, y, isMega = false) {
+      const fx = document.createElement('div');
+      fx.className = isMega ? 'explosion mega' : 'explosion';
+      const offset = isMega ? 120 : 28;
+      fx.style.left = (x - offset) + 'px';
+      fx.style.bottom = (y - offset) + 'px';
+      worldContainer.appendChild(fx);
+      setTimeout(() => fx.remove(), isMega ? 480 : 280);
+    }
+
+    function createScorePop(x, y, text, styleType = '') {
+      const fx = document.createElement('div');
+      fx.className = 'float-score' + (styleType ? ' ' + styleType : '');
+      fx.textContent = text;
+      fx.style.left = x + 'px';
+      fx.style.bottom = y + 'px';
+      worldContainer.appendChild(fx);
+      setTimeout(() => fx.remove(), 750);
+    }
+
+    function endGame() {
+      if (gameState === 'GAMEOVER') return;
+      gameState = 'GAMEOVER';
+      SFX.gameOver();
+      updateBossBar(null);
+      if (score > highScore) highScore = score;
+
+      const role = getAuthRole();
+      const user = getAuthUser();
+      const isGuest = (role === 'guest');
+
+      if (!isGuest) {
+        // LƯU KẾT QUẢ XU VÀO TÀI KHOẢN HỌC VIÊN HOẶC GIÁO VIÊN
+        const petData = getUserPetStorage(role);
+        petData.coins = Math.max(0, (petData.coins || 0) + matchCoinsEarned);
+        saveUserPetStorage(role, petData);
+        saveProgress();
+      }
+
+      document.getElementById('final-score').textContent = String(score).padStart(6, '0');
+      document.getElementById('final-highscore').textContent = String(highScore).padStart(6, '0');
+      document.getElementById('final-kills').textContent = String(killCount);
+
+      const coinsEl = document.getElementById('final-coins');
+      const footerEl = document.getElementById('gameover-footer-btns');
+
+      // Xu tích lũy ván này: chỉ hiện số xu, bỏ mọi chữ trong ngoặc
+      if (coinsEl) coinsEl.textContent = `+${matchCoinsEarned} XU`;
+
+      if (isGuest) {
+        // KHÁCH: Có 3 nút (ĐĂNG NHẬP ĐỂ TÍCH XU, CHƠI LẠI MÀN NÀY, TRANG CHỦ GAME)
+        if (footerEl) {
+          footerEl.innerHTML = `
+            <button class="arcade-btn" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; border-color: #34d399; font-weight: 800;" onclick="triggerLoginFromGame()">
+              ĐĂNG NHẬP ĐỂ TÍCH XU
+            </button>
+            <button class="arcade-btn primary" onclick="startGame(currentMode)">CHƠI LẠI MÀN NÀY</button>
+            <button class="arcade-btn" onclick="showMenu()">TRANG CHỦ GAME</button>
+          `;
+        }
+      } else {
+        // HỌC VIÊN & GIÁO VIÊN: Chỉ có 2 nút (CHƠI LẠI MÀN NÀY, TRANG CHỦ GAME)
+        if (footerEl) {
+          footerEl.innerHTML = `
+            <button class="arcade-btn primary" onclick="startGame(currentMode)">CHƠI LẠI MÀN NÀY</button>
+            <button class="arcade-btn" onclick="showMenu()">TRANG CHỦ GAME</button>
+          `;
+        }
+      }
+
+      document.getElementById('gameover-overlay').classList.add('active');
+    }
+
+    function victoryGame() {
+      if (gameState === 'VICTORY') return;
+      gameState = 'VICTORY';
+      bossDefeated = true;
+      const cfg = CAMPAIGN_CONFIG[currentMode] || CAMPAIGN_CONFIG.easy;
+
+      score += cfg.bonusScore;
+      matchCoinsEarned += cfg.bonusCoins;
+      coins += cfg.bonusCoins;
+      if (score > highScore) highScore = score;
+
+      const role = getAuthRole();
+      const user = getAuthUser();
+      const isGuest = (role === 'guest');
+
+      if (!isGuest) {
+        // LƯU KẾT QUẢ XU VÀO TÀI KHOẢN HỌC VIÊN HOẶC GIÁO VIÊN
+        const petData = getUserPetStorage(role);
+        petData.coins = Math.max(0, (petData.coins || 0) + matchCoinsEarned);
+        saveUserPetStorage(role, petData);
+        saveProgress();
+      }
+      updateHUD();
+
+      SFX.victory();
+      triggerScreenShake(true);
+      triggerScreenFlash('rgba(255, 190, 11, 0.45)');
+
+      for (let i = 0; i < 4; i++) {
+        spawnFireworkBurst(
+          window.innerWidth * (0.2 + i * 0.2),
+          window.innerHeight * (0.22 + (i % 2) * 0.16)
+        );
+      }
+      victoryFireworkTimer = 0.35;
+
+      document.getElementById('victory-score').textContent = String(score).padStart(6, '0');
+      document.getElementById('victory-highscore').textContent = String(highScore).padStart(6, '0');
+      document.getElementById('victory-kills').textContent = String(killCount);
+
+      const victoryCoinsEl = document.getElementById('victory-coins');
+      const victoryFooterEl = document.getElementById('victory-footer-btns');
+
+      // Xu tích lũy ván này: chỉ hiện số xu, bỏ mọi chữ trong ngoặc
+      if (victoryCoinsEl) victoryCoinsEl.textContent = `+${matchCoinsEarned} XU`;
+
+      if (isGuest) {
+        // KHÁCH: Có 3 nút (ĐĂNG NHẬP ĐỂ TÍCH XU, CHƠI LẠI MÀN NÀY, TRANG CHỦ GAME)
+        if (victoryFooterEl) {
+          victoryFooterEl.innerHTML = `
+            <button class="arcade-btn" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; border-color: #34d399; font-weight: 800;" onclick="triggerLoginFromGame()">
+              ĐĂNG NHẬP ĐỂ TÍCH XU
+            </button>
+            <button class="arcade-btn primary" onclick="startGame(currentMode)">CHƠI LẠI MÀN NÀY</button>
+            <button class="arcade-btn" onclick="showMenu()">TRANG CHỦ GAME</button>
+          `;
+        }
+      } else {
+        // HỌC VIÊN & GIÁO VIÊN: Chỉ có 2 nút (CHƠI LẠI MÀN NÀY, TRANG CHỦ GAME)
+        if (victoryFooterEl) {
+          victoryFooterEl.innerHTML = `
+            <button class="arcade-btn primary" onclick="startGame(currentMode)">CHƠI LẠI MÀN NÀY</button>
+            <button class="arcade-btn" onclick="showMenu()">TRANG CHỦ GAME</button>
+          `;
+        }
+      }
+
+      document.getElementById('victory-overlay').classList.add('active');
+    }
+
+    // =========================================================================
+    // 9. BẮT PHÍM GÕ DIỆT QUÁI & PHÍM TẮT 4 Ô ĐỒ (F1 - F4, TAB, ESC)
+    // =========================================================================
+    window.addEventListener('keydown', (e) => {
+      initAudio();
+
+      if (e.code === 'Escape') {
+        e.preventDefault();
+        if (document.getElementById('shop-modal').classList.contains('active')) {
+          closeShop();
+        } else if (document.getElementById('guide-modal').classList.contains('active')) {
+          closeGuide();
+        } else if (document.getElementById('mode-overlay').classList.contains('active')) {
+          backToHome();
+        } else if (gameState === 'PLAYING' || gameState === 'PAUSED') {
+          togglePause();
+        }
+        return;
+      }
+
+      if (e.code === 'Tab') {
+        e.preventDefault();
+        if (document.getElementById('shop-modal').classList.contains('active')) {
+          closeShop();
+        } else if (gameState === 'PLAYING' || gameState === 'PAUSED') {
+          openShop();
+        }
+        return;
+      }
+
+      if (gameState !== 'PLAYING') return;
+
+      if (e.code === 'F1') { e.preventDefault(); useLoadoutSlot(0); return; }
+      if (e.code === 'F2') { e.preventDefault(); useLoadoutSlot(1); return; }
+      if (e.code === 'F3') { e.preventDefault(); useLoadoutSlot(2); return; }
+      if (e.code === 'F4') { e.preventDefault(); useLoadoutSlot(3); return; }
+
+      if (e.code === 'Backspace') {
+        e.preventDefault();
+        if (lockedEnemy) {
+          lockedEnemy.el.classList.remove('locked');
+          lockedEnemy = null;
+          SFX.uiClick();
+        }
+        return;
+      }
+
+      let typedChar = '';
+      if (e.code.startsWith('Key')) typedChar = e.code.replace('Key', '');
+      else if (e.code.startsWith('Digit')) typedChar = e.code.replace('Digit', '');
+      if (!typedChar) return;
+
+      if (!lockedEnemy || !enemies.includes(lockedEnemy) || lockedEnemy.typedIndex >= lockedEnemy.word.length) {
+        lockedEnemy = null;
+        let nearest = null;
+        let minX = Infinity;
+        for (const en of enemies) {
+          if (en.typedIndex < en.word.length && en.word[en.typedIndex] === typedChar) {
+            if (en.x < minX) {
+              minX = en.x;
+              nearest = en;
+            }
+          }
+        }
+        if (nearest) {
+          lockedEnemy = nearest;
+          lockedEnemy.el.classList.add('locked');
+        }
+      }
+
+      if (lockedEnemy && lockedEnemy.word[lockedEnemy.typedIndex] === typedChar) {
+        const stepChars = (performance.now() < overdriveUntil) ? 2 : 1;
+        advanceEnemyProgress(lockedEnemy, stepChars, 'hero');
+
+        combo++;
+        if (combo === 10 || combo === 20 || combo === 30) {
+          showToastBanner(`LIÊN HOÀN COMBO x${combo}!`);
+        }
+        comboVal.classList.add('pop');
+        setTimeout(() => comboVal.classList.remove('pop'), 110);
+        updateHUD();
+      } else {
+        SFX.error();
+        combo = 1;
+        // Phạt gõ sai: Quái gần nhất chồm lên phía trước +14px!
+        if (enemies.length > 0) {
+          let nearest = enemies[0];
+          for (const en of enemies) {
+            if (en.x < nearest.x) nearest = en;
+          }
+          nearest.x = Math.max(HERO_X + 82, nearest.x - 14);
+        }
+        updateHUD();
+      }
+    });
+
+    window.addEventListener('thvp:auth_change', (e) => {
+      const newUser = e.detail ? e.detail.user : getAuthUser();
+      const newRole = newUser ? ((newUser.role === 'admin' || newUser.role === 'teacher') ? 'teacher' : 'student') : 'guest';
+
+      if (newRole !== 'guest') {
+        const petData = getUserPetStorage(newRole);
+        // Nếu vừa kết thúc ván ở chế độ khách và vừa đăng nhập -> tích ngay xu ván đó vào tài khoản!
+        if (matchCoinsEarned > 0) {
+          petData.coins = Math.max(0, (petData.coins || 0) + matchCoinsEarned);
+          saveUserPetStorage(newRole, petData);
+          showToastBanner(`Đã tích lũy +${matchCoinsEarned} Xu vào tài khoản ${newUser.fullname || newUser.username}!`);
+        }
+        coins = petData.coins;
+      }
+      updateUserRoleUI();
+      updateHUD();
+
+      // Cập nhật lại giao diện Game Over hoặc Victory nếu đang mở
+      if (gameState === 'GAMEOVER') {
+        endGame();
+      } else if (gameState === 'VICTORY') {
+        victoryGame();
+      }
+    });
+
+    loadProgress();
+    updateUserRoleUI();
+    selectHero(selectedHero);
+    updateCompanionVisibility();
+    renderLoadoutDock();
+    renderShopContent();
+    updateHUD();
+    requestAnimationFrame(masterLoop);
+  </script>
+  <script src="auth.js"></script>
+</body>
+</html>

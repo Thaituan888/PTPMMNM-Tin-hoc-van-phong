@@ -1,0 +1,786 @@
+/* Modal Authenticate & Toast System */
+.auth-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(6px);
+  z-index: 10000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.auth-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.auth-modal-box {
+  background: #ffffff;
+  border-radius: 24px;
+  max-width: 460px;
+  width: 100%;
+  padding: 48px 32px 32px;
+  box-shadow: 0 20px 48px rgba(2, 132, 199, 0.25);
+  border: 2px solid #e0f2fe;
+  position: relative;
+  box-sizing: border-box;
+  animation: modalScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalScaleUp {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.auth-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.auth-modal-close:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.auth-modal-tabs {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 14px;
+  padding: 4px;
+  gap: 4px;
+  margin-bottom: 22px;
+}
+
+.auth-tab-btn {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-tab-btn.active {
+  background: #ffffff;
+  color: #0284c7;
+  box-shadow: 0 3px 8px rgba(2, 132, 199, 0.15);
+}
+
+.auth-form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.auth-form-row .auth-form-group {
+  flex: 1;
+}
+
+.auth-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-label {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+}
+
+.req-star {
+  color: #ef4444;
+  margin-left: 3px;
+  font-weight: 700;
+}
+
+/* Input group styled exactly like the user's screenshots */
+.auth-input-group {
+  display: flex;
+  align-items: stretch;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.auth-input-group:focus-within {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.14);
+}
+
+.auth-input-prefix {
+  width: 46px;
+  background: #f8fafc;
+  border-right: 1.5px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.auth-input-control {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: #1e293b;
+  outline: none;
+  min-width: 0;
+}
+
+.auth-input-control.no-prefix {
+  padding-left: 16px;
+}
+
+.auth-input-control::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.auth-btn-eye {
+  background: transparent;
+  border: none;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #64748b;
+  transition: color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.auth-btn-eye:hover {
+  color: #0284c7;
+}
+
+/* Custom Checkbox 'Ghi nhớ đăng nhập' */
+.auth-remember-row {
+  display: flex;
+  align-items: center;
+  margin: 2px 0;
+}
+
+.auth-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.auth-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.auth-checkbox-custom {
+  width: 19px;
+  height: 19px;
+  border-radius: 6px;
+  border: 1.5px solid #cbd5e1;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.auth-checkbox:checked ~ .auth-checkbox-custom {
+  background: #4f46e5;
+  border-color: #4f46e5;
+}
+
+.auth-checkbox:checked ~ .auth-checkbox-custom::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 4px;
+  height: 9px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.auth-remember-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.auth-quick-creds {
+  background: #f0f9ff;
+  border: 1px dashed #7dd3fc;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.auth-quick-title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #0369a1;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.auth-quick-pill {
+  background: #ffffff;
+  border: 1px solid #bae6fd;
+  color: #0284c7;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.auth-quick-pill:hover {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+.auth-submit-btn {
+  background: #0284c7;
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  padding: 13px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 6px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+}
+
+.auth-submit-btn:hover {
+  background: #0369a1;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
+}
+
+/* Link Footer chuyển màn hình */
+.auth-footer-link-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.auth-footer-link-box.flex-column {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-link-btn {
+  background: transparent;
+  border: none;
+  color: #0284c7;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.auth-link-btn:hover {
+  color: #0369a1;
+  text-decoration: underline;
+}
+
+/* Header tiêu đề của màn hình Quên MK / OTP / Reset */
+.auth-screen-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.auth-screen-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #075985;
+  margin-bottom: 6px;
+}
+
+.auth-screen-desc {
+  font-size: 0.88rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.auth-screen-desc strong {
+  color: #0284c7;
+}
+
+/* Ô nhập mã OTP 6 số lớn (Chuẩn Water-Blue của web) */
+.auth-label-otp {
+  justify-content: flex-start !important;
+  text-align: left !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: #64748b !important;
+  margin-bottom: 6px !important;
+  letter-spacing: 0.03em !important;
+}
+
+.auth-otp-input {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #0284c7;
+  border-radius: 14px;
+  background: #f0f9ff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #075985;
+  text-align: center;
+  letter-spacing: 0.45em;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.auth-otp-input:focus {
+  background: #ffffff;
+  border-color: #0369a1;
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15);
+}
+
+.auth-otp-input::placeholder {
+  color: #94a3b8;
+  letter-spacing: 0.35em;
+}
+
+.auth-countdown-row {
+  text-align: center;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: 0.04em;
+  margin: 4px 0 10px;
+}
+
+.auth-btn-resend {
+  background: transparent;
+  border: none;
+  color: #0284c7;
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Khung thông báo Xanh đồng bộ Water-Blue */
+.auth-notice-box {
+  background: #f0f9ff;
+  border: 1.5px solid #bae6fd;
+  border-radius: 14px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.anb-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.anb-text {
+  font-size: 0.84rem;
+  color: #0369a1;
+  line-height: 1.5;
+}
+
+.anb-text strong {
+  color: #075985;
+}
+
+/* Live Toast thông báo gửi OTP thời gian thực */
+.otp-live-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  max-width: 420px;
+  background: #ffffff;
+  border: 2px solid #38bdf8;
+  border-radius: 18px;
+  padding: 16px 20px;
+  box-shadow: 0 16px 36px rgba(2, 132, 199, 0.2);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  z-index: 100005;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.otp-live-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.olt-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #0284c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.olt-body {
+  flex: 1;
+  font-size: 0.86rem;
+  color: #1e293b;
+  line-height: 1.45;
+}
+
+.olt-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0284c7;
+  letter-spacing: 0.08em;
+  background: #e0f2fe;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-left: 4px;
+}
+
+.olt-body p {
+  margin: 4px 0 0;
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.olt-close {
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: #94a3b8;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.auth-alert {
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.45;
+}
+
+.auth-alert-error {
+  background: #fee2e2;
+  border: 1px solid #f87171;
+  color: #dc2626;
+}
+
+.auth-alert-success {
+  background: #dcfce7;
+  border: 1px solid #4ade80;
+  color: #166534;
+}
+
+.d-none {
+  display: none !important;
+}
+
+/* User Logged-in Widget in Header (Circular Avatar + Name + Rounded-Square Logout Button) */
+.btn-user-logged {
+  text-decoration: none;
+  cursor: default;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.header-user-widget {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-user-avatar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.header-avatar-ring {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #ffffff;
+  padding: 3px;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.1);
+  border: 1px solid #e2e8f0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.header-avatar-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #dce7f9;
+  border: 2px solid #7c8aa5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.header-avatar-dot {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #4ade80;
+  border: 2px solid #ffffff;
+  box-sizing: border-box;
+}
+
+.header-user-name {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #334155;
+  line-height: 1.15;
+  white-space: nowrap;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-header-logout {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.06);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #7c8aa5;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.btn-header-logout:hover {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #ef4444;
+  transform: translateY(-1px);
+}
+
+/* Header User Dropdown Panel (Đồng bộ Menu Tài khoản LMS) */
+.header-user-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.header-user-avatar-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: transparent;
+  border: none;
+  padding: 2px 6px;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.header-user-avatar-btn:hover .header-avatar-ring {
+  border-color: #0284c7;
+  transform: scale(1.04);
+}
+
+.header-user-dropdown-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: min(250px, calc(100vw - 32px));
+  padding: 10px 8px;
+  background: #ffffff;
+  border: 1px solid #bae6fd;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px -5px rgba(7, 89, 133, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  animation: dropdownFadeIn 0.15s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-user-header {
+  padding: 8px 12px 10px;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 4px;
+}
+
+.dropdown-user-header span {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #64748b;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-user-dropdown-panel a,
+.header-user-dropdown-panel button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  color: #075985;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+
+.header-user-dropdown-panel a:hover,
+.header-user-dropdown-panel button:hover {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.header-user-dropdown-panel .dropdown-logout-btn {
+  color: #dc2626;
+  border-top: 1px solid #f8fafc;
+  margin-top: 2px;
+}
+
+.header-user-dropdown-panel .dropdown-logout-btn:hover {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+/* Toast Notification */
+.thvp-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1e293b;
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 14px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  z-index: 10000010;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.thvp-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.thvp-toast.success {
+  background: #047857;
+  border-left: 4px solid #34d399;
+}
+
+.thvp-toast.info {
+  background: #0369a1;
+  border-left: 4px solid #38bdf8;
+}

@@ -55,6 +55,18 @@ window.addEventListener('load', function () {
 
   let otpCountdownTimer = null;
 
+  // Helper Escape HTML tránh lỗi XSS và ReferenceError
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+  window.escapeHtml = escapeHtml;
+
   // 1. Quản lý Current User
   function getCurrentUser() {
     try {
@@ -759,23 +771,25 @@ window.addEventListener('load', function () {
     const alertBox = document.getElementById('authAlert');
 
     function showAlert(msg, isError = true) {
+      if (!alertBox) return;
       alertBox.textContent = msg;
       alertBox.className = `auth-alert ${isError ? 'auth-alert-error' : 'auth-alert-success'}`;
     }
 
     function hideAlert() {
+      if (!alertBox) return;
       alertBox.className = 'auth-alert d-none';
       alertBox.textContent = '';
     }
 
     // Đóng Modal
-    btnClose.addEventListener('click', hideModal);
-    modal.addEventListener('click', (e) => {
+    btnClose?.addEventListener('click', hideModal);
+    modal?.addEventListener('click', (e) => {
       if (e.target === modal) hideModal();
     });
 
     // Eye toggle icons
-    modal.querySelectorAll('.auth-btn-eye').forEach(btn => {
+    modal?.querySelectorAll('.auth-btn-eye').forEach(btn => {
       btn.addEventListener('click', () => {
         const targetId = btn.dataset.target;
         const targetInput = document.getElementById(targetId);
@@ -1096,42 +1110,77 @@ window.addEventListener('load', function () {
           showModal('login');
         };
       } else {
-        // HỌC VIÊN HOẶC GIÁO VIÊN (Khung tròn Avatar + Chấm xanh + Tên bên dưới + Nút Đăng xuất vuông bo góc)
+        // HỌC VIÊN HOẶC GIÁO VIÊN (Khung tròn Avatar + Chấm xanh + Tên bên dưới + Menu xổ xuống + Nút Đăng xuất)
         const isTeacher = user.role === 'admin' || user.role === 'teacher';
-        const displayName = isTeacher ? 'Giáo viên' : (user.fullname || 'Nguyễn Thái Tuấn');
+        const roleLabel = isTeacher ? 'Giáo viên' : 'Học sinh';
+        const displayName = isTeacher ? (user.fullname || 'Giáo viên') : (user.fullname || 'Học viên');
         const headerAvatar = resolveUserAvatar(user.username, user.role, user.avatar);
 
+        btn.className = `btn-user-logged ${isTeacher ? 'admin' : 'student'}`;
         btn.innerHTML = `
-          <div class="header-user-widget">
-            <div class="header-user-avatar-col">
-              <div class="header-avatar-ring">
-                <div class="header-avatar-inner">
-                  ${headerAvatar ? `<img src="${headerAvatar}" alt="${displayName}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;" />` : `
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M7.5 10.5c.6-.7 1.8-.7 2.4 0" stroke="#64748b" stroke-width="1.8" stroke-linecap="round"/>
-                    <path d="M14.1 10.5c.6-.7 1.8-.7 2.4 0" stroke="#64748b" stroke-width="1.8" stroke-linecap="round"/>
-                    <path d="M9.5 15.2c1.3 1.2 3.7 1.2 5 0" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round"/>
-                  </svg>`}
+          <div class="header-user-wrap">
+            <div class="header-user-widget">
+              <button type="button" class="header-user-avatar-btn" id="btnHeaderAvatarDropdown" aria-expanded="false" title="Bấm để mở menu tài khoản">
+                <div class="header-avatar-ring">
+                  <div class="header-avatar-inner">
+                    ${headerAvatar ? `<img src="${headerAvatar}" alt="${escapeHtml(displayName)}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;" />` : `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M7.5 10.5c.6-.7 1.8-.7 2.4 0" stroke="#64748b" stroke-width="1.8" stroke-linecap="round"/>
+                      <path d="M14.1 10.5c.6-.7 1.8-.7 2.4 0" stroke="#64748b" stroke-width="1.8" stroke-linecap="round"/>
+                      <path d="M9.5 15.2c1.3 1.2 3.7 1.2 5 0" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>`}
+                  </div>
+                  <span class="header-avatar-dot"></span>
                 </div>
-                <span class="header-avatar-dot"></span>
-              </div>
-              <span class="header-user-name">${displayName}</span>
+                <span class="header-user-name">${escapeHtml(displayName)} ▾</span>
+              </button>
+              <span class="btn-header-logout" title="Đăng xuất nhanh">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                  <polyline points="16 17 21 12 16 7"/>
+                  <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+              </span>
             </div>
-            <span class="btn-header-logout">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                <polyline points="16 17 21 12 16 7"/>
-                <line x1="21" y1="12" x2="9" y2="12"/>
-              </svg>
-            </span>
+
+            <!-- Bảng Menu xổ xuống đồng bộ LMS và Tiện ích -->
+            <div class="header-user-dropdown-panel" id="headerUserDropdownPanel" style="display: none;" role="menu">
+              <div class="dropdown-user-header">
+                <span>${escapeHtml(user.fullname || displayName)} · ${roleLabel}</span>
+              </div>
+              ${isTeacher ? `
+                <a href="khoa-hoc-lms.html#khoa-hoc-giao-vien" role="menuitem">Lớp học của tôi</a>
+                <a href="lop-hoc-cua-toi.html" role="menuitem">Tất cả lớp</a>
+                <a href="quan-ly-dang-ky.html" role="menuitem">Quản lý đăng ký</a>
+                <a href="on-luyen-thi-thu.html" role="menuitem">Tạo đề &amp; Ôn thi</a>
+              ` : `
+                <a href="lop-hoc-cua-toi.html" role="menuitem">Lớp học của tôi</a>
+                <a href="on-luyen-thi-thu.html" role="menuitem">Lịch sử thi &amp; Luyện tập</a>
+                <a href="dang-nhap-hoc-sinh.html?doi-mat-khau=1" role="menuitem">Đổi mật khẩu</a>
+              `}
+              <button type="button" class="dropdown-logout-btn" onclick="window.THVP_AUTH.handleLogout()" role="menuitem">Đăng xuất</button>
+            </div>
           </div>
         `;
-        btn.className = `btn-user-logged ${isTeacher ? 'admin' : 'student'}`;
+
         btn.onclick = (e) => {
-          e.preventDefault();
           if (e.target.closest('.btn-header-logout')) {
+            e.preventDefault();
             e.stopPropagation();
             handleLogout();
+            return;
+          }
+
+          const avatarBtn = e.target.closest('#btnHeaderAvatarDropdown');
+          if (avatarBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const panel = btn.querySelector('#headerUserDropdownPanel');
+            if (panel) {
+              const isOpen = panel.style.display !== 'none';
+              panel.style.display = isOpen ? 'none' : 'flex';
+              avatarBtn.setAttribute('aria-expanded', !isOpen);
+            }
           }
         };
       }
@@ -1139,6 +1188,29 @@ window.addEventListener('load', function () {
 
     window.dispatchEvent(new CustomEvent('thvp:auth_change', { detail: { user } }));
   }
+
+  // Đóng bảng xổ xuống khi click ra ngoài hoặc bấm Escape
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.header-user-wrap')) {
+      document.querySelectorAll('.header-user-dropdown-panel').forEach(p => {
+        p.style.display = 'none';
+      });
+      document.querySelectorAll('#btnHeaderAvatarDropdown').forEach(b => {
+        b.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.header-user-dropdown-panel').forEach(p => {
+        p.style.display = 'none';
+      });
+      document.querySelectorAll('#btnHeaderAvatarDropdown').forEach(b => {
+        b.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
 
   // 10. Toast Notification Helper
   function showToast(message, type = 'info') {
@@ -1157,6 +1229,7 @@ window.addEventListener('load', function () {
   }
 
   // Global Exports
+  window.resolveUserAvatar = resolveUserAvatar;
   window.THVP_AUTH = {
     getCurrentUser,
     setCurrentUser,
@@ -1165,7 +1238,8 @@ window.addEventListener('load', function () {
     handleLogout,
     updateAuthInterface,
     apiCall,
-    showToast
+    showToast,
+    resolveUserAvatar
   };
 
   // Auto-init on DOM ready
