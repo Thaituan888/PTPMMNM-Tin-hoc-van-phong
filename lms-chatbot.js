@@ -590,16 +590,35 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
       Bạn muốn tìm hiểu nội dung nào dưới đây? Hãy bấm chọn hoặc gõ câu hỏi bất kỳ nhé!
       <div class="lms-quick-reply-wrap" id="lmsInitialQuickReplies">
         <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('tinh_nang_website')">
-          🌐 Giới thiệu các chức năng của Website (Diễn đàn, Tiện ích,...)
+          <svg class="lms-qr-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+          </svg>
+          <span>Giới thiệu các chức năng của Website (Diễn đàn, Tiện ích,...)</span>
         </button>
         <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('chuc_nang_dien_dan')">
-          💬 Diễn đàn học tập có gì &amp; Dùng để làm gì?
+          <svg class="lms-qr-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+          </svg>
+          <span>Diễn đàn học tập có gì &amp; Dùng để làm gì?</span>
         </button>
         <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('tu_van_khoa_hoc')">
-          🎯 Tư vấn chọn khóa học (Word, Excel, PowerPoint, MOS)
+          <svg class="lms-qr-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+          </svg>
+          <span>Tư vấn chọn khóa học (Word, Excel, PowerPoint, MOS)</span>
         </button>
         <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('gui_yeu_cau')">
-          👨‍🏫 Để lại thông tin nhờ Giảng viên tư vấn trực tiếp
+          <svg class="lms-qr-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span>Để lại thông tin nhờ Giảng viên tư vấn trực tiếp</span>
         </button>
       </div>
     `;
@@ -901,9 +920,28 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
                 Cuộc trò chuyện đã được làm mới thành công ✨<br>
                 Bạn cần tư vấn khóa học nào hoặc muốn tìm hiểu về chức năng gì (Diễn đàn, Luyện gõ phím, Test bàn phím, Thi thử,...)? Hãy hỏi mình nhé!
                 <div class="lms-quick-reply-wrap" style="margin-top: 10px;">
-                  <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('tinh_nang_website')">🌐 Các tính năng của Website</button>
-                  <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('chuc_nang_dien_dan')">💬 Chức năng của Diễn đàn</button>
-                  <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('tu_van_khoa_hoc')">🎯 Tư vấn chọn khóa học</button>
+                  <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('tinh_nang_website')">
+                    <svg class="lms-qr-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                      <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                      <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                      <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                    </svg>
+                    <span>Các tính năng của Website</span>
+                  </button>
+                  <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('chuc_nang_dien_dan')">
+                    <svg class="lms-qr-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                    <span>Chức năng của Diễn đàn</span>
+                  </button>
+                  <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('tu_van_khoa_hoc')">
+                    <svg class="lms-qr-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                      <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
+                    <span>Tư vấn chọn khóa học</span>
+                  </button>
                 </div>
                 <span class="lms-msg-time">Vừa xong • Trợ lý AI</span>
               </div>
@@ -1285,10 +1323,22 @@ function lmsChatbotSelectOption(optionKey) {
           👉 Xem thêm trang tổng quan khóa học: <a href="khoa-hoc-lms.html" class="lms-chat-link">Khoá Học LMS</a> | <a href="dang-ky-khoa-hoc.html" class="lms-chat-link">Đăng Ký Ngay</a>
           <div class="lms-quick-reply-wrap" style="margin-top: 10px;">
             <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('tinh_nang_website')">
-              🌐 Xem thêm các tiện ích khác của web (Luyện gõ phím, Test phím,...)
+              <svg class="lms-qr-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+              </svg>
+              <span>Xem thêm các tiện ích khác của web (Luyện gõ phím, Test phím,...)</span>
             </button>
             <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('gui_yeu_cau')">
-              👨‍🏫 Nhờ Giảng viên gọi điện tư vấn 1-1
+              <svg class="lms-qr-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <span>Nhờ Giảng viên gọi điện tư vấn 1-1</span>
             </button>
           </div>
         `;
@@ -1553,19 +1603,19 @@ function lmsFallbackAnswer(message) {
     lmsAppendChatMessage('bot', reply, true);
   } else if (lower.includes('là ai') || lower.includes('la ai') || lower.includes('bạn là ai') || lower.includes('ní là ai') || lower.includes('ai tạo ra') || lower.includes('ai day') || lower.includes('ai đấy')) {
     const reply = `
-      👋 <strong>Xin chào bạn! Mình là Trợ Lý AI Tư Vấn của Hệ Thống Đào Tạo Tin Học Văn Phòng LMS.</strong>
+      <strong>Xin chào bạn! Mình là Trợ Lý Học Tập AI của Hệ Thống Đào Tạo Tin Học Văn Phòng LMS.</strong>
       <br><br>
       Mình được phát triển để đồng hành và hỗ trợ bạn trong suốt quá trình học tập:
-      <br>• 📚 <strong>Tư vấn khóa học:</strong> Tin học cơ bản, Tin học nâng cao, Luyện thi chứng chỉ MOS, IC3, Ứng dụng AI văn phòng.
-      <br>• ⌨️ <strong>Kỹ năng số:</strong> Luyện gõ phím 10 ngón, Test bàn phím trực tuyến, tra cứu phím tắt nhanh.
-      <br>• 📝 <strong>Ôn luyện &amp; Thi thử:</strong> Hướng dẫn làm bài thi trắc nghiệm, bấm giờ và chấm điểm tự động.
+      <br>• <strong>Tư vấn khóa học:</strong> Tin học cơ bản, Tin học nâng cao, Luyện thi chứng chỉ MOS, IC3, Ứng dụng AI văn phòng.
+      <br>• <strong>Kỹ năng số:</strong> Luyện gõ phím 10 ngón, Test bàn phím trực tuyến, tra cứu phím tắt nhanh.
+      <br>• <strong>Ôn luyện &amp; Thi thử:</strong> Hướng dẫn làm bài thi trắc nghiệm, bấm giờ và chấm điểm tự động.
       <br><br>
       Bạn đang quan tâm đến nội dung nào, cứ nhắn cho mình nhé!
     `;
     lmsAppendChatMessage('bot', reply, true);
   } else if (lower.includes('xin chào') || lower.includes('chào') || lower.includes('hello') || lower.includes('hi bot')) {
     const reply = `
-      👋 Xin chào bạn! Rất vui được gặp bạn. Bạn đang quan tâm đến khóa học Tin học hay cần mình giải đáp thắc mắc gì nè?
+      Xin chào bạn! Rất vui được gặp bạn. Bạn đang quan tâm đến khóa học Tin học hay cần mình giải đáp thắc mắc gì nè?
     `;
     lmsAppendChatMessage('bot', reply, true);
   } else {
@@ -1574,8 +1624,22 @@ function lmsFallbackAnswer(message) {
       <br><br>
       Bạn có muốn mình tư vấn thêm về khóa học hay giải đáp thắc mắc gì về học tập không nè?
       <div class="lms-quick-reply-wrap" style="margin-top: 10px;">
-        <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('tu_van_khoa_hoc')">🎯 Tư vấn chọn khóa học</button>
-        <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('gui_yeu_cau')">👨‍🏫 Gửi câu hỏi cho Giảng viên</button>
+        <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('tu_van_khoa_hoc')">
+          <svg class="lms-qr-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+          </svg>
+          <span>Tư vấn chọn khóa học</span>
+        </button>
+        <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('gui_yeu_cau')">
+          <svg class="lms-qr-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span>Gửi câu hỏi cho Giảng viên</span>
+        </button>
       </div>
     `;
     lmsAppendChatMessage('bot', reply, true);
