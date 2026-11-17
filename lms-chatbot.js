@@ -20,16 +20,15 @@
 
 (function () {
   // 1. CẤU HÌNH GEMINI API & DANH SÁCH MÔ HÌNH ƯU TIÊN
-  const DEFAULT_GEMINI_API_KEY = (typeof atob !== 'undefined')
-    ? atob('QVEuQWI4Uk42SjVLXzNjVWpvRFpDbzRvN3MycWRka3F5ZGEyaW5UX09SSzFsQjNaTGR0UXc=')
-    : Buffer.from('QVEuQWI4Uk42SjVLXzNjVWpvRFpDbzRvN3MycWRka3F5ZGEyaW5UX09SSzFsQjNaTGR0UXc=', 'base64').toString();
+  const DEFAULT_GEMINI_API_KEY = 'AQ.Ab8RN6IMhEp2eRjMgT4FzZeWXYgpuFWrFyvNN6XigxlJmrfdbQ';
   const GEMINI_MODELS = [
     'gemini-3.5-flash-lite',
     'gemini-3.1-flash-lite',
-    'gemini-2.5-flash-lite',
-    'gemini-flash-lite-latest',
+    'gemini-3.5-flash',
     'gemini-3.8-flash',
-    'gemini-3.5-flash'
+    'gemini-flash-latest',
+    'gemini-flash-lite-latest',
+    'gemini-2.5-flash-lite'
   ];
 
   // Khóa lưu phiên chat trong sessionStorage
@@ -393,22 +392,10 @@ CHÍNH SÁCH COMBO & HỌC PHÍ ƯU ĐÃI:
 - Giảng viên Tống Hoàng Thiên: Chuyên gia tin học ứng dụng, phụ trách lớp CB-01 và NC-01.
 - Giảng viên Trần Anh Khoa: Chuyên gia văn phòng và luyện thi MOS, phụ trách lớp CB-03 và NC-03.
 
-PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
-1. XƯNG HÔ VÀ THÁI ĐỘ:
-- Tự xưng là "mình", gọi người dùng là "bạn" (thân thiện, gần gũi, tôn trọng và ấm áp).
-- Tuyệt đối không trả lời cộc lốc hay khô khan, dùng emoji vừa phải, sinh động và dễ đọc.
-
-2. BỐ CỤC CÂU TRẢ LỜI CHUẨN 3 PHẦN:
-- PHẦN 1 (TRỰC DIỆN): Trả lời đúng trọng tâm câu hỏi của người dùng trước tiên. Đi thẳng vào vấn đề, rõ ràng, chính xác và hữu ích.
-- PHẦN 2 (LỒNG GHÉP TINH TẾ & TỰ NHIÊN):
-  • NGUYÊN TẮC VÀNG: Mỗi câu trả lời CHỈ GIỚI THIỆU TỐI ĐA 1 TÍNH NĂNG HOẶC 1 KHÓA HỌC phù hợp nhất. Không liệt kê ồ ạt, không nhồi nhét cả đống tính năng làm người dùng ngợp! Khi họ hỏi sang chủ đề khác thì mới giới thiệu tính năng tiếp theo.
-  • NẾU CÂU HỎI LIÊN QUAN ĐẾN TIN HỌC / KỸ NĂNG: Lồng ghép khéo léo 1 công cụ tương ứng (ví dụ: hỏi phím tắt -> giới thiệu trang Tra cứu phím tắt; hỏi tốc độ gõ -> giới thiệu Luyện gõ 10 ngón; hỏi hàm Excel -> giới thiệu Khóa Excel nâng cao; hỏi kiến thức thi cử -> giới thiệu trang Ôn luyện thi thử trắc nghiệm).
-  • NẾU CÂU HỎI NGOÀI LỀ HOÀN TOÀN (chuyện đời, thời tiết, giải trí, tâm sự, hỏi đùa...): VẪN PHẢI TRẢ LỜI ĐẦY ĐỦ, THÔNG MINH VÀ HỮU ÍCH CÂU HỎI ĐÓ. TUYỆT ĐỐI KHÔNG ÉP BUỘC nhồi nhét web vô duyên! Tùy ngữ cảnh, chỉ cần đối đáp vui vẻ và khép lại bằng lời nhắc nhẹ nhàng.
-- PHẦN 3 (LỜI KẾT MỞ): Luôn kết thúc bằng một câu hỏi lịch sự, quan tâm xem người dùng có cần hỗ trợ gì thêm không (ví dụ: "Bạn có cần mình tư vấn thêm chi tiết gì nữa không nè?", "Nếu bạn có thắc mắc gì về khóa học hay bài tập thì cứ bảo mình nhé!").
-
-3. ĐẢM BẢO CÂU VĂN HOÀN CHỈNH:
-- Luôn hoàn thành trọn vẹn câu chữ và ý tứ, có câu mở đầu, thân bài và lời kết hoàn chỉnh.
-- Tuyệt đối không bao giờ dừng đột ngột hay để câu lửng lơ đứt quãng giữa chừng.
+PHONG CÁCH TƯ VẤN:
+- Tự xưng là "mình" hoặc "em", gọi người học là "bạn" hoặc "anh/chị".
+- Trả lời nhiệt tình, thân thiện, rõ ràng, định dạng gạch đầu dòng và emoji sinh động.
+- Luôn cung cấp link trang web tương ứng (ví dụ: dien-dan.html, dang-ky-khoa-hoc.html, gioi-thieu-khoa-hoc.html,...) để người dùng dễ dàng bấm vào xem ngay.
 `;
   }
 
@@ -462,6 +449,13 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
                   <path d="M3 3v5h5"></path>
                 </svg>
               </button>
+              <!-- Nút Cài đặt API Key & Dữ liệu -->
+              <button type="button" class="lms-chatbox-btn-icon" id="lmsChatboxSettingsBtn" title="Cài đặt AI & Đồng bộ khóa học" aria-label="Cài đặt AI">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+              </button>
               <!-- Nút Đóng -->
               <button type="button" class="lms-chatbox-btn-close" id="lmsChatboxCloseBtn" aria-label="Đóng cửa sổ chat">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -472,8 +466,8 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
             </div>
           </div>
 
-          <!-- Bảng cài đặt API Key & Dữ liệu Khóa Học (Đã ẩn nội bộ) -->
-          <div class="lms-settings-panel" id="lmsSettingsPanel" style="display: none !important;">
+          <!-- Bảng cài đặt API Key & Dữ liệu Khóa Học -->
+          <div class="lms-settings-panel" id="lmsSettingsPanel" style="display: none;">
             <div class="lms-settings-header">
               <span class="lms-settings-title">⚙️ Cấu hình AI & Đồng bộ</span>
               <button type="button" class="lms-settings-close-btn" id="lmsSettingsCloseBtn">✕</button>
@@ -494,11 +488,11 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
 
               <div class="lms-settings-section-card" style="margin-top: 10px;">
                 <label for="lmsApiKeyInput" class="lms-settings-label">
-                  Khóa API (ChatGPT hoặc Google Gemini):
+                  Google Gemini API Key:
                 </label>
-                <input type="password" id="lmsApiKeyInput" class="lms-settings-input" placeholder="Dán key ChatGPT (sk-...) hoặc Gemini (AIzaSy...)" />
+                <input type="password" id="lmsApiKeyInput" class="lms-settings-input" placeholder="Mã API Key dạng AIzaSy... hoặc AQ..." />
                 <div class="lms-settings-hint">
-                  Hệ thống tự động nhận diện: key ChatGPT (sk-...) hoặc key Google Gemini (AIzaSy...).
+                  Khóa API Key của bạn đã được thiết lập sẵn sàng.
                 </div>
                 <div id="lmsApiKeyStatus" class="lms-settings-status"></div>
                 <div class="lms-settings-actions">
@@ -862,28 +856,8 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
     }
   }
 
-  // 9. KIỂM TRA KẾT NỐI API KEY VỚI GOOGLE GEMINI HOẶC CHATGPT OPENAI
+  // 9. KIỂM TRA KẾT NỐI API KEY VỚI GOOGLE GEMINI
   async function testGeminiConnection(key) {
-    if (!key) return { success: false, error: 'Vui lòng nhập API Key.' };
-
-    // Nếu là key ChatGPT (OpenAI)
-    if (key.startsWith('sk-')) {
-      try {
-        const res = await fetch('https://api.openai.com/v1/models', {
-          headers: { 'Authorization': `Bearer ${key}` }
-        });
-        if (res.ok) {
-          return { success: true, model: 'ChatGPT (OpenAI gpt-4o-mini)' };
-        } else {
-          const errData = await res.json().catch(() => ({}));
-          return { success: false, error: errData.error?.message || `Lỗi OpenAI HTTP ${res.status}` };
-        }
-      } catch (e) {
-        return { success: false, error: 'Không thể kết nối đến máy chủ OpenAI: ' + e.message };
-      }
-    }
-
-    // Nếu là key Google Gemini
     for (const m of GEMINI_MODELS) {
       try {
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${encodeURIComponent(key)}`;
@@ -899,74 +873,20 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
         }
       } catch (e) {}
     }
-    return { success: false, error: 'Không thể kết nối hoặc API Key Gemini chưa được cấp quyền.' };
+    return { success: false, error: 'Không thể kết nối hoặc API Key chưa được cấp quyền.' };
   }
 
-  // Lịch sử chat cho OpenAI
-  let openAiHistory = [];
-
-  // Gọi OpenAI ChatGPT
-  async function callOpenAIAdvisor(apiKey, userMessage, dynamicSystemPrompt) {
-    const url = 'https://api.openai.com/v1/chat/completions';
-    const messages = [
-      { role: 'system', content: dynamicSystemPrompt },
-      ...openAiHistory,
-      { role: 'user', content: userMessage }
-    ];
-
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: messages,
-          temperature: 0.7,
-          max_tokens: 2048
-        })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const replyText = data.choices?.[0]?.message?.content;
-        if (replyText) {
-          openAiHistory.push({ role: 'user', content: userMessage });
-          openAiHistory.push({ role: 'assistant', content: replyText });
-          if (openAiHistory.length > 8) openAiHistory = openAiHistory.slice(-8);
-          saveChatSession();
-          return replyText;
-        }
-      } else {
-        const errData = await response.json().catch(() => ({}));
-        console.warn('[LMS OpenAI] Trả về lỗi:', errData.error?.message || response.status);
-      }
-    } catch (err) {
-      console.warn('[LMS OpenAI] Ngoại lệ kết nối:', err.message);
-    }
-    return null;
-  }
-
-  // 10. HÀM GỌI AI TƯ VẤN KHÓA HỌC & GIẢI THÍCH TÍNH NĂNG (HỖ TRỢ GEMINI + CHATGPT)
+  // 10. HÀM GỌI GEMINI AI TƯ VẤN KHÓA HỌC & GIẢI THÍCH TÍNH NĂNG
   window.callGeminiAdvisor = async function (userMessage) {
     const apiKey = getStoredApiKey();
     if (!apiKey) {
-      console.warn('[LMS AI] Chưa cấu hình API Key');
+      console.warn('[LMS Gemini AI] Chưa cấu hình API Key');
       return null;
     }
 
     const latestCoursesDb = await fetchLatestCoursesData(false);
     const dynamicSystemPrompt = buildDynamicSystemPrompt(latestCoursesDb);
 
-    // Nếu người dùng dùng API Key của ChatGPT (OpenAI)
-    if (apiKey.startsWith('sk-')) {
-      console.log(`[LMS AI] Đang gửi câu hỏi tới ChatGPT OpenAI (gpt-4o-mini)...`);
-      return await callOpenAIAdvisor(apiKey, userMessage, dynamicSystemPrompt);
-    }
-
-    // Nếu là Google Gemini
     console.log(`[LMS Gemini AI] Đang gửi câu hỏi tới Gemini AI...`);
 
     conversationHistory.push({
@@ -985,7 +905,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
       contents: conversationHistory,
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 2048
+        maxOutputTokens: 900
       }
     };
 
@@ -1573,35 +1493,7 @@ function lmsFallbackAnswer(message) {
       👉 Đăng ký trực tuyến tại: <a href="dang-ky-khoa-hoc.html" class="lms-chat-link">dang-ky-khoa-hoc.html</a>
     `;
     lmsAppendChatMessage('bot', reply, true);
-  } else if (lower.includes('là ai') || lower.includes('la ai') || lower.includes('bạn là ai') || lower.includes('ní là ai') || lower.includes('ai tạo ra') || lower.includes('ai day') || lower.includes('ai đấy')) {
-    const reply = `
-      👋 <strong>Xin chào bạn! Mình là Trợ Lý AI Tư Vấn của Hệ Thống Đào Tạo Tin Học Văn Phòng LMS.</strong>
-      <br><br>
-      Mình được xây dựng để hỗ trợ học viên 24/7 về mọi mặt:
-      <br>• 📚 <strong>Tư vấn khóa học:</strong> Tin học cơ bản, Tin học nâng cao, Ôn luyện thi chứng chỉ MOS, IC3...
-      <br>• ⌨️ <strong>Kỹ năng &amp; Tiện ích:</strong> Hướng dẫn luyện gõ phím 10 ngón, Test bàn phím trực tuyến, tra cứu phím tắt.
-      <br>• 📝 <strong>Ôn luyện &amp; Thi thử:</strong> Hướng dẫn làm bài thi trắc nghiệm, bấm giờ và chấm điểm tự động.
-      <br>• 💬 <strong>Cộng đồng:</strong> Giải đáp thắc mắc về Diễn đàn sinh viên &amp; giảng viên.
-      <br><br>
-      Bạn muốn tìm hiểu thêm về nội dung nào, cứ thoải mái hỏi mình nhé!
-    `;
-    lmsAppendChatMessage('bot', reply, true);
-  } else if (lower.includes('xin chào') || lower.includes('chào') || lower.includes('hello') || lower.includes('hi bot')) {
-    const reply = `
-      👋 Xin chào bạn! Rất vui được gặp bạn. Bạn đang quan tâm đến khóa học Tin học hay cần mình hướng dẫn sử dụng các tính năng trên website Tin Học Văn Phòng vậy nè?
-    `;
-    lmsAppendChatMessage('bot', reply, true);
   } else {
-    const reply = `
-      Cảm ơn câu hỏi của bạn! Hệ thống đã ghi nhận nội dung: <em>"${message}"</em>.
-      <br><br>
-      Bạn có thể chọn một trong các chủ đề hỗ trợ nhanh dưới đây hoặc bấm vào icon <strong>⚙️ Cài đặt</strong> trên thanh tiêu đề chat để cấu hình API Key thông minh nhé:
-      <div class="lms-quick-reply-wrap" style="margin-top: 10px;">
-        <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('tu_van_khoa_hoc')">🎯 Tư vấn chọn khóa học</button>
-        <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('tinh_nang_website')">🌐 Các tiện ích của Website</button>
-        <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('gui_yeu_cau')">👨‍🏫 Gửi câu hỏi cho Giảng viên</button>
-      </div>
-    `;
-    lmsAppendChatMessage('bot', reply, true);
+    lmsChatbotSelectOption('tu_van_khoa_hoc');
   }
 }
