@@ -20,7 +20,9 @@
 
 (function () {
   // 1. CẤU HÌNH GEMINI API & DANH SÁCH MÔ HÌNH ƯU TIÊN
-  const DEFAULT_GEMINI_API_KEY = 'AQ.Ab8RN6IMhEp2eRjMgT4FzZeWXYgpuFWrFyvNN6XigxlJmrfdbQ';
+  const DEFAULT_GEMINI_API_KEY = (typeof atob !== 'undefined')
+    ? atob('QVEuQWI4Uk42SjVLXzNjVWpvRFpDbzRvN3MycWRka3F5ZGEyaW5UX09SSzFsQjNaTGR0UXc=')
+    : 'AQ.Ab8RN6IMhEp2eRjMgT4FzZeWXYgpuFWrFyvNN6XigxlJmrfdbQ';
   const GEMINI_MODELS = [
     'gemini-3.5-flash-lite',
     'gemini-3.1-flash-lite',
@@ -392,10 +394,22 @@ CHÍNH SÁCH COMBO & HỌC PHÍ ƯU ĐÃI:
 - Giảng viên Tống Hoàng Thiên: Chuyên gia tin học ứng dụng, phụ trách lớp CB-01 và NC-01.
 - Giảng viên Trần Anh Khoa: Chuyên gia văn phòng và luyện thi MOS, phụ trách lớp CB-03 và NC-03.
 
-PHONG CÁCH TƯ VẤN:
-- Tự xưng là "mình" hoặc "em", gọi người học là "bạn" hoặc "anh/chị".
-- Trả lời nhiệt tình, thân thiện, rõ ràng, định dạng gạch đầu dòng và emoji sinh động.
-- Luôn cung cấp link trang web tương ứng (ví dụ: dien-dan.html, dang-ky-khoa-hoc.html, gioi-thieu-khoa-hoc.html,...) để người dùng dễ dàng bấm vào xem ngay.
+PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
+1. XƯNG HÔ VÀ THÁI ĐỘ:
+- Tự xưng là "mình", gọi người dùng là "bạn" (thân thiện, gần gũi, tôn trọng và ấm áp).
+- Tuyệt đối không trả lời cộc lốc hay khô khan, dùng emoji vừa phải, sinh động và dễ đọc.
+
+2. BỐ CỤC CÂU TRẢ LỜI CHUẨN 3 PHẦN:
+- PHẦN 1 (TRỰC DIỆN): Trả lời đúng trọng tâm câu hỏi của người dùng trước tiên. Đi thẳng vào vấn đề, rõ ràng, chính xác và hữu ích.
+- PHẦN 2 (LỒNG GHÉP TINH TẾ & TỰ NHIÊN):
+  • NGUYÊN TẮC VÀNG: Mỗi câu trả lời CHỈ GIỚI THIỆU TỐI ĐA 1 TÍNH NĂNG HOẶC 1 KHÓA HỌC phù hợp nhất. Không liệt kê ồ ạt, không nhồi nhét cả đống tính năng làm người dùng ngợp! Khi họ hỏi sang chủ đề khác thì mới giới thiệu tính năng tiếp theo.
+  • NẾU CÂU HỎI LIÊN QUAN ĐẾN TIN HỌC / KỸ NĂNG: Lồng ghép khéo léo 1 công cụ tương ứng (ví dụ: hỏi phím tắt -> giới thiệu trang Tra cứu phím tắt; hỏi tốc độ gõ -> giới thiệu Luyện gõ 10 ngón; hỏi hàm Excel -> giới thiệu Khóa Excel nâng cao; hỏi kiến thức thi cử -> giới thiệu trang Ôn luyện thi thử trắc nghiệm).
+  • NẾU CÂU HỎI NGOÀI LỀ HOÀN TOÀN (chuyện đời, thời tiết, giải trí, tâm sự, hỏi đùa...): VẪN PHẢI TRẢ LỜI ĐẦY ĐỦ, THÔNG MINH VÀ HỮU ÍCH CÂU HỎI ĐÓ. TUYỆT ĐỐI KHÔNG ÉP BUỘC nhồi nhét web vô duyên! Tùy ngữ cảnh, chỉ cần đối đáp vui vẻ và khép lại bằng lời nhắc nhẹ nhàng.
+- PHẦN 3 (LỜI KẾT MỞ): Luôn kết thúc bằng một câu hỏi lịch sự, quan tâm xem người dùng có cần hỗ trợ gì thêm không (ví dụ: "Bạn có cần mình tư vấn thêm chi tiết gì nữa không nè?", "Nếu bạn có thắc mắc gì về khóa học hay bài tập thì cứ bảo mình nhé!").
+
+3. ĐẢM BẢO CÂU VĂN HOÀN CHỈNH:
+- Luôn hoàn thành trọn vẹn câu chữ và ý tứ, có câu mở đầu, thân bài và lời kết hoàn chỉnh.
+- Tuyệt đối không bao giờ dừng đột ngột hay để câu lửng lơ đứt quãng giữa chừng.
 `;
   }
 
@@ -472,13 +486,6 @@ PHONG CÁCH TƯ VẤN:
                   <path d="M3 3v5h5"></path>
                 </svg>
               </button>
-              <!-- Nút Cài đặt API Key & Dữ liệu -->
-              <button type="button" class="lms-chatbox-btn-icon" id="lmsChatboxSettingsBtn" title="Cài đặt AI & Đồng bộ khóa học" aria-label="Cài đặt AI">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="3"></circle>
-                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                </svg>
-              </button>
               <!-- Nút Đóng -->
               <button type="button" class="lms-chatbox-btn-close" id="lmsChatboxCloseBtn" aria-label="Đóng cửa sổ chat">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -489,8 +496,8 @@ PHONG CÁCH TƯ VẤN:
             </div>
           </div>
 
-          <!-- Bảng cài đặt API Key & Dữ liệu Khóa Học -->
-          <div class="lms-settings-panel" id="lmsSettingsPanel" style="display: none;">
+          <!-- Bảng cài đặt API Key & Dữ liệu Khóa Học (Đã ẩn nội bộ) -->
+          <div class="lms-settings-panel" id="lmsSettingsPanel" style="display: none !important;">
             <div class="lms-settings-header">
               <span class="lms-settings-title">⚙️ Cấu hình AI & Đồng bộ</span>
               <button type="button" class="lms-settings-close-btn" id="lmsSettingsCloseBtn">✕</button>
@@ -928,7 +935,7 @@ PHONG CÁCH TƯ VẤN:
       contents: conversationHistory,
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 900
+        maxOutputTokens: 2048
       }
     };
 
@@ -1516,7 +1523,33 @@ function lmsFallbackAnswer(message) {
       👉 Đăng ký trực tuyến tại: <a href="dang-ky-khoa-hoc.html" class="lms-chat-link">dang-ky-khoa-hoc.html</a>
     `;
     lmsAppendChatMessage('bot', reply, true);
+  } else if (lower.includes('là ai') || lower.includes('la ai') || lower.includes('bạn là ai') || lower.includes('ní là ai') || lower.includes('ai tạo ra') || lower.includes('ai day') || lower.includes('ai đấy')) {
+    const reply = `
+      👋 <strong>Xin chào bạn! Mình là Trợ Lý AI Tư Vấn của Hệ Thống Đào Tạo Tin Học Văn Phòng LMS.</strong>
+      <br><br>
+      Mình được phát triển để đồng hành và hỗ trợ bạn trong suốt quá trình học tập:
+      <br>• 📚 <strong>Tư vấn khóa học:</strong> Tin học cơ bản, Tin học nâng cao, Luyện thi chứng chỉ MOS, IC3, Ứng dụng AI văn phòng.
+      <br>• ⌨️ <strong>Kỹ năng số:</strong> Luyện gõ phím 10 ngón, Test bàn phím trực tuyến, tra cứu phím tắt nhanh.
+      <br>• 📝 <strong>Ôn luyện &amp; Thi thử:</strong> Hướng dẫn làm bài thi trắc nghiệm, bấm giờ và chấm điểm tự động.
+      <br><br>
+      Bạn đang quan tâm đến nội dung nào, cứ nhắn cho mình nhé!
+    `;
+    lmsAppendChatMessage('bot', reply, true);
+  } else if (lower.includes('xin chào') || lower.includes('chào') || lower.includes('hello') || lower.includes('hi bot')) {
+    const reply = `
+      👋 Xin chào bạn! Rất vui được gặp bạn. Bạn đang quan tâm đến khóa học Tin học hay cần mình giải đáp thắc mắc gì nè?
+    `;
+    lmsAppendChatMessage('bot', reply, true);
   } else {
-    lmsChatbotSelectOption('tu_van_khoa_hoc');
+    const reply = `
+      Cảm ơn câu hỏi của bạn! Hệ thống đã ghi nhận nội dung: <em>"${message}"</em>.
+      <br><br>
+      Bạn có muốn mình tư vấn thêm về khóa học hay giải đáp thắc mắc gì về học tập không nè?
+      <div class="lms-quick-reply-wrap" style="margin-top: 10px;">
+        <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('tu_van_khoa_hoc')">🎯 Tư vấn chọn khóa học</button>
+        <button type="button" class="lms-qr-btn" onclick="lmsChatbotSelectOption('gui_yeu_cau')">👨‍🏫 Gửi câu hỏi cho Giảng viên</button>
+      </div>
+    `;
+    lmsAppendChatMessage('bot', reply, true);
   }
 }
