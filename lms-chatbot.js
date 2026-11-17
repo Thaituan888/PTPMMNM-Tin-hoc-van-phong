@@ -330,7 +330,7 @@ ${syllabusList}
     }
 
     return `
-Bạn là Trợ lý AI Tư Vấn Thông Minh của Hệ thống Đào tạo Tin Học Văn Phòng LMS.
+Bạn là Trợ lý Học Tập AI thông minh của Hệ thống Đào tạo Tin Học Văn Phòng LMS.
 Nhiệm vụ của bạn:
 1. Tư vấn chi tiết, chính xác về các khóa học, lộ trình học, học phí, lịch khai giảng, giảng viên và chứng chỉ.
 2. HƯỚNG DẪN VÀ GIỚI THIỆU CHI TIẾT TẤT CẢ CÁC TÍNH NĂNG / TIỆN ÍCH TRÊN WEBSITE CÙNG VÍ DỤ MINH HỌA CỤ THỂ ĐỂ NGƯỜI DÙNG DỄ HÌNH DUNG VÀ SỬ DỤNG.
@@ -452,7 +452,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
             <span class="lms-chatbot-online-dot"></span>
           </div>
           <div class="lms-chatbot-btn-text">
-            <span class="lms-chatbot-btn-title">Trợ Lý AI LMS ✨</span>
+            <span class="lms-chatbot-btn-title">Trợ Lý Học Tập AI ✨</span>
           </div>
           <span class="lms-chatbot-badge">1</span>
         </button>
@@ -472,7 +472,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
               </div>
               <div>
                 <div class="lms-chatbox-header-title">
-                  Trợ Lý Tư Vấn LMS
+                  Trợ Lý Học Tập AI
                   <span class="lms-gemini-pill">✨ Gemini AI</span>
                 </div>
                 <div class="lms-chatbox-header-status">Trực tuyến 24/7</div>
@@ -579,7 +579,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
     if (!body) return;
 
     const initialBotContent = `
-      Xin chào bạn! Mình là Trợ lý AI hệ thống <strong>Tin Học Văn Phòng LMS</strong> (Gemini AI).
+      Xin chào bạn! Mình là <strong>Trợ lý Học Tập AI</strong> (Gemini AI) của Hệ thống Đào tạo Tin Học Văn Phòng LMS.
       <br /><br />
       Mình có thể hỗ trợ bạn:
       <br>
