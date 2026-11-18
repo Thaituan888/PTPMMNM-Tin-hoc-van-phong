@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" fill="none">
+  <defs>
+    <filter id="soft" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="2" />
+    </filter>
+  </defs>
+  <g filter="url(#soft)">
+    <circle cx="36" cy="170" r="140" fill="#0284c7" fill-opacity=".035" />
+    <circle cx="1490" cy="390" r="190" fill="#38bdf8" fill-opacity=".045" />
+    <circle cx="95" cy="850" r="210" stroke="#0284c7" stroke-opacity=".055" stroke-width="2" />
+    <circle cx="95" cy="850" r="155" fill="#38bdf8" fill-opacity=".025" />
+    <circle cx="1375" cy="910" r="90" stroke="#0284c7" stroke-opacity=".05" stroke-width="2" />
+    <circle cx="1385" cy="60" r="70" stroke="#0284c7" stroke-opacity=".045" stroke-width="2" />
+  </g>
+</svg>
