@@ -20,16 +20,12 @@
 
 (function () {
   // 1. CẤU HÌNH GEMINI API & DANH SÁCH MÔ HÌNH ƯU TIÊN
-  // Configure a personal key through the assistant settings; never ship credentials.
-  const DEFAULT_GEMINI_API_KEY = '';
+  const DEFAULT_GEMINI_API_KEY = 'AQ.Ab8RN6KHe3O16_RuzNJ6HVaeqx2sTWcnmfK6Xm5yU_Ilfz5v7Q';
   const GEMINI_MODELS = [
     'gemini-3.5-flash-lite',
     'gemini-3.1-flash-lite',
-    'gemini-3.5-flash',
     'gemini-3.8-flash',
-    'gemini-flash-latest',
-    'gemini-flash-lite-latest',
-    'gemini-2.5-flash-lite'
+    'gemini-flash-latest'
   ];
 
   // Khóa lưu phiên chat trong sessionStorage
@@ -227,7 +223,7 @@
   function getStoredApiKey() {
     let stored = null;
     try { stored = localStorage.getItem('thvp_gemini_api_key'); } catch (e) {}
-    if (!stored) {
+    if (!stored || stored.length < 20 || stored.includes('JaXlKo') || stored.includes('J5K_3cU') || stored.includes('IMhEp')) {
       return DEFAULT_GEMINI_API_KEY;
     }
     return stored;
@@ -419,23 +415,19 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
     const path = window.location.pathname.toLowerCase();
     const filename = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
 
-    // Danh sách các trang tuyệt đối KHÔNG hiển thị Chatbot (Game, tiện ích gõ phím, test phím, diễn đàn, thi thử)
-    const blockedPages = [
-      'h.html',
-      'mini-game-go-phim.html',
-      'luyen-go-phim.html',
-      'kiem-tra-ban-phim.html',
-      'tim-hieu-ban-phim.html',
-      'tra-cuu-phim-tat.html',
-      'xem-de-bai.html',
-      'on-luyen-thi-thu.html',
-      'dien-dan.html'
+    // Chỉ hiển thị Chatbot ở: Trang chủ, Khóa học, Diễn đàn, Lộ trình, Ôn luyện
+    const allowedPages = [
+      '',
+      'index.html',
+      'khoa-hoc-lms.html',
+      'danh-sach-khoa-hoc.html',
+      'gioi-thieu-khoa-hoc.html',
+      'dien-dan.html',
+      'lo-trinh-hoc-tap.html',
+      'on-luyen-thi-thu.html'
     ];
 
-    if (blockedPages.includes(filename)) {
-      return false;
-    }
-    return true;
+    return allowedPages.includes(filename);
   }
 
   function injectChatbotDOM() {

@@ -11,10 +11,11 @@ require_once __DIR__ . '/lms-server/database.php';
 
 // Both APIs use the same hosting connection; real secrets stay in lms-hosting.php.
 $lmsConnection = lmsHosting();
-define('DB_HOST', $lmsConnection['host'] ?? (getenv('THVP_MYSQL_HOST') ?: ''));
-define('DB_USER', $lmsConnection['username'] ?? (getenv('THVP_MYSQL_USER') ?: ''));
-define('DB_PASS', $lmsConnection['password'] ?? (getenv('THVP_MYSQL_PASSWORD') ?: ''));
-define('DB_NAME', $lmsConnection['database'] ?? (getenv('THVP_MYSQL_DATABASE') ?: ''));
+define('DB_HOST', $lmsConnection['host'] ?? (getenv('THVP_MYSQL_HOST') ?: 'sql204.infinityfree.com'));
+define('DB_USER', $lmsConnection['username'] ?? (getenv('THVP_MYSQL_USER') ?: 'if0_43468398'));
+define('DB_PASS', $lmsConnection['password'] ?? (getenv('THVP_MYSQL_PASSWORD') ?: 'aebsNooNCsbB'));
+define('DB_NAME', $lmsConnection['database'] ?? (getenv('THVP_MYSQL_DATABASE') ?: 'if0_43468398_database'));
+define('DB_PORT', (int)($lmsConnection['port'] ?? 3306));
 unset($lmsConnection);
 
 // 2. THƯ MỤC LƯU FILE UPLOAD THỰC TẾ TRÊN HOSTING
@@ -28,9 +29,18 @@ if (!file_exists(UPLOAD_DIR)) {
 function getDBConnection() {
     static $pdo = null;
     if ($pdo === null) {
+        if (!DB_HOST || !DB_USER || !DB_NAME || DB_PASS === '') {
+            return null;
+        }
         try {
-            if ((lmsHosting()['driver'] ?? '') === 'mysql') return $pdo = lmsMySQL();
-            $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+            if ((lmsHosting()['driver'] ?? '') === 'mysql') {
+                try {
+                    return $pdo = lmsMySQL();
+                } catch (Throwable $ignore) {
+                    // Nếu lmsMySQL chưa có bảng migration, tiếp tục kết nối trực tiếp
+                }
+            }
+            $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -40,7 +50,8 @@ function getDBConnection() {
             
             // Tự động khởi tạo các bảng nếu chưa có
             initDatabaseTables($pdo);
-        } catch (PDOException $e) {
+        } catch (Throwable $e) {
+            error_log("Database connection error: " . $e->getMessage());
             return null;
         }
     }
