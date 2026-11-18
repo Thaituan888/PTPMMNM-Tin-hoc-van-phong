@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 function lmsSendClassMail(PDO $db,string $path,array $actor,int $eventId,bool $retry,string $key): array {
-    $lease=bin2hex(random_bytes(32));$now=time();$db->exec('BEGIN IMMEDIATE');
+    $lease=bin2hex(random_bytes(32));$now=time();lmsBeginWrite($db);
     try{
         lmsAccessAdmin($db,$actor);$event=lmsContentRow($db,'SELECT * FROM lms_class_events WHERE id=?',[$eventId]);
         if(!$event)lmsContentError(404,'Không tìm thấy đợt thông báo.');

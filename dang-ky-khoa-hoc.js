@@ -25,9 +25,11 @@
     return;
   }
   status.textContent = '';
-  const selected = {code: serverClass.code, courseKey: serverClass.course_key,
+  const selected = {
+    code: serverClass.code, courseKey: serverClass.course_key,
     courseName: serverClass.course_name, teacher: serverClass.teacher, days: serverClass.days,
-    time: serverClass.time, fee: `${Number(serverClass.fee_vnd).toLocaleString('vi-VN')}đ/khóa`, capacity: serverClass.capacity};
+    time: serverClass.time, fee: `${Number(serverClass.fee_vnd).toLocaleString('vi-VN')}đ/khóa`, capacity: serverClass.capacity
+  };
   document.title = `Đăng ký lớp ${selected.code} | Tin Học Văn Phòng`;
   find('#lms-back-course').href = `gioi-thieu-khoa-hoc.html?khoa=${selected.courseKey}#lms-schedule`;
   find('#lms-start-new').href = `dang-ky-khoa-hoc.html?lop=${encodeURIComponent(code)}&dang-ky=moi`;
@@ -57,15 +59,15 @@
   createButton.disabled = true;
   const continueButton = find('#lms-learner-form').querySelector('button[type="submit"]');
   continueButton.disabled = serverClass.availability !== 'open';
-  const storageKey = `thvp_lms_${newEntry?'new_request':'request'}_${code}`;
+  const storageKey = `thvp_lms_${newEntry ? 'new_request' : 'request'}_${code}`;
   function randomKey() { return Array.from(crypto.getRandomValues(new Uint8Array(32)), n => n.toString(16).padStart(2, '0')).join(''); }
   let requestKey;
-  try { requestKey = sessionStorage.getItem(storageKey); } catch {}
+  try { requestKey = sessionStorage.getItem(storageKey); } catch { }
   if (!requestKey) requestKey = randomKey();
-  function rememberKey() { try { sessionStorage.setItem(storageKey, requestKey); } catch {} }
+  function rememberKey() { try { sessionStorage.setItem(storageKey, requestKey); } catch { } }
   rememberKey();
   const paymentController = window.THVP_LMS_PAYMENT.create(root, api, session.csrf, code);
-  function savedUrl(){return `dang-ky-khoa-hoc.html?lop=${encodeURIComponent(code)}`;}
+  function savedUrl() { return `dang-ky-khoa-hoc.html?lop=${encodeURIComponent(code)}`; }
   async function updateSaved(record) {
     find('#lms-entry').hidden = true;
     find('#lms-confirmation').hidden = true;
@@ -76,15 +78,15 @@
       ['Giáo viên', c.teacher], ['Lịch học', `${c.days}, ${c.time}`],
       ['Học phí', `${record.fee_vnd.toLocaleString('vi-VN')}đ`],
       ['Họ và tên', record.fullname], ['Điện thoại', record.phone], ['Email', record.email],
-      ['Giữ chỗ',record.hold_reserved===true ? (record.status==='pending_payment'?'Đang giữ chỗ trong thời hạn đăng ký':record.status==='approved_waiting_access'?'Đang giữ chỗ chờ cấp quyền học':'Đang giữ chỗ chờ đối chiếu') : (record.hold_reserved===false?'Không giữ chỗ':'Xem trạng thái hồ sơ')],
-      ['Hạn giữ chỗ ban đầu', new Date(record.expires_at).toLocaleString('vi-VN', {timeZone: 'Asia/Ho_Chi_Minh'}) + ' (giờ Việt Nam)'],
+      ['Giữ chỗ', record.hold_reserved === true ? (record.status === 'pending_payment' ? 'Đang giữ chỗ trong thời hạn đăng ký' : record.status === 'approved_waiting_access' ? 'Đang giữ chỗ chờ cấp quyền học' : 'Đang giữ chỗ chờ đối chiếu') : (record.hold_reserved === false ? 'Không giữ chỗ' : 'Xem trạng thái hồ sơ')],
+      ['Hạn giữ chỗ ban đầu', new Date(record.expires_at).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }) + ' (giờ Việt Nam)'],
       ['Trạng thái', record.status_label || (record.status === 'expired' ? 'Đã hết hạn giữ chỗ – chưa xác nhận thanh toán' :
         record.status === 'pending_review' ? 'Chờ đối chiếu – chưa xác nhận thanh toán' : 'Chưa xác nhận thanh toán')]
     ]);
     find('#lms-new-request').hidden = record.status !== 'expired';
-    const reason=find('#lms-public-reason');
-    reason.textContent=record.public_reason ? 'Thông tin từ giáo viên: '+record.public_reason : '';
-    reason.hidden=!record.public_reason;
+    const reason = find('#lms-public-reason');
+    reason.textContent = record.public_reason ? 'Thông tin từ giáo viên: ' + record.public_reason : '';
+    reason.hidden = !record.public_reason;
     await paymentController.show(record);
   }
   const evidenceController = window.THVP_LMS_EVIDENCE.create(root, api, session.csrf, code, async saved => {
@@ -101,7 +103,7 @@
     paymentController.reset();
     evidenceController.reset();
     requestKey = randomKey(); rememberKey();
-    for (const key of ['name','phone','email']) {
+    for (const key of ['name', 'phone', 'email']) {
       find(`#lms-${key}`).value = '';
       find(`#lms-${key}`).removeAttribute('aria-invalid');
       find(`#lms-${key}-error`).textContent = '';
@@ -129,15 +131,19 @@
     createButton.disabled = editButton.disabled = true;
     status.textContent = 'Đang lưu hồ sơ…';
     try {
-      const result = await api.request('register', {method: 'POST',
-        headers: {'Content-Type': 'application/json', 'X-CSRF-Token': session.csrf, 'Idempotency-Key': requestKey},
-        body: JSON.stringify({class_code: code, fullname: find('#lms-name').value.trim(),
-          phone: find('#lms-phone').value.trim(), email: find('#lms-email').value.trim()})});
+      const result = await api.request('register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': session.csrf, 'Idempotency-Key': requestKey },
+        body: JSON.stringify({
+          class_code: code, fullname: find('#lms-name').value.trim(),
+          phone: find('#lms-phone').value.trim(), email: find('#lms-email').value.trim()
+        })
+      });
       status.textContent = '';
-      if(newEntry){
-        window.history.replaceState(null,'',savedUrl());
-        try{sessionStorage.removeItem(storageKey);}catch{}
-        find('#lms-existing-record').hidden=true;
+      if (newEntry) {
+        window.history.replaceState(null, '', savedUrl());
+        try { sessionStorage.removeItem(storageKey); } catch { }
+        find('#lms-existing-record').hidden = true;
       }
       await showSaved(result.registration);
     } catch (error) {
@@ -147,7 +153,7 @@
         find('#lms-confirmation').hidden = true;
         find('#lms-entry').hidden = false;
         for (const [key, message] of Object.entries(error.fields)) {
-          if (!['name','phone','email'].includes(key)) continue;
+          if (!['name', 'phone', 'email'].includes(key)) continue;
           find(`#lms-${key}-error`).textContent = message;
           find(`#lms-${key}`).setAttribute('aria-invalid', 'true');
         }
@@ -208,15 +214,15 @@
   try {
     const result = await api.request(`registration&class_code=${encodeURIComponent(code)}`);
     accessChecked = true;
-    if(newEntry){
-      find('#lms-existing-record').hidden=false;
-      for(const field of ['name','phone','email'])find(`#lms-${field}`).value='';
-      find('#lms-resume-record').addEventListener('click',async()=>{
-        find('#lms-existing-record').hidden=true;
-        window.history.replaceState(null,'',savedUrl());
-        await showSaved(result.registration,true);
+    if (newEntry) {
+      find('#lms-existing-record').hidden = false;
+      for (const field of ['name', 'phone', 'email']) find(`#lms-${field}`).value = '';
+      find('#lms-resume-record').addEventListener('click', async () => {
+        find('#lms-existing-record').hidden = true;
+        window.history.replaceState(null, '', savedUrl());
+        await showSaved(result.registration, true);
       });
-    }else await showSaved(result.registration, true);
+    } else await showSaved(result.registration, true);
   } catch (error) {
     if (error.status === 404) accessChecked = true;
     else {
@@ -233,6 +239,6 @@
       if (nameInput && !nameInput.value && curUser.fullname) nameInput.value = curUser.fullname;
       if (emailInput && !emailInput.value && curUser.email) emailInput.value = curUser.email;
     }
-  } catch (e) {}
+  } catch (e) { }
   await refreshCapacity();
 })();

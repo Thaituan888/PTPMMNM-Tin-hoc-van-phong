@@ -20,9 +20,8 @@
 
 (function () {
   // 1. CẤU HÌNH GEMINI API & DANH SÁCH MÔ HÌNH ƯU TIÊN
-  const DEFAULT_GEMINI_API_KEY = (typeof atob !== 'undefined')
-    ? atob('QVEuQWI4Uk42SjVLXzNjVWpvRFpDbzRvN3MycWRka3F5ZGEyaW5UX09SSzFsQjNaTGR0UXc=')
-    : 'AQ.Ab8RN6IMhEp2eRjMgT4FzZeWXYgpuFWrFyvNN6XigxlJmrfdbQ';
+  // Configure a personal key through the assistant settings; never ship credentials.
+  const DEFAULT_GEMINI_API_KEY = '';
   const GEMINI_MODELS = [
     'gemini-3.5-flash-lite',
     'gemini-3.1-flash-lite',
@@ -226,8 +225,9 @@
 
   // Lấy và lưu API Key
   function getStoredApiKey() {
-    const stored = localStorage.getItem('thvp_gemini_api_key');
-    if (!stored || stored === 'AQ.Ab8RN6JaXlKoBS3qZ1F_6YMqkonOOIa9IPapekFa4NIRar9VaQ') {
+    let stored = null;
+    try { stored = localStorage.getItem('thvp_gemini_api_key'); } catch (e) {}
+    if (!stored) {
       return DEFAULT_GEMINI_API_KEY;
     }
     return stored;
@@ -273,11 +273,12 @@
       } catch (e) {}
     }
 
-    // 2. Thử fetch lms-server/classes.json để đồng bộ danh sách lớp và giảng viên mới nhất
+    // 2. Đồng bộ qua API công khai; lms-server là thư mục riêng bị chặn HTTP.
     try {
-      const res = await fetch('lms-server/classes.json?t=' + Date.now());
+      const res = await fetch('lms-api.php?action=classes', { credentials: 'same-origin', cache: 'no-store' });
       if (res.ok) {
-        const classes = await res.json();
+        const payload = await res.json();
+        const classes = payload.classes;
         if (Array.isArray(classes) && classes.length > 0) {
           const merged = { ...DEFAULT_COURSES_DATA };
           classes.forEach(cls => {
@@ -446,7 +447,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
         <!-- Nút Chatbot nổi ở góc dưới bên phải (Thiết kế tinh gọn, thanh lịch) -->
         <button type="button" class="lms-chatbot-btn" id="lmsChatbotToggleBtn" aria-label="Mở cửa sổ tư vấn AI">
           <div class="lms-chatbot-avatar">
-            <img src="images/chatbot-avatar.jpg" alt="Trợ Lý Học Tập AI" class="lms-avatar-img">
+            <img src="images/assistant-avatar.jpg?v=20261118" alt="Trợ Lý Học Tập AI" class="lms-avatar-img">
             <span class="lms-chatbot-online-dot"></span>
           </div>
           <div class="lms-chatbot-btn-text">
@@ -461,7 +462,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
           <div class="lms-chatbox-header">
             <div class="lms-chatbox-user-info">
               <div class="lms-chatbox-header-avatar">
-                <img src="images/chatbot-avatar.jpg" alt="Trợ Lý Học Tập AI" class="lms-avatar-img">
+                <img src="images/assistant-avatar.jpg?v=20261118" alt="Trợ Lý Học Tập AI" class="lms-avatar-img">
               </div>
               <div>
                 <div class="lms-chatbox-header-title">
@@ -619,7 +620,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
     body.innerHTML = `
       <div class="lms-msg-row bot">
         <div class="lms-msg-avatar">
-          <img src="images/chatbot-avatar.jpg" alt="AI" class="lms-avatar-img">
+          <img src="images/assistant-avatar.jpg?v=20261118" alt="AI" class="lms-avatar-img">
         </div>
         <div class="lms-msg-bubble">
           ${initialBotContent}
@@ -746,7 +747,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
       chatboxWindow.setAttribute('aria-hidden', 'false');
       if (toggleBtn) toggleBtn.classList.add('is-hidden');
       if (badge) badge.style.display = 'none';
-      sessionStorage.setItem(STORAGE_CHAT_IS_OPEN_KEY, 'true');
+      try { sessionStorage.setItem(STORAGE_CHAT_IS_OPEN_KEY, 'true'); } catch (e) {}
       const input = document.getElementById('lmsChatInput');
       if (input) setTimeout(() => input.focus(), 320);
     }
@@ -756,7 +757,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
       chatboxWindow.classList.remove('open');
       chatboxWindow.setAttribute('aria-hidden', 'true');
       if (toggleBtn) toggleBtn.classList.remove('is-hidden');
-      sessionStorage.setItem(STORAGE_CHAT_IS_OPEN_KEY, 'false');
+      try { sessionStorage.setItem(STORAGE_CHAT_IS_OPEN_KEY, 'false'); } catch (e) {}
     }
 
     if (toggleBtn && chatboxWindow) {
@@ -908,7 +909,7 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
         if (body) {
           body.innerHTML = `
             <div class="lms-msg-row bot">
-              <div class="lms-msg-avatar"><img src="images/chatbot-avatar.jpg" alt="AI" class="lms-avatar-img"></div>
+              <div class="lms-msg-avatar"><img src="images/assistant-avatar.jpg?v=20261118" alt="AI" class="lms-avatar-img"></div>
               <div class="lms-msg-bubble">
                 Cuộc trò chuyện đã được làm mới thành công ✨<br>
                 Bạn cần tư vấn khóa học nào hoặc muốn tìm hiểu về chức năng gì (Diễn đàn, Luyện gõ phím, Test bàn phím, Thi thử,...)? Hãy hỏi mình nhé!
@@ -1125,7 +1126,7 @@ function renderMessageElement(sender, text, isHTML, timeStr) {
     const content = isHTML ? text : formatMarkdownToHTML(text);
     row.innerHTML = `
       <div class="lms-msg-avatar">
-        <img src="images/chatbot-avatar.jpg" alt="AI" class="lms-avatar-img">
+        <img src="images/assistant-avatar.jpg?v=20261118" alt="AI" class="lms-avatar-img">
       </div>
       <div class="lms-msg-bubble">
         ${content}
@@ -1173,7 +1174,7 @@ function lmsShowTypingIndicator() {
   typingRow.id = 'lmsTypingRow';
   typingRow.innerHTML = `
     <div class="lms-msg-avatar">
-      <img src="images/chatbot-avatar.jpg" alt="AI" class="lms-avatar-img">
+      <img src="images/assistant-avatar.jpg?v=20261118" alt="AI" class="lms-avatar-img">
     </div>
     <div class="lms-msg-bubble lms-typing-bubble">
       <div class="lms-typing-dots">

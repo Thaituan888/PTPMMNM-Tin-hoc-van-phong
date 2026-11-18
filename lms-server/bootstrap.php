@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/review.php';
 require_once __DIR__ . '/access.php';
@@ -9,7 +10,9 @@ require_once __DIR__ . '/lifecycle.php';
 
 // Never initialize the legacy MySQL backend. Local account migrations preserve other identities/passwords.
 function lmsStorage(): string {
-    $path = getenv('THVP_LMS_DB') ?: dirname(__DIR__, 2) . '/.thvp-lms/lms.sqlite';
+    $path = getenv('THVP_LMS_DB') ?: ((lmsHosting()['driver'] ?? '') === 'mysql'
+        ? dirname(__DIR__) . '/lms-private/lms-storage'
+        : dirname(__DIR__, 2) . '/.thvp-lms/lms.sqlite');
     if (!preg_match('~^(?:[A-Za-z]:[/\\\\]|/)~', $path)) {
         throw new RuntimeException('SQLite path must be absolute.');
     }
@@ -19,7 +22,7 @@ function lmsStorage(): string {
     }
     $resolved = strtolower(str_replace('\\', '/', realpath($directory)));
     $public = strtolower(str_replace('\\', '/', realpath(dirname(__DIR__))));
-    if ($resolved === $public || str_starts_with($resolved . '/', $public . '/')) {
+    if (!lmsPrivatePathAllowed($directory)) {
         throw new RuntimeException('SQLite must be outside the public directory.');
     }
     if (is_link($path)) throw new RuntimeException('SQLite symlinks are not allowed.');
@@ -27,6 +30,11 @@ function lmsStorage(): string {
 }
 
 function lmsDB(string $path): PDO {
+    if ((lmsHosting()['driver'] ?? '') === 'mysql') {
+        $db = lmsMySQL();
+        lmsExpireAccess($db);
+        return $db;
+    }
     $db = new PDO('sqlite:' . $path, null, null, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -34,7 +42,7 @@ function lmsDB(string $path): PDO {
     ]);
     $db->exec('PRAGMA foreign_keys=ON; PRAGMA busy_timeout=10000;');
     lmsInitFeeConstraints($db);
-    $db->exec('BEGIN IMMEDIATE');
+    lmsBeginWrite($db);
     try {
         $db->exec(file_get_contents(__DIR__ . '/migration.sql'));
         lmsInitAccounts($db);
@@ -110,11 +118,15 @@ function lmsRegistration(array $row): array {
 function lmsRateLimited(PDO $db, string $ownerHash, int $now, string $scope = '',int $ownerLimit=10,int $ipLimit=60): bool {
     $limited = false;
     foreach ([$scope . 'guest:' . $ownerHash => $ownerLimit, $scope . 'ip:' . hash('sha256', $_SERVER['REMOTE_ADDR'] ?? '') => $ipLimit] as $rateKey => $limit) {
-        $db->prepare('INSERT INTO lms_rate_limits(key,window_start,attempts) VALUES (?,?,1)
-          ON CONFLICT(key) DO UPDATE SET attempts=CASE WHEN window_start<=? THEN 1 ELSE attempts+1 END,
-          window_start=CASE WHEN window_start<=? THEN excluded.window_start ELSE window_start END')
+        $db->prepare(lmsIsMySQL($db)
+          ? 'INSERT INTO lms_rate_limits(`key`,window_start,attempts) VALUES (?,?,1)
+             ON DUPLICATE KEY UPDATE attempts=CASE WHEN window_start<=? THEN 1 ELSE attempts+1 END,
+             window_start=CASE WHEN window_start<=? THEN VALUES(window_start) ELSE window_start END'
+          : 'INSERT INTO lms_rate_limits(key,window_start,attempts) VALUES (?,?,1)
+             ON CONFLICT(key) DO UPDATE SET attempts=CASE WHEN window_start<=? THEN 1 ELSE attempts+1 END,
+             window_start=CASE WHEN window_start<=? THEN excluded.window_start ELSE window_start END')
           ->execute([$rateKey, $now, $now - 60, $now - 60]);
-        $stmt = $db->prepare('SELECT attempts FROM lms_rate_limits WHERE key=?');
+        $stmt = $db->prepare('SELECT attempts FROM lms_rate_limits WHERE `key`=?');
         $stmt->execute([$rateKey]);
         if ((int)$stmt->fetchColumn() > $limit) $limited = true;
     }

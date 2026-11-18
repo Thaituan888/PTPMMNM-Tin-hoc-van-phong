@@ -4,4 +4,9 @@ mail-config.json
 mail-outbox.key
 **/mail-outbox.key
 scratch/
+lms-hosting.php
+lms-private/*
+!lms-private/.htaccess
+!lms-private/index.html
+LMS-TAI-KHOAN-RIENG.txt
 

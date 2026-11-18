@@ -17,7 +17,7 @@ function lmsBankConfig(string $dbPath, ?string &$issue = null): ?array {
     if (is_link($file)) { $issue = 'Tệp cấu hình không được là liên kết tượng trưng.'; return null; }
     $resolved = strtolower(str_replace('\\', '/', realpath($file)));
     $public = strtolower(str_replace('\\', '/', realpath(dirname(__DIR__))));
-    if (str_starts_with($resolved, $public . '/')) { $issue = 'Cấu hình phải nằm ngoài thư mục web.'; return null; }
+    if (!lmsPrivatePathAllowed($file)) { $issue = 'Cấu hình phải nằm ngoài thư mục web.'; return null; }
     if (filesize($file) > 8192) { $issue = 'Tệp cấu hình vượt quá 8192 byte.'; return null; }
     $raw = file_get_contents($file);
     if ($raw === false) { $issue = 'Không đọc được nội dung tệp cấu hình.'; return null; }

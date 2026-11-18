@@ -16,7 +16,7 @@ function lmsInitAccounts(PDO $db): void {
     if ($db->query("SELECT 1 FROM lms_schema_migrations WHERE name='admin_accounts_v1'")->fetchColumn()) return;
     $names = ['Giaovien1' => 'Tống Hoàng Thiên', 'Giaovien2' => 'Nguyễn Thái Tuấn', 'Giaovien3' => 'Trần Anh Khoa'];
     foreach ($names as $username => $fullname) {
-        $stmt = $db->prepare('SELECT id FROM users WHERE username=? COLLATE NOCASE'); $stmt->execute([$username]);
+        $stmt = $db->prepare('SELECT id FROM users WHERE LOWER(username)=LOWER(?)'); $stmt->execute([$username]);
         $matches = $stmt->fetchAll();
         if (count($matches) > 1) throw new RuntimeException('Ambiguous pre-existing account names; preserve accounts for manual resolution.');
         if ($matches) {
@@ -36,7 +36,7 @@ function lmsPublicUser(array $row): array {
       'must_change_password'=>(bool)($row['must_change_password'] ?? false)];
 }
 function lmsActor(PDO $db, mixed $sessionUser): ?array {
-    if (!is_array($sessionUser) || ($sessionUser['source'] ?? '') !== 'sqlite' || !is_int($sessionUser['id'] ?? null)) return null;
+    if (!is_array($sessionUser) || ($sessionUser['source'] ?? '') !== lmsSessionSource($db) || !is_int($sessionUser['id'] ?? null)) return null;
     if ((int)($sessionUser['login_at'] ?? 0) < time()-28800) return null;
     $stmt = $db->prepare('SELECT * FROM users WHERE id=?'); $stmt->execute([$sessionUser['id']]); $row=$stmt->fetch();
     if (!$row || !(int)$row['active'] || !$row['password_hash'] ||
@@ -48,7 +48,7 @@ function lmsRequireAdmin(?array $actor): void {
     if ($actor['role'] !== 'admin') fail(403, 'Tài khoản không có quyền quản trị LMS.');
 }
 function lmsCredentialUser(PDO $db, string $username, string $password): ?array {
-    $stmt=$db->prepare('SELECT * FROM users WHERE username=? COLLATE NOCASE');$stmt->execute([$username]);$row=$stmt->fetch();
+    $stmt=$db->prepare('SELECT * FROM users WHERE LOWER(username)=LOWER(?)');$stmt->execute([$username]);$row=$stmt->fetch();
     $hash=$row['password_hash'] ?? null;
     $valid=false;
     if ($row && $hash) $valid=password_verify($password,$hash);

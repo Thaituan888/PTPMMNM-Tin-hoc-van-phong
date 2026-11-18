@@ -23,7 +23,7 @@ function lmsStudentPassword(PDO $db,array $actor,array $body): array {
     $current=$body['current_password'] ?? null;$next=$body['new_password'] ?? null;
     if (!is_string($current) || !is_string($next) || strlen($current)>1024 || !mb_check_encoding($next,'UTF-8') ||
       mb_strlen($next)<12 || strlen($next)>72 || preg_match('/^[\s]+$|[\x00-\x1F\x7F]/u',$next) || $next===$current) fail(422,'Mật khẩu mới phải khác mật khẩu hiện tại, có ít nhất 12 ký tự, tối đa 72 byte UTF-8 và không có ký tự điều khiển.');
-    $db->exec('BEGIN IMMEDIATE');
+    lmsBeginWrite($db);
     try {
         $stmt=$db->prepare('SELECT * FROM users WHERE id=?');$stmt->execute([$actor['id']]);$user=$stmt->fetch();
         if (!$user || $user['role']!=='student' || !(int)$user['active']) lmsAccessError(403,'Tài khoản không có quyền đổi mật khẩu học sinh.');

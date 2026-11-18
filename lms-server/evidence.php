@@ -30,7 +30,7 @@ function lmsEvidenceDirectory(string $dbPath): string {
     if (!is_dir($directory) && !mkdir($directory, 0700, true) && !is_dir($directory)) throw new RuntimeException('Private storage unavailable.');
     $resolved = strtolower(str_replace('\\', '/', realpath($directory)));
     $public = strtolower(str_replace('\\', '/', realpath(dirname(__DIR__))));
-    if (is_link($directory) || $resolved === $public || str_starts_with($resolved, $public . '/')) throw new RuntimeException('Evidence storage must be outside webroot.');
+    if (!lmsPrivatePathAllowed($directory)) throw new RuntimeException('Evidence storage must be outside webroot.');
     return $directory;
 }
 function lmsEvidenceFile(string $dbPath, string $key): string {
@@ -74,7 +74,7 @@ function lmsStoreEvidence(PDO $db, string $dbPath, array $registration, string $
         if (!is_file(lmsEvidenceFile($dbPath, $existing['storage_key']))) lmsEvidenceError(503, 'Ảnh đã lưu tạm không đọc được. Vui lòng liên hệ hỗ trợ.');
         return $existing + ['_replayed' => true];
     }
-    $db->exec('BEGIN IMMEDIATE');
+    lmsBeginWrite($db);
     try { $limited = lmsRateLimited($db, $ownerHash, time(), 'evidence:'); $db->exec('COMMIT'); }
     catch (Throwable $e) { $db->exec('ROLLBACK'); throw $e; }
     if ($limited) lmsEvidenceError(429, 'Bạn gửi ảnh quá nhiều lần. Vui lòng chờ một phút rồi thử lại.');
@@ -132,7 +132,7 @@ function lmsStoreEvidence(PDO $db, string $dbPath, array $registration, string $
         } finally { fclose($stream); }
         @chmod($newFile, 0600);
         if (!$saved || !$flushed || filesize($newFile) < 1 || filesize($newFile) > 16 * 1024 * 1024) lmsEvidenceError(503, 'Không lưu được ảnh đã kiểm tra.');
-        $db->exec('BEGIN IMMEDIATE'); $transaction = true;
+        lmsBeginWrite($db); $transaction = true;
         if ($existing = $findDuplicate()) {
             $db->exec('COMMIT'); $transaction = false;
             unlink($newFile); $newFile = null;

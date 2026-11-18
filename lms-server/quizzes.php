@@ -24,7 +24,7 @@ function lmsQuizSave(PDO $db,array $actor,array $body): void {
         $options=[];foreach ($choices as $choice) $options[]=lmsContentText(['choice'=>$choice],'choice',1000,true);
         $clean[]=['text'=>$text,'choices'=>$options,'answer'=>$answer];
     }
-    $db->exec('BEGIN IMMEDIATE');try {
+    lmsBeginWrite($db);try {
         $fresh=lmsContentRow($db,'SELECT username,role,active FROM users WHERE id=?',[$actor['id']]);if (!$fresh||!$fresh['active']||!lmsContentCanEdit($fresh)) lmsContentError(403,'Không có quyền chỉnh sửa.');
         lmsLearningClass($db,$actor,$code);
         $hash=hash('sha256',json_encode([$code,$id,$version,$title,$status,$clean],JSON_THROW_ON_ERROR));$requestKey=hash('sha256',$key);
@@ -45,7 +45,7 @@ function lmsQuizSubmit(PDO $db,array $actor,array $body): array {
     if ($actor['role']!=='student') lmsContentError(403,'Chỉ học sinh được nộp bài.');
     $code=$body['class_code']??'';if (!is_string($code)) lmsContentError(422,'Mã lớp không hợp lệ.');
     $id=lmsContentInt($body,'id');$version=lmsContentInt($body,'version');
-    $db->exec('BEGIN IMMEDIATE');try {
+    lmsBeginWrite($db);try {
         $fresh=lmsContentRow($db,'SELECT * FROM users WHERE id=?',[$actor['id']]);
         if (!$fresh||!$fresh['active']||$fresh['role']!=='student') lmsContentError(403,'Tài khoản không còn quyền nộp bài.');
         lmsLearningClass($db,lmsPublicUser($fresh),$code);

@@ -13,7 +13,7 @@ try {
     }
     if ($command!=='set-password') throw new RuntimeException('Use list or set-password USERNAME.');
     $username=$argv[2] ?? '';
-    $stmt=$db->prepare("SELECT id FROM users WHERE username=? COLLATE NOCASE AND role='admin'");$stmt->execute([$username]);$id=$stmt->fetchColumn();
+    $stmt=$db->prepare("SELECT id FROM users WHERE LOWER(username)=LOWER(?) AND role='admin'");$stmt->execute([$username]);$id=$stmt->fetchColumn();
     if (!$id) throw new RuntimeException('Admin account not found. No new identity was created.');
     $raw=stream_get_contents(STDIN,4097);
     if (strlen($raw)>4096) throw new RuntimeException('Input too long.');

@@ -14,7 +14,7 @@ function lmsCertificateFile(string $path,array $certificate): string {
     $dir=dirname($path).'/certificates';
     if(!is_dir($dir)&&!mkdir($dir,0700,true)&&!is_dir($dir))lmsContentError(503,'Không tạo được kho chứng nhận.');
     $private=strtolower(str_replace('\\','/',(string)realpath($dir)));$web=strtolower(str_replace('\\','/',realpath(dirname(__DIR__))));
-    if(is_link($dir)||$private===$web||str_starts_with($private,$web.'/'))lmsContentError(503,'Kho chứng nhận phải ở ngoài webroot.');
+    if(!lmsPrivatePathAllowed($dir))lmsContentError(503,'Kho chứng nhận phải ở ngoài webroot.');
     if(!preg_match('/^[a-f0-9]{64}\.png$/D',$certificate['storage_key']))lmsContentError(503,'Tệp chứng nhận không hợp lệ.');
     $file=$dir.'/'.$certificate['storage_key'];if(is_link($file))lmsContentError(503,'Tệp chứng nhận không hợp lệ.');if(is_file($file))return $file;
     $font=dirname(__DIR__).'/vendor/noto-sans/NotoSans-Regular.ttf';

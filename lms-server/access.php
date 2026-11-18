@@ -17,6 +17,9 @@ function lmsInitAccess(PDO $db): void {
         $db->prepare('INSERT INTO lms_schema_migrations(name,applied_at) VALUES (?,?)')->execute(['student_direct_login_v1',time()]);
     }
     $db->prepare('INSERT OR IGNORE INTO lms_schema_migrations(name,applied_at) VALUES (?,?)')->execute(['learning_access_v1',time()]);
+    lmsExpireAccess($db);
+}
+function lmsExpireAccess(PDO $db): void {
     // Remove expired secret envelopes, without changing accounts, passwords or enrollments.
     $db->prepare("UPDATE lms_access_grants SET encrypted_payload=NULL,mail_state='expired',lease_hash=NULL,lease_expires_at=NULL,
       last_error_code='payload_expired',last_error_message='Đã hết thời hạn lưu thông tin thư tạm; cần xử lý khôi phục tài khoản.'
@@ -42,7 +45,7 @@ function lmsAccessKey(PDO $db,string $dbPath): string {
     if (!preg_match('~^(?:[A-Za-z]:[/\\\\]|/)~',$path) || is_link($path) || !is_dir(dirname($path))) lmsAccessError(503,'Đường dẫn khóa mã hóa thư không hợp lệ.');
     $directory=strtolower(str_replace('\\','/',(string)realpath(dirname($path))));
     $public=strtolower(str_replace('\\','/',(string)realpath(dirname(__DIR__))));
-    if ($directory===$public || str_starts_with($directory,$public.'/')) lmsAccessError(503,'Khóa mã hóa thư phải nằm ngoài webroot.');
+    if (!lmsPrivatePathAllowed(dirname($path))) lmsAccessError(503,'Khóa mã hóa thư phải nằm ngoài webroot.');
     if (!is_file($path)) {
         if ($db->query('SELECT 1 FROM lms_access_grants WHERE encrypted_payload IS NOT NULL LIMIT 1')->fetchColumn()) lmsAccessError(503,'Thiếu khóa giải mã thư đang chờ; cần khôi phục khóa đã sao lưu, không tạo lại tài khoản.');
         $stream=@fopen($path,'x+b');
@@ -104,14 +107,14 @@ function lmsStudentUsername(PDO $db,string $name): string {
     for($i=0;$i<200;$i++){
         $prefix=str_pad((string)random_int($i<50?1:100,$i<50?99:99999999),2,'0',STR_PAD_LEFT).' ';
         $username=$prefix.mb_substr($base,0,150-mb_strlen($prefix));
-        $stmt=$db->prepare('SELECT 1 FROM users WHERE username=? COLLATE NOCASE');$stmt->execute([$username]);
+        $stmt=$db->prepare('SELECT 1 FROM users WHERE LOWER(username)=LOWER(?)');$stmt->execute([$username]);
         if(!$stmt->fetchColumn())return $username;
     }
     lmsAccessError(409,'Chưa cấp được tên đăng nhập duy nhất. Vui lòng thử lại.');
 }
 function lmsReissueCredentials(PDO $db,string $path,array $actor,array $body,string $key): bool {
     [$id,$ref,$version]=lmsAccessRequest($body,$key);$requestHash=hash('sha256','reissue:'.$actor['id'].':'.$key);
-    $db->exec('BEGIN IMMEDIATE');
+    lmsBeginWrite($db);
     try{
         lmsAccessAdmin($db,$actor);
         $prior=lmsContentRow($db,'SELECT registration_id FROM lms_access_history WHERE request_hash=?',[$requestHash]);
@@ -143,7 +146,7 @@ function lmsReissueCredentials(PDO $db,string $path,array $actor,array $body,str
 }
 function lmsGrantAccess(PDO $db,string $dbPath,array $actor,array $body,string $key): array {
     [$id,$reference,$version]=lmsAccessRequest($body,$key);$requestHash=hash('sha256','grant:'.$actor['id'].':'.$key);
-    $db->exec('BEGIN IMMEDIATE');
+    lmsBeginWrite($db);
     try {
         lmsAccessAdmin($db,$actor);
         $stmt=$db->prepare('SELECT * FROM lms_registrations WHERE id=?');$stmt->execute([$id]);$row=$stmt->fetch();
@@ -168,7 +171,7 @@ function lmsGrantAccess(PDO $db,string $dbPath,array $actor,array $body,string $
         } else {
             $temporary=rtrim(strtr(base64_encode(random_bytes(24)),'+/','-_'),'=');
             $username=lmsStudentUsername($db,$row['fullname']);
-            $columns=array_column($db->query('PRAGMA table_info(users)')->fetchAll(),'name');
+            $columns=lmsColumns($db,'users');
             $legacy=in_array('password',$columns,true);
             $stmt=$db->prepare("INSERT INTO users(username,fullname,email,password_hash,role,active,must_change_password".($legacy?',password':'').") VALUES (?,?,?,?,'student',1,0".($legacy?",''":'').')');
             $stmt->execute([$username,$row['fullname'],$email,password_hash($temporary,PASSWORD_DEFAULT)]);
@@ -203,7 +206,7 @@ function lmsGrantAccess(PDO $db,string $dbPath,array $actor,array $body,string $
 
 function lmsSendAccessMail(PDO $db,string $dbPath,array $actor,int $id,string $key): void {
     $requestHash=hash('sha256','access-mail:'.$actor['id'].':'.$key);$lease=bin2hex(random_bytes(32));
-    $db->exec('BEGIN IMMEDIATE');
+    lmsBeginWrite($db);
     try {
         lmsAccessAdmin($db,$actor);
         $stmt=$db->prepare('SELECT registration_id FROM lms_access_history WHERE request_hash=?');$stmt->execute([$requestHash]);$used=$stmt->fetchColumn();
@@ -254,7 +257,7 @@ function lmsSendAccessMail(PDO $db,string $dbPath,array $actor,int $id,string $k
     } catch (LmsMailError $e) {$state=$e->errorCode==='smtp_timeout'?'unknown':'failed';$errorCode=$e->errorCode;$errorMessage=$e->getMessage();}
     catch (LmsAccessError $e) {$state='failed';$errorCode='access_mail';$errorMessage=$e->getMessage();}
     catch (Throwable $e) {$state='failed';$errorCode='mail_internal';$errorMessage='Chưa gửi được thư; tài khoản và ghi danh đã lưu. Vui lòng kiểm tra lại.';}
-    $db->exec('BEGIN IMMEDIATE');
+    lmsBeginWrite($db);
     try {
         $stmt=$db->prepare('UPDATE lms_access_grants SET mail_state=?,last_error_code=?,last_error_message=?,smtp_accepted_at=?,
           encrypted_payload=CASE WHEN ?=\'sent\' THEN NULL ELSE encrypted_payload END,lease_hash=NULL,lease_expires_at=NULL

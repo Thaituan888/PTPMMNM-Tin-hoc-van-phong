@@ -7,11 +7,15 @@
  * Mục: "MySQL Databases"
  */
 
-// 1. THÔNG TIN KẾT NỐI MYSQL INFINITYFREE (Lấy trực tiếp từ phpMyAdmin của bạn)
-define('DB_HOST', 'sql202.infinityfree.com'); // Máy phục vụ của bạn
-define('DB_USER', 'if0_43040726');           // Tên tài khoản MySQL của bạn
-define('DB_PASS', 'THNyAJGpnfSr');    // Mật khẩu hosting InfinityFree của bạn
-define('DB_NAME', 'if0_43040726_hihihi');    // Tên database của bạn
+require_once __DIR__ . '/lms-server/database.php';
+
+// Both APIs use the same hosting connection; real secrets stay in lms-hosting.php.
+$lmsConnection = lmsHosting();
+define('DB_HOST', $lmsConnection['host'] ?? (getenv('THVP_MYSQL_HOST') ?: ''));
+define('DB_USER', $lmsConnection['username'] ?? (getenv('THVP_MYSQL_USER') ?: ''));
+define('DB_PASS', $lmsConnection['password'] ?? (getenv('THVP_MYSQL_PASSWORD') ?: ''));
+define('DB_NAME', $lmsConnection['database'] ?? (getenv('THVP_MYSQL_DATABASE') ?: ''));
+unset($lmsConnection);
 
 // 2. THƯ MỤC LƯU FILE UPLOAD THỰC TẾ TRÊN HOSTING
 define('UPLOAD_DIR', __DIR__ . '/uploads/');
@@ -20,12 +24,12 @@ define('UPLOAD_DIR', __DIR__ . '/uploads/');
 if (!file_exists(UPLOAD_DIR)) {
     @mkdir(UPLOAD_DIR, 0777, true);
 }
-
 // 3. KẾT NỐI DATABASE BẰNG PDO
 function getDBConnection() {
     static $pdo = null;
     if ($pdo === null) {
         try {
+            if ((lmsHosting()['driver'] ?? '') === 'mysql') return $pdo = lmsMySQL();
             $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -150,29 +154,5 @@ function initDatabaseTables($pdo) {
         `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 
-    // Đảm bảo chỉ có 1 tài khoản Giảng viên (admin): Giangvien / 12345678 / Nguyễn Thái Tuấn
-    // Xóa các tài khoản admin cũ và các tài khoản sinh viên mẫu tạo thủ công bằng code
-    $pdo->exec("DELETE FROM `users` WHERE `username` IN ('admin', 'sv01', 'sv02', 'sv03', 'sv04', 'sv05')");
-
-    // Khởi tạo hoặc cập nhật tài khoản Giảng viên duy nhất
-    $stmtGv = $pdo->prepare("SELECT `id` FROM `users` WHERE LOWER(`username`) = 'giangvien' LIMIT 1");
-    $stmtGv->execute();
-    $existingGv = $stmtGv->fetch();
-
-    if ($existingGv) {
-        $updateGv = $pdo->prepare("UPDATE `users` SET `username` = 'Giangvien', `password` = '12345678', `fullname` = 'Nguyễn Thái Tuấn', `email` = 'giangvien@gmail.com', `mssv` = 'GV01', `role` = 'admin' WHERE `id` = ?");
-        $updateGv->execute([$existingGv['id']]);
-    } else {
-        $insertGv = $pdo->prepare("INSERT INTO `users` (`username`, `password`, `fullname`, `email`, `mssv`, `role`) VALUES ('Giangvien', '12345678', 'Nguyễn Thái Tuấn', 'giangvien@gmail.com', 'GV01', 'admin')");
-        $insertGv->execute();
-    }
-
-    // Khởi tạo tài khoản Học viên mẫu (hocvien01 / 12345678)
-    $stmtHv = $pdo->prepare("SELECT `id` FROM `users` WHERE LOWER(`username`) = 'hocvien01' LIMIT 1");
-    $stmtHv->execute();
-    if (!$stmtHv->fetch()) {
-        $insertHv = $pdo->prepare("INSERT INTO `users` (`username`, `password`, `fullname`, `email`, `mssv`, `role`) VALUES ('hocvien01', '12345678', 'Nguyễn Văn An', 'hocvien01@gmail.com', 'HV01', 'student')");
-        $insertHv->execute();
-    }
+    // Accounts are provisioned by the additive SQL import, never reset on page requests.
 }
-?>

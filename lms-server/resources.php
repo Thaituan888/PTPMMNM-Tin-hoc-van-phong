@@ -4,7 +4,7 @@ function lmsResourceDirectory(string $path): string {
     $dir=dirname($path).'/learning-files';
     if (!is_dir($dir) && !mkdir($dir,0700,true) && !is_dir($dir)) lmsContentError(503,'Không tạo được kho tài liệu.');
     $real=strtolower(str_replace('\\','/',realpath($dir)));$web=strtolower(str_replace('\\','/',realpath(dirname(__DIR__))));
-    if (is_link($dir)||$real===$web||str_starts_with($real,$web.'/')) lmsContentError(503,'Kho tài liệu phải nằm ngoài thư mục website.');
+    if (!lmsPrivatePathAllowed($dir)) lmsContentError(503,'Kho tài liệu phải nằm ngoài thư mục website.');
     return $dir;
 }
 function lmsResourcePublic(array $r): array {
@@ -41,7 +41,7 @@ function lmsResourceSave(PDO $db,string $path,array $actor,array $body,?array $f
         $sourceHash=hash_file('sha256',$file['tmp_name']);$new=bin2hex(random_bytes(32)).'.'.$ext;
     }
     $hash=hash('sha256',json_encode([$code,$id,$version,$kind,$status,$title,$text,$url,$sourceHash],JSON_THROW_ON_ERROR));$saved=null;
-    $db->exec('BEGIN IMMEDIATE');
+    lmsBeginWrite($db);
     try {
         $fresh=lmsContentRow($db,'SELECT username,role,active FROM users WHERE id=?',[$actor['id']]);
         if (!$fresh||!$fresh['active']||!lmsContentCanEdit($fresh)) lmsContentError(403,'Không có quyền chỉnh sửa.');

@@ -98,13 +98,13 @@ function lmsContentWrite(PDO $db,?array $actor,string $action,array $body): void
     if (!isset($allowed[$action]) || array_diff(array_keys($body),$allowed[$action])) lmsContentError(422,'Yêu cầu chỉnh sửa chứa trường không được hỗ trợ.');
     $code=$body['class_code'] ?? null;
     if (!is_string($code)) lmsContentError(422,'Mã lớp không hợp lệ.');
-    $db->exec('BEGIN IMMEDIATE');
+    lmsBeginWrite($db);
     try {
         // Recheck role and active account while holding the same write lock as the content update.
         $user=lmsContentRow($db,'SELECT username,role,active FROM users WHERE id=?',[$actor['id']]);
         if (!$user || !(int)$user['active'] || !lmsContentCanEdit($user)) lmsContentError(403,'Tài khoản không còn quyền chỉnh sửa.');
         lmsLearningClass($db,$actor,$code);
-        $db->prepare('INSERT OR IGNORE INTO lms_class_pages(class_code) VALUES (?)')->execute([$code]);
+        $db->prepare(lmsIsMySQL($db) ? 'INSERT INTO lms_class_pages(class_code) VALUES (?) ON DUPLICATE KEY UPDATE class_code=VALUES(class_code)' : 'INSERT OR IGNORE INTO lms_class_pages(class_code) VALUES (?)')->execute([$code]);
         $page=lmsLearningPage($db,$code);$now=time();$actorId=$actor['id'];
         if ($action==='content_save_class') {
             lmsContentVersion((int)$page['revision'],lmsContentInt($body,'version',0));

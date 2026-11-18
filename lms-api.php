@@ -59,11 +59,11 @@ try {
             if(!hash_equals($csrf,(string)($_SERVER['HTTP_X_CSRF_TOKEN']??'')))lmsContentError(403,'Phiên xác nhận không hợp lệ.');
             $body=lmsAuthJson();$key=(string)($_SERVER['HTTP_IDEMPOTENCY_KEY']??'');
             if($action==='class_transition'){
-                $db->exec('BEGIN IMMEDIATE');$limited=lmsRateLimited($db,hash('sha256',(string)$actor['id']),time(),'lifecycle:');$db->exec('COMMIT');if($limited)lmsContentError(429,'Bạn thao tác quá nhiều lần. Vui lòng chờ một phút.');
+                lmsBeginWrite($db);$limited=lmsRateLimited($db,hash('sha256',(string)$actor['id']),time(),'lifecycle:');$db->exec('COMMIT');if($limited)lmsContentError(429,'Bạn thao tác quá nhiều lần. Vui lòng chờ một phút.');
                 $event=lmsClassTransition($db,$actor,$body,$key);reply(200,['event_id'=>$event,'mail'=>lmsClassMailCounts($db,$event)]);
             }
             $event=lmsContentInt($body,'event_id');$retry=$body['retry']??false;if(!is_bool($retry))lmsContentError(422,'Yêu cầu gửi lại không hợp lệ.');
-            $db->exec('BEGIN IMMEDIATE');$limited=lmsRateLimited($db,hash('sha256',(string)$actor['id']),time(),'classmail:',360,1080);$db->exec('COMMIT');if($limited)lmsContentError(429,'Gửi email quá nhanh. Chờ một phút rồi tiếp tục; hàng chờ được giữ nguyên.');
+            lmsBeginWrite($db);$limited=lmsRateLimited($db,hash('sha256',(string)$actor['id']),time(),'classmail:',360,1080);$db->exec('COMMIT');if($limited)lmsContentError(429,'Gửi email quá nhanh. Chờ một phút rồi tiếp tục; hàng chờ được giữ nguyên.');
             reply(200,['event_id'=>$event,'mail'=>lmsSendClassMail($db,$path,$actor,$event,$retry,$key)]);
         }catch(LmsContentError|LmsAccessError $e){fail($e->httpStatus,$e->getMessage());}
     }
@@ -143,11 +143,11 @@ try {
         if ($actor['role']!=='student') fail(403,'Chức năng này dành cho học sinh.');
         if (!hash_equals($csrf,(string)($_SERVER['HTTP_X_CSRF_TOKEN'] ?? ''))) fail(403,'Phiên xác nhận không hợp lệ.');
         $body=lmsAuthJson();
-        $db->exec('BEGIN IMMEDIATE');$limited=lmsRateLimited($db,hash('sha256',(string)$actor['id']),time(),'password:');$db->exec('COMMIT');
+        lmsBeginWrite($db);$limited=lmsRateLimited($db,hash('sha256',(string)$actor['id']),time(),'password:');$db->exec('COMMIT');
         if ($limited) fail(429,'Bạn thử đổi mật khẩu quá nhiều lần. Vui lòng chờ một phút.');
         try {$user=lmsStudentPassword($db,$actor,$body);} catch (LmsAccessError $e) {fail($e->httpStatus,$e->getMessage());}
         session_start();session_regenerate_id(true);
-        $_SESSION['user']=['source'=>'sqlite','id'=>(int)$user['id'],'credential_stamp'=>hash('sha256',$user['password_hash']),'login_at'=>time()];session_write_close();
+        $_SESSION['user']=['source'=>lmsSessionSource($db),'id'=>(int)$user['id'],'credential_stamp'=>hash('sha256',$user['password_hash']),'login_at'=>time()];session_write_close();
         reply(200,['user'=>lmsPublicUser($user),'message'=>'Đã đổi mật khẩu.']);
     }
     if ($method==='POST' && in_array($action,['admin_grant_access','admin_access_mail_retry','admin_reissue_credentials'],true)) {
@@ -155,7 +155,7 @@ try {
         if (!hash_equals($csrf,(string)($_SERVER['HTTP_X_CSRF_TOKEN'] ?? ''))) fail(403,'Phiên xác nhận không hợp lệ. Vui lòng tải lại trang.');
         $body=lmsAuthJson();$key=(string)($_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? '');
         if (array_diff(array_keys($body),['reference','version'])) fail(422,'Chỉ gửi mã hồ sơ và phiên bản; thông tin tài khoản, lớp và email do máy chủ xác định.');
-        $db->exec('BEGIN IMMEDIATE');$limited=lmsRateLimited($db,hash('sha256',(string)$actor['id']),time(),'access:');$db->exec('COMMIT');
+        lmsBeginWrite($db);$limited=lmsRateLimited($db,hash('sha256',(string)$actor['id']),time(),'access:');$db->exec('COMMIT');
         if ($limited) {header('Retry-After: 60');fail(429,'Bạn thao tác quá nhiều lần. Vui lòng chờ một phút.');}
         $id=null;
         try {
@@ -178,7 +178,7 @@ try {
         if (array_diff(array_keys($body),['recipient'])) fail(422,'Yêu cầu gửi thử chỉ được chứa email người nhận; cấu hình SMTP chỉ đọc từ tệp riêng trên máy chủ.');
         try {$recipient=lmsMailRecipient($body['recipient'] ?? null);}
         catch (LmsMailError $e) {reply($e->httpStatus,['error'=>$e->getMessage(),'code'=>$e->errorCode]);}
-        $db->exec('BEGIN IMMEDIATE');
+        lmsBeginWrite($db);
         $limited=lmsRateLimited($db,hash('sha256',(string)$actor['id']),time(),'mail:');$db->exec('COMMIT');
         if ($limited) {header('Retry-After: 60');fail(429,'Bạn gửi email thử quá nhiều lần. Vui lòng chờ một phút.');}
         $configuration=lmsMailConfiguration($path);
@@ -198,7 +198,7 @@ try {
             session_write_close();
             reply(200,['user'=>null]);
         }
-        $db->exec('BEGIN IMMEDIATE');
+        lmsBeginWrite($db);
         $limited=lmsRateLimited($db,hash('sha256',$secret),time(),'auth:');$db->exec('COMMIT');
         if ($limited) {header('Retry-After: 60');fail(429,'Bạn đăng nhập quá nhiều lần. Vui lòng chờ một phút.');}
         $body=lmsAuthJson();$username=$body['username'] ?? null;$password=$body['password'] ?? null;
@@ -209,7 +209,7 @@ try {
         if (!$user) fail(401,'Tài khoản hoặc mật khẩu không chính xác, hoặc tài khoản chưa được kích hoạt mật khẩu.');
         if ($expectedRole!==null && $user['role']!==$expectedRole) fail(403,$expectedRole==='admin'?'Vui lòng dùng tài khoản giáo viên để đăng nhập ở mục này.':'Vui lòng dùng tài khoản học sinh để đăng nhập ở mục này.');
         session_start();session_regenerate_id(true);
-        $_SESSION['user']=['source'=>'sqlite','id'=>(int)$user['id'],
+        $_SESSION['user']=['source'=>lmsSessionSource($db),'id'=>(int)$user['id'],
           'credential_stamp'=>hash('sha256',$user['password_hash']),'login_at'=>time()];
         session_write_close();
         reply(200,['user'=>lmsPublicUser($user)]);
@@ -222,7 +222,7 @@ try {
         lmsRequireAdmin($actor);
         if (!hash_equals($csrf, (string)($_SERVER['HTTP_X_CSRF_TOKEN'] ?? ''))) fail(403,'Phiên xác nhận không hợp lệ. Vui lòng tải lại trang.');
         $body=lmsAuthJson(32768);
-        $db->exec('BEGIN IMMEDIATE');
+        lmsBeginWrite($db);
         $limited=lmsRateLimited($db,hash('sha256',(string)$actor['id']),time(),'review:');$db->exec('COMMIT');
         if ($limited) {header('Retry-After: 60');fail(429,'Bạn xử lý quá nhiều yêu cầu. Vui lòng chờ một phút.');}
         try {reply(200,lmsReviewDecision($db,$actor,$body,(string)($_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? '')));}
@@ -292,7 +292,7 @@ try {
     }
     if ($method === 'POST' && $action === 'payment') {
         if (!hash_equals($csrf, (string)($_SERVER['HTTP_X_CSRF_TOKEN'] ?? ''))) fail(403, 'Phiên xác nhận không hợp lệ. Vui lòng tải lại trang.');
-        $db->exec('BEGIN IMMEDIATE');
+        lmsBeginWrite($db);
         $code = (string)($_GET['class_code'] ?? '');
         $row = lmsOwnedRegistration($db, $code);
         if (!$row) { $db->exec('ROLLBACK'); fail(404, 'Không có quyền truy cập hồ sơ.'); }
@@ -318,7 +318,7 @@ try {
     $ownerHash = hash('sha256', $secret);
     // A 256-bit PRF token is reproducible for response-loss retries, but only its hash is in SQLite.
     $access = hash_hmac('sha256', 'lms-access:' . $key, $secret);
-    $db->exec('BEGIN IMMEDIATE');
+    lmsBeginWrite($db);
     $now = time();
     $db->exec("UPDATE lms_registrations SET status='expired' WHERE status='pending_payment'
       AND proof_submitted_at IS NULL AND expires_at<=" . $now);

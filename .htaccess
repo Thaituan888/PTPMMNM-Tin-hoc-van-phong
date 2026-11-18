@@ -1,0 +1,5 @@
+Options -Indexes
+DirectoryIndex index.html index.php
+<FilesMatch "(?i)(\.(sql|sqlite|sqlite3|db|md|ps1|bat|zip)$|^(config|lms-hosting(?:\.example)?)\.php$)">
+    Require all denied
+</FilesMatch>

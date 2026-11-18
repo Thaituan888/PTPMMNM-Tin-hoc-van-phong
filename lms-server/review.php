@@ -71,7 +71,7 @@ function lmsReviewDecision(PDO $db, array $actor, array $body, string $key): arr
     $payloadHash = hash('sha256', json_encode([$ref,$version,$decision,$reason,$notes,$tx,$amount,$body['funds_verified'] ?? false], JSON_UNESCAPED_UNICODE));
     $requestHash = hash('sha256', $actor['id'] . ':' . $key);
     $id = filter_var(ltrim(substr($ref, 2), '0'), FILTER_VALIDATE_INT, ['options'=>['min_range'=>1]]);
-    $db->exec('BEGIN IMMEDIATE');
+    lmsBeginWrite($db);
     try {
         // Recheck privileges under the same write lock as the decision (a concurrent demotion wins).
         $check = $db->prepare("SELECT 1 FROM users WHERE id=? AND active=1 AND role='admin'");

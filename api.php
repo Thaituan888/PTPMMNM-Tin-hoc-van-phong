@@ -235,7 +235,12 @@ switch ($action) {
         $stmt->execute([$username, $username]);
         $user = $stmt->fetch();
 
-        if ($user && $user['password'] === $password) {
+        $storedHash = $user['password_hash'] ?? null;
+        $storedPassword = $user['password'] ?? '';
+        $validPassword = $storedHash ? password_verify($password, $storedHash)
+            : ($storedPassword !== '' && (password_get_info($storedPassword)['algo'] !== null
+                ? password_verify($password, $storedPassword) : hash_equals($storedPassword, $password)));
+        if ($user && (int)($user['active'] ?? 1) === 1 && $validPassword) {
             $_SESSION['user'] = [
                 'id' => $user['id'],
                 'username' => $user['username'],
@@ -312,7 +317,8 @@ switch ($action) {
         }
 
         // Tạo mã OTP 6 số ngẫu nhiên
-        $otpCode = (string) rand(100000, 999999);
+        $otpCode = (string) random_int(100000, 999999);
+        unset($_SESSION['verified_otp_email']);
         $_SESSION['pending_otp'] = [
             'email' => strtolower($email),
             'username' => strtolower($username),
@@ -336,7 +342,7 @@ switch ($action) {
 
         jsonResponse(true, 'Mã OTP đã được gửi đến email ' . $email, [
             'email' => $email,
-            'otp_preview' => $otpCode, // Hỗ trợ hiển thị preview khi test
+            // OTP is sent by email only; never return it to the browser.
             'mail_sent' => $mailSent
         ]);
         break;
@@ -385,8 +391,18 @@ switch ($action) {
             jsonResponse(false, 'Mật khẩu mới phải có ít nhất 4 ký tự!');
         }
 
-        $stmt = $pdo->prepare("UPDATE `users` SET `password` = ? WHERE LOWER(`email`) = ?");
-        $stmt->execute([$newPassword, $email]);
+        $pending = $_SESSION['pending_otp'] ?? [];
+        if (($_SESSION['verified_otp_email'] ?? '') !== $email || ($pending['email'] ?? '') !== $email
+            || ($pending['action_type'] ?? '') !== 'forgot' || (int)($pending['expires_at'] ?? 0) < time()) {
+            jsonResponse(false, 'Vui lòng xác minh OTP hợp lệ trước khi đổi mật khẩu.');
+        }
+        $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
+        if (in_array('password_hash', lmsColumns($pdo, 'users'), true)) {
+            $stmt = $pdo->prepare("UPDATE users SET password='', password_hash=? WHERE LOWER(email)=?");
+        } else {
+            $stmt = $pdo->prepare("UPDATE users SET password=? WHERE LOWER(email)=?");
+        }
+        $stmt->execute([$hashed, $email]);
 
         unset($_SESSION['pending_otp']);
         unset($_SESSION['verified_otp_email']);
@@ -439,7 +455,7 @@ switch ($action) {
         }
 
         $stmt = $pdo->prepare("INSERT INTO `users` (`username`, `password`, `fullname`, `email`, `role`) VALUES (?, ?, ?, ?, 'student')");
-        $stmt->execute([$username, $password, $fullname, $email]);
+        $stmt->execute([$username, password_hash($password, PASSWORD_DEFAULT), $fullname, $email]);
 
         $newUser = [
             'id' => $pdo->lastInsertId(),

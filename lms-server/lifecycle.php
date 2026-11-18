@@ -39,7 +39,7 @@ function lmsClassTransition(PDO $db,array $actor,array $body,string $key): int {
     $version=lmsContentInt($body,'version',0);$action=$body['action']??'';$date=$body['start_date']??'';
     if(!in_array($action,['start','complete','reopen','close_registration'],true)||!is_string($date))lmsContentError(422,'Thao tác lớp không hợp lệ.');
     $request=hash('sha256','class:'.$actor['id'].':'.$key);$hash=hash('sha256',json_encode([$code,$version,$action,$date]));
-    $db->exec('BEGIN IMMEDIATE');
+    lmsBeginWrite($db);
     try{
         lmsAccessAdmin($db,$actor);$class=lmsLearningClass($db,$actor,$code);
         $prior=lmsContentRow($db,'SELECT id,payload_hash FROM lms_class_events WHERE request_hash=?',[$request]);
@@ -72,7 +72,7 @@ function lmsClassTransition(PDO $db,array $actor,array $body,string $key): int {
         }
         $snapshot=['course_name'=>$class['course_name'],'class_code'=>$code,'teacher'=>$class['teacher'],'days'=>$class['days'],'time'=>$class['time'],'starts_at'=>$starts,'state'=>$state];
         $db->prepare('INSERT INTO lms_class_events(class_code,cycle_id,action,snapshot,actor_id,created_at,from_version,to_version,request_hash,payload_hash) VALUES (?,?,?,?,?,?,?,?,?,?)')->execute([$code,$cycle,$action,json_encode($snapshot,JSON_UNESCAPED_UNICODE|JSON_THROW_ON_ERROR),$actor['id'],$now,$version,$version+1,$request,$hash]);$event=(int)$db->lastInsertId();
-        $db->prepare('INSERT INTO lms_class_lifecycle(class_code,cycle_id,state,starts_at,revision,updated_at,updated_by) VALUES (?,?,?,?,?,?,?) ON CONFLICT(class_code) DO UPDATE SET cycle_id=excluded.cycle_id,state=excluded.state,starts_at=excluded.starts_at,revision=excluded.revision,updated_at=excluded.updated_at,updated_by=excluded.updated_by')->execute([$code,$cycle,$state,$starts,$version+1,$now,$actor['id']]);
+        $db->prepare(lmsIsMySQL($db) ? 'INSERT INTO lms_class_lifecycle(class_code,cycle_id,state,starts_at,revision,updated_at,updated_by) VALUES (?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE cycle_id=VALUES(cycle_id),state=VALUES(state),starts_at=VALUES(starts_at),revision=VALUES(revision),updated_at=VALUES(updated_at),updated_by=VALUES(updated_by)' : 'INSERT INTO lms_class_lifecycle(class_code,cycle_id,state,starts_at,revision,updated_at,updated_by) VALUES (?,?,?,?,?,?,?) ON CONFLICT(class_code) DO UPDATE SET cycle_id=excluded.cycle_id,state=excluded.state,starts_at=excluded.starts_at,revision=excluded.revision,updated_at=excluded.updated_at,updated_by=excluded.updated_by')->execute([$code,$cycle,$state,$starts,$version+1,$now,$actor['id']]);
         $db->prepare('UPDATE lms_classes SET registration_open=?,opening_date=? WHERE code=?')->execute([$open,$starts?(new DateTimeImmutable('@'.$starts))->setTimezone(new DateTimeZone('Asia/Ho_Chi_Minh'))->format('Y-m-d'):null,$code]);
         foreach($recipients as $r){
             $certificate=null;

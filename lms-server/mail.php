@@ -26,7 +26,7 @@ function lmsMailConfiguration(string $dbPath): array {
     if (!is_file($path)) { $result['state']='missing';return $invalid('Chưa tìm thấy mail-config.json. Dùng công cụ check-mail-config.php để xem đường dẫn PHP đang đọc.'); }
     $resolved = strtolower(str_replace('\\','/',(string)realpath($path)));
     $public = strtolower(str_replace('\\','/',(string)realpath(dirname(__DIR__))));
-    if ($resolved===$public || str_starts_with($resolved,$public.'/')) return $invalid('mail-config.json phải nằm ngoài thư mục web.');
+    if (!lmsPrivatePathAllowed($path)) return $invalid('mail-config.json phải nằm ngoài thư mục web.');
     if (!is_readable($path)) return $invalid('PHP không đọc được mail-config.json. Kiểm tra quyền đọc tệp.');
     if (filesize($path)>16384) return $invalid('mail-config.json vượt giới hạn 16 KB.');
     $raw=@file_get_contents($path,false,null,0,16385);

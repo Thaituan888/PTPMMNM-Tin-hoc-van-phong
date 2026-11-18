@@ -4,7 +4,7 @@ if(str_starts_with($_SERVER['REQUEST_URI'],'//')){http_response_code(404);exit;}
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $decoded = rawurldecode($uri ?: '/');
 if (str_contains($decoded, "\0") || str_contains($decoded, '\\') ||
-    preg_match('~(?:^|/)(?:\.|lms-server(?:/|$)|tests(?:/|$)|config\.php(?:/|$)|mail-config\.json(?:/|$)|vendor/phpmailer(?:/|$))|\.(?:sqlite\w*|db|sql)(?:[./-]|$)~i', $decoded)) {
+    preg_match('~(?:^|/)(?:\.|lms-private(?:/|$)|lms-hosting(?:\.example)?\.php(?:/|$)|lms-server(?:/|$)|tests(?:/|$)|config\.php(?:/|$)|mail-config\.json(?:/|$)|vendor/phpmailer(?:/|$))|\.(?:sqlite\w*|db|sql)(?:[./-]|$)~i', $decoded)) {
     http_response_code(404); exit;
 }
 // The existing hosting API is intentionally not connected by this local LMS server.

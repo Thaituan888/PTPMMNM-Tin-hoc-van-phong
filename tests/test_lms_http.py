@@ -78,7 +78,9 @@ def main():
             db.execute('PRAGMA foreign_keys=ON')
             status, result = alice.call('classes')
             assert status == 200 and len(result['classes']) == 6
-            assert all(row['remaining'] == 99 and row['fee_vnd'] == 1500000 for row in result['classes'])
+            assert all(row['remaining'] == 99 and row['fee_vnd'] ==
+                       (2500000 if row['course_key'] == 'nang-cao' else 1500000)
+                       for row in result['classes'])
             before_tables = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
             assert 'users' in before_tables
             initial_accounts = db.execute('SELECT id,username,fullname,role,password_hash FROM users ORDER BY id').fetchall()
