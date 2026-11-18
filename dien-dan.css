@@ -59,7 +59,7 @@ body.forum-body {
 }
 
 .banner-inner {
-  max-width: 1280px;
+  max-width: min(1520px, 95vw);
   margin: 0 auto;
   padding: 0 24px;
   display: flex;
@@ -141,13 +141,13 @@ body.forum-body {
    BỐ CỤC 3 CỘT (UI 3-COLUMNS LAYOUT)
    ========================================================================== */
 .forum-main-container {
-  max-width: 1280px;
+  max-width: min(1520px, 95vw);
   width: 100%;
   margin: 20px auto 60px;
-  padding: 0 20px;
+  padding: 0 clamp(16px, 2vw, 24px);
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr) 320px;
-  gap: 24px;
+  grid-template-columns: 290px minmax(0, 1fr) 330px;
+  gap: 28px;
   align-items: start;
   flex: 1;
 }
