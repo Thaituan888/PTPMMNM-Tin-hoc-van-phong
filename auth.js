@@ -843,7 +843,6 @@ window.addEventListener('load', function () {
       if (res.success && res.data) {
         setCurrentUser(res.data, remember);
         hideModal();
-        showToast(`Đăng nhập thành công! Xin chào ${res.data.fullname} (${res.data.role === 'admin' ? 'Giảng viên' : 'Học viên'}).`, 'success');
       } else {
         showAlert(res.message || 'Tên đăng nhập hoặc mật khẩu không chính xác!');
       }
