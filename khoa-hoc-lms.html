@@ -207,6 +207,30 @@
       history.scrollRestoration = 'manual';
     }
     window.scrollTo(0, 0);
+
+    // Dropdown toggle for tools (CÔNG CỤ & TIỆN ÍCH)
+    (function () {
+      const toolsDropdown = document.getElementById('nav-tools-dropdown');
+      const btnTools = document.getElementById('btn-tools-dropdown');
+      const toolsContent = toolsDropdown ? toolsDropdown.querySelector('.nav-dropdown-content') : null;
+
+      if (toolsDropdown && btnTools) {
+        btnTools.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toolsDropdown.classList.toggle('open');
+        });
+
+        if (toolsContent) {
+          toolsContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        }
+
+        document.addEventListener('click', () => {
+          toolsDropdown.classList.remove('open');
+        });
+      }
+    })();
   </script>
   <script src="lms-assistant.js?v=20261118"></script>
 </body>
