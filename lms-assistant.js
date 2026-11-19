@@ -20,7 +20,9 @@
 
 (function () {
   // 1. CẤU HÌNH GEMINI API & DANH SÁCH MÔ HÌNH ƯU TIÊN
-  const DEFAULT_GEMINI_API_KEY = 'AQ.Ab8RN6KHe3O16_RuzNJ6HVaeqx2sTWcnmfK6Xm5yU_Ilfz5v7Q';
+  // API Key thật được bảo mật trên máy chủ tại lms-private/ai-config.json (qua lms-ai-proxy.php)
+  const DEFAULT_GEMINI_API_KEY = '';
+  const AI_PROXY_URL = 'lms-ai-proxy.php';
   const GEMINI_MODELS = [
     'gemini-3.5-flash-lite',
     'gemini-3.1-flash-lite',
@@ -940,6 +942,25 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
 
   // 9. KIỂM TRA KẾT NỐI API KEY VỚI GOOGLE GEMINI
   async function testGeminiConnection(key) {
+    if (!key && window.location.protocol !== 'file:') {
+      try {
+        const res = await fetch(AI_PROXY_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'test' })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok) {
+          return { success: true, model: `${data.model} (Server Proxy)` };
+        }
+        return { success: false, error: data.error || `HTTP ${res.status}` };
+      } catch (e) {
+        return { success: false, error: 'Không kết nối được lms-ai-proxy.php trên máy chủ.' };
+      }
+    }
+    if (!key) {
+      return { success: false, error: 'Chưa nhập API Key và không chạy qua máy chủ PHP.' };
+    }
     for (const m of GEMINI_MODELS) {
       try {
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${encodeURIComponent(key)}`;
@@ -961,7 +982,8 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
   // 10. HÀM GỌI GEMINI AI TƯ VẤN KHÓA HỌC & GIẢI THÍCH TÍNH NĂNG
   window.callGeminiAdvisor = async function (userMessage) {
     const apiKey = getStoredApiKey();
-    if (!apiKey) {
+    const canUseProxy = window.location.protocol !== 'file:';
+    if (!apiKey && !canUseProxy) {
       console.warn('[LMS Gemini AI] Chưa cấu hình API Key');
       return null;
     }
@@ -992,6 +1014,34 @@ PHONG CÁCH TƯ VẤN VÀ NGHỆ THUẬT GIAO TIẾP (QUY TẮC BẮT BUỘC):
     };
 
     let lastError = null;
+
+    // Ưu tiên gọi qua PHP Proxy trên server (bảo mật API Key, hoạt động cả localhost & InfinityFree)
+    if (!apiKey && canUseProxy) {
+      try {
+        const response = await fetch(AI_PROXY_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'chat', payload })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (response.ok && data.ok && data.text) {
+          console.log(`[LMS Gemini AI] Phản hồi thành công qua Proxy (${data.model})`);
+          conversationHistory.push({
+            role: 'model',
+            parts: [{ text: data.text }]
+          });
+          saveChatSession();
+          return data.text;
+        }
+        lastError = data.error || `HTTP ${response.status}`;
+        console.warn('[LMS Gemini AI] Proxy trả về lỗi:', lastError);
+      } catch (err) {
+        lastError = err.message;
+        console.warn('[LMS Gemini AI] Ngoại lệ khi gọi Proxy:', err.message);
+      }
+      window.lastGeminiError = lastError;
+      return null;
+    }
 
     for (const model of GEMINI_MODELS) {
       try {
